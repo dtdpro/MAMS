@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.7" method="upgrade">
+	<name>com_mams</name>
+	<creationDate>2012.01</creationDate>
+	<author>Corona Productions</author>
+	<authorEmail>mamundsen@coronapro.com</authorEmail>
+	<authorUrl>http://www.coronapro.com</authorUrl>
+	<copyright>Copyright 2012 Corona Productions</copyright>
+	<license>GPL v2</license>
+	<version>1.00.0</version>
+	<releaseDate>2012.01.13</releaseDate>
+	<releaseType>Update</releaseType>
+	<downloadUrl>http://www.coronapro.com/</downloadUrl>
+	<description>MAMS</description>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>mams.php</filename>
+		<filename>controller.php</filename>
+		<filename>metadata.xml</filename>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+	<administration>
+		<!-- Administration Menu Section -->
+		<menu>MAMS</menu>
+		<files folder="admin">
+			<filename>index.html</filename>
+			<filename>mams.php</filename>
+			<filename>install.sql</filename>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+		</files>
+	</administration>
+</extension>
