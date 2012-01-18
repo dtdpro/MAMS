@@ -11,7 +11,7 @@
 	<releaseDate>2012.01.13</releaseDate>
 	<releaseType>Update</releaseType>
 	<downloadUrl>http://www.coronapro.com/</downloadUrl>
-	<description>MAMS</description>
+	<description>COM_MAMS_DESC</description>
 	<install>
 		<sql>
 			<file charset="utf8" driver="mysql">install.sql</file>
@@ -20,6 +20,7 @@
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>mams.php</filename>
+		<filename>mams.css</filename>
 		<filename>controller.php</filename>
 		<filename>metadata.xml</filename>
 		<folder>models</folder>
@@ -27,7 +28,7 @@
 	</files>
 	<administration>
 		<!-- Administration Menu Section -->
-		<menu>MAMS</menu>
+		<menu>COM_MAMS_MENU</menu>
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>mams.php</filename>
@@ -35,5 +36,9 @@
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
 		</files>
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB.com_mams.ini</language>
+			<language tag="en-GB">language/en-GB.com_mams.sys.ini</language>
+		</languages>	
 	</administration>
 </extension>

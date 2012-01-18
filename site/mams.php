@@ -21,7 +21,7 @@ if($controller = JRequest::getVar('controller')) {
 // Load StyleSheet for template, based on config
 //$cecfg = ContinuEdHelper::getConfig();
 $doc = &JFactory::getDocument();
-$doc->addStyleSheet('components/com_mams/template/'.$cecfg->TEMPLATE.'/mams.css');
+$doc->addStyleSheet('components/com_mams/mams.css');
 
 // Create the controller
 $classname	= 'MAMSController'.$controller;

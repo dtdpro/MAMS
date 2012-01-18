@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.mams-artlist-article {clear:both; width:100%; padding-top:10px;}
+.mams-artlist-arttitle { padding-top: 10px; padding-bottom: 4px; font-size:18px; }
+.mams-artlist-artaut { padding-bottom: 10px; }
+.mams-artlist-arttpdrm { padding-bottom: 4px; clear:both; }
+.mams-artlist-artthumb { padding-bottom: 10px; padding-right: 10px;}
+.mams-artlist-artpubdesc {  }
+.mams-artlist-artpubcat { padding-bottom: 4px; font-size:10px; }
+.mams-artlist-artdesc { padding-bottom: 10px;  }
+.mams-artlist-artreadmore { float:right; clear: both;}
+.mams-artlist-seperator { width:100%; clear: both; margin:10px;}

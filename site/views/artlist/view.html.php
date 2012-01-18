@@ -1,4 +1,5 @@
 <?php
+defined('_JEXEC') or die();
 /**
  * @version		$Id: view.html.php 2012-01-13 $
  * @package		MAMS.Site
@@ -19,6 +20,9 @@ jimport( 'joomla.application.component.view');
  */
 class MAMSViewArtList extends JView
 {
+	protected $artlist = Array();
+	protected $secinfo = null;
+	
 	public function display($tpl = null)
 	{
 		$layout = $this->getLayout();
@@ -35,33 +39,34 @@ class MAMSViewArtList extends JView
 				break;
 		}
 		parent::display($tpl);
+		$this->setLayout('artlist');
+		parent::display($tpl);
 	}
 	
 	protected function listCategory() {
 		$model =& $this->getModel();
 		$cat=Jrequest::getInt('cat');
-		$catinfo=$model->getCatInfo($cat);
+		$this->catinfo=$model->getCatInfo($cat);
 		$artids=$model->getCatArts($cat);
-		$articles=$model->getArticles($artids);
-		$this->assignRef('articles',$articles);
+		$this->articles=$model->getArticles($artids);
 	}
 	
 	protected function listSection() {
 		$model =& $this->getModel();
-		$sec=Jrequest::getInt('sec');
-		$secinfo=$model->getSecInfo($sec);
-		$artids=$model->getSecArts($sec);
-		$articles=$model->getArticles($artids);
-		$this->assignRef('articles',$articles);
+		$sec=1; //Jrequest::getInt('sec');
+		$this->secinfo=$model->getSecInfo($sec);
+		if ($this->secinfo) {
+			$artids=$model->getSecArts($sec);
+			$this->articles=$model->getArticles($artids);
+		}
 	}
 	
 	protected function listAuthor() {
 		$model =& $this->getModel();
 		$aut=Jrequest::getInt('aut');
-		$autinfo=$model->getAutInfo($aut);
+		$this->autinfo=$model->getAutInfo($aut);
 		$artids=$model->getAutArts($aut);
-		$articles=$model->getArticles($artids);
-		$this->assignRef('articles',$articles);
+		$this->articles=$model->getArticles($artids);
 	}
 	
 	
