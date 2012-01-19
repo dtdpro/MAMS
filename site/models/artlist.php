@@ -10,8 +10,9 @@ class MAMSModelArtList extends JModel
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
-		$query->select('a.*');
+		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
+		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id IN ('.implode(",",$artids).')');
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
@@ -67,6 +68,34 @@ class MAMSModelArtList extends JModel
 		return $items;
 	}
 	
+	function getCatArts($cat) {
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+		
+		$query->select('ac.ac_art');
+		$query->from('#__mams_artcat AS ac');
+		$query->where('ac.ac_cat = '.(int)$cat);
+		$query->where('ac.published >= 1');
+		$db->setQuery($query);
+		$items = $db->loadResultArray(0);
+		return $items;
+	}
+	
+	function getAuthArts($aut) {
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+		
+		$query->select('aa.aa_art');
+		$query->from('#__mams_artauth AS aa');
+		$query->where('aa.aa_auth = '.(int)$aut);
+		$query->where('aa.published >= 1');
+		$db->setQuery($query);
+		$items = $db->loadResultArray(0);
+		return $items;
+	}
+	
 	function getSecInfo($sec) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -77,6 +106,35 @@ class MAMSModelArtList extends JModel
 		$query->where('s.sec_id = '.(int)$sec);
 		$query->where('s.published >= 1');
 		$query->where('s.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		$db->setQuery($query);
+		$info = $db->loadObject();
+		return $info;
+	}
+	
+	function getCatInfo($cat) {
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+		
+		$query->select('c.*');
+		$query->from('#__mams_cats AS c');
+		$query->where('c.cat_id = '.(int)$cat);
+		$query->where('c.published >= 1');
+		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		$db->setQuery($query);
+		$info = $db->loadObject();
+		return $info;
+	}
+	
+	function getAutInfo($aut) {
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+		
+		$query->select('a.*');
+		$query->from('#__mams_authors AS a');
+		$query->where('a.auth_id = '.(int)$aut);
+		$query->where('a.published >= 1');
 		$db->setQuery($query);
 		$info = $db->loadObject();
 		return $info;

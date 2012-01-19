@@ -22,14 +22,19 @@ class MAMSViewArtList extends JView
 {
 	protected $artlist = Array();
 	protected $secinfo = null;
+	protected $autinfo = null;
+	protected $catinfo = null;
+	protected $params = null;
 	
 	public function display($tpl = null)
 	{
 		$layout = $this->getLayout();
+		$app = JFactory::getApplication();
+		$this->params = $app->getParams();
 		
 		switch($layout) {
 			case "category": 
-				$this->listCat();
+				$this->listCategory();
 				break;
 			case "section": 
 				$this->listSection();
@@ -45,15 +50,19 @@ class MAMSViewArtList extends JView
 	
 	protected function listCategory() {
 		$model =& $this->getModel();
-		$cat=Jrequest::getInt('cat');
+		$sec=Jrequest::getInt('secid',1);
+		$this->secinfo=$model->getSecInfo($sec);
+		$cat=Jrequest::getInt('catid');
 		$this->catinfo=$model->getCatInfo($cat);
-		$artids=$model->getCatArts($cat);
-		$this->articles=$model->getArticles($artids);
+		if ($this->catinfo) {
+			$artids=$model->getCatArts($cat);
+			$this->articles=$model->getArticles($artids);
+		}
 	}
 	
 	protected function listSection() {
 		$model =& $this->getModel();
-		$sec=1; //Jrequest::getInt('sec');
+		$sec=Jrequest::getInt('secid',1);
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
 			$artids=$model->getSecArts($sec);
@@ -63,10 +72,14 @@ class MAMSViewArtList extends JView
 	
 	protected function listAuthor() {
 		$model =& $this->getModel();
-		$aut=Jrequest::getInt('aut');
+		$sec=Jrequest::getInt('secid',1);
+		if ($sec) $this->secinfo=$model->getSecInfo($sec);
+		$aut=Jrequest::getInt('autid');
 		$this->autinfo=$model->getAutInfo($aut);
-		$artids=$model->getAutArts($aut);
-		$this->articles=$model->getArticles($artids);
+		if ($this->autinfo) {
+			$artids=$model->getAuthArts($aut);
+			$this->articles=$model->getArticles($artids);
+		}
 	}
 	
 	

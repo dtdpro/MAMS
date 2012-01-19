@@ -35,6 +35,8 @@
 			<filename>install.sql</filename>
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
+			<folder>models</folder>
+		
 		</files>
 		<languages folder="admin">
 			<language tag="en-GB">language/en-GB.com_mams.ini</language>
