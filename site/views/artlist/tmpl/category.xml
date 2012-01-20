@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="MAMS Category List">
+	<layout title="MAMS Category Article List">
 		<message>Category article list</message>
 	</layout>
 	<!-- Add fields to the request variables for the layout. -->

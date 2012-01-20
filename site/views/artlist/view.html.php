@@ -50,35 +50,35 @@ class MAMSViewArtList extends JView
 	
 	protected function listCategory() {
 		$model =& $this->getModel();
-		$sec=Jrequest::getInt('secid',1);
-		$this->secinfo=$model->getSecInfo($sec);
+		$sec=Jrequest::getInt('secid',0);
+		if ($sec) $this->secinfo=$model->getSecInfo($sec);
 		$cat=Jrequest::getInt('catid');
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
 			$artids=$model->getCatArts($cat);
-			$this->articles=$model->getArticles($artids);
+			$this->articles=$model->getArticles($artids,$sec);
 		}
 	}
 	
 	protected function listSection() {
 		$model =& $this->getModel();
-		$sec=Jrequest::getInt('secid',1);
+		$sec=Jrequest::getInt('secid',0);
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
 			$artids=$model->getSecArts($sec);
-			$this->articles=$model->getArticles($artids);
+			$this->articles=$model->getArticles($artids,$sec);
 		}
 	}
 	
 	protected function listAuthor() {
 		$model =& $this->getModel();
-		$sec=Jrequest::getInt('secid',1);
+		$sec=Jrequest::getInt('secid',0);
 		if ($sec) $this->secinfo=$model->getSecInfo($sec);
 		$aut=Jrequest::getInt('autid');
 		$this->autinfo=$model->getAutInfo($aut);
 		if ($this->autinfo) {
 			$artids=$model->getAuthArts($aut);
-			$this->articles=$model->getArticles($artids);
+			$this->articles=$model->getArticles($artids,$sec);
 		}
 	}
 	

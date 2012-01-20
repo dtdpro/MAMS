@@ -5,7 +5,7 @@ jimport( 'joomla.application.component.model' );
 
 class MAMSModelArtList extends JModel
 {
-	function getArticles($artids) {
+	function getArticles($artids,$secid) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
@@ -14,6 +14,7 @@ class MAMSModelArtList extends JModel
 		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id IN ('.implode(",",$artids).')');
+		if ($secid) $query->where('a.art_sec = '.$secid);
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$query->where('a.art_published <= NOW()');
