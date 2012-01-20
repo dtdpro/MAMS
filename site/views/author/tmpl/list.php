@@ -9,7 +9,7 @@ if ($this->autlist) {
 	echo '<div class="mams-author-auths">';
 		foreach ($this->autlist as $f) {
 			echo '<div class="mams-author-auth">';
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&layout=author&autid=".$f->auth_id.":".$f->auth_alias).'" ';
+			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" ';
 			echo 'class="mams-article-autlink">';
 			echo $f->auth_name;
 			echo '</a>';

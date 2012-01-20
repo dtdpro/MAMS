@@ -31,12 +31,15 @@ class MAMSViewArticle extends JView
 		$this->params = $app->getParams();
 		
 		$model =& $this->getModel();
-		$art=JRequest::getInt('artid',1);
+		$art=JRequest::getInt('artid',0);
 		$this->article=$model->getArticle($art);
 		if ($this->article) {
 			$this->document->setTitle($this->article->art_title);
 			if ($this->article->art_show_related) $this->related=$model->getRelated($this->article->cats,$this->article->auts,$this->article->sec_id);
 			parent::display($tpl);
+		} else {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			return false;
 		}
 	}
 	

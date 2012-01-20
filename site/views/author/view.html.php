@@ -33,13 +33,14 @@ class MAMSViewAuthor extends JView
 		
 		switch($layout) {
 			case "default": 
-				$this->showAuthor();
+				$err=$this->showAuthor();
 				break;
 			case "list": 
-				$this->listAuthors();
+				$err=$this->listAuthors();
 				break;
 		}
-		parent::display($tpl);
+		if ($err) parent::display($tpl);
+		else return false;
 	}
 	
 	protected function showAuthor() {
@@ -49,13 +50,16 @@ class MAMSViewAuthor extends JView
 		if ($this->author) {
 			$this->document->setTitle($this->author->auth_name);
 			if ($this->params->get('show_pubed',1)) $this->published=$model->getPublished($aut);
-			
-		} 
+			return true;
+		} else {
+			return JError::raiseError(404, JText::_('COM_MAMS_AUTHOR_NOT_FOUND'));
+		}
 	}
 	
 	protected function listAuthors() {
 		$model =& $this->getModel();
 		$this->autlist = $model->getAuthorList(); 
+		return true;
 	}
 	
 }

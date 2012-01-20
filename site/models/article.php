@@ -21,6 +21,8 @@ class MAMSModelArticle extends JModel
 		$db->setQuery($query);
 		$item = $db->loadObject();
 		
+		if (!$item) return 0;
+		
 		//Get Authors
 		$qa=$db->getQuery(true);
 		$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_credentials');

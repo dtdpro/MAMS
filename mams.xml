@@ -26,6 +26,9 @@
 		<folder>models</folder>
 		<folder>views</folder>
 	</files>
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB.com_mams.ini</language>
+	</languages>
 	<administration>
 		<!-- Administration Menu Section -->
 		<menu>COM_MAMS_MENU</menu>
