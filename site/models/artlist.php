@@ -30,6 +30,7 @@ class MAMSModelArtList extends JModel
 			$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 			$qa->where('aa.published >= 1');
 			$qa->where('a.published >= 1');
+			$qa->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 			$qa->where('aa.aa_art = '.$i->art_id);
 			$qa->order('aa.ordering ASC');
 			$db->setQuery($qa);
@@ -136,6 +137,7 @@ class MAMSModelArtList extends JModel
 		$query->from('#__mams_authors AS a');
 		$query->where('a.auth_id = '.(int)$aut);
 		$query->where('a.published >= 1');
+		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$db->setQuery($query);
 		$info = $db->loadObject();
 		return $info;

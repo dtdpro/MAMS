@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `jos_mams_articles` (
   `art_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `art_published` datetime NOT NULL,
   `art_modified` datetime NOT NULL,
+  `art_show_related` tinyint(1) NOT NULL DEFAULT '1',
   `access` int(11) NOT NULL,
   `published` int(11) NOT NULL,
   PRIMARY KEY (`art_id`),
@@ -61,6 +62,7 @@ CREATE TABLE IF NOT EXISTS `jos_mams_authors` (
   `auth_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `auth_modified` datetime NOT NULL,
   `published` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
   PRIMARY KEY (`auth_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -97,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `jos_mams_media` (
   `med_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `med_modified` datetime NOT NULL,
   `published` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
   PRIMARY KEY (`med_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

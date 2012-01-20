@@ -28,6 +28,7 @@ class MAMSModelArticle extends JModel
 		$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 		$qa->where('aa.published >= 1');
 		$qa->where('a.published >= 1');
+		$qa->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$qa->where('aa.aa_art = '.$item->art_id);
 		$qa->order('aa.ordering ASC');
 		$db->setQuery($qa);
@@ -107,6 +108,7 @@ class MAMSModelArticle extends JModel
 			$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 			$qa->where('aa.published >= 1');
 			$qa->where('a.published >= 1');
+			$qa->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 			$qa->where('aa.aa_art = '.$i->art_id);
 			$qa->order('aa.ordering ASC');
 			$db->setQuery($qa);
