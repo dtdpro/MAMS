@@ -20,7 +20,7 @@ echo '</div>';
 //Related Items
 if ($this->published) {
 echo '<div class="mams-author-related">';
-	echo '<div class="mams-author-related-title">Related Items</div>';
+	echo '<div class="mams-author-related-title">Authored Items</div>';
 	echo '<div class="mams-author-related-links">';
 		foreach ($this->published as $r) {
 			echo '<div class="mams-author-related-link">';

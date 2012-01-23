@@ -68,4 +68,8 @@ foreach ($this->articles as $a) {
 	
 	echo '</div>';
 	echo '<div class="mams-artlist-seperator"></div>';
+
 }
+echo '<div class="mams-artlist-pagination">';
+echo $this->pagination->getPagesLinks();
+echo '</div>';

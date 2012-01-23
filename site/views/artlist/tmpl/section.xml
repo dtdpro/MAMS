@@ -9,5 +9,12 @@
 			<field name="secid" type="Secs" description="COM_MAMS_FIELD_SELECT_SEC_DESC" label="COM_MAMS_FIELD_SELECT_SEC_LABEL" required="true" />
 		</fieldset>
 	</fields>
+	<fields name="params">
+
+	<!-- Basic options. -->
+		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="items_page" type="text" description="COM_MAMS_FIELD_ITEMSPERPAGE_DESC" label="COM_MAMS_FIELD_ITEMSPERPAGE_LABEL" default="10"></field>
+		</fieldset>
+	</fields>
 
 </metadata>

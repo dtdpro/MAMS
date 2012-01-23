@@ -25,12 +25,17 @@ class MAMSViewArtList extends JView
 	protected $autinfo = null;
 	protected $catinfo = null;
 	protected $params = null;
+	protected $pagination = null;
+	protected $staet = null;
 	
 	public function display($tpl = null)
 	{
 		$layout = $this->getLayout();
 		$app = JFactory::getApplication();
 		$this->params = $app->getParams();
+		
+		
+		$this->state = $this->get('State');
 		
 		switch($layout) {
 			case "category": 
@@ -43,6 +48,7 @@ class MAMSViewArtList extends JView
 				$this->listAuthor();
 				break;
 		}
+		
 		parent::display($tpl);
 		$this->setLayout('artlist');
 		parent::display($tpl);
@@ -57,6 +63,7 @@ class MAMSViewArtList extends JView
 		if ($this->catinfo) {
 			$artids=$model->getCatArts($cat);
 			$this->articles=$model->getArticles($artids,$sec);
+			$this->pagination = $this->get('Pagination');
 		}
 	}
 	
@@ -67,6 +74,7 @@ class MAMSViewArtList extends JView
 		if ($this->secinfo) {
 			$artids=$model->getSecArts($sec);
 			$this->articles=$model->getArticles($artids,$sec);
+			$this->pagination = $this->get('Pagination');
 		}
 	}
 	
@@ -79,6 +87,7 @@ class MAMSViewArtList extends JView
 		if ($this->autinfo) {
 			$artids=$model->getAuthArts($aut);
 			$this->articles=$model->getArticles($artids,$sec);
+			$this->pagination = $this->get('Pagination');
 		}
 	}
 	

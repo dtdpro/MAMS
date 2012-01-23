@@ -20,6 +20,7 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 			</field>
+			<field name="items_page" type="text" description="COM_MAMS_FIELD_ITEMSPERPAGE_DESC" label="COM_MAMS_FIELD_ITEMSPERPAGE_LABEL" default="10"></field>
 		</fieldset>
 	</fields>
 </metadata>

@@ -12,7 +12,9 @@ class MAMSController extends JController
 	 */
 	function display()
 	{
+		echo '<div id="system">';
 		parent::display();
+		echo '</div>';
 	}
 
 }
