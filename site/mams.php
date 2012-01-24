@@ -16,12 +16,13 @@ if($controller = JRequest::getVar('controller')) {
 }
 
 // Load helper
-//require_once(JPATH_COMPONENT.DS.'helpers'.DS.'continued.php');
+require_once(JPATH_COMPONENT.DS.'helpers'.DS.'mams.php');
 
 // Load StyleSheet for template, based on config
 //$cecfg = ContinuEdHelper::getConfig();
 $doc = &JFactory::getDocument();
 $doc->addStyleSheet('components/com_mams/mams.css');
+$doc->addScript('media/com_mams/vidplyr/jwplayer.js');
 
 // Create the controller
 $classname	= 'MAMSController'.$controller;

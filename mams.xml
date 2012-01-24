@@ -20,12 +20,18 @@
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>mams.php</filename>
+		<filename>router.php</filename>
 		<filename>mams.css</filename>
 		<filename>controller.php</filename>
 		<filename>metadata.xml</filename>
 		<folder>models</folder>
 		<folder>views</folder>
+		<folder>helpers</folder>
 	</files>
+	<media destination="com_mams" folder="media">
+            <filename>index.html</filename>
+			<folder>vidplyr</folder>
+    </media>
 	<languages folder="site">
 		<language tag="en-GB">language/en-GB.com_mams.ini</language>
 	</languages>

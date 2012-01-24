@@ -32,7 +32,36 @@ echo '</div>';
 //Media
 if ($this->article->media) {
 	echo '<div class="mams-article-media">';
-		echo '<div style="background-color:#000000; border: 1px solid #333333; width:768px; height:432px; margin: 0 auto;">'.$this->article->media[0]->med_file.'</div>';
+		echo '<div align="center">';
+		$detect_iDevice = strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") || strpos($_SERVER['HTTP_USER_AGENT'],"iPad");
+		if ($detect_iDevice) {
+			//html 5 video
+			if ($this->article->media[0]->med_type == "vid") echo '<video src="'.JURI::base( true ).'/'.$this->article->media[0]->med_file.'" width="768" height="432" controls preload></video>';
+	 		if ($this->article->media[0]->med_type == "vids") echo '<video src="http://streams.coronapro.com:1935/vod/mp4:'.$this->article->media[0]->med_file.'/playlist.m3u8" width="768" height="432" controls preload></video>';
+		} else {
+			//flash player
+			echo '<div id="mediaspace"></div>'."\n";
+			echo "<script type='text/javascript'>"."\n";
+			echo "jwplayer('mediaspace').setup({"."\n";
+	   		echo "'flashplayer': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
+	 		if ($this->article->media[0]->med_type == "vid") echo "'file': '".JURI::base( true ).'/'.$this->article->media[0]->med_file."',"."\n";
+	 		if ($this->article->media[0]->med_type == "vids") {
+	 			echo "'provider': 'rtmp',"."\n";
+	 			echo "'streamer': 'rtmp://streams.coronapro.com/vod/',"."\n";
+	 			echo "'file':'mp4:".$this->article->media[0]->med_file."',"."\n";
+	 		}
+			echo "'image': '".JURI::base( true ).'/'.$this->article->media[0]->med_still."',"."\n";
+			echo "'frontcolor': '000000',"."\n";
+			echo "'lightcolor': 'cc9900',"."\n";
+			echo "'screencolor': '000000',"."\n";
+			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow.zip',"."\n";
+			echo "'controlbar': 'bottom',"."\n";
+			echo "'width': '768',"."\n";
+			echo "'height': '462'"."\n";
+			echo "});"."\n";
+			echo "</script>"."\n";
+		}
+		echo '</div>';
 	echo '</div>';
 }
 

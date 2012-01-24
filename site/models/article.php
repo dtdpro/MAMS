@@ -23,6 +23,13 @@ class MAMSModelArticle extends JModel
 		
 		if (!$item) return 0;
 		
+		$qhit = $db->getQuery(true);
+		$qhit->update('#__mams_article');
+		$qhit->set('art_hits = art_hits + 1');
+		$qhit->where('art_id = '.$artid);
+		$db->setQuery($qhit);
+		$db->query();
+		
 		//Get Authors
 		$qa=$db->getQuery(true);
 		$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_credentials');
@@ -163,4 +170,6 @@ class MAMSModelArticle extends JModel
 		$items = $db->loadResultArray(0);
 		return $items;
 	}
+	
+
 }

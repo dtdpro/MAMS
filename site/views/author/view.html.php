@@ -48,6 +48,7 @@ class MAMSViewAuthor extends JView
 		$aut=JRequest::getInt('autid',0);
 		$this->author=$model->getAuthor($aut);
 		if ($this->author) {
+			MAMSHelper::trackViewed($aut,'author');
 			$this->document->setTitle($this->author->auth_name);
 			if ($this->params->get('show_pubed',1)) $this->published=$model->getPublished($aut);
 			return true;
@@ -57,6 +58,7 @@ class MAMSViewAuthor extends JView
 	}
 	
 	protected function listAuthors() {
+		MAMSHelper::trackViewed(0,'authors');
 		$model =& $this->getModel();
 		$this->autlist = $model->getAuthorList(); 
 		return true;

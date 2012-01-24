@@ -61,6 +61,7 @@ class MAMSViewArtList extends JView
 		$cat=Jrequest::getInt('catid');
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
+			MAMSHelper::trackViewed($cat,'catlist');
 			$artids=$model->getCatArts($cat);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
@@ -72,6 +73,7 @@ class MAMSViewArtList extends JView
 		$sec=Jrequest::getInt('secid',0);
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
+			MAMSHelper::trackViewed($sec,'seclist');
 			$artids=$model->getSecArts($sec);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
@@ -85,6 +87,7 @@ class MAMSViewArtList extends JView
 		$aut=Jrequest::getInt('autid');
 		$this->autinfo=$model->getAutInfo($aut);
 		if ($this->autinfo) {
+			MAMSHelper::trackViewed($aut,'autlist');
 			$artids=$model->getAuthArts($aut);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');

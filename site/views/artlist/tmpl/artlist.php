@@ -61,7 +61,7 @@ foreach ($this->articles as $a) {
 			
 			//Read More
 			echo '<div class="mams-artlist-artreadmore">';
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id).'" class="mams-artlist-artlink read-more">Read More</a>';
+			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'" class="mams-artlist-artlink read-more">Read More</a>';
 			echo '</div>';
 		
 		echo '</div>';

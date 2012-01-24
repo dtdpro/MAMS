@@ -35,6 +35,7 @@ class MAMSViewArticle extends JView
 		$this->article=$model->getArticle($art);
 		if ($this->article) {
 			$this->document->setTitle($this->article->art_title);
+			MAMSHelper::trackViewed($art,'article');
 			if ($this->article->art_show_related) $this->related=$model->getRelated($this->article->cats,$this->article->auts,$this->article->sec_id);
 			parent::display($tpl);
 		} else {

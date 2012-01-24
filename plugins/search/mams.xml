@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="search">
+	<name>plg_search_mams</name>
+	<author>Corona Productions</author>
+	<creationDate>2012.12</creationDate>
+	<copyright>Copyright (C) 2012 Coron Productions. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>info@coronapro.com</authorEmail>
+	<authorUrl>www.coronapro.com</authorUrl>
+	<version>1.7.0</version>
+	<description>PLG_SEARCH_MAMS_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="mams">mams.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_search_mams.ini</language>
+		<language tag="en-GB">en-GB.plg_search_mams.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+
+			<fieldset name="basic">
+				<field name="search_limit" type="text"
+					default="50"
+					description="PLG_SEARCH_MAMS_FIELD_SEARCHLIMIT_DESC"
+					label="PLG_SEARCH_MAMS_FIELD_SEARCHLIMIT_LABEL"
+					size="5"
+				/>
+			</fieldset>
+
+		</fields>
+	</config>
+</extension>
