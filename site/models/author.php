@@ -30,6 +30,7 @@ class MAMSModelAuthor extends JModel
 		$query->from('#__mams_authors AS a');
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		$query->order('a.ordering');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 			
