@@ -5,7 +5,7 @@ echo '<h2 class="title">';
 echo $this->author->auth_name; 
 echo '</h2>';
 echo '<div class="mams-author-credentials">';
-echo '<strong>'.$this->author->auth_name.'</strong><br />'.$this->author->auth_credentials;
+echo $this->author->auth_credentials;
 echo '</div>';
 echo '<div class="mams-author-bio">';
 echo $this->author->auth_bio;

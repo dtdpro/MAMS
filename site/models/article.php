@@ -85,11 +85,11 @@ class MAMSModelArticle extends JModel
 		return $item;
 	}
 	
-	function getRelated($cats,$auts,$secid) {
+	function getRelated($art,$cats,$auts,$secid) {
 		$relatedids = Array();
 	
-		foreach ($cats as $c) { $relatedids=array_merge($relatedids,$this->getCatArts($c->cat_id)); }
-		foreach ($auts as $a) { $relatedids=array_merge($relatedids,$this->getAuthArts($a->auth_id));}
+		foreach ($cats as $c) { $relatedids=array_merge($relatedids,$this->getCatArts($art, $c->cat_id)); }
+		foreach ($auts as $a) { $relatedids=array_merge($relatedids,$this->getAuthArts($art, $a->auth_id));}
 		$relatedids = array_unique($relatedids);	
 		
 		$db =& JFactory::getDBO();
@@ -143,7 +143,7 @@ class MAMSModelArticle extends JModel
 	
 	}
 	
-	function getCatArts($cat) {
+	function getCatArts($art, $cat) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
@@ -152,12 +152,13 @@ class MAMSModelArticle extends JModel
 		$query->from('#__mams_artcat AS ac');
 		$query->where('ac.ac_cat = '.(int)$cat);
 		$query->where('ac.published >= 1');
+		$query->where('ac.ac_art != '.$art);
 		$db->setQuery($query);
 		$items = $db->loadResultArray(0);
 		return $items;
 	}
 	
-	function getAuthArts($aut) {
+	function getAuthArts($art, $aut) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
@@ -166,6 +167,7 @@ class MAMSModelArticle extends JModel
 		$query->from('#__mams_artauth AS aa');
 		$query->where('aa.aa_auth = '.(int)$aut);
 		$query->where('aa.published >= 1');
+		$query->where('aa.aa_art != '.$art);
 		$db->setQuery($query);
 		$items = $db->loadResultArray(0);
 		return $items;

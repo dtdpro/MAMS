@@ -1,25 +1,25 @@
 @CHARSET "UTF-8";
 
 .mams-artlist-article {clear:both; width:100%; padding-top:10px;}
-.mams-artlist-arttitle { padding-top: 10px; padding-bottom: 4px; font-size:18px; }
+.mams-artlist-arttitle { padding-top: 10px; padding-bottom: 4px; font-size:18px; font-weight:bold; }
 .mams-artlist-artaut { padding-bottom: 10px; }
 .mams-artlist-arttpdrm { padding-bottom: 4px; clear:both; }
 .mams-artlist-artthumb { padding-bottom: 10px; padding-right: 10px;}
 .mams-artlist-artpubdesc {  }
-.mams-artlist-artpubcat { padding-bottom: 4px; font-size:10px; }
+.mams-artlist-artpubcat { padding-bottom: 4px; font-size:11px; }
 .mams-artlist-artdesc { padding-bottom: 10px;  }
 .mams-artlist-artreadmore { float:right; clear: both;}
 .mams-artlist-seperator { width:100%; clear: both; margin:10px;}
 
 .mams-author-credentials { }
-.mams-author-bio { padding:10px; }
+.mams-author-bio {  }
 .mams-author-related {padding-top:10px; clear:both;}
 .mams-author-related-title {font-size:16px; font-weight:bold;}
 .mams-author-related-links { }
 .mams-author-related-link {padding:2px; margin-top:5px;margin-left:5px; margin-right: 5px; width:48%; display:block; float:left;border:1px dotted #cccccc; min-height:80px;}
 .mams-author-related-link:hover {border:1px solid #cccccc;background-color:#dddddd;}
 .mams-author-related-artaut { font-size:11px; }
-.mams-author-related-pubinfo { font-size:10px; }
+.mams-author-related-pubinfo { font-size:11px; }
 .mams-author-related-artthumb { padding-top:2px; padding-left:2px; padding-right: 4px; padding-bottom:20px; }
 .mams-author-modified { padding-top: 10px; font-size:10px; }
 
