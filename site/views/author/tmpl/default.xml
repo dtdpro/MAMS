@@ -4,8 +4,8 @@
 		<message>Author Bio Page</message>
 	</layout>
 	<!-- Add fields to the request variables for the layout. -->
-	<fields name="request">
-		<fieldset name="request" addfieldpath="/administrator/components/com_mams/models/fields">
+	<fields name="request" addfieldpath="administrator/components/com_mams/models/fields">
+		<fieldset name="request">
 			<field name="autid" type="Authors" description="COM_MAMS_FIELD_SELECT_AUT_DESC" label="COM_MAMS_FIELD_SELECT_AUT_LABEL" required="true" />
 		</fieldset>
 	</fields>
