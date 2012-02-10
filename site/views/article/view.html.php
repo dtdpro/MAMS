@@ -22,7 +22,8 @@ class MAMSViewArticle extends JView
 {
 	protected $article = null;
 	protected $params = null;
-	protected $related = null;
+	protected $relatedbycat = null;
+	protected $relatedbyaut = null;
 	
 	public function display($tpl = null)
 	{
@@ -36,7 +37,10 @@ class MAMSViewArticle extends JView
 		if ($this->article) {
 			$this->document->setTitle($this->article->art_title);
 			MAMSHelper::trackViewed($art,'article');
-			if ($this->article->art_show_related) $this->related=$model->getRelated($art,$this->article->cats,$this->article->auts,$this->article->sec_id);
+			if ($this->article->art_show_related) {
+				$this->relatedbycat=$model->getRelatedByCat($art,$this->article->cats,$this->article->sec_id);
+				$this->relatedbyaut=$model->getRelatedByAut($art,$this->article->auts,$this->article->sec_id);
+			}
 			parent::display($tpl);
 		} else {
 			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
