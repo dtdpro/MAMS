@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: sec.xml 62 2010-11-28 16:08:16Z chdemko $ -->
+<form>
+	<fieldset name="details">
+		<field
+			name="sec_id"
+			type="hidden"
+		/>
+		<field
+			name="published"
+			type="list"
+			id="published"
+			class="inputbox"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			size="1"
+			default="1"
+			filter="integer">
+			<option	value="1">JPUBLISHED</option>
+			<option	value="0">JUNPUBLISHED</option>
+			<option	value="2">JARCHIVED</option>
+			<option	value="-2">JTRASHED</option>
+		</field>
+		<field
+			name="access"
+			type="accesslevel"
+			id="access"
+			class="inputbox"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			default="1"
+			filter="integer"/>
+		<field
+			name="sec_name"
+			type="text"
+			label="COM_MAMS_SEC_FIELD_NAME_LABEL"
+			description="COM_MAMS_SEC_FIELD_NAME_DESC"
+			size="60"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field
+			name="sec_alias"
+			type="text"
+			label="COM_MAMS_SEC_FIELD_ALIAS_LABEL"
+			description="COM_MAMS_SEC_FIELD_ALIAS_DESC"
+			size="60"
+			class="inputbox"
+			default=""
+		/>
+		<field
+			name="sec_desc"
+			type="textarea"
+			label="COM_MAMS_SEC_FIELD_DESC_LABEL"
+			description="COM_MAMS_SEC_FIELD_DESC_DESC"
+			rows="4"
+			cols="70"
+			class="inputbox"
+			filter="safehtml"
+			buttons="false"
+		/>
+	</fieldset>
+</form>
+

@@ -42,10 +42,15 @@
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>mams.php</filename>
+			<filename>controller.php</filename>
 			<filename>install.sql</filename>
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
 			<folder>models</folder>
+			<folder>helpers</folder>
+			<folder>controllers</folder>
+			<folder>views</folder>
+			<folder>tables</folder>
 		
 		</files>
 		<languages folder="admin">
