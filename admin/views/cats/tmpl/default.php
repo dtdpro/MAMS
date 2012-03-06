@@ -8,7 +8,7 @@ JHtml::_('behavior.tooltip');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=secs'); ?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=cats'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			
@@ -32,19 +32,19 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<thead>
 			<tr>
 				<th width="5">
-					<?php echo JText::_('COM_MAMS_SEC_HEADING_ID'); ?>
+					<?php echo JText::_('COM_MAMS_CAT_HEADING_ID'); ?>
 				</th>
 				<th width="20">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>			
 				<th>
-					<?php echo JHtml::_('grid.sort','COM_MAMS_SEC_HEADING_NAME','s.sec_name', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_CAT_HEADING_NAME','c.cat_title', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="120">
-					<?php echo JText::_('COM_MAMS_SEC_ADDED'); ?>
+					<?php echo JText::_('COM_MAMS_CAT_ADDED'); ?>
 				</th>		
 				<th width="120">
-					<?php echo JText::_('COM_MAMS_SEC_MODIFIED'); ?>
+					<?php echo JText::_('COM_MAMS_CAT_MODIFIED'); ?>
 				</th>	
 				<th width="100">
 					<?php echo JText::_('JPUBLISHED'); ?>
@@ -63,13 +63,13 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<td><?php echo $item->cat_id; ?></td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->cat_id); ?></td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=sec.edit&sec_id='.(int) $item->sec_id); ?>">
-					<?php echo $this->escape($item->sec_name); ?></a>
-					<p class="smallsub"><?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->sec_alias));?></p>
+					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=cat.edit&cat_id='.(int) $item->cat_id); ?>">
+					<?php echo $this->escape($item->cat_title); ?></a>
+					<p class="smallsub"><?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->cat_alias));?></p>
 				</td>
-				<td><?php echo $item->sec_added; ?></td>
-				<td><?php echo $item->sec_modified; ?></td>
-				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'secs.', true);?></td>
+				<td><?php echo $item->cat_added; ?></td>
+				<td><?php echo $item->cat_modified; ?></td>
+				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'cats.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
 			</tr>
 		<?php endforeach; ?>

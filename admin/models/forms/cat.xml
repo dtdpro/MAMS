@@ -2,7 +2,7 @@
 <form>
 	<fieldset name="details">
 		<field
-			name="sec_id"
+			name="cat_id"
 			type="hidden"
 		/>
 		<field
@@ -30,29 +30,29 @@
 			default="1"
 			filter="integer"/>
 		<field
-			name="sec_name"
+			name="cat_title"
 			type="text"
-			label="COM_MAMS_SEC_FIELD_NAME_LABEL"
-			description="COM_MAMS_SEC_FIELD_NAME_DESC"
+			label="COM_MAMS_CAT_FIELD_NAME_LABEL"
+			description="COM_MAMS_CAT_FIELD_NAME_DESC"
 			size="60"
 			class="inputbox"
 			required="true"
 			default=""
 		/>
 		<field
-			name="sec_alias"
+			name="cat_alias"
 			type="text"
-			label="COM_MAMS_SEC_FIELD_ALIAS_LABEL"
-			description="COM_MAMS_SEC_FIELD_ALIAS_DESC"
+			label="COM_MAMS_CAT_FIELD_ALIAS_LABEL"
+			description="COM_MAMS_CAT_FIELD_ALIAS_DESC"
 			size="60"
 			class="inputbox"
 			default=""
 		/>
 		<field
-			name="sec_desc"
+			name="cat_desc"
 			type="textarea"
-			label="COM_MAMS_SEC_FIELD_DESC_LABEL"
-			description="COM_MAMS_SEC_FIELD_DESC_DESC"
+			label="COM_MAMS_CAT_FIELD_DESC_LABEL"
+			description="COM_MAMS_CAT_FIELD_DESC_DESC"
 			rows="4"
 			cols="70"
 			class="inputbox"

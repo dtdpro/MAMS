@@ -32,13 +32,14 @@
 	<media destination="com_mams" folder="media">
             <filename>index.html</filename>
 			<folder>vidplyr</folder>
+			<folder>images</folder>
     </media>
 	<languages folder="site">
 		<language tag="en-GB">language/en-GB.com_mams.ini</language>
 	</languages>
 	<administration>
 		<!-- Administration Menu Section -->
-		<menu>COM_MAMS_MENU</menu>
+		<menu img="../media/com_mams/images/mams-16x16.png">COM_MAMS_MENU</menu>
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>mams.php</filename>

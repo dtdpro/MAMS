@@ -5,10 +5,10 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&layout=edit&sec_id='.(int) $this->item->sec_id); ?>" method="post" name="adminForm" id="continued-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&layout=edit&cat_id='.(int) $this->item->cat_id); ?>" method="post" name="adminForm" id="continued-form" class="form-validate">
 	<div class="width-70 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_( 'COM_MAMS_SEC_DETAILS' ); ?></legend>
+			<legend><?php echo JText::_( 'COM_MAMS_CAT_DETAILS' ); ?></legend>
 			<ul class="adminformlist">
 <?php foreach($this->form->getFieldset('details') as $field): ?>
 				<li><?php echo $field->label;echo $field->input;?></li>
@@ -19,7 +19,7 @@ $params = $this->form->getFieldsets('params');
 	<div class="width-30 fltlft">
 	</div>
 	<div>
-		<input type="hidden" name="task" value="sec.edit" />
+		<input type="hidden" name="task" value="cat.edit" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

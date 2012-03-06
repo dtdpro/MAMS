@@ -3,9 +3,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * @version		$Id: secs.php 2012-03.05 $
+ * @version		$Id: cats.php 2012-03-06 $
  * @package		MAMS.Admin
- * @subpackage	secs
+ * @subpackage	cats
  * @copyright	Copyright (C) 2012 Corona Productions.
  * @license		GNU General Public License version 2
  */
@@ -13,14 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modellist');
 
 /**
- * MAMS Sections Model
+ * MAMS Categories Model
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	secs
+ * @subpackage	cats
  * @since		1.0
  */
-class MAMSModelSecs extends JModelList
+class MAMSModelCats extends JModelList
 {
 	
 	public function __construct($config = array())
@@ -45,7 +45,7 @@ class MAMSModelSecs extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('s.sec_name', 'asc');
+		parent::populateState('c.cat_title', 'asc');
 	}
 	
 	protected function getListQuery() 
@@ -55,26 +55,26 @@ class MAMSModelSecs extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select some fields
-		$query->select('s.*');
+		$query->select('c.*');
 
 		// From the hello table
-		$query->from('#__mams_secs as s');
+		$query->from('#__mams_cats as c');
 		
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = s.access');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = c.access');
 		
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
-			$query->where('s.access = '.(int) $access);
+			$query->where('c.access = '.(int) $access);
 		}
 		
 		// Filter by published state
 		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
-			$query->where('s.published = '.(int) $published);
+			$query->where('c.published = '.(int) $published);
 		} else if ($published === '') {
-			$query->where('(s.published IN (0, 1))');
+			$query->where('(c.published IN (0, 1))');
 		}
 		
 		$orderCol	= $this->state->get('list.ordering');

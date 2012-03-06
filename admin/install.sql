@@ -70,7 +70,6 @@ CREATE TABLE IF NOT EXISTS `#__mams_authors` (
 
 CREATE TABLE IF NOT EXISTS `#__mams_cats` (
   `cat_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cat_sec` int(11) NOT NULL,
   `cat_title` varchar(255) NOT NULL,
   `cat_alias` varchar(255) NOT NULL,
   `cat_desc` text NOT NULL,
