@@ -2,9 +2,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 /**
- * @version		$Id: cat.php 2012-03-06 $
+ * @version		$Id: auth.php 2012-03-07 $
  * @package		MAMS.Admin
- * @subpackage	cat
+ * @subpackage	auth
  * @copyright	Copyright (C) 2012 Corona Productions.
  * @license		GNU General Public License version 2
  */
@@ -13,14 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controllerform');
 
 /**
- * MAMS Category Edit Controller
+ * MAMS Author Edit Controller
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	cat
+ * @subpackage	auth
  * @since		1.0
  */
-class MAMSControllerCat extends JControllerForm
+class MAMSControllerAuth extends JControllerForm
 {
-	protected $text_prefix = "COM_MAMS_CAT";
+	protected $text_prefix = "COM_MAMS_AUTH";
 }
