@@ -35,7 +35,7 @@ if ($this->article->media) {
 		echo '<div align="center">';
 		$detect_iDevice = strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") || strpos($_SERVER['HTTP_USER_AGENT'],"iPad");
 		if ($detect_iDevice) {
-			//html 5 video
+			//html 5 video, only for iDevices
 			if ($this->article->media[0]->med_type == "vid") echo '<video src="'.JURI::base( true ).'/'.$this->article->media[0]->med_file.'" width="768" height="432" controls preload></video>';
 	 		if ($this->article->media[0]->med_type == "vids") echo '<video src="http://streams.coronapro.com:1935/vod/mp4:'.$this->article->media[0]->med_file.'/playlist.m3u8" width="768" height="432" controls preload></video>';
 		} else {
@@ -70,7 +70,7 @@ if ($this->article->dloads) {
 	echo '<div class="mams-article-downloads">';
 		$dloads = Array();
 		foreach ($this->article->dloads as $d) {
-			$dloads[]='<a href="'.JRoute::_("/components/com_mams/dl.php?dlid=".$d->dl_id).'" class="mams-article-dllink" target="_blank">Download '.$d->dl_name.'</a>';
+			$dloads[]='<a href="'.JRoute::_("/components/com_mams/dl.php?dlid=".$d->dl_id).'" class="mams-article-dllink" target="_blank">Download '.$d->dl_lname.'</a>';
 		}
 		echo implode(" ",$dloads);
 	echo '</div>';

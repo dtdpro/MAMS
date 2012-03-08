@@ -38,7 +38,7 @@ if ($r->dl_id) {
 		case 'mp3': JResponse::setHeader('Content-Type', 'audio/mpeg', true); break;
 		case 'pdf': JResponse::setHeader('Content-Type', 'application/pdf', true); break;
 	}
-	$filename = JFile::getName($r->dl_loc);
+	$filename = JFile::getName($r->dl_loc.$r->dl_fname);
 	//JResponse::setHeader("Cache-Control","private",false);
 	JResponse::setHeader('Content-Description', 'File Transfer', true);
 	JResponse::setHeader('Content-Disposition', 'attachment; filename="'.$filename.'"', true);
