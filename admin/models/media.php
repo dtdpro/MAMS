@@ -2,9 +2,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 /**
- * @version		$Id: dload.php 2012-03-08 $
+ * @version		$Id: media.php 2012-03-08 $
  * @package		MAMS.Admin
- * @subpackage	dload
+ * @subpackage	media
  * @copyright	Copyright (C) 2012 Corona Productions.
  * @license		GNU General Public License version 2
  */
@@ -13,14 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modeladmin');
 
 /**
- * MAMS Download Edit Model
+ * MAMS Media Edit Model
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	dload
+ * @subpackage	media
  * @since		1.0
  */
-class MAMSModelDload extends JModelAdmin
+class MAMSModelMedia extends JModelAdmin
 {
 	/**
 	 * Method override to check if you can edit an existing record.
@@ -31,10 +31,10 @@ class MAMSModelDload extends JModelAdmin
 	 * @return	boolean
 	 * @since	1.6
 	 */
-	protected function allowEdit($data = array(), $key = 'dl_id')
+	protected function allowEdit($data = array(), $key = 'med_id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_mams.dload.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return JFactory::getUser()->authorise('core.edit', 'com_mams.media.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -45,7 +45,7 @@ class MAMSModelDload extends JModelAdmin
 	 * @return	JTable	A database object
 	 * @since	1.6
 	 */
-	public function getTable($type = 'Dload', $prefix = 'MAMSTable', $config = array()) 
+	public function getTable($type = 'Media', $prefix = 'MAMSTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -60,7 +60,7 @@ class MAMSModelDload extends JModelAdmin
 	public function getForm($data = array(), $loadData = true) 
 	{
 		// Get the form.
-		$form = $this->loadForm('com_mams.dload', 'dload', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_mams.media', 'media', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
@@ -74,7 +74,7 @@ class MAMSModelDload extends JModelAdmin
 	 */
 	public function getScript() 
 	{
-		return 'administrator/components/com_mams/models/forms/dload.js';
+		return 'administrator/components/com_mams/models/forms/media.js';
 	}
 	/**
 	 * Method to get the data that should be injected in the form.
@@ -85,11 +85,11 @@ class MAMSModelDload extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_mams.edit.dload.data', array());
+		$data = JFactory::getApplication()->getUserState('com_mams.edit.media.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
-			if ($this->getState('dload.dl_id') == 0) {
+			if ($this->getState('media.med_id') == 0) {
 				
 			}
 		}

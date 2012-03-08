@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="details">
+		<field
+			name="med_id"
+			type="hidden"
+		/>
+		<field
+			name="published"
+			type="list"
+			id="published"
+			class="inputbox"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			size="1"
+			default="1"
+			filter="integer">
+			<option	value="1">JPUBLISHED</option>
+			<option	value="0">JUNPUBLISHED</option>
+			<option	value="2">JARCHIVED</option>
+			<option	value="-2">JTRASHED</option>
+		</field>
+		<field
+			name="access"
+			type="accesslevel"
+			id="access"
+			class="inputbox"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			default="1"
+			filter="integer"/>
+		<field
+			name="med_type"
+			type="list"
+			class="inputbox"
+			label="COM_MAMS_MEDIA_FIELD_TYPE_LABEL"
+			description="COM_MAMS_MEDIA_FIELD_TYPE_LABEL"
+			size="1"
+			default="1"
+			filter="integer">
+			<option	value="vid">Video</option>
+			<option	value="vids">Streaming Video</option>
+			<option	value="aud">Audio</option>
+		</field>
+		<field
+			name="med_title"
+			type="text"
+			label="COM_MAMS_MEDIA_FIELD_LINKNAME_LABEL"
+			description="COM_MAMS_MEDIA_FIELD_LINKNAME_DESC"
+			size="60"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field
+			name="med_file"
+			type="text"
+			label="COM_MAMS_MEDIA_FIELD_FILENAME_LABEL"
+			description="COM_MAMS_MEDIA_FIELD_FILENAME_DESC"
+			size="60"
+			class="inputbox"
+			default=""
+			required="true"
+		/>
+		<field
+			name="med_still"
+			type="text"
+			label="COM_MAMS_MEDIA_FIELD_STILL_LABEL"
+			description="COM_MAMS_MEDIA_FIELD_STILL_DESC"
+			size="60"
+			class="inputbox"
+			default=""
+			required="true"
+		/>
+
+	</fieldset>
+</form>
+
