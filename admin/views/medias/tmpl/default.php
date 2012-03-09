@@ -43,11 +43,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th>
 					<?php echo JText::_('COM_MAMS_MEDIA_LOC'); ?>
 				</th>
+				<th width="100">
+					<?php echo JText::_('COM_MAMS_MEDIA_TYPE'); ?>
+				</th>
 				<th width="120">
-					<?php echo JText::_('COM_MAMS_MEDIA_ADDED'); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_MEDIA_ADDED','m.med_added', $listDirn, $listOrder); ?>
 				</th>	
 				<th width="120">
-					<?php echo JText::_('COM_MAMS_MEDIA_MODIFIED'); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_MEDIA_MODIFIED','m.med_modified', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="100">
 					<?php echo JText::_('JPUBLISHED'); ?>
@@ -59,7 +62,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -70,6 +73,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo $this->escape($item->med_title); ?></a>
 				</td>
 				<td><?php echo $item->med_file; ?></td>
+				<td><?php 
+					switch ($item->med_type) {
+						case 'vids': echo 'Streaming Video'; break;
+						case 'vid': echo 'Video'; break;
+						case 'aud': echo 'Audio'; break;
+					} 
+				
+				?></td>
 				<td><?php echo $item->med_added; ?></td>
 				<td><?php echo $item->med_modified; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'medias.', true);?></td>

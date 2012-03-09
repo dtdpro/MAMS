@@ -26,6 +26,13 @@ class MAMSModelCats extends JModelList
 	public function __construct($config = array())
 	{
 		
+		if (empty($config['filter_fields'])) {
+			$config['filter_fields'] = array(
+				'cat_added', 'c.cat_added',
+				'cat_modified', 'c.cat_modified',
+				'cat_title', 'c.cat_title',
+			);
+		}
 		parent::__construct($config);
 	}
 	

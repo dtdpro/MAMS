@@ -36,8 +36,7 @@
 			label="COM_MAMS_MEDIA_FIELD_TYPE_LABEL"
 			description="COM_MAMS_MEDIA_FIELD_TYPE_LABEL"
 			size="1"
-			default="1"
-			filter="integer">
+			default="1">
 			<option	value="vid">Video</option>
 			<option	value="vids">Streaming Video</option>
 			<option	value="aud">Audio</option>
@@ -45,8 +44,8 @@
 		<field
 			name="med_title"
 			type="text"
-			label="COM_MAMS_MEDIA_FIELD_LINKNAME_LABEL"
-			description="COM_MAMS_MEDIA_FIELD_LINKNAME_DESC"
+			label="COM_MAMS_MEDIA_FIELD_TITLE_LABEL"
+			description="COM_MAMS_MEDIA_FIELD_TITLE_DESC"
 			size="60"
 			class="inputbox"
 			required="true"

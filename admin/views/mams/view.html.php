@@ -26,7 +26,7 @@ class MAMSViewMAMS extends JView
 	function display($tpl = null)
 	{
 		JToolBarHelper::title(   JText::_( 'MAMS Article Management System' ), 'mams' );
-		//JToolBarHelper::preferences('com_mams');
+		JToolBarHelper::preferences('com_mams');
 		parent::display($tpl);
 	}
 }

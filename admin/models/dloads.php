@@ -26,6 +26,13 @@ class MAMSModelDloads extends JModelList
 	public function __construct($config = array())
 	{
 		
+		if (empty($config['filter_fields'])) {
+			$config['filter_fields'] = array(
+				'dl_added', 'd.dl_added',
+				'dl_modified', 'd.dl_modified',
+				'dl_fname', 'd.dl_fname',
+			);
+		}
 		parent::__construct($config);
 	}
 	

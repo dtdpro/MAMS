@@ -1,5 +1,6 @@
 <?php
 defined('_JEXEC') or die();
+$config=MAMSHelper::getConfig();
 //Title
 echo '<h2 class="title">';
 echo $this->article->art_title; 
@@ -36,8 +37,8 @@ if ($this->article->media) {
 		$detect_iDevice = strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") || strpos($_SERVER['HTTP_USER_AGENT'],"iPad");
 		if ($detect_iDevice) {
 			//html 5 video, only for iDevices
-			if ($this->article->media[0]->med_type == "vid") echo '<video src="'.JURI::base( true ).'/'.$this->article->media[0]->med_file.'" width="768" height="432" controls preload></video>';
-	 		if ($this->article->media[0]->med_type == "vids") echo '<video src="http://streams.coronapro.com:1935/vod/mp4:'.$this->article->media[0]->med_file.'/playlist.m3u8" width="768" height="432" controls preload></video>';
+			if ($this->article->media[0]->med_type == "vid") echo '<video src="'.JURI::base( true ).'/'.$this->article->media[0]->med_file.'" poster="'.JURI::base( true ).'/'.$this->article->media[0]->med_still.'" width="'.$config->vid_w.'" height="'.$config->vid_h.'" controls preload></video>';
+	 		if ($this->article->media[0]->med_type == "vids") echo '<video src="http://'.$config->vids_url.':1935/'.$config->vids_app.'/'.'/mp4:'.urlencode($this->article->media[0]->med_file).'/playlist.m3u8" poster="'.JURI::base( true ).'/'.$this->article->media[0]->med_still.'" width="'.$config->vid_w.'" height="'.$config->vid_h.'" controls preload></video>';
 		} else {
 			//flash player
 			echo '<div id="mediaspace"></div>'."\n";
@@ -47,7 +48,7 @@ if ($this->article->media) {
 	 		if ($this->article->media[0]->med_type == "vid") echo "'file': '".JURI::base( true ).'/'.$this->article->media[0]->med_file."',"."\n";
 	 		if ($this->article->media[0]->med_type == "vids") {
 	 			echo "'provider': 'rtmp',"."\n";
-	 			echo "'streamer': 'rtmp://streams.coronapro.com/vod/',"."\n";
+	 			echo "'streamer': 'rtmp://".$config->vids_url.'/'.$config->vids_app.'/'."',"."\n";
 	 			echo "'file':'mp4:".$this->article->media[0]->med_file."',"."\n";
 	 		}
 			echo "'image': '".JURI::base( true ).'/'.$this->article->media[0]->med_still."',"."\n";
@@ -56,8 +57,8 @@ if ($this->article->media) {
 			echo "'screencolor': '000000',"."\n";
 			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow.zip',"."\n";
 			echo "'controlbar': 'bottom',"."\n";
-			echo "'width': '768',"."\n";
-			echo "'height': '462'"."\n";
+			echo "'width': '".$config->vid_w."',"."\n";
+			echo "'height': '".((int)$config->vid_h+30)."'"."\n";
 			echo "});"."\n";
 			echo "</script>"."\n";
 		}

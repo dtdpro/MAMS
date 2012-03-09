@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <config>
-        <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+ 	<fieldset name="component" label="COM_MAMS_CONFIG_SETTINGS_LABEL" description="COM_MAMS_CONFIG_SETTINGS_DESC">
+		<field name="vid_w" type="text" label="COM_MAMS_CONFIG_FIELD_VIDW_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />
+		<field name="vid_h" type="text" label="COM_MAMS_CONFIG_FIELD_VIDH_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDH_DESC" size="5" class="inputbox" required="false" integer="true" default="432" />
+		<field name="vids_url" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSURL_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSURL_DESC" size="120" class="inputbox" required="false" default="streams.coronapro.com" />
+		<field name="vids_app" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSAPP_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSAPP_DESC" size="120" class="inputbox" required="false" default="vod" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
         	<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_mams" section="component" />
         </fieldset>
 </config>

@@ -41,10 +41,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo JHtml::_('grid.sort','COM_MAMS_CAT_HEADING_NAME','c.cat_title', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="120">
-					<?php echo JText::_('COM_MAMS_CAT_ADDED'); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_CAT_ADDED','c.cat_added', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="120">
-					<?php echo JText::_('COM_MAMS_CAT_MODIFIED'); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_CAT_MODIFIED','c.cat_modified', $listDirn, $listOrder); ?>
 				</th>	
 				<th width="100">
 					<?php echo JText::_('JPUBLISHED'); ?>

@@ -26,6 +26,13 @@ class MAMSModelMedias extends JModelList
 	public function __construct($config = array())
 	{
 		
+		if (empty($config['filter_fields'])) {
+			$config['filter_fields'] = array(
+				'med_added', 'm.med_added',
+				'med_modified', 'm.med_modified',
+				'med_title', 'm.med_title',
+			);
+		}
 		parent::__construct($config);
 	}
 	

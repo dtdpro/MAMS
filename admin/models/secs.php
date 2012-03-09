@@ -26,6 +26,13 @@ class MAMSModelSecs extends JModelList
 	public function __construct($config = array())
 	{
 		
+		if (empty($config['filter_fields'])) {
+			$config['filter_fields'] = array(
+				'sec_added', 's.sec_added',
+				'sec_modified', 's.sec_modified',
+				'sec_title', 's.sec_title',
+			);
+		}
 		parent::__construct($config);
 	}
 	

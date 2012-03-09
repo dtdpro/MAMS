@@ -18,7 +18,18 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MAMSHelper {
 
-	
+	/**
+	* Get configuration for component.
+	*
+	* @return object The current config parameters
+	*
+	* @since 1.00
+	*/
+	function getConfig() {
+		$menuConfig = JComponentHelper::getParams('com_mams'); 
+		$mamscfg = $menuConfig->toObject();
+		return $mamscfg;
+	}
 	
 	/**
 	* Track item Viewed

@@ -36,8 +36,16 @@ class MAMSTableDload extends JTable
 	{
 		$date	= JFactory::getDate();
 		$user	= JFactory::getUser();
-		if (!intval($this->dl_added)) {
-			$this->dl_added = $date->toMySQL();
+		if ($this->dl_id) {
+			// Existing item
+			$this->dl_modified		= $date->toMySQL();
+		} else {
+			// New section. A section created on field can be set by the user,
+			// so we don't touch either of these if they are set.
+			if (!intval($this->dl_added)) {
+				$this->dl_added = $date->toMySQL();
+				$this->dl_modified		= $date->toMySQL();
+			}
 		}
 		
 		// Attempt to store the user data.

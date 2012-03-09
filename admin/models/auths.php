@@ -26,6 +26,14 @@ class MAMSModelAuths extends JModelList
 	public function __construct($config = array())
 	{
 		
+		if (empty($config['filter_fields'])) {
+			$config['filter_fields'] = array(
+				'auth_added', 'a.auth_added',
+				'auth_modified', 'a.auth_modified',
+				'auth_name', 'a.auth_name',
+				'ordering', 'a.ordering',
+			);
+		}
 		parent::__construct($config);
 	}
 	

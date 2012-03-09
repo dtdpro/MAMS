@@ -40,13 +40,13 @@ $ordering = ($listOrder == 'a.ordering');
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>			
 				<th>
-					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_HEADING_NAME','c.auth_name', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_HEADING_NAME','a.auth_name', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="120">
-					<?php echo JText::_('COM_MAMS_AUTH_ADDED'); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_ADDED','a.auth_added', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="120">
-					<?php echo JText::_('COM_MAMS_AUTH_MODIFIED'); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_MODIFIED','a.auth_modified', $listDirn, $listOrder); ?>
 				</th>	
 				<th width="100">
 					<?php echo JText::_('JPUBLISHED'); ?>
