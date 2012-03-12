@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="details">
+		<field
+			name="art_id"
+			type="hidden"
+		/>
+		<field
+			name="published"
+			type="list"
+			id="published"
+			class="inputbox"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			size="1"
+			default="1"
+			filter="integer">
+			<option	value="1">JPUBLISHED</option>
+			<option	value="0">JUNPUBLISHED</option>
+			<option	value="2">JARCHIVED</option>
+			<option	value="-2">JTRASHED</option>
+		</field>
+		<field
+			name="access"
+			type="accesslevel"
+			id="access"
+			class="inputbox"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			default="1"
+			filter="integer"/>
+		<field
+			name="art_sec"
+			type="ArticleSecs"
+			class="inputbox"
+			label="COM_MAMS_ARTICLE_FIELD_SEC_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_SEC_DESC"
+		/>
+		<field
+			name="art_title"
+			type="text"
+			label="COM_MAMS_ARTICLE_FIELD_TITLE_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_TITLE_DESC"
+			size="60"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field
+			name="art_alias"
+			type="text"
+			label="COM_MAMS_ARTICLE_FIELD_ALIAS_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_ALIAS_DESC"
+			size="60"
+			class="inputbox"
+			default=""
+		/>
+		<field
+			name="art_published" 
+			type="calendar"
+			label="COM_MAMS_ARTICLE_FIELD_PUBLISHED_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_PUBLISHED_DESC"
+			filter="user_utc"
+			format="%Y-%m-%d %H:%M:%S"
+			required="true"
+			size="22"
+		/>
+		<field
+			name="art_show_related"
+			type="radio"
+			label="COM_MAMS_ARTICLE_FIELD_SHOWRELATED_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_SHOWRELATED_DESC"
+			size="1"
+			class="inputbox"
+			required="true"
+			default="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</field>
+		
+	</fieldset>
+	<fieldset name="content">
+		<field
+			name="art_thumb"
+			type="text"
+			label="COM_MAMS_ARTICLE_FIELD_THUMB_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_THUMB_DESC"
+			size="90"
+			class="inputbox"
+			default=""
+		/>
+		<field
+			name="art_desc"
+			type="textarea"
+			label="COM_MAMS_ARTICLE_FIELD_DESC_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_DESC_DESC"
+			rows="4"
+			cols="70"
+			class="inputbox"
+			filter="safehtml"
+			buttons="false"
+		/>
+		<field
+			name="art_keywords"
+			type="textarea"
+			label="COM_MAMS_ARTICLE_FIELD_KEYWORDS_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_KEYWORDS_DESC"
+			rows="4"
+			cols="70"
+			class="inputbox"
+			filter="safehtml"
+			buttons="false"
+		/>
+		<field
+			name="art_content"
+			type="editor"
+			label="COM_MAMS_ARTICLE_FIELD_CONTENT_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_CONTENT_DESC"
+			class="inputbox"
+			required="false"
+			filter="safehtml"
+			buttons="false"
+		/>
+	</fieldset>
+</form>
+

@@ -3,9 +3,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * @version		$Id: auths.php 2012-03-07 $
+ * @version		$Id: articles.php 2012-03-12 $
  * @package		MAMS.Admin
- * @subpackage	auths
+ * @subpackage	articles
  * @copyright	Copyright (C) 2012 Corona Productions.
  * @license		GNU General Public License version 2
  */
@@ -13,14 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modellist');
 
 /**
- * MAMS Authors Model
+ * MAMS Articles Model
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	auths
+ * @subpackage	articles
  * @since		1.0
  */
-class MAMSModelAuths extends JModelList
+class MAMSModelArticles extends JModelList
 {
 	
 	public function __construct($config = array())
@@ -28,9 +28,10 @@ class MAMSModelAuths extends JModelList
 		
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'auth_added', 'a.auth_added',
-				'auth_modified', 'a.auth_modified',
-				'auth_name', 'a.auth_name',
+				'art_added', 'a.art_added',
+				'art_modified', 'a.art_modified',
+				'art_published', 'a.art_published',
+				'art_title', 'a.art_title',
 				'ordering', 'a.ordering',
 			);
 		}
@@ -47,13 +48,16 @@ class MAMSModelAuths extends JModelList
 
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
+
+		$secId = $this->getUserStateFromRequest($this->context.'.filter.sec', 'filter_sec', null, 'int');
+		$this->setState('filter.sec', $secId);
 		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.ordering', 'asc');
+		parent::populateState('a.art_published', 'desc');
 	}
 	
 	protected function getListQuery() 
@@ -66,12 +70,21 @@ class MAMSModelAuths extends JModelList
 		$query->select('a.*');
 
 		// From the hello table
-		$query->from('#__mams_authors as a');
+		$query->from('#__mams_articles as a');
 		
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
 		
+		// Join over the sections.
+		$query->select('s.sec_name');
+		$query->join('LEFT', '#__mams_secs AS s ON s.sec_id = a.art_sec');
+		
+		// Filter by section.
+		if ($sec = $this->getState('filter.sec')) {
+			$query->where('a.art_sec = '.(int) $sec);
+		}
+				
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
 			$query->where('a.access = '.(int) $access);

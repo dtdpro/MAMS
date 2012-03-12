@@ -3,9 +3,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * @version		$Id: auths.php 2012-03-07 $
+ * @version		$Id: artauths.php 2012-03-12 $
  * @package		MAMS.Admin
- * @subpackage	auths
+ * @subpackage	artauths
  * @copyright	Copyright (C) 2012 Corona Productions.
  * @license		GNU General Public License version 2
  */
@@ -13,14 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modellist');
 
 /**
- * MAMS Authors Model
+ * MAMS Article Authors Model
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	auths
+ * @subpackage	artauths
  * @since		1.0
  */
-class MAMSModelAuths extends JModelList
+class MAMSModelArtAuths extends JModelList
 {
 	
 	public function __construct($config = array())
@@ -28,9 +28,6 @@ class MAMSModelAuths extends JModelList
 		
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'auth_added', 'a.auth_added',
-				'auth_modified', 'a.auth_modified',
-				'auth_name', 'a.auth_name',
 				'ordering', 'a.ordering',
 			);
 		}
@@ -45,8 +42,8 @@ class MAMSModelAuths extends JModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
 		$this->setState('filter.published', $published);
 
-		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
-		$this->setState('filter.access', $accessId);
+		$artId = $this->getUserStateFromRequest($this->context.'.filter.article', 'filter_article','');
+		$this->setState('filter.article', $artId);
 		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
@@ -65,17 +62,18 @@ class MAMSModelAuths extends JModelList
 		// Select some fields
 		$query->select('a.*');
 
-		// From the hello table
-		$query->from('#__mams_authors as a');
+		// From the table
+		$query->from('#__mams_artauth as a');
 		
-		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-		
-		// Filter by access level.
-		if ($access = $this->getState('filter.access')) {
-			$query->where('a.access = '.(int) $access);
+		// Filter by article.
+		$artId = $this->getState('filter.article');
+		if (is_numeric($artId)) {
+			$query->where('a.aa_art = '.(int) $artId);
 		}
+
+		// Join over the authors.
+		$query->select('auth.auth_name');
+		$query->join('LEFT', '#__mams_authors AS auth ON auth.auth_id = a.aa_auth');
 		
 		// Filter by published state
 		$published = $this->getState('filter.published');
