@@ -59,7 +59,13 @@ class MAMSTableMedia extends JTable
 			$this->setError(JText::_('COM_MAMS_ERR_TABLES_TITLE'));
 			return false;
 		}
-
+	
+		if (!empty($this->med_file)) {
+			$this->med_file=ltrim($this->med_file,"/");
+		}
+		if (!empty($this->med_still)) {
+			$this->med_still=ltrim($this->med_still,"/");
+		}
 		return true;
 	}
 	

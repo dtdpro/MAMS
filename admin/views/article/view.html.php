@@ -63,7 +63,7 @@ class MAMSViewArticle extends JView
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->art_id == 0;
-		JToolBarHelper::title($isNew ? JText::_('COM_MAMS_MANAGER_ARTCILE_NEW') : JText::_('COM_MAMS_MANAGER_ARTCILE_EDIT'), 'mams');
+		JToolBarHelper::title($isNew ? JText::_('COM_MAMS_MANAGER_ARTICLE_NEW') : JText::_('COM_MAMS_MANAGER_ARTICLE_EDIT'), 'mams');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
@@ -91,8 +91,8 @@ class MAMSViewArticle extends JView
 	{
 		$isNew = $this->item->art_id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_MAMS_ARTCILE_CREATING') : JText::_('COM_MAMS_ARTCILE_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_MAMS_ARTICLE_CREATING') : JText::_('COM_MAMS_ARTICLE_EDITING'));
 		$document->addScript(JURI::root() . $this->script);
-		JText::script('COM_MAMS_ARTCILE_ERROR_UNACCEPTABLE');
+		JText::script('COM_MAMS_ARTICLE_ERROR_UNACCEPTABLE');
 	}
 }

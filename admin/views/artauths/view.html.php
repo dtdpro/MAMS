@@ -54,7 +54,7 @@ class MAMSViewArtAuths extends JView
 	{
 		$state	= $this->get('State');
 		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_ARTAUTHS'), 'mams');
-		JToolBarHelper::addNew('artauth.add', 'JTOOLBAR_NEW');
+		JToolBarHelper::addNew('artauth.add', 'COM_MAMS_TOOLBAR_ADD');
 		JToolBarHelper::editList('artauth.edit', 'JTOOLBAR_EDIT');
 		JToolBarHelper::divider();
 		JToolBarHelper::custom('artauths.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);

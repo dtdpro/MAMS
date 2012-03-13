@@ -52,6 +52,9 @@ class MAMSModelArticles extends JModelList
 		$secId = $this->getUserStateFromRequest($this->context.'.filter.sec', 'filter_sec', null, 'int');
 		$this->setState('filter.sec', $secId);
 		
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
 		$this->setState('params', $params);
@@ -96,6 +99,17 @@ class MAMSModelArticles extends JModelList
 			$query->where('a.published = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(a.published IN (0, 1))');
+		}
+		
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('a.art_id = '.(int) substr($search, 3));
+			} else {
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+				$query->where('(a.art_title LIKE '.$search.' OR a.art_alias LIKE '.$search.')');
+			}
 		}
 		
 		$orderCol	= $this->state->get('list.ordering');

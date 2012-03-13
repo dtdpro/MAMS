@@ -12,9 +12,16 @@ $db =& JFactory::getDBO();
 <form action="<?php echo JRoute::_('index.php?option=com_mams&view=articles'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
-			
+			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_MAMS_SEARCH_IN_TITLE'); ?>" />
+			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
+			<select name="filter_sec" class="inputbox" onchange="this.form.submit()">
+				<option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
+				<?php echo JHtml::_('select.options', MAMSHelper::getSections(), 'value', 'text', $this->state->get('filter.sec'));?>
+			</select>
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
@@ -22,10 +29,6 @@ $db =& JFactory::getDBO();
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
-			</select>
-			<select name="filter_sec" class="inputbox" onchange="this.form.submit()">
-				<option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
-				<?php echo JHtml::_('select.options', MAMSHelper::getSections(), 'value', 'text', $this->state->get('filter.sec'));?>
 			</select>
 
 		</div>
@@ -107,11 +110,11 @@ $db =& JFactory::getDBO();
 					$num_ad=$db->loadResult();
 					echo ' ['.$num_ad.']</a><br />';
 					//Media
-					echo '<a href="index.php?option=com_mams&view=artmedias&filter_article='.$item->art_id.'">Media ';
+					/*echo '<a href="index.php?option=com_mams&view=artmedias&filter_article='.$item->art_id.'">Media ';
 					$query = 'SELECT count(*) FROM #__mams_artmed WHERE published >= 1 && am_art="'.$item->art_id.'"';
 					$db->setQuery( $query );
 					$num_am=$db->loadResult();
-					echo ' ['.$num_am.']</a>';
+					echo ' ['.$num_am.']</a>';*/
 				
 				?>
 				<td><?php echo $item->art_added; ?></td>

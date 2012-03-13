@@ -54,7 +54,7 @@ class MAMSViewArtMedias extends JView
 	{
 		$state	= $this->get('State');
 		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_ARTCATS'), 'mams');
-		JToolBarHelper::addNew('artmedia.add', 'JTOOLBAR_NEW');
+		JToolBarHelper::addNew('artmedia.add', 'COM_MAMS_TOOLBAR_ADD');
 		JToolBarHelper::editList('artmedia.edit', 'JTOOLBAR_EDIT');
 		JToolBarHelper::divider();
 		JToolBarHelper::custom('artmedias.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);

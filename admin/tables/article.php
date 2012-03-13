@@ -84,6 +84,9 @@ class MAMSTableArticle extends JTable
 			$this->art_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
 
+		if (!empty($this->art_thumb)) {
+			$this->art_thumb=ltrim($this->art_thumb,"/");
+		}
 		return true;
 	}
 	

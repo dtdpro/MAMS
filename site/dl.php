@@ -38,7 +38,7 @@ if ($r->dl_id) {
 		case 'mp3': JResponse::setHeader('Content-Type', 'audio/mpeg', true); break;
 		case 'pdf': JResponse::setHeader('Content-Type', 'application/pdf', true); break;
 	}
-	$filename = JFile::getName($r->dl_loc.$r->dl_fname);
+	$filename = JFile::getName($r->dl_fname);
 	//JResponse::setHeader("Cache-Control","private",false);
 	JResponse::setHeader('Content-Description', 'File Transfer', true);
 	JResponse::setHeader('Content-Disposition', 'attachment; filename="'.$filename.'"', true);
@@ -46,7 +46,7 @@ if ($r->dl_id) {
 	//JResponse::setHeader("Content-Length: ".filesize(JPATH_BASE.'/'.$r->dl_loc));
 	//JResponse::setHeader('Location', $r->dl_loc, true);
 	JResponse::sendHeaders();
-	readfile(JPATH_BASE.'/'.$r->dl_loc);
+	readfile(JPATH_BASE.'/'.$r->dl_loc.$r->dl_fname);
 } else {
 	$url=JRoute::_("index.php");
 	$mainframe->redirect($url, JText::_('Access Denied') );

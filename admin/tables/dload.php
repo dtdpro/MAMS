@@ -69,6 +69,10 @@ class MAMSTableDload extends JTable
 			$this->setError(JText::_('COM_MAMS_ERR_TABLES_NAME'));
 			return false;
 		}
+		if (!empty($this->dl_loc)) {
+			$this->dl_loc=ltrim($this->dl_loc,"/");
+			$this->dl_loc=rtrim($this->dl_loc,"/").'/';
+		}
 
 		return true;
 	}

@@ -112,6 +112,13 @@
 			buttons="false"
 		/>
 		<field
+			name="art_media"
+			type="ArticleMedias"
+			class="inputbox"
+			label="COM_MAMS_ARTMEDIA_FIELD_MEDIA_LABEL"
+			description="COM_MAMS_ARTMEDIA_FIELD_MEDIA_DESC"
+		/>
+		<field
 			name="art_content"
 			type="editor"
 			label="COM_MAMS_ARTICLE_FIELD_CONTENT_LABEL"
