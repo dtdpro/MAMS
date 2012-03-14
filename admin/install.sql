@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `#__mams_artauth` (
+CREATE TABLE IF NOT EXISTS `jos_mams_artauth` (
   `aa_id` int(11) NOT NULL AUTO_INCREMENT,
   `aa_art` int(11) NOT NULL,
   `aa_auth` int(11) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_artauth` (
   PRIMARY KEY (`aa_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_artcat` (
+CREATE TABLE IF NOT EXISTS `jos_mams_artcat` (
   `ac_id` int(11) NOT NULL AUTO_INCREMENT,
   `ac_art` int(11) NOT NULL,
   `ac_cat` int(11) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_artcat` (
   PRIMARY KEY (`ac_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_artdl` (
+CREATE TABLE IF NOT EXISTS `jos_mams_artdl` (
   `ad_id` int(11) NOT NULL AUTO_INCREMENT,
   `ad_dload` int(11) NOT NULL,
   `ad_art` int(11) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_artdl` (
   PRIMARY KEY (`ad_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_articles` (
+CREATE TABLE IF NOT EXISTS `jos_mams_articles` (
   `art_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `art_sec` int(11) NOT NULL,
   `art_title` varchar(255) NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_articles` (
   KEY `art_title` (`art_title`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_artmed` (
+CREATE TABLE IF NOT EXISTS `jos_mams_artmed` (
   `am_id` int(11) NOT NULL AUTO_INCREMENT,
   `am_art` int(11) NOT NULL,
   `am_media` int(11) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_artmed` (
   PRIMARY KEY (`am_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_authors` (
+CREATE TABLE IF NOT EXISTS `jos_mams_authors` (
   `auth_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `auth_name` varchar(255) NOT NULL,
   `auth_alias` varchar(255) NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_authors` (
   PRIMARY KEY (`auth_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_cats` (
+CREATE TABLE IF NOT EXISTS `jos_mams_cats` (
   `cat_id` int(11) NOT NULL AUTO_INCREMENT,
   `cat_title` varchar(255) NOT NULL,
   `cat_alias` varchar(255) NOT NULL,
@@ -80,18 +80,20 @@ CREATE TABLE IF NOT EXISTS `#__mams_cats` (
   PRIMARY KEY (`cat_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_dloads` (
+CREATE TABLE IF NOT EXISTS `jos_mams_dloads` (
   `dl_id` int(11) NOT NULL AUTO_INCREMENT,
-  `dl_name` varchar(255) NOT NULL,
+  `dl_lname` varchar(50) NOT NULL,
+  `dl_fname` varchar(255) NOT NULL,
   `dl_type` enum('pdf','mp3') NOT NULL,
   `dl_loc` varchar(255) NOT NULL,
   `dl_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dl_modified` datetime NOT NULL,
   `published` int(11) NOT NULL,
   `access` int(11) NOT NULL,
   PRIMARY KEY (`dl_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_media` (
+CREATE TABLE IF NOT EXISTS `jos_mams_media` (
   `med_id` int(11) NOT NULL AUTO_INCREMENT,
   `med_type` enum('vid','vids','aud') NOT NULL,
   `med_title` varchar(255) NOT NULL,
@@ -104,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_media` (
   PRIMARY KEY (`med_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_secs` (
+CREATE TABLE IF NOT EXISTS `jos_mams_secs` (
   `sec_id` int(11) NOT NULL AUTO_INCREMENT,
   `sec_name` varchar(255) NOT NULL,
   `sec_alias` varchar(255) NOT NULL,
@@ -116,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_secs` (
   PRIMARY KEY (`sec_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_track` (
+CREATE TABLE IF NOT EXISTS `jos_mams_track` (
   `mt_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `mt_user` int(11) NOT NULL,
   `mt_item` int(11) NOT NULL,
