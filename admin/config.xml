@@ -6,10 +6,18 @@
 		<field name="vid_h" type="text" label="COM_MAMS_CONFIG_FIELD_VIDH_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDH_DESC" size="5" class="inputbox" required="false" integer="true" default="432" />
 		<field name="vids_url" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSURL_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSURL_DESC" size="120" class="inputbox" required="false" default="streams.coronapro.com" />
 		<field name="vids_app" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSAPP_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSAPP_DESC" size="120" class="inputbox" required="false" default="vod" />
+	</fieldset>
+	<fieldset name="reporting" label="COM_MAMS_CONFIG_REPORTING_LABEL" description="COM_MAMS_CONFIG_REPORTING_DESC">
 		<field name="gapro" type="radio" label="COM_MAMS_CONFIG_FIELD_GANAL_LABEL" description="COM_MAMS_CONFIG_FIELD_GANAL_DESC" default="1">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="continued" type="radio" label="COM_MAMS_CONFIG_FIELD_CONTINUED_LABEL" description="COM_MAMS_CONFIG_FIELD_CONTINUED_DESC" default="0">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="except_iplist" type="text" label="COM_MAMS_CONFIG_FIELD_EXCEPTIP_LABEL" description="COM_MAMS_CONFIG_FIELD_EXCEPTIP_DESC" size="70" class="inputbox" required="false" default="" />
+		<field name="except_userlist" type="text" label="COM_MAMS_CONFIG_FIELD_USERID_LABEL" description="COM_MAMS_CONFIG_FIELD_USERID_DESC" size="70" class="inputbox" required="false" default="" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
         	<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_mams" section="component" />

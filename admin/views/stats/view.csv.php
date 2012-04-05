@@ -27,6 +27,7 @@ class MAMSViewStats extends JView
 	{
 		$model = $this->getModel();
 		$this->items = $model->getItemsCSV();
+		$this->config=MAMSHelper::getConfig();
 		parent::display($tpl);
 	}
 }

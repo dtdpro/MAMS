@@ -35,6 +35,7 @@ class MAMSModelStats extends JModelList
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
+		$cfg = MAMSHelper::getConfig();
 		
 		// Load the filter state.
 		$startdate		= $this->getUserStateFromRequest( $this->context.'.startdate','startdate',date("Y-m-d",strtotime("-1 months") ));
@@ -47,6 +48,13 @@ class MAMSModelStats extends JModelList
 		//$this->setState('filter_sec', $filter_sec);
 		$this->setState('filter_type', $filter_type);
 		
+		//ContinuEd Link
+		if ($cfg->continued) {
+			$filter_group = $this->getUserStateFromRequest( $this->context.'.filter.group','filter_group', 0 );
+			$this->setState('filter.group', $filter_group);
+		}
+		
+		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
 		$this->setState('params', $params);
@@ -57,6 +65,8 @@ class MAMSModelStats extends JModelList
 
 	protected function getListQuery()
 	{
+		$cfg = MAMSHelper::getConfig();
+		
 		// Create a new query object.
 		$db = JFactory::getDBO();
 		$q = $db->getQuery(true);
@@ -111,8 +121,30 @@ class MAMSModelStats extends JModelList
 		}
 		
 		
+		
 		$q->select('u.name as users_name, u.email as users_email, u.username as users_username');
 		$q->join('LEFT', '#__users as u ON s.mt_user = u.id');
+		
+		
+		if ($cfg->except_iplist) {
+			$iplist = explode(",",$cfg->except_iplist);
+			$q->where('s.mt_ipaddr NOT IN ("'.implode('","',$iplist).'")');
+		}
+		
+		if ($cfg->except_userlist) {
+			$userlist = explode(",",$cfg->except_userlist);
+			$q->where('s.mt_user NOT IN ("'.implode('","',$userlist).'")');
+		}
+		
+		if ($cfg->continued) {
+			$q->select("ceug.ug_name AS UserGroup");
+			$q->join('LEFT', '#__ce_usergroup as ceg ON s.mt_user = ceg.userg_user');
+			$q->join('LEFT', '#__ce_ugroups as ceug ON ceg.userg_group = ceug.ug_id');
+			// Filter by section.
+			if ($ugroup = $this->getState('filter.group')) {
+				$q->where('ceg.userg_group = '.(int) $ugroup);
+			}
+		}
 		
 		$q->where('date(s.mt_time) BETWEEN "'.$startdate.'" AND "'.$enddate.'"');
 		
@@ -152,5 +184,13 @@ class MAMSModelStats extends JModelList
 		return $this->cache[$store];
 	}
 
+	public function getUserGroups() {
+		$q  = 'SELECT ug.ug_name as text,ug.ug_id as value FROM #__ce_ugroups as ug';
+		$q .= ' ORDER BY ug.ug_name';
+		$this->_db->setQuery($q);
+		$glist = $this->_db->loadObjectList();
+		$glist[]->text='-- All --';
+		return $glist;
+	}
 	
 }

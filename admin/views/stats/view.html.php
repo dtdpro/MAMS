@@ -35,6 +35,13 @@ class MAMSViewStats extends JView
 		$this->startdate = $model->getState('startdate');
 		$this->enddate = $model->getState('enddate');
 		$this->filter_type = $model->getState('filter_type');
+		$this->filter_group = $model->getState('filter.group');
+		
+		$this->config=MAMSHelper::getConfig();
+		if ($this->config->continued) {
+			$this->grouplist=$this->get('UserGroups');
+		}
+		
 		parent::display($tpl);
 	}
 }

@@ -8,10 +8,14 @@ $filename  =  'MAMS_Report' . '-' . date("Y-m-d").'.csv';
 
 $items = $this->items;
 $contents = '';	
-$contents .= "\"Item\",\"What\",\"When\",\"Who\",\"Session\",\"IP Address\"\n";
+$contents .= "\"Item\",\"What\",\"When\",\"Who\",\"EMail\",";
+if ($this->config->continued) {
+	$contents .= "\"Group\",";
+}
+$contents .= "\"Session\",\"IP Address\"\n";
 foreach ($items as $row)
 {
-	if ($row->users_name == 0) $row->users_name='Guest User';
+	if ($row->mt_user == 0) $row->users_name='Guest User';
 
 	$contents .=  '"'.$row->item_title.'",';
 	$contents .=  '"';
@@ -27,6 +31,10 @@ foreach ($items as $row)
 	$contents .=  '",';
 	$contents .=  '"'.$row->mt_time.'",'; 
 	$contents .=  '"'.$row->users_name.'",'; 
+	$contents .=  '"'.$row->users_email.'",'; 
+	if ($this->config->continued) {
+		$contents .= '"'.$row->UserGroup.'",';
+	}
 	$contents .=  '"'.$row->mt_session.'",'; 
 	$contents .=  '"'.$row->mt_ipaddr."\"\n"; 
 }

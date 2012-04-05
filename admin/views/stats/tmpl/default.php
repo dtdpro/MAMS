@@ -19,6 +19,9 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 				echo JText::_('Item Type:').JHTML::_('select.genericlist',$typesl,'filter_type','onchange="submitform();"','value','text',$this->filter_type,'filter_type');
             	echo 'Start: '.JHTML::_('calendar',$this->startdate,'startdate','startdate','%Y-%m-%d','onchange="this.form.submit()"');
 				echo ' End: '.JHTML::_('calendar',$this->enddate,'enddate','enddate','%Y-%m-%d','onchange="this.form.submit()"');
+				if ($this->config->continued) {
+					echo JText::_(' User Group:').JHTML::_('select.genericlist',$this->grouplist,'filter_group','onchange="submitform();"','value','text',$this->filter_group,'filter_group');
+				}
             ?>
 
 			</th>
@@ -32,6 +35,11 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 			<th><?php echo JText::_( 'Type' ); ?></th>
 			<th><?php echo JText::_( 'When' ); ?></th>
 			<th><?php echo JText::_( 'Who' ); ?></th>
+			<?php 
+				if ($this->config->continued) {
+					echo '<th>'.JText::_( 'Group' ).'</th>';
+				}
+			?>
         	<th width="70"><?php echo JText::_( 'Session' ); ?></th>
         	<th width="70"><?php echo JText::_( 'IP Address' ); ?></th>
 		</tr>			
@@ -63,6 +71,11 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 			<td><?php 
 				echo $row->users_name; 
 			?></td>
+			<?php 
+				if ($this->config->continued) {
+					echo '<td>'.$row->UserGroup.'</td>';
+				}
+			?>
 			<td><?php echo $row->mt_session; ?></td>
 			<td><?php echo $row->mt_ipaddr; ?></td>
 
