@@ -9,6 +9,7 @@ class MAMSModelArticle extends JModel
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
+		$cfg = MAMSHelper::getConfig();
 		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
@@ -16,7 +17,7 @@ class MAMSModelArticle extends JModel
 		$query->where('a.art_id = '.$artid);
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		$query->where('a.art_published <= NOW()');
+		if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
 		$query->order('a.art_published DESC');
 		$db->setQuery($query);
 		$item = $db->loadObject();
@@ -94,6 +95,7 @@ class MAMSModelArticle extends JModel
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
+		$cfg = MAMSHelper::getConfig();
 		
 		if ($relatedids) {
 			$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
@@ -103,7 +105,7 @@ class MAMSModelArticle extends JModel
 			$query->where('a.art_sec = '.$secid);
 			$query->where('a.published >= 1');
 			$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-			$query->where('a.art_published <= NOW()');
+			if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
 			$query->order('a.art_published DESC');
 			$query->limit(10);
 			$db->setQuery($query);
@@ -154,6 +156,7 @@ class MAMSModelArticle extends JModel
 			$db =& JFactory::getDBO();
 			$query = $db->getQuery(true);
 			$user = JFactory::getUser();
+		$cfg = MAMSHelper::getConfig();
 			
 			$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 			$query->from('#__mams_articles AS a');
@@ -162,7 +165,7 @@ class MAMSModelArticle extends JModel
 			$query->where('a.art_sec = '.$secid);
 			$query->where('a.published >= 1');
 			$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-			$query->where('a.art_published <= NOW()');
+			if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
 			$query->order('a.art_published DESC');
 			$query->limit(10);
 			$db->setQuery($query);

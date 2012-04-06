@@ -29,7 +29,7 @@ class MAMSModelArtList extends JModelList
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
-		
+		$cfg = MAMSHelper::getConfig();
 		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
@@ -38,7 +38,7 @@ class MAMSModelArtList extends JModelList
 		if ($this->secid) $query->where('a.art_sec = '.$this->secid);
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		$query->where('a.art_published <= NOW()');
+		if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
 		$query->order('a.art_published DESC');
 		
 		return $query;

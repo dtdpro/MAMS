@@ -43,6 +43,7 @@ class MAMSModelAuthor extends JModel
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
+		$cfg = MAMSHelper::getConfig();
 		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
@@ -50,7 +51,7 @@ class MAMSModelAuthor extends JModel
 		$query->where('a.art_id IN ('.implode(",",$pubedids).')');
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		$query->where('a.art_published <= NOW()');
+		if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
 		$query->order('a.art_published DESC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
