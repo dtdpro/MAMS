@@ -10,6 +10,10 @@
 		<field name="vids_url" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSURL_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSURL_DESC" size="120" class="inputbox" required="false" default="streams.coronapro.com" />
 		<field name="vids_app" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSAPP_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSAPP_DESC" size="120" class="inputbox" required="false" default="vod" />
 	</fieldset>
+	<fieldset name="auido" label="COM_MAMS_CONFIG_AUDIO_LABEL" description="COM_MAMS_CONFIG_AUDIO_DESC">
+		<field name="aud_w" type="text" label="COM_MAMS_CONFIG_FIELD_AUDW_LABEL" description="COM_MAMS_CONFIG_FIELD_AUDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />
+		<field name="aud_h" type="text" label="COM_MAMS_CONFIG_FIELD_AUDH_LABEL" description="COM_MAMS_CONFIG_FIELD_AUDH_DESC" size="5" class="inputbox" required="false" integer="true" default="432" />
+	</fieldset>
 	<fieldset name="reporting" label="COM_MAMS_CONFIG_REPORTING_LABEL" description="COM_MAMS_CONFIG_REPORTING_DESC">
 		<field name="gapro" type="radio" label="COM_MAMS_CONFIG_FIELD_GANAL_LABEL" description="COM_MAMS_CONFIG_FIELD_GANAL_DESC" default="1">
 			<option value="0">No</option>

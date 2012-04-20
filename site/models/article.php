@@ -156,7 +156,7 @@ class MAMSModelArticle extends JModel
 			$db =& JFactory::getDBO();
 			$query = $db->getQuery(true);
 			$user = JFactory::getUser();
-		$cfg = MAMSHelper::getConfig();
+			$cfg = MAMSHelper::getConfig();
 			
 			$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 			$query->from('#__mams_articles AS a');
