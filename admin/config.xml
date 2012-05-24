@@ -3,6 +3,12 @@
 <config>
  	<fieldset name="general" label="COM_MAMS_CONFIG_SETTINGS_LABEL" description="COM_MAMS_CONFIG_SETTINGS_DESC">
 		<field name="ovgroup" type="accesslevel" id="access" class="inputbox" label="COM_MAMS_CONFIG_FIELD_OVGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_OVGROUP_DESC" default="1" filter="integer"/>
+		<field name="template" type="list" label="COM_MAMS_CONFIG_FIELD_TEMPLATE_LABEL" description="COM_MAMS_CONFIG_FIELD_TEMPLATE_DESC" default="default">
+			<option value="default">Default</option>
+			<option value="pha">Prostate Health Answers</option>
+			<option value="tpo">Practical Oncologist</option>
+			<option value="esp">Emerging Solutions in Pain</option>
+		</field>
 	</fieldset>
 	<fieldset name="video" label="COM_MAMS_CONFIG_VIDEO_LABEL" description="COM_MAMS_CONFIG_VIDEO_DESC">
 		<field name="vid_w" type="text" label="COM_MAMS_CONFIG_FIELD_VIDW_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />

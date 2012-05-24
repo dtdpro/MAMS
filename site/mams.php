@@ -19,9 +19,9 @@ if($controller = JRequest::getVar('controller')) {
 require_once(JPATH_COMPONENT.DS.'helpers'.DS.'mams.php');
 
 // Load StyleSheet for template, based on config
-//$cecfg = ContinuEdHelper::getConfig();
+$cfg = MAMSHelper::getConfig();
 $doc = &JFactory::getDocument();
-$doc->addStyleSheet('components/com_mams/mams.css');
+$doc->addStyleSheet('media/com_mams/templates/'.$cfg->template.'/mams.css');
 $doc->addScript('media/com_mams/vidplyr/jwplayer.js');
 
 // Create the controller

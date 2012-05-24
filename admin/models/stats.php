@@ -108,7 +108,7 @@ class MAMSModelStats extends JModelList
 		}
 		
 		if ($filter_type == 'dload') {
-			$q->select('CONCAT(a.dl_name," - ",art.art_title) as item_title');
+			$q->select('CONCAT(a.dl_lname," - ",art.art_title) as item_title');
 			$q->join('RIGHT', '#__mams_dloads as a ON s.mt_item = a.dl_id');
 			$q->join('RIGHT', '#__mams_artdl as ad ON s.mt_item = ad.ad_dload');
 			$q->join('RIGHT', '#__mams_articles as art ON ad.ad_art = art.art_id');

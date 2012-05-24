@@ -7,8 +7,8 @@
 	<authorUrl>http://www.coronapro.com</authorUrl>
 	<copyright>Copyright 2012 Corona Productions</copyright>
 	<license>GPL v2</license>
-	<version>1.1.0</version>
-	<releaseDate>2012.01.24</releaseDate>
+	<version>1.2.0</version>
+	<releaseDate>2012.04.23</releaseDate>
 	<releaseType>Update</releaseType>
 	<downloadUrl>http://www.coronapro.com/</downloadUrl>
 	<description>COM_MAMS_DESC</description>
@@ -22,7 +22,6 @@
 		<filename>mams.php</filename>
 		<filename>dl.php</filename>
 		<filename>router.php</filename>
-		<filename>mams.css</filename>
 		<filename>controller.php</filename>
 		<filename>metadata.xml</filename>
 		<folder>models</folder>
@@ -33,6 +32,7 @@
             <filename>index.html</filename>
 			<folder>vidplyr</folder>
 			<folder>images</folder>
+			<folder>templates</folder>
     </media>
 	<languages folder="site">
 		<language tag="en-GB">language/en-GB.com_mams.ini</language>
