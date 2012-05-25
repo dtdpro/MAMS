@@ -1,3 +1,6 @@
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 CREATE TABLE IF NOT EXISTS `#__mams_artauth` (
   `aa_id` int(11) NOT NULL AUTO_INCREMENT,
   `aa_art` int(11) NOT NULL,
@@ -82,6 +85,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_cats` (
 
 CREATE TABLE IF NOT EXISTS `#__mams_dloads` (
   `dl_id` int(11) NOT NULL AUTO_INCREMENT,
+  `dl_extension` varchar(255) NOT NULL DEFAULT 'com_mams',
   `dl_lname` varchar(50) NOT NULL,
   `dl_fname` varchar(255) NOT NULL,
   `dl_type` enum('pdf','mp3') NOT NULL,
@@ -95,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_dloads` (
 
 CREATE TABLE IF NOT EXISTS `#__mams_media` (
   `med_id` int(11) NOT NULL AUTO_INCREMENT,
+  `med_extension` varchar(255) NOT NULL DEFAULT 'com_mams',
   `med_type` enum('vid','vids','aud') NOT NULL,
   `med_title` varchar(255) NOT NULL,
   `med_file` varchar(255) NOT NULL,

@@ -26,7 +26,7 @@ class MAMSController extends JController
 	{
 		require_once JPATH_COMPONENT.'/helpers/mams.php';
 		// Set the submenu
-		MAMSHelper::addSubmenu(JRequest::getVar('view'));
+		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
 		parent::display();
 		return $this;
 	}

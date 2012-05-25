@@ -23,4 +23,65 @@ jimport('joomla.application.component.controllerform');
 class MAMSControllerDload extends JControllerForm
 {
 	protected $text_prefix = "COM_MAMS_DLOAD";
+	
+	
+	/**
+	 * The extension for which the categories apply.
+	 *
+	 * @var    string
+	 * @since  1.0
+	 */
+	protected $extension;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param  array  $config  An optional associative array of configuration settings.
+	 *
+	 * @since  1.0
+	 * @see    JController
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+	
+		// Guess the JText message prefix. Defaults to the option.
+		if (empty($this->extension))
+		{
+			$this->extension = JRequest::getCmd('extension', 'com_mams');
+		}
+	}
+	
+	/**
+	 * Gets the URL arguments to append to an item redirect.
+	 *
+	 * @param   integer  $recordId  The primary key id for the item.
+	 * @param   string   $urlVar    The name of the URL variable for the id.
+	 *
+	 * @return  string  The arguments to append to the redirect URL.
+	 *
+	 * @since   1.0
+	 */
+	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'dl_id')
+	{
+		$append = parent::getRedirectToItemAppend($recordId,$urlVar);
+		$append .= '&extension=' . $this->extension;
+	
+		return $append;
+	}
+	
+	/**
+	 * Gets the URL arguments to append to a list redirect.
+	 *
+	 * @return  string  The arguments to append to the redirect URL.
+	 *
+	 * @since   1.0
+	 */
+	protected function getRedirectToListAppend()
+	{
+		$append = parent::getRedirectToListAppend();
+		$append .= '&extension=' . $this->extension;
+	
+		return $append;
+	}
 }

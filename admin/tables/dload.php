@@ -61,7 +61,7 @@ class MAMSTableDload extends JTable
 		}
 
 		// check for existing name
-		$query = 'SELECT dl_id FROM #__mams_cats WHERE dl_fname = '.$this->_db->Quote($this->dl_fname);
+		$query = 'SELECT dl_id FROM #__mams_dloads WHERE dl_fname = '.$this->_db->Quote($this->dl_fname);
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());

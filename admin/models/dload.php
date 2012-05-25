@@ -49,6 +49,7 @@ class MAMSModelDload extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
+	
 	/**
 	 * Method to get the record form.
 	 *
@@ -90,6 +91,8 @@ class MAMSModelDload extends JModelAdmin
 		{
 			$data = $this->getItem();
 			if ($this->getState('dload.dl_id') == 0) {
+				$app = JFactory::getApplication();
+				$data->set('dl_extension', JRequest::getString('dl_extension', $app->getUserState('com_mams.dloads.filter.extension')));
 				
 			}
 		}

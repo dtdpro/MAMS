@@ -7,6 +7,7 @@ JHtml::_('behavior.tooltip');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$extension	= $this->escape($this->state->get('filter.extension'));
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&view=medias'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
@@ -69,7 +70,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<td><?php echo $item->med_id; ?></td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->med_id); ?></td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=media.edit&med_id='.(int) $item->med_id); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=media.edit&med_id='.(int) $item->med_id.'&extension='.$extension); ?>">
 					<?php echo $this->escape($item->med_title); ?></a>
 				</td>
 				<td><?php echo $item->med_file; ?></td>
@@ -91,6 +92,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	</table>
 	<div>
 		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="extension" value="<?php echo $extension;?>" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />

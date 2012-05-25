@@ -6,6 +6,10 @@
 			type="hidden"
 		/>
 		<field
+			name="med_extension"
+			type="hidden"
+		/>
+		<field
 			name="published"
 			type="list"
 			id="published"

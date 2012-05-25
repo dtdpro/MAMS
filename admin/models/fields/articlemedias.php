@@ -26,6 +26,7 @@ class JFormFieldArticleMedias extends JFormField
 		// Build the query for the ordering list.
 		$query = 'SELECT med_id AS value, med_title AS text' .
 				' FROM #__mams_media' .
+				' WHERE med_extension = "com_mams" ' .
 				' ORDER BY med_title';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';

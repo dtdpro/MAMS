@@ -7,6 +7,7 @@ JHtml::_('behavior.tooltip');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$extension	= $this->escape($this->state->get('filter.extension'));
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&view=dloads'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
@@ -62,14 +63,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td><?php echo $item->dl_id; ?></td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->dl_id); ?></td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=dload.edit&dl_id='.(int) $item->dl_id); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=dload.edit&dl_id='.(int) $item->dl_id.'&extension='.$extension); ?>">
 					<?php echo $this->escape($item->dl_fname); ?></a>
 					<p class="smallsub"><?php echo '(<span>Link name</span>: Download '.$this->escape($item->dl_lname).')';?></p>
 				</td>
@@ -91,6 +92,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	</table>
 	<div>
 		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="extension" value="<?php echo $extension;?>" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />

@@ -40,6 +40,9 @@ class MAMSModelDloads extends JModelList
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
+		
+		$extension = $app->getUserStateFromRequest('com_mams.dloads.filter.extension', 'extension', 'com_mams', 'cmd');
+		$this->setState('filter.extension', $extension);
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
 		$this->setState('filter.published', $published);
@@ -82,6 +85,11 @@ class MAMSModelDloads extends JModelList
 			$query->where('d.published = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(d.published IN (0, 1))');
+		}
+		
+		// Filter by extension
+		if ($extension = $this->getState('filter.extension')) {
+			$query->where('d.dl_extension = '.$db->quote($extension));
 		}
 		
 		$orderCol	= $this->state->get('list.ordering');
