@@ -9,6 +9,7 @@
 			<option value="tpo">Practical Oncologist</option>
 			<option value="esp">Emerging Solutions in Pain</option>
 		</field>
+		<field name="num_related" type="text" label="COM_MAMS_CONFIG_FIELD_NUMRELATED_LABEL" description="COM_MAMS_CONFIG_FIELD_NUMRELATED_DESC" size="70" class="inputbox" required="false" default="10" />
 	</fieldset>
 	<fieldset name="video" label="COM_MAMS_CONFIG_VIDEO_LABEL" description="COM_MAMS_CONFIG_VIDEO_DESC">
 		<field name="vid_w" type="text" label="COM_MAMS_CONFIG_FIELD_VIDW_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />

@@ -25,7 +25,7 @@ class MAMSModelArticle extends JModel
 		if (!$item) return 0;
 		
 		$qhit = $db->getQuery(true);
-		$qhit->update('#__mams_article');
+		$qhit->update('#__mams_articles');
 		$qhit->set('art_hits = art_hits + 1');
 		$qhit->where('art_id = '.$artid);
 		$db->setQuery($qhit);
@@ -107,8 +107,8 @@ class MAMSModelArticle extends JModel
 			$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 			if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
 			$query->order('a.art_published DESC');
-			$query->limit(10);
-			$db->setQuery($query);
+			$limit = (int)$cfg->num_related;
+			$db->setQuery($query,0,$limit);
 			$items = $db->loadObjectList();
 			
 			//Get Authors
@@ -167,8 +167,8 @@ class MAMSModelArticle extends JModel
 			$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 			if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
 			$query->order('a.art_published DESC');
-			$query->limit(10);
-			$db->setQuery($query);
+			$limit = (int)$cfg->num_related;
+			$db->setQuery($query,0,$limit);
 			$items = $db->loadObjectList();
 			
 			//Get Authors
