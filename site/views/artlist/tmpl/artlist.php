@@ -71,5 +71,10 @@ foreach ($this->articles as $a) {
 
 }
 echo '<div class="mams-artlist-pagination">';
+echo '<div class="mams-artlist-pagination-links">';
 echo $this->pagination->getPagesLinks();
+echo '</div>';
+echo '<div class="mams-artlist-pagination-pages">';
+echo $this->pagination->getPagesCounter().'<br />'.$this->pagination->getResultsCounter();
+echo '</div>';
 echo '</div>';
