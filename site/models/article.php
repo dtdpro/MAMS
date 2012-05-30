@@ -11,13 +11,16 @@ class MAMSModelArticle extends JModel
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
 		
+		$alvls = $user->getAuthorisedViewLevels();
+		$alvls[] = $cfg->reggroup;
+		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id = '.$artid);
 		$query->where('a.published >= 1');
-		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
+		$query->where('a.access IN ('.implode(",",$alvls).')');
+		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
 		$query->order('a.art_published DESC');
 		$db->setQuery($query);
 		$item = $db->loadObject();
@@ -87,15 +90,18 @@ class MAMSModelArticle extends JModel
 	}
 	
 	function getRelatedByCat($art,$cats,$secid) {
+		$user = JFactory::getUser();
+		$cfg = MAMSHelper::getConfig();
 		$relatedids = Array();
 	
 		foreach ($cats as $c) { $relatedids=array_merge($relatedids,$this->getCatArts($art, $c->cat_id)); }
 		$relatedids = array_unique($relatedids);	
 		
+		$alvls = $user->getAuthorisedViewLevels();
+		$alvls[] = $cfg->reggroup;
+		
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$user = JFactory::getUser();
-		$cfg = MAMSHelper::getConfig();
 		
 		if ($relatedids) {
 			$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
@@ -104,8 +110,8 @@ class MAMSModelArticle extends JModel
 			$query->where('a.art_id IN ('.implode(",",$relatedids).')');
 			$query->where('a.art_sec = '.$secid);
 			$query->where('a.published >= 1');
-			$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-			if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
+			$query->where('a.access IN ('.implode(",",$alvls).')');
+			if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
 			$query->order('a.art_published DESC');
 			$limit = (int)$cfg->num_related;
 			$db->setQuery($query,0,$limit);
@@ -148,15 +154,18 @@ class MAMSModelArticle extends JModel
 	
 	function getRelatedByAut($art,$auts,$secid) {
 		$relatedids = Array();
+		$cfg = MAMSHelper::getConfig();
+		$user = JFactory::getUser();
 	
 		foreach ($auts as $a) { $relatedids=array_merge($relatedids,$this->getAuthArts($art, $a->auth_id));}
 		$relatedids = array_unique($relatedids);	
 		
+		$alvls = $user->getAuthorisedViewLevels();
+		$alvls[] = $cfg->reggroup;
+		
 		if ($relatedids) {
 			$db =& JFactory::getDBO();
 			$query = $db->getQuery(true);
-			$user = JFactory::getUser();
-			$cfg = MAMSHelper::getConfig();
 			
 			$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 			$query->from('#__mams_articles AS a');
@@ -164,8 +173,8 @@ class MAMSModelArticle extends JModel
 			$query->where('a.art_id IN ('.implode(",",$relatedids).')');
 			$query->where('a.art_sec = '.$secid);
 			$query->where('a.published >= 1');
-			$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-			if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
+			$query->where('a.access IN ('.implode(",",$alvls).')');
+			if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
 			$query->order('a.art_published DESC');
 			$limit = (int)$cfg->num_related;
 			$db->setQuery($query,0,$limit);
@@ -234,6 +243,7 @@ class MAMSModelArticle extends JModel
 		$items = $db->loadResultArray(0);
 		return $items;
 	}
+	
 	
 
 }

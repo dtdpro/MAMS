@@ -31,14 +31,18 @@ class MAMSModelArtList extends JModelList
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
 		
+		$alvls = Array();
+		$alvls = $user->getAuthorisedViewLevels();
+		$alvls[] = $cfg->reggroup;
+		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id IN ('.implode(",",$this->artids).')');
 		if ($this->secid) $query->where('a.art_sec = '.$this->secid);
 		$query->where('a.published >= 1');
-		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
+		$query->where('a.access IN ('.implode(",",$alvls).')');
+		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
 		$query->order('a.art_published DESC');
 		
 		return $query;
@@ -54,6 +58,7 @@ class MAMSModelArtList extends JModelList
 		
 		$db =& JFactory::getDBO();
 		$user = JFactory::getUser();
+		$cfg = MAMSHelper::getConfig();
 		
 		$query = $this->getListQuery();
 		$limitstart = $this->getState('list.start');
@@ -61,6 +66,10 @@ class MAMSModelArtList extends JModelList
 		
 		$db->setQuery($query, $limitstart, $limit);
 		$items = $db->loadObjectList();
+		
+		$alvls = Array();
+		$alvls = $user->getAuthorisedViewLevels();
+		$alvls[] = $cfg->reggroup;
 				
 		//Get Authors
 		foreach ($items as &$i) {
@@ -70,7 +79,7 @@ class MAMSModelArtList extends JModelList
 			$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 			$qa->where('aa.published >= 1');
 			$qa->where('a.published >= 1');
-			$qa->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+			$qa->where('a.access IN ('.implode(",",$alvls).')');
 			$qa->where('aa.aa_art = '.$i->art_id);
 			$qa->order('aa.ordering ASC');
 			$db->setQuery($qa);
@@ -85,7 +94,7 @@ class MAMSModelArtList extends JModelList
 			$qc->join('RIGHT','#__mams_cats AS c ON ac.ac_cat = c.cat_id');
 			$qc->where('ac.published >= 1');
 			$qc->where('c.published >= 1');
-			$qc->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+			$qc->where('c.access IN ('.implode(",",$alvls).')');
 			$qc->where('ac.ac_art = '.$i->art_id);
 			$qc->order('ac.ordering ASC');
 			$db->setQuery($qc);
@@ -130,12 +139,17 @@ class MAMSModelArtList extends JModelList
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
+		$cfg = MAMSHelper::getConfig();
+		
+		$alvls = Array();
+		$alvls = $user->getAuthorisedViewLevels();
+		$alvls[] = $cfg->reggroup;
 		
 		$query->select('a.art_id');
 		$query->from('#__mams_articles AS a');
 		$query->where('a.art_sec = '.(int)$sec);
 		$query->where('a.published >= 1');
-		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		$query->where('a.access IN ('.implode(",",$alvls).')');
 		$db->setQuery($query);
 		$items = $db->loadResultArray(0);
 		return $items;

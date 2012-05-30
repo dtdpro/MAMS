@@ -45,13 +45,16 @@ class MAMSModelAuthor extends JModel
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
 		
+		$alvls = $user->getAuthorisedViewLevels();
+		$alvls[] = $cfg->reggroup;
+		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id IN ('.implode(",",$pubedids).')');
 		$query->where('a.published >= 1');
-		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		if (!in_array($cfg->ovgroup,$user->getAuthorisedViewLevels())) $query->where('a.art_published <= NOW()');
+		$query->where('a.access IN ('.implode(",",$alvls).')');
+		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
 		$query->order('a.art_published DESC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();

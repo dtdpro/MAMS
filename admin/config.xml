@@ -2,14 +2,16 @@
 
 <config>
  	<fieldset name="general" label="COM_MAMS_CONFIG_SETTINGS_LABEL" description="COM_MAMS_CONFIG_SETTINGS_DESC">
-		<field name="ovgroup" type="accesslevel" id="access" class="inputbox" label="COM_MAMS_CONFIG_FIELD_OVGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_OVGROUP_DESC" default="1" filter="integer"/>
+		<field name="reggroup" type="accesslevel" id="regaccess" class="inputbox" label="COM_MAMS_CONFIG_FIELD_REGGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_REGGROUP_DESC" default="1" filter="integer"/>
+		<field name="ovgroup" type="accesslevel" id="ovaccess" class="inputbox" label="COM_MAMS_CONFIG_FIELD_OVGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_OVGROUP_DESC" default="1" filter="integer"/>
+		<field name="loginmsg" type="text" label="COM_MAMS_CONFIG_FIELD_LOGINMSG_LABEL" description="COM_MAMS_CONFIG_FIELD_LOGINMSG_DESC" size="70" class="inputbox" required="false" default="Login required" />
 		<field name="template" type="list" label="COM_MAMS_CONFIG_FIELD_TEMPLATE_LABEL" description="COM_MAMS_CONFIG_FIELD_TEMPLATE_DESC" default="default">
 			<option value="default">Default</option>
 			<option value="pha">Prostate Health Answers</option>
 			<option value="tpo">Practical Oncologist</option>
 			<option value="esp">Emerging Solutions in Pain</option>
 		</field>
-		<field name="num_related" type="text" label="COM_MAMS_CONFIG_FIELD_NUMRELATED_LABEL" description="COM_MAMS_CONFIG_FIELD_NUMRELATED_DESC" size="70" class="inputbox" required="false" default="10" />
+		<field name="num_related" type="text" label="COM_MAMS_CONFIG_FIELD_NUMRELATED_LABEL" description="COM_MAMS_CONFIG_FIELD_NUMRELATED_DESC" size="10" class="inputbox" required="false" default="10" />
 	</fieldset>
 	<fieldset name="video" label="COM_MAMS_CONFIG_VIDEO_LABEL" description="COM_MAMS_CONFIG_VIDEO_DESC">
 		<field name="vid_w" type="text" label="COM_MAMS_CONFIG_FIELD_VIDW_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />
