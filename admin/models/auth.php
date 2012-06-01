@@ -96,4 +96,32 @@ class MAMSModelAuth extends JModelAdmin
 		return $data;
 	}
 	
+	/**
+	 * Prepare and sanitise the table prior to saving.
+	 *
+	 * @since 1.6
+	 */
+	protected function prepareTable(&$table)
+	{
+		jimport('joomla.filter.output');
+		$date = JFactory::getDate();
+		$user = JFactory::getUser();
+	
+		if (empty($table->auth_id)) {
+			// Set the values
+				
+			// Set ordering to the last item if not set
+			if (empty($table->ordering)) {
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_authors');
+				$max = $db->loadResult();
+	
+				$table->ordering = $max+1;
+			}
+		}
+		else {
+			// Set the values
+		}
+	}
+	
 }

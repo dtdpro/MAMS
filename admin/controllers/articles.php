@@ -25,9 +25,9 @@ class MAMSControllerArticles extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_ARTICLE";
 	
-	public function getModel($name = 'Article', $prefix = 'MAMSModel') 
+	public function getModel($name = 'Article', $prefix = 'MAMSModel', $config = array('ignore_request' => true)) 
 	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+		$model = parent::getModel($name, $prefix, $config);
 		return $model;
 	}
 }

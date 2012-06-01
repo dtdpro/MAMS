@@ -55,10 +55,6 @@ class MAMSModelArticles extends JModelList
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 		
-		// Load the parameters.
-		$params = JComponentHelper::getParams('com_mams');
-		$this->setState('params', $params);
-
 		// List state information.
 		parent::populateState('a.art_published', 'desc');
 	}

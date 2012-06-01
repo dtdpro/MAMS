@@ -66,7 +66,7 @@ class MAMSTableDload extends JTable
 
 		$xid = intval($this->_db->loadResult());
 		if ($xid && $xid != intval($this->dl_id)) {
-			$this->setError(JText::_('COM_MAMS_ERR_TABLES_NAME'));
+			$this->setError(JText::_('COM_MAMS_ERR_TABLES_DLNAME'));
 			return false;
 		}
 		if (!empty($this->dl_loc)) {
