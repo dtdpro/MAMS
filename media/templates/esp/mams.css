@@ -70,12 +70,17 @@
 .mams-author-related {padding-top:10px; clear:both;}
 .mams-author-related-title {font-size:16px; font-weight:bold;}
 .mams-author-related-links { }
-.mams-author-related-link {font-size:13px;padding:2px; margin:5px; width:47%; display:block; float:left; min-height:100px; line-height:16px; border: solid #aaaaaa 1px; background: #d5e5ff; -webkit-box-shadow: 0px 2px 2px 0px #444444; box-shadow: 0px 2px 2px 0px #444444; webkit-border-radius: 2px 2px 2px 2px; -moz-border-radius: 2px 2px 2px 2px; border-radius: 2px 2px 2px 2px;}
+.mams-author-related-link {font-size:13px;padding:6px; margin:5px; width:46%; display:block; float:left; min-height:100px; line-height:16px; border: solid #aaaaaa 1px; background: #d5e5ff; -webkit-box-shadow: 0px 2px 2px 0px #444444; box-shadow: 0px 2px 2px 0px #444444; webkit-border-radius: 2px 2px 2px 2px; -moz-border-radius: 2px 2px 2px 2px; border-radius: 2px 2px 2px 2px;}
 .mams-author-related-link:hover {background-color:#ffffcc;}
 .mams-author-related-artaut { font-size:11px; }
 .mams-author-related-pubinfo { font-size:11px; }
 .mams-author-related-artthumb { padding-top:2px; padding-left:2px; padding-right: 4px; padding-bottom:40px; }
 .mams-author-modified { padding-top: 10px; font-size:10px; }
+.mams-author-image {padding-right:12px;}
+.mams-author-authsec { padding-bottom: 16px;}
+.mams-author-authsec-title { font-weight:bold; font-size:16px; padding-bottom:4px;}
+.mams-author-authsec-auths { padding-left: 10px;}
+
 
 .mams-article-pubinfo { padding-bottom: 4px; font-size:10px; }
 .mams-article-media {padding:10px; text-align: center; width: 100%;}

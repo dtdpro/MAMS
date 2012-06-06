@@ -22,6 +22,9 @@
 .mams-author-related-pubinfo { font-size:11px; }
 .mams-author-related-artthumb { padding-top:2px; padding-left:2px; padding-right: 4px; padding-bottom:20px; }
 .mams-author-modified { padding-top: 10px; font-size:10px; }
+.mams-author-image {padding-right:12px;}
+.mams-author-authsec { padding-bottom: 16px;}
+.mams-author-authsec-title { font-weight:bold; font-size:16px; padding-bottom:4px;}
 
 .mams-article-pubinfo { padding-bottom: 4px; font-size:10px; }
 .mams-article-media {padding:10px; text-align: center; width: 100%;}

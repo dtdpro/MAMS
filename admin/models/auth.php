@@ -113,7 +113,7 @@ class MAMSModelAuth extends JModelAdmin
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__mams_authors');
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_authors WHERE auth_sec = '.$table->auth_sec);
 				$max = $db->loadResult();
 	
 				$table->ordering = $max+1;
@@ -122,6 +122,20 @@ class MAMSModelAuth extends JModelAdmin
 		else {
 			// Set the values
 		}
+	}
+	
+	/**
+	 * A protected method to get a set of ordering conditions.
+	 *
+	 * @param object A record object.
+	 * @return array An array of conditions to add to add to ordering queries.
+	 * @since 1.6
+	 */
+	protected function getReorderConditions($table)
+	{
+		$condition = array();
+		$condition[] = 'auth_sec = '.(int) $table->auth_sec;
+		return $condition;
 	}
 	
 }

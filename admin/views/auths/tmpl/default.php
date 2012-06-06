@@ -43,6 +43,9 @@ $ordering = ($listOrder == 'a.ordering');
 					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_HEADING_NAME','a.auth_name', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="120">
+					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_HEADING_SEC','a.auth_sec', $listDirn, $listOrder); ?>
+				</th>	
+				<th width="120">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_ADDED','a.auth_added', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="120">
@@ -62,7 +65,7 @@ $ordering = ($listOrder == 'a.ordering');
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -73,6 +76,7 @@ $ordering = ($listOrder == 'a.ordering');
 					<?php echo $this->escape($item->auth_name); ?></a>
 					<p class="smallsub"><?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->auth_alias));?></p>
 				</td>
+				<td><?php echo $item->sec_name; ?></td>
 				<td><?php echo $item->auth_added; ?></td>
 				<td><?php echo $item->auth_modified; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'auths.', true);?></td>
@@ -80,11 +84,11 @@ $ordering = ($listOrder == 'a.ordering');
 				<td class="order">
 				<?php if ($saveOrder) :?>
 					<?php if ($listDirn == 'asc') : ?>
-						<span><?php echo $this->pagination->orderUpIcon($i, (true), 'auths.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, (true), 'auths.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderUpIcon($i, ($item->auth_sec == @$this->items[$i-1]->auth_sec), 'auths.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->auth_sec == @$this->items[$i+1]->auth_sec), 'auths.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 					<?php elseif ($listDirn == 'desc') : ?>
-						<span><?php echo $this->pagination->orderUpIcon($i, (true), 'auths.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, (truen), 'auths.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderUpIcon($i, ($item->auth_sec == @$this->items[$i-1]->auth_sec), 'auths.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->auth_sec == @$this->items[$i+1]->auth_sec), 'auths.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 					<?php endif; ?>
 				<?php endif; ?>
 				<?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>

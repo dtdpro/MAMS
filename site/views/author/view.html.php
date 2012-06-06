@@ -44,13 +44,17 @@ class MAMSViewAuthor extends JView
 	}
 	
 	protected function showAuthor() {
+		$cfg = MAMSHelper::getConfig();
 		$model =& $this->getModel();
 		$aut=JRequest::getInt('autid',0);
 		$this->author=$model->getAuthor($aut);
 		if ($this->author) {
 			MAMSHelper::trackViewed($aut,'author');
 			$this->document->setTitle($this->author->auth_name);
-			if ($this->params->get('show_pubed',1)) $this->published=$model->getPublished($aut);
+			if ($this->params->get('show_pubed',1)) { 
+				 $this->published=$model->getPublished($aut);
+				 $this->courses=$model->getAuthCourses($aut);
+			}
 			return true;
 		} else {
 			return JError::raiseError(404, JText::_('COM_MAMS_AUTHOR_NOT_FOUND'));

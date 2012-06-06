@@ -31,6 +31,7 @@ class MAMSModelAuths extends JModelList
 				'auth_added', 'a.auth_added',
 				'auth_modified', 'a.auth_modified',
 				'auth_name', 'a.auth_name',
+				'auth_sec', 'a.auth_sec',
 				'ordering', 'a.ordering',
 			);
 		}
@@ -72,6 +73,10 @@ class MAMSModelAuths extends JModelList
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
 		
+		// Join over the sections.
+		$query->select('s.sec_name');
+		$query->join('LEFT', '#__mams_secs AS s ON s.sec_id = a.auth_sec');
+		
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
 			$query->where('a.access = '.(int) $access);
@@ -87,6 +92,10 @@ class MAMSModelAuths extends JModelList
 		
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
+		
+		if ($orderCol == 'a.ordering') {
+			$orderCol = 's.sec_name '.$orderDirn.', a.ordering';
+		}
 		
 		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
 				

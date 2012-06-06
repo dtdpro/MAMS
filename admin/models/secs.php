@@ -31,6 +31,7 @@ class MAMSModelSecs extends JModelList
 				'sec_added', 's.sec_added',
 				'sec_modified', 's.sec_modified',
 				'sec_title', 's.sec_title',
+				'sec_type', 's.sec_type',
 			);
 		}
 		parent::__construct($config);

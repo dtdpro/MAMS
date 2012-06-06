@@ -40,6 +40,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_SEC_HEADING_NAME','s.sec_name', $listDirn, $listOrder); ?>
 				</th>		
+				<th width="80">
+					<?php echo JHtml::_('grid.sort','COM_MAMS_SEC_HEADING_TYPE','s.sec_type', $listDirn, $listOrder); ?>
+				</th>		
 				<th width="120">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_SEC_ADDED','s.sec_added', $listDirn, $listOrder); ?>
 				</th>		
@@ -56,17 +59,23 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="7"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
-				<td><?php echo $item->cat_id; ?></td>
+				<td><?php echo $item->sec_id; ?></td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->cat_id); ?></td>
 				<td>
 					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=sec.edit&sec_id='.(int) $item->sec_id); ?>">
 					<?php echo $this->escape($item->sec_name); ?></a>
 					<p class="smallsub"><?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->sec_alias));?></p>
 				</td>
+				<td><?php 
+					switch ($item->sec_type) {
+						case "author": echo "Author"; break; 
+						case "article": echo "Article"; break;
+					}
+				?></td>
 				<td><?php echo $item->sec_added; ?></td>
 				<td><?php echo $item->sec_modified; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'secs.', true);?></td>

@@ -49,6 +49,17 @@
 			default=""
 		/>
 		<field
+			name="sec_type"
+			type="list"
+			class="inputbox"
+			label="COM_MAMS_SEC_FIELD_TYPE_LABEL"
+			description="COM_MAMS_SEC_FIELD_TYPE_DESC"
+			size="1"
+			default="article">
+			<option	value="article">Article</option>
+			<option	value="author">Author</option>
+		</field>
+		<field
 			name="sec_desc"
 			type="textarea"
 			label="COM_MAMS_SEC_FIELD_DESC_LABEL"

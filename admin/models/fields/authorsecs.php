@@ -5,9 +5,9 @@ defined('JPATH_BASE') or die;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldArticleSecs extends JFormField
+class JFormFieldAuthorSecs extends JFormField
 {
-	protected $type = 'ArticleSecs';
+	protected $type = 'AuthorSecs';
 
 	protected function getInput()
 	{
@@ -26,7 +26,7 @@ class JFormFieldArticleSecs extends JFormField
 		// Build the query for the ordering list.
 		$query = 'SELECT sec_id AS value, sec_name AS text' .
 				' FROM #__mams_secs' .
-				' WHERE sec_type = "article"' .
+				' WHERE sec_type = "author"' .
 				' ORDER BY sec_name';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';

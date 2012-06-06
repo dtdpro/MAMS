@@ -83,7 +83,10 @@ class MAMSTableAuth extends JTable
 		if (trim(str_replace('-','',$this->auth_alias)) == '') {
 			$this->auth_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
-
+		
+		if (!empty($this->auth_image)) {
+			$this->auth_image=ltrim($this->auth_image,"/");
+		}
 		return true;
 	}
 	
