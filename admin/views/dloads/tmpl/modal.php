@@ -5,11 +5,12 @@ defined('_JEXEC') or die('Restricted Access');
 // load tooltip behavior
 JHtml::_('behavior.tooltip');
 
+$function	= JRequest::getCmd('function', 'jSelectDownload');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $extension	= $this->escape($this->state->get('filter.extension'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=dloads'); ?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=dloads&layout=modal&tmpl=component'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
@@ -50,12 +51,6 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<th width="100">
 					<?php echo JText::_('COM_MAMS_DLOAD_TYPE'); ?>
 				</th>
-				<th width="120">
-					<?php echo JHtml::_('grid.sort','COM_MAMS_DLOAD_HEADING_ADDED','d.dl_added', $listDirn, $listOrder); ?>
-				</th>		
-				<th width="120">
-					<?php echo JHtml::_('grid.sort','COM_MAMS_DLOAD_HEADING_MODIFIED','d.dl_modified', $listDirn, $listOrder); ?>
-				</th>		
 				<th width="100">
 					<?php echo JText::_('JPUBLISHED'); ?>
 				</th>
@@ -73,7 +68,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<td><?php echo $item->dl_id; ?></td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->dl_id); ?></td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=dload.edit&dl_id='.(int) $item->dl_id.'&extension='.$extension); ?>">
+					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->dl_id; ?>', '<?php echo $item->dl_lname; ?>', '<?php echo $this->escape(JRoute::_("components/com_mams/dl.php?dlid=".$item->dl_id)); ?>');">
 					<?php echo $this->escape($item->dl_fname); ?></a>
 					<p class="smallsub"><?php echo '(<span>Link name</span>: Download '.$this->escape($item->dl_lname).')';?></p>
 				</td>
@@ -85,8 +80,6 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 					} 
 				
 				?></td>
-				<td><?php echo $item->dl_added; ?></td>
-				<td><?php echo $item->dl_modified; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'dloads.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
 			</tr>
