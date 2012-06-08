@@ -5,11 +5,12 @@ defined('_JEXEC') or die('Restricted Access');
 // load tooltip behavior
 JHtml::_('behavior.tooltip');
 
+$function	= JRequest::getCmd('function', 'jSelectMedia');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $extension	= $this->escape($this->state->get('filter.extension'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=medias'); ?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=medias&layout=modal&tmpl=component'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
@@ -43,10 +44,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				</th>			
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_MEDIA_HEADING_NAME','m.med_title', $listDirn, $listOrder); ?>
-				</th>		
-				<th>
-					<?php echo JText::_('COM_MAMS_MEDIA_LOC'); ?>
-				</th>
+				</th>	
 				<th width="100">
 					<?php echo JText::_('COM_MAMS_MEDIA_TYPE'); ?>
 				</th>
@@ -73,10 +71,9 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<td><?php echo $item->med_id; ?></td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->med_id); ?></td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=media.edit&med_id='.(int) $item->med_id.'&extension='.$extension); ?>">
+					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->med_id; ?>');">
 					<?php echo $this->escape($item->med_title); ?></a>
 				</td>
-				<td><?php echo $item->med_file; ?></td>
 				<td><?php 
 					switch ($item->med_type) {
 						case 'vids': echo 'Streaming Video'; break;

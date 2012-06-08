@@ -50,6 +50,9 @@ class MAMSModelMedias extends JModelList
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 		
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
 		$this->setState('params', $params);
@@ -90,6 +93,17 @@ class MAMSModelMedias extends JModelList
 		// Filter by extension
 		if ($extension = $this->getState('filter.extension')) {
 			$query->where('m.med_extension = '.$db->quote($extension));
+		}
+		
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('m.med_id = '.(int) substr($search, 3));
+			} else {
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+				$query->where('(m.med_title LIKE '.$search.' OR m.med_file LIKE '.$search.')');
+			}
 		}
 		
 		$orderCol	= $this->state->get('list.ordering');
