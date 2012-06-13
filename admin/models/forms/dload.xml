@@ -63,6 +63,16 @@
 			default=""
 			required="true"
 		/>
+		<field
+			name="dl_type"
+			type="list"
+			class="inputbox"
+			label="COM_MAMS_DLOAD_FIELD_TYPE_LABEL"
+			description="COM_MAMS_DLOAD_FIELD_TYPE_DESC"
+			default="pdf">
+			<option	value="pdf">PDF</option>
+			<option	value="mp3">MP3</option>
+		</field>
 
 	</fieldset>
 </form>

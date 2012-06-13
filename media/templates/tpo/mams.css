@@ -8,7 +8,9 @@
 .mams-artlist-artpubdesc {  }
 .mams-artlist-artpubcat { padding-bottom: 4px; font-size:11px; }
 .mams-artlist-artdesc { padding-bottom: 10px;  }
-.mams-artlist-artreadmore { float:right; clear: both;}
+.mams-artlist-artreadmore { float:right; clear: both; }
+.mams-artlist-artreadmore a {text-decoration: none; padding: 3px; border: solid #A6504D 1px; background-color: #8C171A; color: white; font-size: 1.3em;}
+.mams-artlist-artreadmore a:hover {background-color: #4C070A;}
 .mams-artlist-seperator { width:100%; clear: both; margin:10px;}
 
 .mams-author-credentials { }
@@ -31,7 +33,8 @@
 .mams-article-auths { padding-top:10px; padding-left: 20px; margin: 0 auto; text-align:center;}
 .mams-article-auth { display: inline; float:left; padding-right:20px; text-align:left;}
 .mams-article-downloads { padding-left: 20px; text-align:center;}
-.mams-article-downloads a { padding: 3px; margin-right: 10px; border: 1px solid #cccccc; background-color:#dddddd; display:inline;}
+.mams-article-downloads a { text-decoration: none; padding: 3px 6px; margin-right: 10px;  display:inline; border: solid #A6504D 1px; background-color: #8C171A; color: white; font-size: 1.3em;}
+.mams-article-downloads a:hover {background-color: #4C070A;}
 .mams-article-title {padding-left: 20px; padding-right:20px; padding-top:10px; font-weight:bold; clear:both;}
 .mams-article-content {padding-left: 20px; padding-right:20px; padding-top:10px; clear:both;}
 .mams-article-related {padding-top:10px; clear:both;}
