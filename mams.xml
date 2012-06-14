@@ -23,6 +23,7 @@
 		<filename>dl.php</filename>
 		<filename>router.php</filename>
 		<filename>controller.php</filename>
+		<filename>mediatrack.php</filename>
 		<filename>metadata.xml</filename>
 		<folder>models</folder>
 		<folder>views</folder>
@@ -31,6 +32,7 @@
 	<media destination="com_mams" folder="media">
             <filename>index.html</filename>
 			<folder>vidplyr</folder>
+			<folder>scripts</folder>
 			<folder>images</folder>
 			<folder>templates</folder>
     </media>

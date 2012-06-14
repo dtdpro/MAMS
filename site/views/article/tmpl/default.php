@@ -60,7 +60,7 @@ if ($this->article->media) {
 				echo "'controlbar': 'bottom',"."\n";
 				echo "'width': '".$config->vid_w."',"."\n";
 				echo "'height': '".((int)$config->vid_h+30)."'";
-				if ($config->gapro)	echo ",\n'plugins': {'gapro-2': {}}"."\n";
+				if ($config->gapro)	echo ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {},'gapro-2': {}}"."\n";
 				echo "});"."\n";
 				echo "</script>"."\n";
 			}
@@ -79,7 +79,7 @@ if ($this->article->media) {
 			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow.zip',"."\n";
 			echo "'controlbar': 'bottom',"."\n";
 			echo "'modes': [{type: 'flash', src: '".JURI::base( true )."/media/com_mams/vidplyr/player.swf'},{type: 'html5'},{type: 'download'}]"."\n";
-			if ($config->gapro)	echo ",\n'plugins': {'gapro-2': {}}"."\n";
+			if ($config->gapro)	echo ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {},'gapro-2': {}}"."\n";
 			echo "});"."\n";
 			echo "</script>"."\n";
 		}

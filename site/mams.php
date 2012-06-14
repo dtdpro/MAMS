@@ -23,6 +23,8 @@ $cfg = MAMSHelper::getConfig();
 $doc = &JFactory::getDocument();
 $doc->addStyleSheet('media/com_mams/templates/'.$cfg->template.'/mams.css');
 $doc->addScript('media/com_mams/vidplyr/jwplayer.js');
+$doc->addScript('media/com_mams/scripts/mams.js');
+$doc->addScriptDeclaration("var mamsuri = '".JURI::base( true )."';");
 
 // Create the controller
 $classname	= 'MAMSController'.$controller;
