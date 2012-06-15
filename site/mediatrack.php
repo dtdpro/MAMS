@@ -14,16 +14,15 @@ $user = &JFactory::getUser();
 
 
 
-$tracked_item = urldecode(JRequest::getVar('tracked_item'));
-$current_item  = urldecode(JRequest::getVar('current_item'));
-$current_page  = urldecode(JRequest::getVar('current_page'));
-$tracked_value = urldecode(JRequest::getVar('tracked_value'));
+$item_id = urldecode(JRequest::getVar('item_id'));
+$secs_played  = urldecode(JRequest::getVar('secs_played'));
+$per_played  = urldecode(JRequest::getVar('per_played'));
 $userid = $user->id;
 $session =& JFactory::getSession();
 
 
-$qc = 'INSERT INTO #__mams_mediatrack (mt_user,mt_tracked_item,mt_current_item,mt_current_page,mt_tracked_value,mt_session) ';
-$qc .= 'VALUES ('.$userid.',"'.$tracked_item.'","'.$current_item.'","'.$current_page.'","'.$tracked_value.'","'.$session->getId().'")';
+$qc = 'INSERT INTO #__mams_mediatrack (mt_user,mt_item,mt_seconds,mt_percentage,mt_session,mt_ipaddr) ';
+$qc .= 'VALUES ('.$userid.',"'.$item_id.'","'.$secs_played.'","'.$per_played.'","'.$session->getId().'","'.$_SERVER['REMOTE_ADDR'].'")';
 $db->setQuery( $qc );
 $db->query();
 

@@ -110,17 +110,17 @@ CREATE TABLE IF NOT EXISTS #__mams_media (
   PRIMARY KEY (med_id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS #__mams_mediatrack (
-  mt_id int(11) NOT NULL AUTO_INCREMENT,
-  mt_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  mt_user int(11) NOT NULL,
-  mt_session varchar(255) NOT NULL,
-  mt_tracked_item text NOT NULL,
-  mt_current_item text NOT NULL,
-  mt_current_page text NOT NULL,
-  mt_tracked_value text NOT NULL,
-  PRIMARY KEY (mt_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `#__mams_mediatrack` (
+  `mt_id` int(11) NOT NULL AUTO_INCREMENT,
+  `mt_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `mt_user` int(11) NOT NULL,
+  `mt_session` varchar(255) NOT NULL,
+  `mt_item` int(11) NOT NULL,
+  `mt_seconds` int(11) NOT NULL,
+  `mt_percentage` int(11) NOT NULL,
+  `mt_ipaddr` varchar(15) NOT NULL,
+  PRIMARY KEY (`mt_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
 CREATE TABLE IF NOT EXISTS #__mams_secs (
   sec_id int(11) NOT NULL AUTO_INCREMENT,
