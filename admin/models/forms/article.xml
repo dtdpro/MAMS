@@ -125,7 +125,7 @@
 			description="COM_MAMS_ARTICLE_FIELD_CONTENT_DESC"
 			class="inputbox"
 			required="false"
-			filter="safehtml"
+			filter="raw"
 			buttons="false"
 		/>
 	</fieldset>

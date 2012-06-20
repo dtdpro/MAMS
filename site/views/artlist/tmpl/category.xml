@@ -15,6 +15,15 @@
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
 			<field name="items_page" type="text" description="COM_MAMS_FIELD_ITEMSPERPAGE_DESC" label="COM_MAMS_FIELD_ITEMSPERPAGE_LABEL" default="10" />
+			<field name="show_pubinfo" type="radio" description="COM_MAMS_FIELD_SHOW_PUBINFO_DESC" label="COM_MAMS_FIELD_SHOW_PUBINFO_LABEL" default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="readmore_text" type="text" description="COM_MAMS_FIELD_READMORE_DESC" label="COM_MAMS_FIELD_READMORE_LABEL" default="Read More" />
+			<field name="show_title2" type="radio" description="COM_MAMS_FIELD_SHOW_TITLE2_DESC" label="COM_MAMS_FIELD_SHOW_TITLE2_LABEL" default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>

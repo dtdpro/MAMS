@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="1.7" type="plugin" group="mams" method="upgrade">
+	<name>plg_mams_mget</name>
+	<author>DtD Productions</author>
+	<creationDate>2012.12</creationDate>
+	<copyright>Copyright (C) 2012 DtD Productions. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>info@coronapro.com</authorEmail>
+	<authorUrl>www.coronapro.com</authorUrl>
+	<version>1.20</version>
+	<description>PLG_MAMS_MGET_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="mget">mget.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_mams_mget.ini</language>
+		<language tag="en-GB">en-GB.plg_mams_mget.sys.ini</language>
+	</languages>
+
+</extension>

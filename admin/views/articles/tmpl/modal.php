@@ -4,13 +4,12 @@
 defined('_JEXEC') or die('Restricted Access');
 // load tooltip behavior
 JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
 
+$function	= JRequest::getCmd('function', 'jSelectArticle');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$db =& JFactory::getDBO();
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=articles'); ?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=articles&layout=modal&tmpl=component'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
@@ -53,22 +52,7 @@ $db =& JFactory::getDBO();
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISHED','a.art_published', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="100">
-					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_TAGS'); ?>
-				</th>
-				<th width="100">
-					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_EXTRAS'); ?>
-				</th>
-				<th width="120">
-					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_ADDED','a.art_added', $listDirn, $listOrder); ?>
-				</th>		
-				<th width="120">
-					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_MODIFIED','a.art_modified', $listDirn, $listOrder); ?>
-				</th>	
-				<th width="100">
 					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_SECTION'); ?>
-				</th>
-				<th width="100">
-					<?php echo JText::_('JPUBLISHED'); ?>
 				</th>
 				<th width="100">
 					<?php echo JText::_('JGRID_HEADING_ACCESS'); ?>
@@ -77,51 +61,18 @@ $db =& JFactory::getDBO();
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="6"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td><?php echo $item->art_id; ?></td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->art_id); ?></td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=article.edit&art_id='.(int) $item->art_id); ?>">
-					<?php echo $this->escape($item->art_title); ?></a>
-					<p class="smallsub"><?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->art_alias));?></p>
+					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->art_id; ?>', '<?php echo $this->escape(addslashes($item->art_title)); ?>');">
+						<?php echo $this->escape($item->art_title); ?></a>
 				</td>
 				<td><?php echo $item->art_published; ?></td>
-				<td><?php 
-					//Authors
-					echo '<a href="index.php?option=com_mams&view=artauths&filter_article='.$item->art_id.'">Authors ';
-					$query = 'SELECT count(*) FROM #__mams_artauth WHERE published >= 1 && aa_art="'.$item->art_id.'"';
-					$db->setQuery( $query );
-					$num_aa=$db->loadResult();
-					echo ' ['.$num_aa.']</a><br />';
-					//Categories
-					echo '<a href="index.php?option=com_mams&view=artcats&filter_article='.$item->art_id.'">Categories ';
-					$query = 'SELECT count(*) FROM #__mams_artcat WHERE published >= 1 && ac_art="'.$item->art_id.'"';
-					$db->setQuery( $query );
-					$num_ac=$db->loadResult();
-					echo ' ['.$num_ac.']</a>';
-				?></td>
-				<td><?php 
-					//Downloads
-					echo '<a href="index.php?option=com_mams&view=artdloads&filter_article='.$item->art_id.'">Downloads ';
-					$query = 'SELECT count(*) FROM #__mams_artdl WHERE published >= 1 && ad_art="'.$item->art_id.'"';
-					$db->setQuery( $query );
-					$num_ad=$db->loadResult();
-					echo ' ['.$num_ad.']</a><br />';
-					//Media
-					/*echo '<a href="index.php?option=com_mams&view=artmedias&filter_article='.$item->art_id.'">Media ';
-					$query = 'SELECT count(*) FROM #__mams_artmed WHERE published >= 1 && am_art="'.$item->art_id.'"';
-					$db->setQuery( $query );
-					$num_am=$db->loadResult();
-					echo ' ['.$num_am.']</a>';*/
-				
-				?></td>
-				<td><?php echo $item->art_added; ?></td>
-				<td><?php echo $item->art_modified; ?></td>
 				<td><?php echo $item->sec_name; ?></td>
-				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'articles.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
 				
 			</tr>
@@ -136,5 +87,3 @@ $db =& JFactory::getDBO();
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>
-
-

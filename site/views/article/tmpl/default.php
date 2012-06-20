@@ -6,29 +6,31 @@ echo '<h2 class="title">';
 echo $this->article->art_title; 
 echo '</h2>';
 
-//Pub Info
-echo '<div class="mams-article-pubinfo">';
-
-	//Section Link
-	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$this->article->sec_id.":".$this->article->sec_alias).'" class="mams-article-seclink">'.$this->article->sec_name.'</a>';
+if ($this->params->get('show_pubinfo',1)) {
+	//Pub Info
+	echo '<div class="mams-article-pubinfo">';
 	
-	//Pub Date
-	echo ' published on <strong>';
-	echo date("F j, Y",strtotime($this->article->art_published));
-	echo '</strong>';
-	
-	//Cat Links
-	if ($this->article->cats) {
-		echo ' in <em>';
-		$cats = Array();
-		foreach ($this->article->cats as $c) {
-			$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$this->article->sec_id.":".$this->article->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>';
+		//Section Link
+		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$this->article->sec_id.":".$this->article->sec_alias).'" class="mams-article-seclink">'.$this->article->sec_name.'</a>';
+		
+		//Pub Date
+		echo ' published on <strong>';
+		echo date("F j, Y",strtotime($this->article->art_published));
+		echo '</strong>';
+		
+		//Cat Links
+		if ($this->article->cats) {
+			echo ' in <em>';
+			$cats = Array();
+			foreach ($this->article->cats as $c) {
+				$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$this->article->sec_id.":".$this->article->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>';
+			}
+			echo implode(", ",$cats);
+			echo '</em>';
 		}
-		echo implode(", ",$cats);
-		echo '</em>';
-	}
-	
-echo '</div>';
+		
+	echo '</div>';
+}
 
 //Media
 if ($this->article->media) {
@@ -117,9 +119,11 @@ if ($this->article->auts) {
 }
 
 //Article Title
-echo '<div class="mams-article-title">';
-echo $this->article->art_title;
-echo '</div>';
+if ($this->params->get('show_title2',1)) {
+	echo '<div class="mams-article-title">';
+	echo $this->article->art_title;
+	echo '</div>';
+}
 
 //Article Body
 echo '<div class="mams-article-content">';

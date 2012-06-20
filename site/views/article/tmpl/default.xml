@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<layout title="MAMS Article">
+		<message>Article Page</message>
+	</layout>
+	<fields name="request">
+		<fieldset name="request" addfieldpath="administrator/components/com_mams/models/fields">
+			<field name="artid" type="ModalArticle" label="Article" description="" required="true" />
+		</fieldset>
+	</fields>
+	<fields name="params">
+		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="show_pubinfo" type="radio" description="COM_MAMS_FIELD_SHOW_PUBINFO_DESC" label="COM_MAMS_FIELD_SHOW_PUBINFO_LABEL" default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_title2" type="radio" description="COM_MAMS_FIELD_SHOW_TITLE2_DESC" label="COM_MAMS_FIELD_SHOW_TITLE2_LABEL" default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fieldset>
+	</fields>
+</metadata>

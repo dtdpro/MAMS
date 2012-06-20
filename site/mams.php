@@ -29,7 +29,7 @@ $doc->addScriptDeclaration("var mamsuri = '".JURI::base( true )."';");
 // Create the controller
 $classname	= 'MAMSController'.$controller;
 $controller = new $classname( );
-//JPluginHelper::importPlugin('continued');
+JPluginHelper::importPlugin('mams');
 
 // Perform the Request task
 $controller->execute( JRequest::getVar('task'));

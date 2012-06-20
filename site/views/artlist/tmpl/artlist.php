@@ -32,23 +32,25 @@ foreach ($this->articles as $a) {
 						echo 'align="left" />';
 					}
 					
-					//Section Link
-					echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$a->sec_id.":".$a->sec_alias).'" class="mams-artlist-seclink">'.$a->sec_name.'</a>';
-					
-					//Pub Date
-					echo ' published on <strong>';
-					echo date("F j, Y",strtotime($a->art_published));
-					echo '</strong>';
-					
-					//Cat Links
-					if ($a->cats) {
-						echo ' in <em>';
-						$cats = Array();
-						foreach ($a->cats as $c) {
-							$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
+					if ($this->params->get('show_pubinfo',1)) {
+						//Section Link
+						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$a->sec_id.":".$a->sec_alias).'" class="mams-artlist-seclink">'.$a->sec_name.'</a>';
+						
+						//Pub Date
+						echo ' published on <strong>';
+						echo date("F j, Y",strtotime($a->art_published));
+						echo '</strong>';
+						
+						//Cat Links
+						if ($a->cats) {
+							echo ' in <em>';
+							$cats = Array();
+							foreach ($a->cats as $c) {
+								$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
+							}
+							echo implode(", ",$cats);
+							echo '</em>';
 						}
-						echo implode(", ",$cats);
-						echo '</em>';
 					}
 				echo '</div>';
 				
@@ -61,7 +63,9 @@ foreach ($this->articles as $a) {
 			
 			//Read More
 			echo '<div class="mams-artlist-artreadmore">';
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'" class="mams-artlist-artlink read-more">Read More</a>';
+			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'" class="mams-artlist-artlink read-more">';
+			echo $this->params->get('readmore_text',"Read More");
+			echo '</a>';
 			echo '</div>';
 		
 		echo '</div>';

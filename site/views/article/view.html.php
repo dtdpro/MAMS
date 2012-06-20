@@ -31,6 +31,7 @@ class MAMSViewArticle extends JView
 		$cfg = MAMSHelper::getConfig();
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
+		$dispatcher	= JDispatcher::getInstance();
 		$this->params = $app->getParams();
 		
 		$model =& $this->getModel();
@@ -45,6 +46,8 @@ class MAMSViewArticle extends JView
 					$this->relatedbycat=$model->getRelatedByCat($art,$this->article->cats,$this->article->sec_id);
 					$this->relatedbyaut=$model->getRelatedByAut($art,$this->article->auts,$this->article->sec_id);
 				}
+				//run plugins
+				$results = $dispatcher->trigger('onMAMSPrepare', array(&$this->article->art_content));
 				parent::display($tpl);
 			} else {
 				$urlnc = $this->getReturnURL();
