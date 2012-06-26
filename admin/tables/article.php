@@ -1,32 +1,12 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: article.php 2012-03-12 $
- * @package		MAMS.Admin
- * @subpackage	auth
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla table library
 jimport('joomla.database.table');
 
-/**
- * MAMS Article Table
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	article
- * @since		1.0
- */
 class MAMSTableArticle extends JTable
 {
-	/**
-	 * Constructor
-	 *
-	 * @param object Database connector object
-	 */
 	function __construct(&$db) 
 	{
 		parent::__construct('#__mams_articles', 'art_id', $db);

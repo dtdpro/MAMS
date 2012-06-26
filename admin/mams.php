@@ -1,16 +1,9 @@
 <?php
 // no direct access
 defined('_JEXEC') or die;
-/**
- * @version		$Id: mams.php 2012-03-05 $
- * @package		MAMS.Admin
- * @subpackage	Entry
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // Access check.
-if (!JFactory::getUser()->authorise('core.manage', 'com_melo')) {
+if (!JFactory::getUser()->authorise('core.manage', 'com_mams')) {
 return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 

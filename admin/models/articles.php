@@ -2,24 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * @version		$Id: articles.php 2012-03-12 $
- * @package		MAMS.Admin
- * @subpackage	articles
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
-
 jimport('joomla.application.component.modellist');
 
-/**
- * MAMS Articles Model
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	articles
- * @since		1.0
- */
 class MAMSModelArticles extends JModelList
 {
 	

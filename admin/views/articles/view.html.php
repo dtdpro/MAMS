@@ -1,25 +1,10 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: view.html.php 2012-03-12 $
- * @package		MAMS.Admin
- * @subpackage	articles
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-/**
- * MAMS Articles View
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	articles
- * @since		1.0
- */
 class MAMSViewArticles extends JView
 {
 	
@@ -51,9 +36,6 @@ class MAMSViewArticles extends JView
 		$this->setDocument();
 	}
 
-	/**
-	 * Setting the toolbar
-	 */
 	protected function addToolBar() 
 	{
 		$state	= $this->get('State');
@@ -71,11 +53,7 @@ class MAMSViewArticles extends JView
 			JToolBarHelper::trash('articles.trash');
 		}
 	}
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
+	
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();

@@ -2,24 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * @version		$Id: artcats.php 2012-03-12 $
- * @package		MAMS.Admin
- * @subpackage	artcats
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
-
 jimport('joomla.application.component.modellist');
 
-/**
- * MAMS Article Categories Model
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	artcats
- * @since		1.0
- */
 class MAMSModelArtCats extends JModelList
 {
 	
