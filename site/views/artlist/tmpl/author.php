@@ -1,7 +1,6 @@
 <?php
 defined('_JEXEC') or die();
 echo '<h2 class="title">';
-if ($this->secinfo) echo $this->secinfo->sec_name.' - ';
 echo $this->autinfo->auth_name; 
 echo '</h2>';
 if ($this->params->get('show_bio',0)) {

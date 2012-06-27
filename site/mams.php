@@ -1,8 +1,7 @@
 <?php
 /**
  * MAMS entry point file for MAMS Component
- * (C) 2012 Corona Productions
- * Coded and Created by: Mike Amundsen
+ * (C) 2012 DtD Productions
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -21,7 +20,6 @@ require_once(JPATH_COMPONENT.DS.'helpers'.DS.'mams.php');
 // Load StyleSheet for template, based on config
 $cfg = MAMSHelper::getConfig();
 $doc = &JFactory::getDocument();
-$doc->addStyleSheet('media/com_mams/templates/'.$cfg->template.'/mams.css');
 $doc->addScript('media/com_mams/vidplyr/jwplayer.js');
 $doc->addScript('media/com_mams/scripts/mams.js');
 $doc->addScriptDeclaration("var mamsuri = '".JURI::base( true )."';");
