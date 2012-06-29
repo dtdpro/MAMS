@@ -21,7 +21,7 @@ class MAMSModelAuthor extends JModel
 		return $item;
 	}
 	
-	function getAuthorList() {
+	function getAuthorList($secid) {
 		$db =& JFactory::getDBO();
 		$qsec = $db->getQuery(true);
 		$user = JFactory::getUser();
@@ -29,13 +29,14 @@ class MAMSModelAuthor extends JModel
 		$qsec->select('sec_id, sec_name');
 		$qsec->from('#__mams_secs');
 		$qsec->where('sec_type = "author"');
+		if ($secid) $qsec->where('sec_id = '.$secid);
 		$qsec->order('sec_name ASC');
 		$db->setQuery($qsec);
 		$secs = $db->loadObjectList();
 		
 		foreach ($secs as &$s) {
 			$query = $db->getQuery(true);
-			$query->select('a.auth_id,a.auth_name,a.auth_alias');
+			$query->select('a.*');
 			$query->from('#__mams_authors AS a');
 			$query->where('a.auth_sec = '.$s->sec_id);
 			$query->where('a.published >= 1');

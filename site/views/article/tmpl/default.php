@@ -156,7 +156,7 @@ echo '<div class="mams-article-related">';
 				echo '<div class="mams-article-related-artaut">';
 					$auts = Array();
 					foreach ($r->auts as $f) {
-						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=author&secid=".$r->sec_id.":".$r->sec_alias."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_name.'</a>';
+						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_name.'</a>';
 					}
 					echo implode(", ",$auts);
 				echo '</div>';
@@ -206,7 +206,7 @@ echo '<div class="mams-article-related">';
 				echo '<div class="mams-article-related-artaut">';
 					$auts = Array();
 					foreach ($r->auts as $f) {
-						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=author&secid=".$r->sec_id.":".$r->sec_alias."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_name.'</a>';
+						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_name.'</a>';
 					}
 					echo implode(", ",$auts);
 				echo '</div>';
