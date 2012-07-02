@@ -14,13 +14,19 @@ if ($this->params->get('show_pubinfo',1)) {
 		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$this->article->sec_id.":".$this->article->sec_alias).'" class="mams-article-seclink">'.$this->article->sec_name.'</a>';
 		
 		//Pub Date
-		echo ' published on <strong>';
-		echo date("F j, Y",strtotime($this->article->art_published));
-		echo '</strong>';
+		if ($this->params->get('show_pubdate',1)) {
+			echo ' published on <strong>';
+			echo date("F j, Y",strtotime($this->article->art_published));
+			echo '</strong>';
+		}
 		
 		//Cat Links
 		if ($this->article->cats) {
-			echo ' in <em>';
+			if ($this->params->get('show_pubdate',1)) { 
+				echo ' in <em>';
+			} else {
+				echo ' - <em>';
+			}
 			$cats = Array();
 			foreach ($this->article->cats as $c) {
 				$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$this->article->sec_id.":".$this->article->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>';
@@ -119,7 +125,7 @@ if ($this->article->auts) {
 }
 
 //Article Title
-if ($this->params->get('show_title2',1)) {
+if ($this->params->get('show_title2',0)) {
 	echo '<div class="mams-article-title">';
 	echo $this->article->art_title;
 	echo '</div>';

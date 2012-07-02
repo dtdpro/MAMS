@@ -37,13 +37,19 @@ foreach ($this->articles as $a) {
 						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$a->sec_id.":".$a->sec_alias).'" class="mams-artlist-seclink">'.$a->sec_name.'</a>';
 						
 						//Pub Date
-						echo ' published on <strong>';
-						echo date("F j, Y",strtotime($a->art_published));
-						echo '</strong>';
+						if ($this->params->get('show_pubdate',1)) {
+							echo ' published on <strong>';
+							echo date("F j, Y",strtotime($a->art_published));
+							echo '</strong>';
+						}
 						
 						//Cat Links
 						if ($a->cats) {
-							echo ' in <em>';
+							if ($this->params->get('show_pubdate',1)) {
+								echo ' in <em>';
+							} else {
+								echo ' - <em>';
+							}
 							$cats = Array();
 							foreach ($a->cats as $c) {
 								$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
