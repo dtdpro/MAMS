@@ -145,3 +145,11 @@ CREATE TABLE IF NOT EXISTS #__mams_track (
   mt_ipaddr varchar(15) NOT NULL,
   PRIMARY KEY (mt_id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__mams_artfeat` (
+  `af_id` int(11) NOT NULL AUTO_INCREMENT,
+  `af_art` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  PRIMARY KEY (`af_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+

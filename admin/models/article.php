@@ -228,4 +228,40 @@ class MAMSModelArticle extends JModelAdmin
 		return true;
 	}
 	
+	public function featured(&$pks,$feat)
+	{
+		// Initialise variables.
+		$user = JFactory::getUser();
+		$pks = (array) $pks;
+		$db	= $this->getDbo();
+			
+		
+		$query	= $db->getQuery(true);
+		$query->delete();
+		$query->from('#__mams_artfeat');
+		$query->where('af_art IN ('.implode(",",$pks).")");
+		$db->setQuery((string)$query);
+		if (!$db->query()) {
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		if ($feat) 	{
+			foreach ($pks as $i => $pk) {
+				$qf = 'INSERT INTO #__mams_artfeat (af_art) VALUES ('.$pk.')';
+				$db->setQuery($qf);
+				if (!$db->query()) {
+					$this->setError($db->getErrorMsg());
+					return false;
+				}
+			}
+		} 
+			
+		
+	
+		// Clear the component's cache
+		$this->cleanCache();
+	
+		return true;
+	}
+	
 }

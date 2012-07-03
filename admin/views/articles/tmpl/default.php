@@ -6,6 +6,7 @@ defined('_JEXEC') or die('Restricted Access');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $db =& JFactory::getDBO();
@@ -67,7 +68,10 @@ $db =& JFactory::getDBO();
 				<th width="100">
 					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_SECTION'); ?>
 				</th>
-				<th width="100">
+				<th width="50">
+					<?php echo JText::_('JFEATURED'); ?>
+				</th>
+				<th width="50">
 					<?php echo JText::_('JPUBLISHED'); ?>
 				</th>
 				<th width="100">
@@ -121,6 +125,7 @@ $db =& JFactory::getDBO();
 				<td><?php echo $item->art_added; ?></td>
 				<td><?php echo $item->art_modified; ?></td>
 				<td><?php echo $item->sec_name; ?></td>
+				<td class="center"><?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true); ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'articles.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
 				
