@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>mod_mamsfeat</name>
+	<author>DtD Productions</author>
+	<creationDate>July 2012</creationDate>
+	<copyright>Copyright 2012 DtD Productions All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>info@dtdpro.com</authorEmail>
+	<authorUrl>www.dtdpro.com</authorUrl>
+	<version>1.0.0</version>
+	<description>MOD_MAMSFEAT_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_mamsfeat">mod_mamsfeat.php</filename>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_mamsfeat.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.mod_mamsfeat.ini</language>
+		<language tag="en-GB">en-GB.mod_mamsfeat.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+
+		</fields>
+	</config>
+</extension>
