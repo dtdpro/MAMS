@@ -22,7 +22,25 @@
 	</languages>
 	<config>
 		<fields name="params">
-
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
+				<field name="show_pubinfo" type="radio" description="MOD_MAMSFEAT_SHOW_PUBINFO_DESC" label="MOD_MAMSFEAT_SHOW_PUBINFO_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubdate" type="radio" description="MOD_MAMSFEAT_SHOW_PUBDATE_DESC" label="MOD_MAMSFEAT_SHOW_PUBDATE_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubsec" type="radio" description="MOD_MAMSFEAT_SHOW_PUBSEC_DESC" label="MOD_MAMSFEAT_SHOW_PUBSEC_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubcat" type="radio" description="MOD_MAMSFEAT_SHOW_PUBCAT_DESC" label="MOD_MAMSFEAT_SHOW_PUBCAT_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+			</fieldset>
 		</fields>
 	</config>
 </extension>
