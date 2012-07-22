@@ -140,9 +140,9 @@ class plgSearchMAMS extends JPlugin
 			{
 				$new_row = array();
 				foreach($row as $key => $article) {
-					if (searchHelper::checkNoHTML($article, $searchText, array('text', 'title', 'metadesc', 'metakey'))) {
+					//if (searchHelper::checkNoHTML($article, $searchText, array('text', 'title', 'metadesc', 'metakey'))) {
 						$new_row[] = $article;
-					}
+					//}
 				}
 				$results = array_merge($results, (array) $new_row);
 			}
