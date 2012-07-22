@@ -9,6 +9,7 @@ JHtml::_('behavior.multiselect');
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$published = $this->state->get('filter.published');
 $db =& JFactory::getDBO();
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&view=articles'); ?>" method="post" name="adminForm">
@@ -133,6 +134,19 @@ $db =& JFactory::getDBO();
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+	<fieldset class="batch">
+	<legend><?php echo JText::_('COM_MAMS_ARTICLE_BATCH_OPTIONS');?></legend>
+		<p><?php echo JText::_('COM_MAMS_ARTICLE_BATCH_TIP'); ?></p>
+		<?php echo JHtml::_('batch.access');?>
+		
+	
+		<button type="submit" onclick="Joomla.submitbutton('article.batch');">
+			<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
+		</button>
+		<button type="button" onclick="document.id('batch-category-id').value='';document.id('batch-access').value='';document.id('batch-language-id').value=''">
+			<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
+		</button>
+	</fieldset>
 	<div>
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
