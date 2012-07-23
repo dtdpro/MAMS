@@ -8,7 +8,8 @@
 			tracktime : true,
 			debug : false,
 			currentItem : undefined,
-			pageURL : undefined
+			pageURL : undefined,
+			trackid: 0
 		};
 		var playdata = jwplayer.utils.extend({}, default_config, user_config);
 		for ( var item in playdata) {
@@ -27,8 +28,9 @@
 				secondsPlayed : 0,
 				percentageMap : {},
 				lastTime : 0,
-				lastPercentage : 0
-			})
+				lastPercentage : 0,
+				trackid: 0
+			});
 		}
 		function initListeners() {
 			try {
@@ -57,6 +59,7 @@
 				} else {
 					playdata.currentItem.hidden = false
 				}
+				startTrackData();
 			});
 			player.onTime(function(time_data) {
 				if (!playdata.currentItem.started) {
@@ -98,7 +101,35 @@
 		}
 		function trackPlayData(secs_played, per_played) {
 			if (!playdata.currentItem.hidden) {
-				MAMSTrackMedia(playdata.itemid,secs_played,per_played);
+				MAMSTrackMedia(playdata.trackid,secs_played,per_played);
+			} 
+		}
+		function startTrackData() {
+			if (!playdata.currentItem.hidden) {
+				var ajaxRequest;  
+				try{
+					ajaxRequest = new XMLHttpRequest();
+				} catch (e){
+					try{
+						ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+					} catch (e) {
+						try{
+							ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+						} catch (e){
+							alert("Your browser broke!");
+							return false;
+						}
+					}
+				}
+				// Create a function that will receive data sent from the server
+				ajaxRequest.onreadystatechange = function(){
+					if(ajaxRequest.readyState == 4){
+						playdata.trackid=ajaxRequest.responseText;
+					}
+				}
+				var queryString = "?item_id=" + encodeURIComponent(playdata.itemid);
+				ajaxRequest.open("GET", mamsuri+"/components/com_mams/mediatrack.php" + queryString, true);
+				ajaxRequest.send(null); 
 			} 
 		}
 		function mamstrack_log(log_item, log_data) {

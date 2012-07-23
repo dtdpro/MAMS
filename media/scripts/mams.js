@@ -1,4 +1,4 @@
-function MAMSTrackMedia(item_id,secs_played,per_played) {
+function MAMSTrackMedia(track_id,secs_played,per_played) {
 	var ajaxRequest;  
 	try{
 		ajaxRequest = new XMLHttpRequest();
@@ -20,7 +20,7 @@ function MAMSTrackMedia(item_id,secs_played,per_played) {
 			document.myForm.time.value = ajaxRequest.responseText;
 		}
 	}*/
-	var queryString = "?item_id=" + encodeURIComponent(item_id) + "&secs_played=" + encodeURIComponent(secs_played) + "&per_played=" + encodeURIComponent(per_played);
+	var queryString = "?track_id=" + encodeURIComponent(track_id) + "&secs_played=" + encodeURIComponent(secs_played) + "&per_played=" + encodeURIComponent(per_played);
 	ajaxRequest.open("GET", mamsuri+"/components/com_mams/mediatrack.php" + queryString, true);
 	ajaxRequest.send(null); 
 	

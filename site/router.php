@@ -5,6 +5,9 @@ defined('_JEXEC') or die;
 jimport('joomla.application.categories');
 
 
+
+
+
 function MAMSBuildRoute(&$query)
 {
 	$segments	= array();
