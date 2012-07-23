@@ -28,8 +28,7 @@
 				secondsPlayed : 0,
 				percentageMap : {},
 				lastTime : 0,
-				lastPercentage : 0,
-				trackid: 0
+				lastPercentage : 0
 			});
 		}
 		function initListeners() {
@@ -64,7 +63,6 @@
 			player.onTime(function(time_data) {
 				if (!playdata.currentItem.started) {
 					playdata.currentItem.started = true;
-					//trackPlayData("Video Plays");
 					return
 				}
 				var sec_played = time_data.position - playdata.currentItem.lastTime;
@@ -84,7 +82,8 @@
 				}
 				playdata.currentItem.lastTime = time_data.position;
 				playdata.currentItem.lastPercentage = per_played
-			})
+
+ 			})
 		}
 		function loadPlayData() {
 			var load_data = jwplayer.utils.extend({}, playdata.currentItem);
@@ -97,11 +96,12 @@
 					}
 				}
 				trackPlayData(Math.round(load_data.secondsPlayed),per_played);
+				playdata.trackid=0;
 			}
 		}
 		function trackPlayData(secs_played, per_played) {
 			if (!playdata.currentItem.hidden) {
-				MAMSTrackMedia(playdata.trackid,secs_played,per_played);
+				MAMSTrackMedia(playdata.trackid,playdata.itemid,secs_played,per_played);
 			} 
 		}
 		function startTrackData() {
