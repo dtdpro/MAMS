@@ -26,6 +26,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="mue" type="radio" label="COM_MAMS_CONFIG_FIELD_MUE_LABEL" description="COM_MAMS_CONFIG_FIELD_MUE_DESC" default="0">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="except_iplist" type="text" label="COM_MAMS_CONFIG_FIELD_EXCEPTIP_LABEL" description="COM_MAMS_CONFIG_FIELD_EXCEPTIP_DESC" size="70" class="inputbox" required="false" default="" />
 		<field name="except_userlist" type="text" label="COM_MAMS_CONFIG_FIELD_USERID_LABEL" description="COM_MAMS_CONFIG_FIELD_USERID_DESC" size="70" class="inputbox" required="false" default="" />
 	</fieldset>

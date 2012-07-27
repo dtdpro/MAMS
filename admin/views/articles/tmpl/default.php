@@ -137,7 +137,18 @@ $db =& JFactory::getDBO();
 	<fieldset class="batch">
 	<legend><?php echo JText::_('COM_MAMS_ARTICLE_BATCH_OPTIONS');?></legend>
 		<p><?php echo JText::_('COM_MAMS_ARTICLE_BATCH_TIP'); ?></p>
-		<?php echo JHtml::_('batch.access');?>
+		<?php 
+			//Access Level
+			echo JHtml::_('batch.access');
+			
+			//Featured Access Level
+			echo '<br /><br /><br /><label id="batch-feataccess-lbl" for="batch-feataccess" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL_DESC') . '">';
+			echo JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL').'</label>';
+			echo JHtml::_('access.assetgrouplist','batch[featassetgroup_id]', '','class="inputbox"',array('title' => JText::_('JLIB_HTML_BATCH_NOCHANGE'),'id' => 'batch-feataccess'));
+		
+		
+		
+		?>
 		
 	
 		<button type="submit" onclick="Joomla.submitbutton('article.batch');">

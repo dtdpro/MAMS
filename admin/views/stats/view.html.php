@@ -38,7 +38,7 @@ class MAMSViewStats extends JView
 		$this->filter_group = $model->getState('filter.group');
 		
 		$this->config=MAMSHelper::getConfig();
-		if ($this->config->continued) {
+		if ($this->config->continued || $this->config->mue) {
 			$this->grouplist=$this->get('UserGroups');
 		}
 		

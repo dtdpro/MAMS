@@ -42,6 +42,15 @@
 	<administration>
 		<!-- Administration Menu Section -->
 		<menu img="../media/com_mams/images/mams-16x16.png">COM_MAMS_MENU</menu>
+		<submenu>
+			<menu view="articles">COM_MAMS_SUBMENU_ARTICLES</menu>
+			<menu view="secs">COM_MAMS_SUBMENU_SECS</menu>
+			<menu view="cats">COM_MAMS_SUBMENU_CATS</menu>
+			<menu view="medias">COM_MAMS_SUBMENU_MEDIAS</menu>
+			<menu view="auths">COM_MAMS_SUBMENU_AUTHS</menu>
+			<menu view="dloads">COM_MAMS_SUBMENU_DLOADS</menu>
+			<menu view="stats">COM_MAMS_SUBMENU_STATS</menu>
+		</submenu>
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>mams.php</filename>

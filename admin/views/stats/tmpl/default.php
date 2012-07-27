@@ -19,7 +19,7 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 				echo JText::_('Item Type:').JHTML::_('select.genericlist',$typesl,'filter_type','onchange="submitform();"','value','text',$this->filter_type,'filter_type');
             	echo 'Start: '.JHTML::_('calendar',$this->startdate,'startdate','startdate','%Y-%m-%d','onchange="this.form.submit()"');
 				echo ' End: '.JHTML::_('calendar',$this->enddate,'enddate','enddate','%Y-%m-%d','onchange="this.form.submit()"');
-				if ($this->config->continued) {
+				if ($this->config->continued || $this->config->mue) {
 					echo JText::_(' User Group:').JHTML::_('select.genericlist',$this->grouplist,'filter_group','onchange="submitform();"','value','text',$this->filter_group,'filter_group');
 				}
             ?>
@@ -36,7 +36,7 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 			<th><?php echo JText::_( 'When' ); ?></th>
 			<th><?php echo JText::_( 'Who' ); ?></th>
 			<?php 
-				if ($this->config->continued) {
+				if ($this->config->continued || $this->config->mue) {
 					echo '<th>'.JText::_( 'Group' ).'</th>';
 				}
 			?>
@@ -60,7 +60,7 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 					case "article": echo "Article Page"; break;
 					case "author": echo "Author Page"; break;
 					case "catlist": echo "Category Article List"; break;
-					case "seclist": echo "Section Article LIst"; break;
+					case "seclist": echo "Section Article List"; break;
 					case "autlist": echo "Author Article List"; break;
 					case "authors": echo "Authors List"; break;
 					case "dload": echo "Download"; break;	
@@ -72,7 +72,7 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 				echo $row->users_name; 
 			?></td>
 			<?php 
-				if ($this->config->continued) {
+				if ($this->config->continued || $this->config->mue) {
 					echo '<td>'.$row->UserGroup.'</td>';
 				}
 			?>

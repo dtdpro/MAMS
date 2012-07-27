@@ -143,6 +143,16 @@ class MAMSModelStats extends JModelList
 			}
 		}
 		
+		if ($cfg->mue) {
+			$q->select("mueug.ug_name AS UserGroup");
+			$q->join('LEFT', '#__mue_usergroup as mueg ON s.mt_user = mueg.userg_user');
+			$q->join('LEFT', '#__mue_ugroups as mueug ON mueg.userg_group = mueug.ug_id');
+			// Filter by section.
+			if ($ugroup = $this->getState('filter.group')) {
+				$q->where('mueg.userg_group = '.(int) $ugroup);
+			}
+		}
+		
 		$q->where('date(s.mt_time) BETWEEN "'.$startdate.'" AND "'.$enddate.'"');
 		
 		$orderCol = $this->state->get('list.ordering');
@@ -182,7 +192,10 @@ class MAMSModelStats extends JModelList
 	}
 
 	public function getUserGroups() {
-		$q  = 'SELECT ug.ug_name as text,ug.ug_id as value FROM #__ce_ugroups as ug';
+		$cfg = MAMSHelper::getConfig();
+		if ($cfg->continued) { $tbl = '#__ce_ugroups'; }
+		else if ($cfg->mue) { $tbl = '#__mue_ugroups'; }
+		$q  = 'SELECT ug.ug_name as text,ug.ug_id as value FROM '.$tbl.' as ug';
 		$q .= ' ORDER BY ug.ug_name';
 		$this->_db->setQuery($q);
 		$glist = $this->_db->loadObjectList();

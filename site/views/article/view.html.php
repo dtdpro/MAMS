@@ -52,7 +52,8 @@ class MAMSViewArticle extends JView
 			} else {
 				$urlnc = $this->getReturnURL();
 				if ($cfg->continued) $url = JRoute::_('index.php?option=com_continued&view=login&layout=login&return='.$urlnc);
-				else $url = JRoute::_('index.php?option=com_user&view=login&return='.$urlnc);
+				else if ($cfg->mue) $url = JRoute::_('index.php?option=mue&view=login&layout=login&return='.$urlnc);
+				else $url = JRoute::_('index.php?option=com_users&view=login&return='.$urlnc);
 				$app->redirect($url,$cfg->loginmsg);
 			}
 		} else {
