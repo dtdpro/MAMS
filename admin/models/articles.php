@@ -58,6 +58,8 @@ class MAMSModelArticles extends JModelList
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+		$query->select('af.title AS feataccess_level');
+		$query->join('LEFT', '#__viewlevels AS af ON af.id = a.feataccess');
 		
 		// Join over the sections.
 		$query->select('s.sec_name');

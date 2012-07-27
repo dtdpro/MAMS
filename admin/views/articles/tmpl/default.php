@@ -126,7 +126,7 @@ $db =& JFactory::getDBO();
 				<td><?php echo $item->art_added; ?></td>
 				<td><?php echo $item->art_modified; ?></td>
 				<td><?php echo $item->sec_name; ?></td>
-				<td class="center"><?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true); ?></td>
+				<td class="center"><?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true).'<br />'.$item->feataccess_level; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'articles.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
 				
@@ -143,7 +143,7 @@ $db =& JFactory::getDBO();
 		<button type="submit" onclick="Joomla.submitbutton('article.batch');">
 			<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
 		</button>
-		<button type="button" onclick="document.id('batch-category-id').value='';document.id('batch-access').value='';document.id('batch-language-id').value=''">
+		<button type="button" onclick="document.id('batch-access').value='';">
 			<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
 		</button>
 	</fieldset>
