@@ -47,14 +47,14 @@ class MAMSTableArticle extends JTable
 		}
 
 		// check for existing name
-		$query = 'SELECT art_id FROM #__mams_articles WHERE art_title = '.$this->_db->Quote($this->art_title);
+		/*$query = 'SELECT art_id FROM #__mams_articles WHERE art_title = '.$this->_db->Quote($this->art_title);
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());
 		if ($xid && $xid != intval($this->art_id)) {
 			$this->setError(JText::_('COM_MAMS_ERR_TABLES_NAME'));
 			return false;
-		}
+		}*/
 
 		if (empty($this->art_alias)) {
 			$this->art_alias = $this->art_title;

@@ -12,7 +12,7 @@ class MAMSModelArticle extends JModel
 		$cfg = MAMSHelper::getConfig();
 		
 		$alvls = $user->getAuthorisedViewLevels();
-		$alvls[] = $cfg->reggroup;
+		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
@@ -98,7 +98,7 @@ class MAMSModelArticle extends JModel
 		$relatedids = array_unique($relatedids);	
 		
 		$alvls = $user->getAuthorisedViewLevels();
-		$alvls[] = $cfg->reggroup;
+		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -161,7 +161,7 @@ class MAMSModelArticle extends JModel
 		$relatedids = array_unique($relatedids);	
 		
 		$alvls = $user->getAuthorisedViewLevels();
-		$alvls[] = $cfg->reggroup;
+		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		if ($relatedids) {
 			$db =& JFactory::getDBO();

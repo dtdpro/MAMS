@@ -58,7 +58,7 @@ class MAMSModelAuthor extends JModel
 		$cfg = MAMSHelper::getConfig();
 		
 		$alvls = $user->getAuthorisedViewLevels();
-		$alvls[] = $cfg->reggroup;
+		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
@@ -135,7 +135,7 @@ class MAMSModelAuthor extends JModel
 		if (!$pubedids) return false;
 		
 		$alvls = $user->getAuthorisedViewLevels();
-		$alvls[] = $cfg->reggroup;
+		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		$query->select('a.*,c.cat_id,c.cat_name');
 		$query->from('#__ce_courses AS a');

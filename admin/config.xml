@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <config>
- 	<fieldset name="general" label="COM_MAMS_CONFIG_SETTINGS_LABEL" description="COM_MAMS_CONFIG_SETTINGS_DESC">
-		<field name="reggroup" type="accesslevel" id="regaccess" class="inputbox" label="COM_MAMS_CONFIG_FIELD_REGGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_REGGROUP_DESC" default="1" filter="integer"/>
-		<field name="ovgroup" type="accesslevel" id="ovaccess" class="inputbox" label="COM_MAMS_CONFIG_FIELD_OVGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_OVGROUP_DESC" default="1" filter="integer"/>
+ 	<fieldset name="general" label="COM_MAMS_CONFIG_SETTINGS_LABEL" description="COM_MAMS_CONFIG_SETTINGS_DESC" addfieldpath="/administrator/components/com_mams/models/fields">
+		<field name="reggroup" type="AccessLevelMulti" id="regaccess" class="inputbox" label="COM_MAMS_CONFIG_FIELD_REGGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_REGGROUP_DESC" default="1" multiple="true" />
+		<field name="ovgroup" type="accesslevel" id="ovaccess" class="inputbox" label="COM_MAMS_CONFIG_FIELD_OVGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_OVGROUP_DESC" default="1"  />
 		<field name="loginmsg" type="text" label="COM_MAMS_CONFIG_FIELD_LOGINMSG_LABEL" description="COM_MAMS_CONFIG_FIELD_LOGINMSG_DESC" size="70" class="inputbox" required="false" default="Login required" />
 		<field name="num_related" type="text" label="COM_MAMS_CONFIG_FIELD_NUMRELATED_LABEL" description="COM_MAMS_CONFIG_FIELD_NUMRELATED_DESC" size="10" class="inputbox" required="false" default="10" />
 	</fieldset>

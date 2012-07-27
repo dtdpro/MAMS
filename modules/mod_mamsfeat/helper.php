@@ -14,7 +14,7 @@ class modMAMSFeatHelper
 		
 		$alvls = Array();
 		$alvls = $user->getAuthorisedViewLevels();
-		$alvls[] = $cfg->reggroup;
+		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		$query	= $db->getQuery(true);
 
@@ -22,7 +22,7 @@ class modMAMSFeatHelper
 		$query->from('#__mams_artfeat as f');
 		$query->join('LEFT', '#__mams_articles AS a ON a.art_id = f.af_art');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
-		$query->where('a.access IN ('.implode(",",$alvls).')');
+		$query->where('f.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$query->where('a.published >= 1');
 		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
 		$query->order('a.art_published DESC');

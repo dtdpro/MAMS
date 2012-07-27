@@ -33,7 +33,7 @@ class MAMSModelArtList extends JModelList
 		
 		$alvls = Array();
 		$alvls = $user->getAuthorisedViewLevels();
-		$alvls[] = $cfg->reggroup;
+		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
@@ -69,7 +69,7 @@ class MAMSModelArtList extends JModelList
 		
 		$alvls = Array();
 		$alvls = $user->getAuthorisedViewLevels();
-		$alvls[] = $cfg->reggroup;
+		$alvls = array_merge($alvls,$cfg->reggroup);
 				
 		//Get Authors
 		foreach ($items as &$i) {
@@ -143,7 +143,7 @@ class MAMSModelArtList extends JModelList
 		
 		$alvls = Array();
 		$alvls = $user->getAuthorisedViewLevels();
-		$alvls[] = $cfg->reggroup;
+		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		$query->select('a.art_id');
 		$query->from('#__mams_articles AS a');
