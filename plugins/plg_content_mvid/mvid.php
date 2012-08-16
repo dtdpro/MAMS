@@ -57,37 +57,42 @@ class  plgContentMVid extends JPlugin
 			$output .= '<div class="continued-material-media">';
 			$output .= '<div align="center">';
 			if ($media->med_type == 'vid' || $media->med_type == 'vids') { //Video Player
-				$detect_iDevice = strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") || strpos($_SERVER['HTTP_USER_AGENT'],"iPad");
-				if ($detect_iDevice) {
-					//html 5 video, only for iDevices
-					if ($media->med_type == "vid") $output .= '<video src="'.JURI::base( true ).'/'.$media->med_file.'" poster="'.JURI::base( true ).'/'.$media->med_still.'" width="'.$mamscfg->vid_w.'" height="'.$mamscfg->vid_h.'" controls preload></video>';
-					if ($media->med_type == "vids") $output .= '<video src="http://'.$mamscfg->vids_url.':1935/'.$mamscfg->vids_app.'/'.'/mp4:'.urlencode($media->med_file).'/playlist.m3u8" poster="'.JURI::base( true ).'/'.$media->med_still.'" width="'.$mamscfg->vid_w.'" height="'.$mamscfg->vid_h.'" controls preload></video>';
-				} else {
-					//flash player
-					$output .= '<div id="mediaspace"></div>'."\n";
-					$output .= "<script type='text/javascript'>"."\n";
-					$output .= "jwplayer('mediaspace').setup({"."\n";
-					$output .= "'flashplayer': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
-					if ($media->med_type == "vid") $output .= "'file': '".JURI::base( true ).'/'.$media->med_file."',"."\n";
-					if ($media->med_type == "vids") {
-						$output .= "'provider': 'rtmp',"."\n";
-						$output .= "'streamer': 'rtmp://".$mamscfg->vids_url.'/'.$mamscfg->vids_app.'/'."',"."\n";
-						$output .= "'file':'mp4:".$media->med_file."',"."\n";
-					}
-					$output .= "'image': '".JURI::base( true ).'/'.$media->med_still."',"."\n";
-					$output .= "'frontcolor': '000000',"."\n";
-					$output .= "'lightcolor': 'cc9900',"."\n";
-					$output .= "'screencolor': '000000',"."\n";
-					$output .= "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow.zip',"."\n";
-					$output .= "'controlbar': 'bottom',"."\n";
-					$output .= "'width': '".$mamscfg->vid_w."',"."\n";
-					$output .= "'height': '".((int)$mamscfg->vid_h+30)."'";
-					$output .= ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {'itemid':".$media->med_id."}";
-					if ($mamscfg->gapro)	$output .= ",'gapro-2': {}";
-					$output .= "}"."\n";
-					$output .= "});"."\n";
-					$output .= "</script>"."\n";
-				}
+				//flash player
+				echo '<div id="mediaspace"></div>'."\n";
+				echo "<script type='text/javascript'>"."\n";
+				echo "jwplayer('mediaspace').setup({"."\n";
+		 		if ($media->med_type == "vid") {
+		   			echo "'flashplayer': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
+		 			echo "'file': '".JURI::base( true ).'/'.$media->med_file."',"."\n";
+		 		}
+		 		if ($media->med_type == "vids") {
+		 			echo "'modes':[";
+		 			echo "{ type: 'flash',\n";
+		   			echo "'src': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
+		 			echo "'config':{\n";
+		   			echo "'provider': 'rtmp',"."\n";
+		 			echo "'streamer': 'rtmp://".$mamscfg->vids_url.'/'.$mamscfg->vids_app.'/'."',"."\n";
+		 			echo "'file':'mp4:".$media->med_file."',"."\n";
+		 			echo "}},\n";
+		 			echo "{ type: 'html5',\n";
+		 			echo "'config':{\n";
+		 			echo "'file':'http://".$mamscfg->vid5_url."/".$media->med_file."',"."\n";
+		 			echo "}}\n";
+		 			echo "],\n";
+		 		}
+				echo "'image': '".JURI::base( true ).'/'.$media->med_still."',"."\n";
+				echo "'frontcolor': '000000',"."\n";
+				echo "'lightcolor': 'cc9900',"."\n";
+				echo "'screencolor': '000000',"."\n";
+				echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow.zip',"."\n";
+				echo "'controlbar': 'bottom',"."\n";
+				echo "'width': '".$mamscfg->vid_w."',"."\n";
+				echo "'height': '".((int)$mamscfg->vid_h+30)."'";
+				echo ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {'itemid':".$media->med_id."}";
+				if ($mamscfg->gapro)	echo ",'gapro-2': {}";
+				echo "}"."\n";
+				echo "});"."\n";
+				echo "</script>"."\n";
 			}
 			if ($media->med_type == 'aud') { //Audio Player
 				$output .= '<div id="mediaspace"></div>'."\n";
