@@ -58,41 +58,41 @@ class  plgContentMVid extends JPlugin
 			$output .= '<div align="center">';
 			if ($media->med_type == 'vid' || $media->med_type == 'vids') { //Video Player
 				//flash player
-				echo '<div id="mediaspace"></div>'."\n";
-				echo "<script type='text/javascript'>"."\n";
-				echo "jwplayer('mediaspace').setup({"."\n";
+				$output .= '<div id="mediaspace"></div>'."\n";
+				$output .= "<script type='text/javascript'>"."\n";
+				$output .= "jwplayer('mediaspace').setup({"."\n";
 		 		if ($media->med_type == "vid") {
-		   			echo "'flashplayer': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
-		 			echo "'file': '".JURI::base( true ).'/'.$media->med_file."',"."\n";
+		   			$output .= "'flashplayer': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
+		 			$output .= "'file': '".JURI::base( true ).'/'.$media->med_file."',"."\n";
 		 		}
 		 		if ($media->med_type == "vids") {
-		 			echo "'modes':[";
-		 			echo "{ type: 'flash',\n";
-		   			echo "'src': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
-		 			echo "'config':{\n";
-		   			echo "'provider': 'rtmp',"."\n";
-		 			echo "'streamer': 'rtmp://".$mamscfg->vids_url.'/'.$mamscfg->vids_app.'/'."',"."\n";
-		 			echo "'file':'mp4:".$media->med_file."',"."\n";
-		 			echo "}},\n";
-		 			echo "{ type: 'html5',\n";
-		 			echo "'config':{\n";
-		 			echo "'file':'http://".$mamscfg->vid5_url."/".$media->med_file."',"."\n";
-		 			echo "}}\n";
-		 			echo "],\n";
+		 			$output .= "'modes':[";
+		 			$output .= "{ type: 'flash',\n";
+		   			$output .= "'src': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
+		 			$output .= "'config':{\n";
+		   			$output .= "'provider': 'rtmp',"."\n";
+		 			$output .= "'streamer': 'rtmp://".$mamscfg->vids_url.'/'.$mamscfg->vids_app.'/'."',"."\n";
+		 			$output .= "'file':'mp4:".$media->med_file."',"."\n";
+		 			$output .= "}},\n";
+		 			$output .= "{ type: 'html5',\n";
+		 			$output .= "'config':{\n";
+		 			$output .= "'file':'http://".$mamscfg->vid5_url."/".$media->med_file."',"."\n";
+		 			$output .= "}}\n";
+		 			$output .= "],\n";
 		 		}
-				echo "'image': '".JURI::base( true ).'/'.$media->med_still."',"."\n";
-				echo "'frontcolor': '000000',"."\n";
-				echo "'lightcolor': 'cc9900',"."\n";
-				echo "'screencolor': '000000',"."\n";
-				echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow.zip',"."\n";
-				echo "'controlbar': 'bottom',"."\n";
-				echo "'width': '".$mamscfg->vid_w."',"."\n";
-				echo "'height': '".((int)$mamscfg->vid_h+30)."'";
-				echo ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {'itemid':".$media->med_id."}";
-				if ($mamscfg->gapro)	echo ",'gapro-2': {}";
-				echo "}"."\n";
-				echo "});"."\n";
-				echo "</script>"."\n";
+				$output .= "'image': '".JURI::base( true ).'/'.$media->med_still."',"."\n";
+				$output .= "'frontcolor': '000000',"."\n";
+				$output .= "'lightcolor': 'cc9900',"."\n";
+				$output .= "'screencolor': '000000',"."\n";
+				$output .= "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow.zip',"."\n";
+				$output .= "'controlbar': 'bottom',"."\n";
+				$output .= "'width': '".$mamscfg->vid_w."',"."\n";
+				$output .= "'height': '".((int)$mamscfg->vid_h+30)."'";
+				$output .= ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {'itemid':".$media->med_id."}";
+				if ($mamscfg->gapro)	$output .= ",'gapro-2': {}";
+				$output .= "}"."\n";
+				$output .= "});"."\n";
+				$output .= "</script>"."\n";
 			}
 			if ($media->med_type == 'aud') { //Audio Player
 				$output .= '<div id="mediaspace"></div>'."\n";
