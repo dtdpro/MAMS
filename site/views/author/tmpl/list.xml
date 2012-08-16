@@ -3,11 +3,14 @@
 	<layout title="MAMS Author List">
 		<message>Author List</message>
 	</layout>
-	<fields name="params">
-
-	<!-- Basic options. -->
-		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL" addfieldpath="administrator/components/com_mams/models/fields">
+	<fields name="request" addfieldpath="administrator/components/com_mams/models/fields">
+		<fieldset name="request">
 			<field name="secid" type="AuthorSecs" description="COM_MAMS_FIELD_SELECT_SEC_DESC" label="COM_MAMS_FIELD_SELECT_SEC_LABEL" required="false" />
+		</fieldset>
+	</fields>
+	
+	<fields name="params">
+		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
 			<field name="show_cred" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHCRED_DESC" label="COM_MAMS_FIELD_SHOW_AUTHCRED_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>

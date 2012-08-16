@@ -44,21 +44,33 @@ if ($this->article->media) {
 		echo '<div align="center">';
 		if ($this->article->media[0]->med_type == 'vid' || $this->article->media[0]->med_type == 'vids') { //Video Player
 			$detect_iDevice = strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") || strpos($_SERVER['HTTP_USER_AGENT'],"iPad");
-			if ($detect_iDevice) {
+			/*if ($detect_iDevice) {
 				//html 5 video, only for iDevices
 				if ($this->article->media[0]->med_type == "vid") echo '<video src="'.JURI::base( true ).'/'.$this->article->media[0]->med_file.'" poster="'.JURI::base( true ).'/'.$this->article->media[0]->med_still.'" width="'.$config->vid_w.'" height="'.$config->vid_h.'" controls preload></video>';
 		 		if ($this->article->media[0]->med_type == "vids") echo '<video src="http://'.$config->vids_url.':1935/'.$config->vids_app.'/'.'/mp4:'.urlencode($this->article->media[0]->med_file).'/playlist.m3u8" poster="'.JURI::base( true ).'/'.$this->article->media[0]->med_still.'" width="'.$config->vid_w.'" height="'.$config->vid_h.'" controls preload></video>';
-			} else {
+			} else {*/
 				//flash player
 				echo '<div id="mediaspace"></div>'."\n";
 				echo "<script type='text/javascript'>"."\n";
 				echo "jwplayer('mediaspace').setup({"."\n";
-		   		echo "'flashplayer': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
-		 		if ($this->article->media[0]->med_type == "vid") echo "'file': '".JURI::base( true ).'/'.$this->article->media[0]->med_file."',"."\n";
+		 		if ($this->article->media[0]->med_type == "vid") {
+		   			echo "'flashplayer': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
+		 			echo "'file': '".JURI::base( true ).'/'.$this->article->media[0]->med_file."',"."\n";
+		 		}
 		 		if ($this->article->media[0]->med_type == "vids") {
-		 			echo "'provider': 'rtmp',"."\n";
+		 			echo "'modes':[";
+		 			echo "{ type: 'flash',\n";
+		   			echo "'src': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
+		 			echo "'config':{\n";
+		   			echo "'provider': 'rtmp',"."\n";
 		 			echo "'streamer': 'rtmp://".$config->vids_url.'/'.$config->vids_app.'/'."',"."\n";
 		 			echo "'file':'mp4:".$this->article->media[0]->med_file."',"."\n";
+		 			echo "}},\n";
+		 			echo "{ type: 'html5',\n";
+		 			echo "'config':{\n";
+		 			echo "'file':'http://".$config->vids_url."/".$this->article->media[0]->med_file."',"."\n";
+		 			echo "}}\n";
+		 			echo "],\n";
 		 		}
 				echo "'image': '".JURI::base( true ).'/'.$this->article->media[0]->med_still."',"."\n";
 				echo "'frontcolor': '000000',"."\n";
@@ -73,7 +85,7 @@ if ($this->article->media) {
 				echo "}"."\n";
 				echo "});"."\n";
 				echo "</script>"."\n";
-			}
+			//}
 		}
 		if ($this->article->media[0]->med_type == 'aud') { //Audio Player
 			echo '<div id="mediaspace"></div>'."\n";
@@ -115,7 +127,7 @@ if ($this->article->auts) {
 	echo '<div class="mams-article-auths">';
 		foreach ($this->article->auts as $f) {
 			echo '<div class="mams-article-auth">';
-			echo '<strong><a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" ';
+			echo '<strong><a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" ';
 			echo 'class="mams-article-autlink">';
 			echo $f->auth_name;
 			echo '</a></strong><br />'.$f->auth_credentials;

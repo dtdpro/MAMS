@@ -30,6 +30,9 @@ class MAMSViewAuthor extends JView
 		$layout = $this->getLayout();
 		$app = JFactory::getApplication();
 		$this->params = $app->getParams();
+		$aut=JRequest::getInt('autid',0);
+		
+		if ($aut) { $layout="default"; $this->setLayout('default;'); }
 		
 		switch($layout) {
 			case "default": 

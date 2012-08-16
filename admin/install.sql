@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS #__mams_articles (
   art_hits int(11) NOT NULL,
   art_show_related tinyint(1) NOT NULL DEFAULT '1',
   access int(11) NOT NULL,
+  feataccess int(11) NOT NULL,
   published int(11) NOT NULL,
   PRIMARY KEY (art_id),
   KEY art_title (art_title)

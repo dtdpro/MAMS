@@ -40,6 +40,10 @@
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
+				<field name="link_pubinfo" type="radio" description="MOD_MAMSFEAT_LINK_PUBINFO_DESC" label="MOD_MAMSFEAT_LINK_PUBINFO_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

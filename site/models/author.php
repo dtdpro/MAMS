@@ -74,7 +74,7 @@ class MAMSModelAuthor extends JModel
 		//Get Authors
 		foreach ($items as &$i) {
 			$qa=$db->getQuery(true);
-			$qa->select('a.auth_id,a.auth_name,a.auth_alias');
+			$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_sec');
 			$qa->from('#__mams_artauth as aa');
 			$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 			$qa->where('aa.published >= 1');
@@ -151,7 +151,7 @@ class MAMSModelAuthor extends JModel
 		//Get Authors
 		foreach ($items as &$i) {
 			$qa=$db->getQuery(true);
-			$qa->select('a.auth_id,a.auth_name,a.auth_alias');
+			$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_sec');
 			$qa->from('#__ce_courseauth as ca');
 			$qa->join('RIGHT','#__mams_authors AS a ON ca.ca_auth = a.auth_id');
 			$qa->where('ca.published >= 1');

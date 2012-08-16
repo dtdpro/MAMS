@@ -10,14 +10,14 @@ foreach ($articles as $a) {
 	echo '<span class="mams-featmod-title">';
 	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
 	echo $a->art_title;
-	echo '</a></span><br />';
+	echo '</a></span>';
 	if ($a->auts) {
 		$auts = Array();
 		foreach ($a->auts as $f) {
-			//$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_name.'</a>';
-			$auts[]=$f->auth_name;
+			if ($params->get('link_pubinfo',0)) $auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_name.'</a>';
+			else $auts[]=$f->auth_name;
 		}
-		echo '<span class="mams-featmod-author">';
+		echo '<br /><span class="mams-featmod-author">';
 		echo implode(", ",$auts);
 		echo '</span>';
 	}
@@ -27,9 +27,9 @@ foreach ($articles as $a) {
 		if ($params->get('show_pubsec',1)) {
 			
 			echo '<span class="mams-featmod-sec">';
-			//echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$a->sec_id.":".$a->sec_alias).'" class="mams-artlist-seclink">';
+			if ($params->get('link_pubinfo',0)) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$a->sec_id.":".$a->sec_alias).'" class="mams-artlist-seclink">';
 			echo '<em>'.$a->sec_name.'</em>';
-			//echo '</a>';
+			if ($params->get('link_pubinfo',0)) echo '</a>';
 			echo '</span>';
 		}
 		
@@ -52,8 +52,8 @@ foreach ($articles as $a) {
 			}
 			$cats = Array();
 			foreach ($a->cats as $c) {
-				//$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
-				$cats[]=$c->cat_title;
+				if ($params->get('link_pubinfo',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
+				else $cats[]=$c->cat_title;
 			}
 			echo implode(", ",$cats);
 			echo '</em>';

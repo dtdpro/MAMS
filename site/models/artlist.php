@@ -74,7 +74,7 @@ class MAMSModelArtList extends JModelList
 		//Get Authors
 		foreach ($items as &$i) {
 			$qa=$db->getQuery(true);
-			$qa->select('a.auth_id,a.auth_name,a.auth_alias');
+			$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_sec');
 			$qa->from('#__mams_artauth as aa');
 			$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 			$qa->where('aa.published >= 1');

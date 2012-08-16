@@ -10,154 +10,157 @@ jimport('joomla.application.categories');
 
 function MAMSBuildRoute(&$query)
 {
-	$segments	= array();
-
-	// get a menu item based on Itemid or currently active
-	$app		= JFactory::getApplication();
-	$menu		= $app->getMenu();
-	$params		= JComponentHelper::getParams('com_mams');
-	$advanced	= $params->get('sef_advanced_link', 0);
-
-	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
-	if (empty($query['Itemid'])) {
-		$menuItem = $menu->getActive();
-		$menuItemGiven = false;
-	}
-	else {
-		$menuItem = $menu->getItem($query['Itemid']);
-		$menuItemGiven = true;
-	}
-
+	$items = Array();
+	$default = 0;
+	$foundart = 0;
+	$foundsec = 0;
+	$foundcat = 0;
+	$foundcatsec = 0;
+	$foundaut = 0;
+	$segments = array();
+	$app = JFactory::getApplication();
+	$menu	= $app->getMenu();
+	$items	= $menu->getItems('component', 'com_mams');
+	
 	if (isset($query['view'])) {
 		$view = $query['view'];
 	}
-	else {
-		// we need to have a view in the query or it is an invalid URL
-		return $segments;
+	
+	foreach ($items as $mi) {
+		if (!empty($mi->query['artid']) && ((int)$mi->query['artid'] == (int)$query['artid'])) {
+			$foundart = $mi->id;
+		}
+		if (!empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
+			$foundsec = $mi->id;
+		}
+		if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid'])) {
+			$foundcat = $mi->id;
+		}
+		if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
+			$foundcatsec = $mi->id;
+		}
+		if (!empty($mi->query['autid']) && ((int)$mi->query['autid'] == (int)$query['autid'])) {
+			$foundaut = $mi->id;
+		}
 	}
 	
-	if (isset($query['layout'])) {
-		$layout = $query['layout'];
-	} else {
-		$layout = 'default';
-	}
-
-	// are we dealing with an article or category that is attached to a menu item?
-	if (($menuItem instanceof stdClass) && $menuItem->query['view'] == $query['view'] && isset($query['artid']) && $menuItem->query['artid'] == intval($query['artid'])) {
-		unset($query['view']);
-
-		if (isset($query['secid'])) {
-			unset($query['secid']);
+	$default = $query['Itemid'];
+	
+	if ($view == 'article') {
+		if ($foundart) {
+			$query['Itemid'] = $foundart;
+			unset ($query['artid']);
+			unset ($query['view']);
+			unset ($query['secid']);
+		} else if ($foundsec) {
+			$query['Itemid'] = $foundsec;
+			unset ($query['view']);
+			unset ($query['secid']);
+			if (strpos($query['artid'], ':') === false) {
+				$db = JFactory::getDbo();
+				$aquery = $db->setQuery($db->getQuery(true)
+					->select('art_alias')
+					->from('#__mams_articles')
+					->where('art_id='.(int)$query['artid'])
+				);
+				$alias = $db->loadResult();
+				$query['artid'] = $query['artid'].':'.$alias;
+			}
+			$segments[] = $query['artid'];
+			unset ($query['artid']);
+			
+		} else {
+			$query['Itemid'] = $default;
 		}
-
-		unset($query['artid']);
-
-		return $segments;
 	}
-
-	if ($view == 'artlist' || $view == 'article' || $view=='author')
-	{
-		if (!$menuItemGiven) {
-			$segments[] = $view;
-		}
-
-		unset($query['view']);
-
-		if ($view == 'article') {
-			if (isset($query['artid']) && isset($query['secid']) && $query['secid']) {
-				$secid = $query['secid'];
-				// Make sure we have the id and the alias
-				if (strpos($query['artid'], ':') === false) {
+	
+	if ($view == 'artlist') {
+		if ($foundaut) {
+			$query['Itemid'] = $foundaut;
+			unset ($query['view']);
+			unset ($query['autid']);
+			unset ($query['layout']);
+		} elseif ($foundcatsec) {
+			$query['Itemid'] = $foundcatsec;
+			unset ($query['view']);
+			unset ($query['catid']);
+			unset ($query['secid']);
+			unset ($query['layout']);
+		} elseif ($foundcat) {
+			$query['Itemid'] = $foundcat;
+			unset ($query['view']);
+			unset ($query['catid']);
+			unset ($query['secid']);
+			unset ($query['layout']);
+		} elseif ($foundsec) {
+			$query['Itemid'] = $foundsec;
+			unset ($query['view']);
+			unset ($query['layout']);
+			if (isset($query['catid'])) {
+				if (strpos($query['secid'], ':') === false) {
 					$db = JFactory::getDbo();
 					$aquery = $db->setQuery($db->getQuery(true)
-						->select('art_alias')
-						->from('#__mams_articles')
-						->where('artid='.(int)$query['artid'])
+							->select('sec_alias')
+							->from('#__mams_secs')
+							->where('sec_id='.(int)$query['secid'])
 					);
 					$alias = $db->loadResult();
-					$query['artid'] = $query['artid'].':'.$alias;
+					$query['secid'] = $query['secid'].':'.$alias;
 				}
-			} else {
-				// we should have these two set for this view.  If we don't, it is an error
-				return $segments;
-			}
-		}
-		else if ($view == 'artlist') {
-			if (isset($query['secid'])) {
-				$secid = $query['secid'];
-				if ($layout == 'author') {
-					$autid = $query['autid'];
+				$segments[] = $query['secid'];
+				unset ($query['secid']);
+				if (strpos($query['catid'], ':') === false) {
+					$db = JFactory::getDbo();
+					$aquery = $db->setQuery($db->getQuery(true)
+							->select('cat_alias')
+							->from('#__mams_cats')
+							->where('cat_id='.(int)$query['catid'])
+					);
+					$alias = $db->loadResult();
+					$query['catid'] = $query['catid'].':'.$alias;
 				}
-				if ($layout == 'category') {
-					$catid = $query['catid'];
-				}
+				$segments[] = $query['catid'];
+				unset ($query['catid']);
 			} else {
-				// we should have id set for this view.  If we don't, it is an error
-				return $segments;
+				unset ($query['secid']);
 			}
-		}
-		
-		if ($view == 'author') {
-			if (isset($query['autid'])) {
-				$secid = $query['autid'];
-				unset($query['autid']);
-			} else {
-				// we should have id set for this view.  If we don't, it is an error
-				return $segments;
-			}
-		}
-
-		if ($menuItemGiven && isset($menuItem->query['secid'])) {
-			$mSecid = $menuItem->query['secid'];
 		} else {
-			$mSecid = 0;
-		}
-
-		
-		$segments[] = $secid;
-
-		if ($view == 'article') {
-			if ($advanced) {
-				list($tmp, $id) = explode(':', $query['artid'], 2);
-			}
-			else {
-				$id = $query['artid'];
-			}
-			$segments[] = $id;
-		}
-		if ($view == 'artlist') {
-			if ($layout == 'author') {
-				$segments[] = $autid;
-				unset($query['autid']);
-				unset($query['layout']);
-			}
-			if ($layout == 'category') {
-				$segments[] = $catid;
-				unset($query['catid']);
-				unset($query['layout']);
-			}
-		}
-		unset($query['artid']);
-		unset($query['secid']);
-	}
-
-	// if the layout is specified and it is the same as the layout in the menu item, we
-	// unset it so it doesn't go into the query string.
-	if (isset($query['layout'])) {
-		if ($menuItemGiven && isset($menuItem->query['layout'])) {
-			if ($query['layout'] == $menuItem->query['layout']) {
-
-				unset($query['layout']);
-			}
-		}
-		else {
-			if ($query['layout'] == 'default') {
-				unset($query['layout']);
-			}
+			$query['Itemid'] = $default;
 		}
 	}
-
+	
+	if ($view == 'author') {
+		if ($foundaut) {
+			$query['Itemid'] = $foundaut;
+			unset ($query['view']);
+			unset ($query['autid']);
+			unset ($query['secid']);
+		} else if ($foundsec) {
+			$query['Itemid'] = $foundsec;
+			unset ($query['view']);
+			unset ($query['secid']);
+			if (strpos($query['autid'], ':') === false) {
+				$db = JFactory::getDbo();
+				$aquery = $db->setQuery($db->getQuery(true)
+					->select('auth_alias')
+					->from('#__mams_authors')
+					->where('auth_id='.(int)$query['artid'])
+				);
+				$alias = $db->loadResult();
+				$query['artid'] = $query['artid'].':'.$alias;
+			}
+			$segments[] = $query['autid'];
+			unset ($query['autid']);
+		} else {
+			$query['Itemid'] = $default;
+		}
+	}
+	
+	
+	
+	
 	return $segments;
+	
 }
 
 
@@ -173,7 +176,7 @@ function MAMSBuildRoute(&$query)
 function MAMSParseRoute($segments)
 {
 	$vars = array();
-
+	
 	//Get the active menu item.
 	$app	= JFactory::getApplication();
 	$menu	= $app->getMenu();
@@ -240,6 +243,18 @@ function MAMSParseRoute($segments)
 					$vars['view'] = 'author';
 					$vars['autid'] = (int)$id;
 					return $vars;
+				} else {
+					// check for category
+					$query = 'SELECT cat_alias, cat_id FROM #__mams_cats WHERE cat_id = '.(int)$id;
+					$db->setQuery($query);
+					$cat = $db->loadObject();
+					
+					if ($cat && $cat->cat_alias == $alias) {
+						$vars['view'] = 'artlist';
+						$vars['layout'] = 'category';
+						$vars['catid'] = (int)$id;
+						return $vars;
+					}
 				}
 				
 			}
@@ -264,6 +279,7 @@ function MAMSParseRoute($segments)
 				$vars['view'] = 'artlist';
 				$vars['layout'] = 'category';
 				$vars['catid'] = $id;
+				$vars['secid'] = $sec_id;
 	
 				return $vars;
 			} else {
