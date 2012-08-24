@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted Access');
 // load tooltip behavior
 JHtml::_('behavior.tooltip');
 
-$function	= JRequest::getCmd('function', 'jSelectArticle');
+$function	= JRequest::getCmd('function', 'jSelectMAMSArticle');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
@@ -68,7 +68,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<td><?php echo $item->art_id; ?></td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->art_id); ?></td>
 				<td>
-					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->art_id; ?>', '<?php echo $this->escape(addslashes($item->art_title)); ?>');">
+					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->art_id.':'.$item->art_alias; ?>', '<?php echo $this->escape(addslashes($item->art_title)); ?>','<?php echo $item->art_sec.':'.$item->sec_alias; ?>');">
 						<?php echo $this->escape($item->art_title); ?></a>
 				</td>
 				<td><?php echo $item->art_published; ?></td>

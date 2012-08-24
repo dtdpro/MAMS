@@ -62,7 +62,7 @@ class MAMSModelArticles extends JModelList
 		$query->join('LEFT', '#__viewlevels AS af ON af.id = a.feataccess');
 		
 		// Join over the sections.
-		$query->select('s.sec_name');
+		$query->select('s.sec_name,s.sec_alias');
 		$query->join('LEFT', '#__mams_secs AS s ON s.sec_id = a.art_sec');
 		
 		

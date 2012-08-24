@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="editors-xtd" method="upgrade">
-	<name>plg_editors-xtd_mamsdload</name>
+	<name>plg_editors-xtd_mamsarticle</name>
 	<author>DtD Productions</author>
-	<creationDate>June 2012</creationDate>
+	<creationDate>August 2012</creationDate>
 	<copyright>Copyright (C) 2012 DtD Productions. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
 	<version>1.0.0</version>
-	<description>PLG_MAMSDLOAD_XML_DESCRIPTION</description>
+	<description>PLG_MAMARTICLE_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="mamsdload">mamsdload.php</filename>
+		<filename plugin="mamsarticle">mamsarticle.php</filename>
 		<filename>index.html</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_editors-xtd_mamsdload.ini</language>
-		<language tag="en-GB">en-GB.plg_editors-xtd_mamsdload.sys.ini</language>
+		<language tag="en-GB">en-GB.plg_editors-xtd_mamsarticle.ini</language>
+		<language tag="en-GB">en-GB.plg_editors-xtd_mamsarticle.sys.ini</language>
 	</languages>
 </extension>

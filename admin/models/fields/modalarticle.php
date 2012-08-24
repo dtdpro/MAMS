@@ -16,7 +16,7 @@ class JFormFieldModalArticle extends JFormField
 
 		// Build the script.
 		$script = array();
-		$script[] = '	function jSelectArticle_'.$this->id.'(id, name) {';
+		$script[] = '	function jSelectMAMSArticle_'.$this->id.'(id, name,sec) {';
 		$script[] = '		document.id("'.$this->id.'_id").value = id;';
 		$script[] = '		document.id("'.$this->id.'_name").value = name;';
 		$script[] = '		SqueezeBox.close();';
@@ -53,7 +53,7 @@ class JFormFieldModalArticle extends JFormField
 			$title = JText::_('COM_MAMS_SELECT_ARTICLE');
 		}
 
-		$link = 'index.php?option=com_mams&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;function=jSelectArticle_'.$this->id;
+		$link = 'index.php?option=com_mams&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;function=jSelectMAMSArticle_'.$this->id;
 
 		JHtml::_('behavior.modal', 'a.modal');
 		$html = "\n".'<div class="fltlft"><input type="text" id="'.$this->id.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
