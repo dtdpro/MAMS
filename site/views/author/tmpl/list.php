@@ -19,7 +19,7 @@ if ($this->autlist) {
 								echo ' src="'.$f->auth_image.'" ';
 								echo 'align="left" /></div>';
 							}
-							echo '<div class="mams-author-authname"><a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" ';
+							echo '<div class="mams-author-authname"><a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec.":".$f->sec_alias."&autid=".$f->auth_id.":".$f->auth_alias).'" ';
 							echo 'class="mams-article-autlink">';
 							echo $f->auth_name;
 							echo '</a></div>';

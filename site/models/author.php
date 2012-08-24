@@ -26,7 +26,7 @@ class MAMSModelAuthor extends JModel
 		$qsec = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
-		$qsec->select('sec_id, sec_name');
+		$qsec->select('sec_id, sec_name, sec_alias');
 		$qsec->from('#__mams_secs');
 		$qsec->where('sec_type = "author"');
 		if ($secid) $qsec->where('sec_id = '.$secid);
