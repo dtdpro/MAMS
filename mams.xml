@@ -7,7 +7,7 @@
 	<authorUrl>http://www.dtdpro.com</authorUrl>
 	<copyright>Copyright 2012 DtD Productions</copyright>
 	<license>GPL v2</license>
-	<version>1.3.2</version>
+	<version>1.3.3</version>
 	<releaseDate>2012.08.23</releaseDate>
 	<releaseType>Update</releaseType>
 	<downloadUrl>http://www.dtdpro.com/</downloadUrl>
@@ -46,9 +46,9 @@
 			<menu view="articles">COM_MAMS_SUBMENU_ARTICLES</menu>
 			<menu view="secs">COM_MAMS_SUBMENU_SECS</menu>
 			<menu view="cats">COM_MAMS_SUBMENU_CATS</menu>
-			<menu view="medias">COM_MAMS_SUBMENU_MEDIAS</menu>
 			<menu view="auths">COM_MAMS_SUBMENU_AUTHS</menu>
-			<menu view="dloads">COM_MAMS_SUBMENU_DLOADS</menu>
+			<menu link="option=com_mams&amp;view=medias&amp;extension=com_mams">COM_MAMS_SUBMENU_MEDIAS</menu>
+			<menu link="option=com_mams&amp;view=dloads&amp;extension=com_mams">COM_MAMS_SUBMENU_DLOADS</menu>
 			<menu view="stats">COM_MAMS_SUBMENU_STATS</menu>
 		</submenu>
 		<files folder="admin">
