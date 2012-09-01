@@ -12,6 +12,7 @@ class MAMSModelArticles extends JModelList
 		
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
+				'art_id', 'a.art_id',
 				'art_added', 'a.art_added',
 				'art_modified', 'a.art_modified',
 				'art_published', 'a.art_published',

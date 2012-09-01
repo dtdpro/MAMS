@@ -51,12 +51,12 @@ abstract class MAMSHelper
 		}
 	}
 	
-	static function getSections()
+	static function getSections($type = "article")
 	{
 		$db = JFactory::getDbo();
 		$db->setQuery(
 			'SELECT sec_id AS value, sec_name AS text' .
-			' FROM #__mams_secs' .
+			' FROM #__mams_secs WHERE sec_type = "'.$type.'" ' .
 			' ORDER BY sec_name'
 		);
 		$options = $db->loadObjectList();

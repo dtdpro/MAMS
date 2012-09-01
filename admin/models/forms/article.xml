@@ -135,7 +135,6 @@
 			class="inputbox"
 			required="false"
 			filter="raw"
-			buttons="false"
 		/>
 	</fieldset>
 </form>

@@ -23,7 +23,7 @@ $db =& JFactory::getDBO();
 		<div class="filter-select fltrt">
 			<select name="filter_sec" class="inputbox" onchange="this.form.submit()">
 				<option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
-				<?php echo JHtml::_('select.options', MAMSHelper::getSections(), 'value', 'text', $this->state->get('filter.sec'));?>
+				<?php echo JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', $this->state->get('filter.sec'));?>
 			</select>
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
@@ -43,7 +43,7 @@ $db =& JFactory::getDBO();
 		<thead>
 			<tr>
 				<th width="5">
-					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_ID'); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_ID','a.art_id', $listDirn, $listOrder); ?>
 				</th>
 				<th width="20">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
@@ -146,11 +146,16 @@ $db =& JFactory::getDBO();
 			echo JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL').'</label>';
 			echo JHtml::_('access.assetgrouplist','batch[featassetgroup_id]', '','class="inputbox"',array('title' => JText::_('JLIB_HTML_BATCH_NOCHANGE'),'id' => 'batch-feataccess'));
 		
-		
-		
+		echo '<br /><br /><br /><label id="batch-section-lbl" for="batch-section" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL_DESC') . '">';
+		echo JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL').'</label>';
+			
+		//Section
 		?>
-		
-	
+		<select name="batch[featsection_id]" class="inputbox">
+			<option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
+			<?php echo JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', "");?>
+		</select>
+	<br />
 		<button type="submit" onclick="Joomla.submitbutton('article.batch');">
 			<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
 		</button>

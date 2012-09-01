@@ -315,6 +315,16 @@ class MAMSModelArticle extends JModelAdmin
 			$done = true;
 		}
 	
+		if (!empty($commands['featsection_id']))
+		{
+			if (!$this->batchSection($commands['featsection_id'], $pks, $contexts))
+			{
+				return false;
+			}
+	
+			$done = true;
+		}
+	
 		if (!$done)
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
@@ -351,6 +361,62 @@ class MAMSModelArticle extends JModelAdmin
 				$table->reset();
 				$table->load($pk);
 				$table->feataccess = (int) $value;
+	
+				if (!$table->check())
+				{
+					$this->setError($table->getError());
+					return false;
+				}
+	
+				if (!$table->store())
+				{
+					$this->setError($table->getError());
+					return false;
+				}
+			}
+			else
+			{
+				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				return false;
+			}
+		}
+	
+		// Clean the cache
+		$this->cleanCache();
+	
+		return true;
+	}
+	
+	/**
+	 * Batch section changes for a group of rows.
+	 *
+	 * @param   integer  $value     The new value matching an Asset Group ID.
+	 * @param   array    $pks       An array of row IDs.
+	 * @param   array    $contexts  An array of item contexts.
+	 *
+	 * @return  boolean  True if successful, false otherwise and internal error is set.
+	 *
+	 * @since   11.1
+	 */
+	protected function batchSection($value, $pks, $contexts)
+	{
+		// Set the variables
+		$user = JFactory::getUser();
+		$table = $this->getTable();
+	
+		foreach ($pks as $pk)
+		{
+			if ($user->authorise('core.edit', $contexts[$pk]))
+			{
+				$table->reset();
+				$table->load($pk);
+				$table->art_sec = (int) $value;
+	
+				if (!$table->check())
+				{
+					$this->setError($table->getError());
+					return false;
+				}
 	
 				if (!$table->store())
 				{

@@ -63,7 +63,7 @@ class MAMSViewSec extends JView
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->sec_id == 0;
-		JToolBarHelper::title($isNew ? JText::_('COM_MAMS_MANAGER_CAT_NEW') : JText::_('COM_MAMS_MANAGER_SEC_EDIT'), 'mams');
+		JToolBarHelper::title($isNew ? JText::_('COM_MAMS_MANAGER_SEC_NEW') : JText::_('COM_MAMS_MANAGER_SEC_EDIT'), 'mams');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{

@@ -7,6 +7,7 @@ JHtml::_('behavior.tooltip');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$db =& JFactory::getDBO();
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&view=secs'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
@@ -55,11 +56,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th width="100">
 					<?php echo JText::_('JGRID_HEADING_ACCESS'); ?>
 				</th>
+				<th width="50">
+					<?php echo JText::_('COM_MAMS_SEC_HEADING_NUMITEMS'); ?>
+				</th>
 			</tr>
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -80,6 +84,13 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<td><?php echo $item->sec_modified; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'secs.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
+				<td><?php 
+					if ($item->sec_type == "article") $query = 'SELECT count(*) FROM #__mams_articles WHERE art_sec='.$item->sec_id;
+					if ($item->sec_type == "author") $query = 'SELECT count(*) FROM #__mams_authors WHERE auth_sec='.$item->sec_id;
+					$db->setQuery( $query );
+					$num=$db->loadResult();
+					echo $num;
+				?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
