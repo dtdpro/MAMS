@@ -6,6 +6,7 @@ defined('_JEXEC') or die;
 jimport('joomla.plugin.plugin');
 
 require_once JPATH_SITE.'/components/com_mams/router.php';
+require_once('components'.DS.'com_mams'.DS.'helpers'.DS.'mams.php');
 
 class plgSearchMAMS extends JPlugin
 {
@@ -19,10 +20,14 @@ class plgSearchMAMS extends JPlugin
 
 	function onContentSearch($text, $phrase='', $ordering='', $areas=null)
 	{
+		$cfg = MAMSHelper::getConfig();
 		$db		= JFactory::getDbo();
 		$app	= JFactory::getApplication();
 		$user	= JFactory::getUser();
-		$groups	= implode(',', $user->getAuthorisedViewLevels());
+		$alvls = Array();
+		$alvls = $user->getAuthorisedViewLevels();
+		$alvls = array_merge($alvls,$cfg->reggroup);
+		$groups	= implode(',', $alvls);
 		$tag = JFactory::getLanguage()->getTag();
 
 		require_once JPATH_SITE.'/administrator/components/com_search/helpers/search.php';
