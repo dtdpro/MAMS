@@ -315,7 +315,7 @@ class MAMSModelArticle extends JModelAdmin
 			$done = true;
 		}
 	
-		if (!empty($commands['featsection_id']))
+		if ($commands['featsection_id'] != 0)
 		{
 			if (!$this->batchSection($commands['featsection_id'], $pks, $contexts))
 			{
