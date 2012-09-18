@@ -32,6 +32,12 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field name="orderby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
+				<option value="pubasc">COM_MAMS_ORDER_PUBASC</option>
+				<option value="pubdsc">COM_MAMS_ORDER_PUBDSC</option>
+				<option value="titasc">COM_MAMS_ORDER_TITASC</option>
+				<option value="titdsc">COM_MAMS_ORDER_TITDSC</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>

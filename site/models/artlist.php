@@ -43,7 +43,13 @@ class MAMSModelArtList extends JModelList
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
 		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-		$query->order('a.art_published DESC');
+		switch ($this->params->get("orderby","pubdsc")) {
+			case "titasc": $query->order('a.art_title ASC'); break;
+			case "titdsc": $query->order('a.art_title DESC'); break;
+			case "pubasc": $query->order('a.art_published ASC'); break;
+			case "pubdsc": $query->order('a.art_published DESC'); break;
+			default: $query->order('a.art_published DESC'); break;
+		}
 		
 		return $query;
 	}
