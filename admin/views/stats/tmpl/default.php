@@ -31,6 +31,7 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 	<thead>
 		<tr>
 			<th width="60"><?php echo JText::_( 'NUM' ); ?></th>
+			<th><?php echo JText::_( 'Section' ); ?></th>
 			<th><?php echo JText::_( 'Item' ); ?></th>
 			<th><?php echo JText::_( 'Type' ); ?></th>
 			<th><?php echo JText::_( 'When' ); ?></th>
@@ -54,6 +55,7 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 		?>
 		<tr class="<?php echo "row$k"; ?>">
 			<td><?php echo $i + 1 + $this->pagination->limitstart; ?></td>
+			<td><?php echo $row->sec_title; ?></td>
 			<td><?php echo $row->item_title; ?></td>
 			<td><?php 
 				switch ($row->mt_type) {
@@ -85,7 +87,7 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 	}
 	?>
          <tfoot>
-		<td colspan="7">
+		<td colspan="8">
 			<?php echo $this->pagination->getListFooter(); ?>
 		</td>
 	</tfoot>

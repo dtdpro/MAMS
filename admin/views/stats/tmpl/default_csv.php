@@ -8,7 +8,7 @@ $filename  =  'MAMS_Report' . '-' . date("Y-m-d").'.csv';
 
 $items = $this->items;
 $contents = '';	
-$contents .= "\"Item\",\"What\",\"When\",\"Who\",\"EMail\",";
+$contents .= "\"Section\",\"Item\",\"What\",\"When\",\"Who\",\"EMail\",";
 if ($this->config->continued || $this->config->mue) {
 	$contents .= "\"Group\",";
 }
@@ -17,6 +17,7 @@ foreach ($items as $row)
 {
 	if ($row->mt_user == 0) $row->users_name='Guest User';
 
+	$contents .=  '"'.$row->sec_title.'",';
 	$contents .=  '"'.$row->item_title.'",';
 	$contents .=  '"';
 	switch ($row->mt_type) {

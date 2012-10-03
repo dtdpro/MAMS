@@ -78,11 +78,14 @@ $db =& JFactory::getDBO();
 				<th width="100">
 					<?php echo JText::_('JGRID_HEADING_ACCESS'); ?>
 				</th>
+				<th width="30">
+					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_HITS'); ?>
+				</th>
 			</tr>
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="12"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="13"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -91,7 +94,8 @@ $db =& JFactory::getDBO();
 				<td>
 					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=article.edit&art_id='.(int) $item->art_id); ?>">
 					<?php echo $this->escape($item->art_title); ?></a>
-					<p class="smallsub"><?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->art_alias));?></p>
+					<p class="smallsub"><a href="<?php echo "/index.php?option=com_mams&view=article&secid=".$item->art_sec.":".$item->sec_alias."&artid=".$item->art_id.":".$item->art_alias; ?>" target="_blank">Internal Link</a>
+					<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->art_alias));?></p>
 				</td>
 				<td><?php echo $item->art_published; ?></td>
 				<td><?php 
@@ -129,6 +133,7 @@ $db =& JFactory::getDBO();
 				<td class="center"><?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true).'<br />'.$item->feataccess_level; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'articles.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
+				<td><?php echo $item->art_hits; ?></td>
 				
 			</tr>
 		<?php endforeach; ?>

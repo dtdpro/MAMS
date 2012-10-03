@@ -81,20 +81,25 @@ class MAMSModelStats extends JModelList
 		
 		if ($filter_type == 'article') {
 			$q->select('a.art_title as item_title');
+			$q->select('sec.sec_name as sec_title');
 			$q->join('LEFT', '#__mams_articles as a ON s.mt_item = a.art_id');
+			$q->join('LEFT', '#__mams_secs as sec ON a.art_sec = sec.sec_id');
 			
 			$q->where('s.mt_type = "'.$filter_type.'"');
 		}
 		
 		if ($filter_type == 'author' || $filter_type == 'autlist') {
 			$q->select('a.auth_name as item_title');
+			$q->select('sec.sec_name as sec_title');
 			$q->join('LEFT', '#__mams_authors as a ON s.mt_item = a.auth_id');
+			$q->join('LEFT', '#__mams_secs as sec ON a.auth_sec = sec.sec_id');
 			
 			$q->where('s.mt_type = "'.$filter_type.'"');
 		}
 		
 		if ($filter_type == 'seclist') {
 			$q->select('a.sec_name as item_title');
+			$q->select('"Section List" as sec_title');
 			$q->join('LEFT', '#__mams_secs as a ON s.mt_item = a.sec_id');
 			
 			$q->where('s.mt_type = "'.$filter_type.'"');
@@ -102,6 +107,7 @@ class MAMSModelStats extends JModelList
 		
 		if ($filter_type == 'catlist') {
 			$q->select('a.cat_title as item_title');
+			$q->select('"Category List" as sec_title');
 			$q->join('LEFT', '#__mams_cats as a ON s.mt_item = a.cat_id');
 			
 			$q->where('s.mt_type = "'.$filter_type.'"');
@@ -109,11 +115,13 @@ class MAMSModelStats extends JModelList
 		
 		if ($filter_type == 'dload') {
 			$q->select('CONCAT(a.dl_lname," - ",a.dl_fname) as item_title');
+			$q->select('"Download" as sec_title');
 			$q->join('RIGHT', '#__mams_dloads as a ON s.mt_item = a.dl_id');
 			$q->where('s.mt_type = "'.$filter_type.'"');
 		}
 		
 		if ($filter_type == 'authors') {
+			$q->select('"Authors List" as sec_title');
 			$q->where('s.mt_type = "'.$filter_type.'"');
 		}
 		
