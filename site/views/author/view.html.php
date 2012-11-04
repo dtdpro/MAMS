@@ -67,7 +67,7 @@ class MAMSViewAuthor extends JView
 	protected function listAuthors() {
 		MAMSHelper::trackViewed(0,'authors');
 		$model =& $this->getModel();
-		$this->autlist = $model->getAuthorList($this->params->get("secid",0)); 
+		$this->autlist = $model->getAuthorList(JRequest::getInt("secid",0)); 
 		return true;
 	}
 	
