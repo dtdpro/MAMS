@@ -2,10 +2,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 /**
- * @version		$Id: artmedias.php 2012-03-12 $
+ * @version		$Id: artmeds.php 2012-03-12 $
  * @package		MAMS.Admin
- * @subpackage	artmedias
- * @copyright	Copyright (C) 2012 Corona Productions.
+ * @subpackage	artmeds
+ * @copyright	Copyright (C) 2012 DtD Productions.
  * @license		GNU General Public License version 2
  */
 
@@ -17,15 +17,15 @@ jimport('joomla.application.component.controlleradmin');
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	artmedias
+ * @subpackage	artmeds
  * @since		1.0
  */
-class MAMSControllerArtMedias extends JControllerAdmin
+class MAMSControllerArtMeds extends JControllerAdmin
 {
 
-	protected $text_prefix = "COM_MAMS_ARTMEDIA";
+	protected $text_prefix = "COM_MAMS_ARTMED";
 	
-	public function getModel($name = 'ArtMedia', $prefix = 'MAMSModel') 
+	public function getModel($name = 'ArtMed', $prefix = 'MAMSModel') 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

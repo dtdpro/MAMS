@@ -4,8 +4,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * @version		$Id: view.html.php 2012-03-12 $
  * @package		MAMS.Admin
- * @subpackage	artmedia
- * @copyright	Copyright (C) 2012 Corona Productions.
+ * @subpackage	artmed
+ * @copyright	Copyright (C) 2012 DtD Productions.
  * @license		GNU General Public License version 2
  */
 
@@ -17,10 +17,10 @@ jimport('joomla.application.component.view');
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	artmedia
+ * @subpackage	artmed
  * @since		1.0
  */
-class MAMSViewArtMedia extends JView
+class MAMSViewArtMed extends JView
 {
 	/**
 	 * display method of view
@@ -63,23 +63,23 @@ class MAMSViewArtMedia extends JView
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->am_id == 0;
-		JToolBarHelper::title($isNew ? JText::_('COM_MAMS_MANAGER_ARTMEDIA_NEW') : JText::_('COM_MAMS_MANAGER_ARTMEDIA_EDIT'), 'mams');
+		JToolBarHelper::title($isNew ? JText::_('COM_MAMS_MANAGER_ARTMED_NEW') : JText::_('COM_MAMS_MANAGER_ARTMED_EDIT'), 'mams');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
 			// For new records, check the create permission.
-			JToolBarHelper::apply('artmedia.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save('artmedia.save', 'JTOOLBAR_SAVE');
-			JToolBarHelper::custom('artmedia.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			JToolBarHelper::cancel('artmedia.cancel', 'JTOOLBAR_CANCEL');
+			JToolBarHelper::apply('artmed.apply', 'JTOOLBAR_APPLY');
+			JToolBarHelper::save('artmed.save', 'JTOOLBAR_SAVE');
+			JToolBarHelper::custom('artmed.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			JToolBarHelper::cancel('artmed.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
-			JToolBarHelper::apply('artmedia.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save('artmedia.save', 'JTOOLBAR_SAVE');
-			JToolBarHelper::custom('artmedia.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			JToolBarHelper::custom('artmedia.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-			JToolBarHelper::cancel('artmedia.cancel', 'JTOOLBAR_CLOSE');
+			JToolBarHelper::apply('artmed.apply', 'JTOOLBAR_APPLY');
+			JToolBarHelper::save('artmed.save', 'JTOOLBAR_SAVE');
+			JToolBarHelper::custom('artmed.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			JToolBarHelper::custom('artmed.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			JToolBarHelper::cancel('artmed.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 	/**
@@ -91,8 +91,8 @@ class MAMSViewArtMedia extends JView
 	{
 		$isNew = $this->item->am_id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_MAMS_ARTMEDIA_CREATING') : JText::_('COM_MAMS_ARTMEDIA_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_MAMS_ARTMED_CREATING') : JText::_('COM_MAMS_ARTMED_EDITING'));
 		$document->addScript(JURI::root() . $this->script);
-		JText::script('COM_MAMS_ARTMEDIA_ERROR_UNACCEPTABLE');
+		JText::script('COM_MAMS_ARTMED_ERROR_UNACCEPTABLE');
 	}
 }

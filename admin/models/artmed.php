@@ -2,10 +2,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 /**
- * @version		$Id: artmedia.php 2012-03-12 $
+ * @version		$Id: artmed.php 2012-03-12 $
  * @package		MAMS.Admin
- * @subpackage	artmedia
- * @copyright	Copyright (C) 2012 Corona Productions.
+ * @subpackage	artmed
+ * @copyright	Copyright (C) 2012 DtD Productions.
  * @license		GNU General Public License version 2
  */
 
@@ -17,10 +17,10 @@ jimport('joomla.application.component.modeladmin');
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	artmedia
+ * @subpackage	artmed
  * @since		1.0
  */
-class MAMSModelArtMedia extends JModelAdmin
+class MAMSModelArtMed extends JModelAdmin
 {
 	/**
 	 * Method override to check if you can edit an existing record.
@@ -34,7 +34,7 @@ class MAMSModelArtMedia extends JModelAdmin
 	protected function allowEdit($data = array(), $key = 'am_id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_mams.artmedia.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return JFactory::getUser()->authorise('core.edit', 'com_mams.artmed.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -45,7 +45,7 @@ class MAMSModelArtMedia extends JModelAdmin
 	 * @return	JTable	A database object
 	 * @since	1.6
 	 */
-	public function getTable($type = 'ArtMedia', $prefix = 'MAMSTable', $config = array()) 
+	public function getTable($type = 'ArtMed', $prefix = 'MAMSTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -60,7 +60,7 @@ class MAMSModelArtMedia extends JModelAdmin
 	public function getForm($data = array(), $loadData = true) 
 	{
 		// Get the form.
-		$form = $this->loadForm('com_mams.artmedia', 'artmedia', array('control' => 'jform', 'loam_data' => $loadData));
+		$form = $this->loadForm('com_mams.artmed', 'artmed', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
@@ -74,7 +74,7 @@ class MAMSModelArtMedia extends JModelAdmin
 	 */
 	public function getScript() 
 	{
-		return 'administrator/components/com_mams/models/forms/artmedia.js';
+		return 'administrator/components/com_mams/models/forms/artmed.js';
 	}
 	/**
 	 * Method to get the data that should be injected in the form.
@@ -85,13 +85,13 @@ class MAMSModelArtMedia extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_mams.edit.artmedia.data', array());
+		$data = JFactory::getApplication()->getUserState('com_mams.edit.artmed.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
-			if ($this->getState('artmedia.am_id') == 0) {
+			if ($this->getState('artmed.am_id') == 0) {
 				$app = JFactory::getApplication();
-				$data->set('am_art', JRequest::getInt('am_art', $app->getUserState('com_mams.artmedias.filter.article')));
+				$data->set('am_art', JRequest::getInt('am_art', $app->getUserState('com_mams.artmeds.filter.article')));
 			}
 		}
 		return $data;
@@ -114,7 +114,7 @@ class MAMSModelArtMedia extends JModelAdmin
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__mams_artmedia WHERE am_art = "'.$table->am_art.'"');
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_artmed WHERE am_art = "'.$table->am_art.'"');
 				$max = $db->loadResult();
 				
 				$table->ordering = $max+1;

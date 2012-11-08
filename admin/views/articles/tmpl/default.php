@@ -120,11 +120,11 @@ $db =& JFactory::getDBO();
 					$num_ad=$db->loadResult();
 					echo ' ['.$num_ad.']</a><br />';
 					//Media
-					/*echo '<a href="index.php?option=com_mams&view=artmedias&filter_article='.$item->art_id.'">Media ';
+					echo '<a href="index.php?option=com_mams&view=artmeds&filter_article='.$item->art_id.'">Media ';
 					$query = 'SELECT count(*) FROM #__mams_artmed WHERE published >= 1 && am_art="'.$item->art_id.'"';
 					$db->setQuery( $query );
 					$num_am=$db->loadResult();
-					echo ' ['.$num_am.']</a>';*/
+					echo ' ['.$num_am.']</a>';
 				
 				?></td>
 				<td><?php echo $item->art_added; ?></td>

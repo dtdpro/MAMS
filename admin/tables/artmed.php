@@ -2,10 +2,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 /**
- * @version		$Id: artmedia.php 2012-03-12 $
+ * @version		$Id: artmed.php 2012-03-12 $
  * @package		MAMS.Admin
- * @subpackage	artmedia
- * @copyright	Copyright (C) 2012 Corona Productions.
+ * @subpackage	artmed
+ * @copyright	Copyright (C) 2012 DtD Productions.
  * @license		GNU General Public License version 2
  */
 
@@ -17,10 +17,10 @@ jimport('joomla.database.table');
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	artmedia
+ * @subpackage	artmed
  * @since		1.0
  */
-class MAMSTableArtMedia extends JTable
+class MAMSTableArtMed extends JTable
 {
 	/**
 	 * Constructor

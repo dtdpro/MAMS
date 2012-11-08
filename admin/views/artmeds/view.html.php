@@ -4,8 +4,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * @version		$Id: view.html.php 2012-03-12 $
  * @package		MAMS.Admin
- * @subpackage	artmedias
- * @copyright	Copyright (C) 2012 Corona Productions.
+ * @subpackage	artmeds
+ * @copyright	Copyright (C) 2012 DtD Productions.
  * @license		GNU General Public License version 2
  */
 
@@ -17,10 +17,10 @@ jimport('joomla.application.component.view');
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	artmedias
+ * @subpackage	artmeds
  * @since		1.0
  */
-class MAMSViewArtMedias extends JView
+class MAMSViewArtMeds extends JView
 {
 	function display($tpl = null) 
 	{
@@ -54,17 +54,17 @@ class MAMSViewArtMedias extends JView
 	{
 		$state	= $this->get('State');
 		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_ARTCATS'), 'mams');
-		JToolBarHelper::addNew('artmedia.add', 'COM_MAMS_TOOLBAR_ADD');
-		JToolBarHelper::editList('artmedia.edit', 'JTOOLBAR_EDIT');
+		JToolBarHelper::addNew('artmed.add', 'COM_MAMS_TOOLBAR_ADD');
+		JToolBarHelper::editList('artmed.edit', 'JTOOLBAR_EDIT');
 		JToolBarHelper::divider();
-		JToolBarHelper::custom('artmedias.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::custom('artmedias.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
+		JToolBarHelper::custom('artmeds.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+		JToolBarHelper::custom('artmeds.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
 		JToolBarHelper::divider();
 		if ($state->get('filter.published') == -2) {
-			JToolBarHelper::deleteList('', 'artmedias.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolBarHelper::deleteList('', 'artmeds.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		} else  {
-			JToolBarHelper::trash('artmedias.trash');
+			JToolBarHelper::trash('artmeds.trash');
 		}
 		JToolBarHelper::back('COM_MAMS_TOOLBAR_ARTICLES','index.php?option=com_mams&view=articles');
 	}
@@ -76,6 +76,6 @@ class MAMSViewArtMedias extends JView
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_MAMS_MANAGER_ARTMEDIAS'));
+		$document->setTitle(JText::_('COM_MAMS_MANAGER_ARTMEDS'));
 	}
 }

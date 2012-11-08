@@ -3,10 +3,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * @version		$Id: artmedias.php 2012-03-12 $
+ * @version		$Id: artmeds.php 2012-03-12 $
  * @package		MAMS.Admin
- * @subpackage	artmedias
- * @copyright	Copyright (C) 2012 Corona Productions.
+ * @subpackage	artmeds
+ * @copyright	Copyright (C) 2012 DtD Productions.
  * @license		GNU General Public License version 2
  */
 
@@ -17,10 +17,10 @@ jimport('joomla.application.component.modellist');
  *
  * @static
  * @package		MAMS.Admin
- * @subpackage	artmedias
+ * @subpackage	artmeds
  * @since		1.0
  */
-class MAMSModelArtMedias extends JModelList
+class MAMSModelArtMeds extends JModelList
 {
 	
 	public function __construct($config = array())

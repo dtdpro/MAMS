@@ -10,7 +10,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
 $ordering = ($listOrder == 'a.ordering');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=artmedias'); ?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=artmeds'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			
@@ -34,13 +34,13 @@ $ordering = ($listOrder == 'a.ordering');
 		<thead>
 			<tr>
 				<th width="5">
-					<?php echo JText::_('COM_MAMS_ARTMEDIA_HEADING_ID'); ?>
+					<?php echo JText::_('COM_MAMS_ARTMED_HEADING_ID'); ?>
 				</th>
 				<th width="20">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>			
 				<th>
-					<?php echo JText::_('COM_MAMS_ARTMEDIA_HEADING_NAME'); ?>
+					<?php echo JText::_('COM_MAMS_ARTMED_HEADING_NAME'); ?>
 				</th>		
 				
 				<th width="100">
@@ -48,7 +48,7 @@ $ordering = ($listOrder == 'a.ordering');
 				</th>
 				<th width="10%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
-					<?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'artmedias.saveorder'); ?>
+					<?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'artmeds.saveorder'); ?>
 				</th>
 			</tr>
 		
@@ -61,18 +61,18 @@ $ordering = ($listOrder == 'a.ordering');
 				<td><?php echo $item->am_id; ?></td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->am_id); ?></td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=artmedia.edit&am_id='.(int) $item->am_id); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=artmed.edit&am_id='.(int) $item->am_id); ?>">
 					<?php echo $this->escape($item->med_title); ?></a>
 				</td>
-				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'artmedias.', true);?></td>
+				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'artmeds.', true);?></td>
 				<td class="order">
 				<?php if ($saveOrder) :?>
 					<?php if ($listDirn == 'asc') : ?>
-						<span><?php echo $this->pagination->orderUpIcon($i, ($item->am_art == @$this->items[$i-1]->am_art), 'artmedias.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->am_art == @$this->items[$i+1]->am_art), 'artmedias.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderUpIcon($i, ($item->am_art == @$this->items[$i-1]->am_art), 'artmeds.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->am_art == @$this->items[$i+1]->am_art), 'artmeds.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 					<?php elseif ($listDirn == 'desc') : ?>
-						<span><?php echo $this->pagination->orderUpIcon($i, ($item->am_art == @$this->items[$i-1]->am_art), 'artmedias.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->am_art == @$this->items[$i+1]->am_art), 'artmedias.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderUpIcon($i, ($item->am_art == @$this->items[$i-1]->am_art), 'artmeds.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->am_art == @$this->items[$i+1]->am_art), 'artmeds.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 					<?php endif; ?>
 				<?php endif; ?>
 				<?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
