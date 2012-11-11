@@ -55,7 +55,7 @@ class MAMSTableMedia extends JTable
 	public function check()
 	{
 		// check for valid name
-		if (trim($this->med_title) == '') {
+		if (trim($this->med_inttitle) == '' || trim($this->med_exttitle) == '') {
 			$this->setError(JText::_('COM_MAMS_ERR_TABLES_TITLE'));
 			return false;
 		}

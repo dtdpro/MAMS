@@ -42,7 +42,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>			
 				<th>
-					<?php echo JHtml::_('grid.sort','COM_MAMS_MEDIA_HEADING_NAME','m.med_title', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_MEDIA_HEADING_NAME','m.med_inttitle', $listDirn, $listOrder); ?>
 				</th>		
 				<th>
 					<?php echo JText::_('COM_MAMS_MEDIA_LOC'); ?>
@@ -74,7 +74,8 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<td><?php echo JHtml::_('grid.id', $i, $item->med_id); ?></td>
 				<td>
 					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=media.edit&med_id='.(int) $item->med_id.'&extension='.$extension); ?>">
-					<?php echo $this->escape($item->med_title); ?></a>
+					<?php echo $this->escape($item->med_inttitle); ?></a>
+					<p class="smallsub"><?php echo $this->escape($item->med_exttitle);?></p>
 				</td>
 				<td><?php echo $item->med_file; ?></td>
 				<td><?php 

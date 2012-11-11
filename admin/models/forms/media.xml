@@ -46,14 +46,35 @@
 			<option	value="aud">Audio</option>
 		</field>
 		<field
-			name="med_title"
+			name="med_inttitle"
 			type="text"
-			label="COM_MAMS_MEDIA_FIELD_TITLE_LABEL"
-			description="COM_MAMS_MEDIA_FIELD_TITLE_DESC"
+			label="COM_MAMS_MEDIA_FIELD_INTTITLE_LABEL"
+			description="COM_MAMS_MEDIA_FIELD_INTTITLE_DESC"
 			size="60"
 			class="inputbox"
 			required="true"
 			default=""
+		/>
+		<field
+			name="med_exttitle"
+			type="text"
+			label="COM_MAMS_MEDIA_FIELD_EXTTITLE_LABEL"
+			description="COM_MAMS_MEDIA_FIELD_EXTTITLE_DESC"
+			size="60"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field
+			name="med_desc"
+			type="textarea"
+			label="COM_MAMS_MEDIA_FIELD_DESC_LABEL"
+			description="COM_MAMS_MEDIA_FIELD_DESC_DESC"
+			rows="4"
+			cols="70"
+			class="inputbox"
+			filter="safehtml"
+			buttons="false"
 		/>
 		<field
 			name="med_file"

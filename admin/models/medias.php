@@ -30,7 +30,7 @@ class MAMSModelMedias extends JModelList
 			$config['filter_fields'] = array(
 				'med_added', 'm.med_added',
 				'med_modified', 'm.med_modified',
-				'med_title', 'm.med_title',
+				'med_inttitle', 'm.med_inttitle',
 			);
 		}
 		parent::__construct($config);
@@ -58,7 +58,7 @@ class MAMSModelMedias extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('m.med_title', 'asc');
+		parent::populateState('m.med_inttitle', 'asc');
 	}
 	
 	protected function getListQuery() 
@@ -102,7 +102,7 @@ class MAMSModelMedias extends JModelList
 				$query->where('m.med_id = '.(int) substr($search, 3));
 			} else {
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
-				$query->where('(m.med_title LIKE '.$search.' OR m.med_file LIKE '.$search.')');
+				$query->where('(m.med_inttitle LIKE '.$search.' OR m.med_file LIKE '.$search.')');
 			}
 		}
 		

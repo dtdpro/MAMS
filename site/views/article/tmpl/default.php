@@ -56,26 +56,65 @@ if ($this->article->media) {
 	 			echo "{ type: 'flash',\n";
 	   			echo "'src': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
 	 			echo "'config':{\n";
-	   			echo "'provider': 'rtmp',"."\n";
-	 			echo "'streamer': 'rtmp://".$config->vids_url.'/'.$config->vids_app.'/'."',"."\n";
-	 			echo "'file':'mp4:".$this->article->media[0]->med_file."',"."\n";
-	 			echo "}},\n";
+	 			if (count($this->article->media) == 1) {
+		   			echo "'provider': 'rtmp',"."\n";
+		 			echo "'streamer': 'rtmp://".$config->vids_url.'/';
+		 			if ($config->vids_app) echo $config->vids_app.'/';
+		 			echo "',"."\n";
+	 				echo "'file':'mp4:".$this->article->media[0]->med_file."',"."\n";
+	 			} else {
+	 				echo "'playlist': ["."\n";
+	 				foreach ($this->article->media as $m) {
+	 					echo "{"."\n";
+			   			echo "'provider': 'rtmp',"."\n";
+			 			echo "'streamer': 'rtmp://".$config->vids_url.'/';
+			 			if ($config->vids_app) echo $config->vids_app.'/';
+			 			echo "',"."\n";
+	 					echo "'file':'mp4:".$m->med_file."',"."\n";
+	 					echo "'image': '".JURI::base( true ).'/'.$m->med_still."',"."\n";
+	 					echo "'title': '".JURI::base( true ).$m->med_exttitle."',"."\n";
+	 					echo "'description': '".JURI::base( true ).$m->med_desc."',"."\n";
+	 					echo "},"."\n";
+	 				}
+	 				echo "],"."\n";
+	 			}
+	 			echo "}\n";
+	 			echo "},\n";
 	 			echo "{ type: 'html5',\n";
 	 			echo "'config':{\n";
-	 			echo "'file':'http://".$config->vid5_url."/".$this->article->media[0]->med_file."',"."\n";
-	 			echo "}}\n";
+	 			if (count($this->article->media) == 1) {
+	 				echo "'file':'http://".$config->vid5_url."/".$this->article->media[0]->med_file."',"."\n";
+	 			} else {
+	 				echo "'playlist': ["."\n";
+	 				foreach ($this->article->media as $m) {
+	 					echo "{"."\n";
+	 					echo "'file':'http://".$config->vid5_url."/".$m->med_file."',"."\n";
+	 					echo "'image': '".JURI::base( true ).'/'.$m->med_still."',"."\n";
+	 					echo "'title': '".JURI::base( true ).$m->med_exttitle."',"."\n";
+	 					echo "'description': '".JURI::base( true ).$m->med_desc."',"."\n";
+	 					echo "},"."\n";
+	 				}
+	 				echo "],"."\n";
+	 			}
+	 			echo "}\n";
+	 			echo "}\n";
 	 			echo "],\n";
 	 		}
-			echo "'image': '".JURI::base( true ).'/'.$this->article->media[0]->med_still."',"."\n";
+			if (count($this->article->media) == 1) echo "'image': '".JURI::base( true ).'/'.$this->article->media[0]->med_still."',"."\n";
 			echo "'frontcolor': '000000',"."\n";
 			echo "'lightcolor': 'cc9900',"."\n";
 			echo "'screencolor': '000000',"."\n";
-			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow.zip',"."\n";
+			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow/glow.xml',"."\n";
 			echo "'controlbar': 'bottom',"."\n";
 			echo "'width': '".$config->vid_w."',"."\n";
-			echo "'height': '".((int)$config->vid_h+30)."'";
+			if (count($this->article->media) == 1) echo "'height': '".((int)$config->vid_h+30)."'";
+			else echo "'height': '".((int)$config->vid_h+30+(int)$config->playlist_h)."'";
+			if (count($this->article->media) > 1) {
+				echo ",'playlist.position': 'bottom',"."\n";
+				echo "'playlist.size': '".$config->playlist_h."'";
+			}
 			echo ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {'itemid':".$this->article->media[0]->med_id."}";
-			if ($config->gapro)	echo ",'gapro-2': {}";
+			if ($config->gapro)	echo ",'".JURI::base( true )."/media/com_mams/vidplyr/mamsga.js': {}";
 			echo "}"."\n";
 			echo "});"."\n";
 			echo "</script>"."\n";
@@ -85,17 +124,31 @@ if ($this->article->media) {
 			echo '<script type="text/javascript">'."\n";
 			echo "jwplayer('mediaspace').setup({"."\n";
 			echo "'width': '".$config->aud_w."',"."\n";
-			echo "'height': '".((int)$config->aud_h+30)."',"."\n";
-			echo "'file': '".JURI::base( true ).'/'.$this->article->media[0]->med_file."',"."\n";
-			echo "'image': '".JURI::base( true ).'/'.$this->article->media[0]->med_still."',"."\n";
+			if (count($this->article->media) == 1) echo "'height': '".((int)$config->aud_h+30)."',"."\n";
+			else echo "'height': '".((int)$config->aud_h+30+(int)$config->playlist_h)."',"."\n";
+			if (count($this->article->media) == 1) {
+				echo "'file': '".JURI::base( true ).'/'.$this->article->media[0]->med_file."',"."\n";
+			} else {
+ 				echo "'playlist': ["."\n";
+ 				foreach ($this->article->media as $m) {
+ 					echo "{"."\n";
+ 					echo "'file':'".JURI::base( true ).'/'.$m->med_file."',"."\n";
+ 					echo "'image': '".JURI::base( true ).'/'.$m->med_still."',"."\n";
+ 					echo "'title': '".JURI::base( true ).'/'.$m->med_exttitle."',"."\n";
+ 					echo "'description': '".JURI::base( true ).'/'.$m->med_desc."',"."\n";
+ 					echo "},"."\n";
+ 				}
+ 				echo "],"."\n";
+			}
+			if (count($this->article->media) == 1) echo "'image': '".JURI::base( true ).'/'.$this->article->media[0]->med_still."',"."\n";
 			echo "'frontcolor': '000000',"."\n";
 			echo "'lightcolor': 'cc9900',"."\n";
 			echo "'screencolor': '000000',"."\n";
-			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow.zip',"."\n";
+			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow/glow.xml',"."\n";
 			echo "'controlbar': 'bottom',"."\n";
 			echo "'modes': [{type: 'flash', src: '".JURI::base( true )."/media/com_mams/vidplyr/player.swf'},{type: 'html5'},{type: 'download'}]"."\n";
 			echo ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {'itemid':".$this->article->media[0]->med_id."}";
-			if ($config->gapro)	echo ",'gapro-2': {}";
+			if ($config->gapro)	echo ",'".JURI::base( true )."/media/com_mams/vidplyr/mamsga.js': {}";
 			echo "}"."\n";
 			echo "});"."\n";
 			echo "</script>"."\n";

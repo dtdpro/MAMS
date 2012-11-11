@@ -10,9 +10,10 @@
 	<fieldset name="video" label="COM_MAMS_CONFIG_VIDEO_LABEL" description="COM_MAMS_CONFIG_VIDEO_DESC">
 		<field name="vid_w" type="text" label="COM_MAMS_CONFIG_FIELD_VIDW_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />
 		<field name="vid_h" type="text" label="COM_MAMS_CONFIG_FIELD_VIDH_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDH_DESC" size="5" class="inputbox" required="false" integer="true" default="432" />
-		<field name="vids_url" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSURL_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSURL_DESC" size="120" class="inputbox" required="false" default="streams.coronapro.com" />
-		<field name="vids_app" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSAPP_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSAPP_DESC" size="120" class="inputbox" required="false" default="vod" />
-		<field name="vid5_url" type="text" label="COM_MAMS_CONFIG_FIELD_VID5URL_LABEL" description="COM_MAMS_CONFIG_FIELD_VID5URL_DESC" size="120" class="inputbox" required="false" default="streams.coronapro.com" />
+		<field name="vids_url" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSURL_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSURL_DESC" size="120" class="inputbox" required="false" default="streams.mycdn.com" />
+		<field name="vids_app" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSAPP_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSAPP_DESC" size="120" class="inputbox" required="false" default="" />
+		<field name="vid5_url" type="text" label="COM_MAMS_CONFIG_FIELD_VID5URL_LABEL" description="COM_MAMS_CONFIG_FIELD_VID5URL_DESC" size="120" class="inputbox" required="false" default="files.mycdn.com" />
+		<field name="playlist_h" type="text" label="COM_MAMS_CONFIG_FIELD_PLAYLISTH_LABEL" description="COM_MAMS_CONFIG_FIELD_PLAYLISTH_DESC" size="5" class="inputbox" required="false" integer="true" default="200" />
 	</fieldset>
 	<fieldset name="auido" label="COM_MAMS_CONFIG_AUDIO_LABEL" description="COM_MAMS_CONFIG_AUDIO_DESC">
 		<field name="aud_w" type="text" label="COM_MAMS_CONFIG_FIELD_AUDW_LABEL" description="COM_MAMS_CONFIG_FIELD_AUDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />

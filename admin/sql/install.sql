@@ -97,19 +97,21 @@ CREATE TABLE IF NOT EXISTS #__mams_dloads (
   PRIMARY KEY (dl_id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS #__mams_media (
-  med_id int(11) NOT NULL AUTO_INCREMENT,
-  med_extension varchar(255) NOT NULL DEFAULT 'com_mams',
-  med_type enum('vid','vids','aud') NOT NULL,
-  med_title varchar(255) NOT NULL,
-  med_file varchar(255) NOT NULL,
-  med_still varchar(255) NOT NULL,
-  med_added timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  med_modified datetime NOT NULL,
-  published int(11) NOT NULL,
-  access int(11) NOT NULL,
-  PRIMARY KEY (med_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `#__mams_media` (
+  `med_id` int(11) NOT NULL AUTO_INCREMENT,
+  `med_extension` varchar(255) NOT NULL DEFAULT 'com_mams',
+  `med_type` enum('vid','vids','aud') NOT NULL,
+  `med_inttitle` varchar(255) NOT NULL,
+  `med_exttitle` varchar(255) NOT NULL,
+  `med_desc` text NOT NULL,
+  `med_file` varchar(255) NOT NULL,
+  `med_still` varchar(255) NOT NULL,
+  `med_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `med_modified` datetime NOT NULL,
+  `published` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
+  PRIMARY KEY (`med_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_mediatrack` (
   `mt_id` int(11) NOT NULL AUTO_INCREMENT,

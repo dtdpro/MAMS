@@ -62,7 +62,7 @@ $ordering = ($listOrder == 'a.ordering');
 				<td><?php echo JHtml::_('grid.id', $i, $item->am_id); ?></td>
 				<td>
 					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=artmed.edit&am_id='.(int) $item->am_id); ?>">
-					<?php echo $this->escape($item->med_title); ?></a>
+					<?php echo $this->escape($item->med_inttitle); ?></a>
 				</td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'artmeds.', true);?></td>
 				<td class="order">

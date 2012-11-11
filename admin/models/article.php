@@ -213,6 +213,7 @@ class MAMSModelArticle extends JModelAdmin
 		$query->delete();
 		$query->from('#__mams_artmed');
 		$query->where('am_art = '.(int)$table->art_id);
+		$query->where('ordering = 1');
 		$db->setQuery((string)$query);
 		$db->query();
 		

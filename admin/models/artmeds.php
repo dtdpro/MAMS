@@ -72,7 +72,7 @@ class MAMSModelArtMeds extends JModelList
 		}
 
 		// Join over the authors.
-		$query->select('med.med_title');
+		$query->select('med.med_inttitle');
 		$query->join('LEFT', '#__mams_media AS med ON med.med_id = a.am_media');
 		
 		// Filter by published state

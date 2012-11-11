@@ -7,16 +7,21 @@
 	<authorUrl>http://www.dtdpro.com</authorUrl>
 	<copyright>Copyright 2012 DtD Productions</copyright>
 	<license>GPL v2</license>
-	<version>1.4.3</version>
+	<version>1.5.0</version>
 	<releaseDate>2012.08.23</releaseDate>
 	<releaseType>Update</releaseType>
 	<downloadUrl>http://www.dtdpro.com/</downloadUrl>
 	<description>COM_MAMS_DESC</description>
 	<install>
 		<sql>
-			<file charset="utf8" driver="mysql">install.sql</file>
+			<file charset="utf8" driver="mysql">sql/install.sql</file>
 		</sql>
-	</install>
+	</install>	
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates</schemapath>
+		</schemas>
+	</update>
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>mams.php</filename>
@@ -55,7 +60,6 @@
 			<filename>index.html</filename>
 			<filename>mams.php</filename>
 			<filename>controller.php</filename>
-			<filename>install.sql</filename>
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
 			<folder>models</folder>
@@ -63,7 +67,7 @@
 			<folder>controllers</folder>
 			<folder>views</folder>
 			<folder>tables</folder>
-		
+			<folder>sql</folder>		
 		</files>
 		<languages folder="admin">
 			<language tag="en-GB">language/en-GB.com_mams.ini</language>

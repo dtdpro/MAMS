@@ -24,10 +24,10 @@ class JFormFieldArticleMedias extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 
 		// Build the query for the ordering list.
-		$query = 'SELECT med_id AS value, med_title AS text' .
+		$query = 'SELECT med_id AS value, med_inttitle AS text' .
 				' FROM #__mams_media' .
 				' WHERE med_extension = "com_mams" ' .
-				' ORDER BY med_title';
+				' ORDER BY med_inttitle';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
 		$html[] = '<option value="">'.JText::_('COM_MAMS_SELECT_MEDIA').'</option>';

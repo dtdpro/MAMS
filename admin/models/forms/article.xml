@@ -124,8 +124,8 @@
 			name="art_media"
 			type="ArticleMedias"
 			class="inputbox"
-			label="COM_MAMS_ARTMEDIA_FIELD_MEDIA_LABEL"
-			description="COM_MAMS_ARTMEDIA_FIELD_MEDIA_DESC"
+			label="COM_MAMS_ARTMED_FIELD_MEDIA_LABEL"
+			description="COM_MAMS_ARTMED_FIELD_MEDIA_DESC"
 		/>
 		<field
 			name="art_content"
