@@ -16,6 +16,10 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field name="show_readmore" type="radio" description="COM_MAMS_FIELD_SHOW_READMORE_DESC" label="COM_MAMS_FIELD_SHOW_READMORE_LABEL" default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 			<field name="readmore_text" type="text" description="COM_MAMS_FIELD_READMORE_DESC" label="COM_MAMS_FIELD_READMORE_LABEL" default="Read More" />
 			<field name="show_title2" type="radio" description="COM_MAMS_FIELD_SHOW_TITLE2_DESC" label="COM_MAMS_FIELD_SHOW_TITLE2_LABEL" default="0">
 				<option value="0">JHIDE</option>
