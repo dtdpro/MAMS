@@ -3,11 +3,11 @@
 	<name>com_mams</name>
 	<creationDate>2012.01</creationDate>
 	<author>DtD Productions</author>
-	<authorEmail>mamundsen@dtdpro.com</authorEmail>
+	<authorEmail>mike@dtdpro.com</authorEmail>
 	<authorUrl>http://www.dtdpro.com</authorUrl>
 	<copyright>Copyright 2012 DtD Productions</copyright>
 	<license>GPL v2</license>
-	<version>1.5.0</version>
+	<version>1.5.1</version>
 	<releaseDate>2012.08.23</releaseDate>
 	<releaseType>Update</releaseType>
 	<downloadUrl>http://www.dtdpro.com/</downloadUrl>
