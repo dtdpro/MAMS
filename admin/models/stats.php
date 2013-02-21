@@ -50,7 +50,7 @@ class MAMSModelStats extends JModelList
 		
 		//ContinuEd Link
 		if ($cfg->continued) {
-			$filter_group = $this->getUserStateFromRequest( $this->context.'.filter.group','filter_group', 0 );
+			$filter_group = $this->getUserStateFromRequest( $this->context.'.filter.group','filter_group', "" );
 			$this->setState('filter.group', $filter_group);
 		}
 		

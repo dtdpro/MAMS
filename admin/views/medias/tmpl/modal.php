@@ -72,7 +72,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<td><?php echo JHtml::_('grid.id', $i, $item->med_id); ?></td>
 				<td>
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->med_id; ?>');">
-					<?php echo $this->escape($item->med_title); ?></a>
+					<?php echo $this->escape($item->med_inttitle); ?></a>
 				</td>
 				<td><?php 
 					switch ($item->med_type) {
