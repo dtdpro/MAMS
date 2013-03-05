@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>mod_mamscat</name>
+	<author>DtD Productions</author>
+	<creationDate>March 2013</creationDate>
+	<copyright>Copyright 2013 DtD Productions All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>info@dtdpro.com</authorEmail>
+	<authorUrl>www.dtdpro.com</authorUrl>
+	<version>1.0.0</version>
+	<description>MOD_MAMSCAT_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_mamscat">mod_mamscat.php</filename>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_mamscat.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.mod_mamscat.ini</language>
+		<language tag="en-GB">en-GB.mod_mamscat.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
+				<field name="catid" type="Cats" description="MOD_MAMSCAT_CAT_DESC" label="MOD_MAMSCAT_CAT_LABEL" required="true" />
+				<field name="count" type="text" default="5" label="MOD_MAMSCAT_COUNT_LABEL" description="MOD_MAMSCAT_COUNT_DESC" />
+				<field name="show_author" type="radio" description="MOD_MAMSCAT_SHOW_AUTHOR_DESC" label="MOD_MAMSCAT_SHOW_AUTHOR_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubinfo" type="radio" description="MOD_MAMSCAT_SHOW_PUBINFO_DESC" label="MOD_MAMSCAT_SHOW_PUBINFO_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubdate" type="radio" description="MOD_MAMSCAT_SHOW_PUBDATE_DESC" label="MOD_MAMSCAT_SHOW_PUBDATE_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubsec" type="radio" description="MOD_MAMSCAT_SHOW_PUBSEC_DESC" label="MOD_MAMSCAT_SHOW_PUBSEC_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubcat" type="radio" description="MOD_MAMSCAT_SHOW_PUBCAT_DESC" label="MOD_MAMSCAT_SHOW_PUBCAT_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_desc" type="radio" description="MOD_MAMSCAT_SHOW_DESC_DESC" label="MOD_MAMSCAT_SHOW_DESC_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_readmore" type="radio" description="MOD_MAMSCAT_SHOW_READMORE_DESC" label="MOD_MAMSCAT_SHOW_READMORE_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="text_readmore" type="text" default="Read More" label="MOD_MAMSCAT_TEXT_READMORE_LABEL" description="MOD_MAMSCAT_TEXT_READMORE_DESC" />
+				<field name="link_pubinfo" type="radio" description="MOD_MAMSCAT_LINK_PUBINFO_DESC" label="MOD_MAMSCAT_LINK_PUBINFO_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
