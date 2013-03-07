@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<description>MOD_MAMSFEAT_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamsfeat">mod_mamsfeat.php</filename>
@@ -57,6 +57,7 @@
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
+				<field name="url_prefix" type="text" default="" label="MOD_MAMSFEAT_TEXT_URLPREFIX_LABEL" description="MOD_MAMSFEAT_TEXT_URLPREFIX_DESC" />
 			</fieldset>
 		</fields>
 	</config>
