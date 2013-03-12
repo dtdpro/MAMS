@@ -1,0 +1,1 @@
+ALTER TABLE  `#__mams_media` ADD  `med_autoplay` BOOLEAN NOT NULL DEFAULT FALSE AFTER  `med_still`

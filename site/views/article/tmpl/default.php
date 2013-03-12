@@ -106,6 +106,7 @@ if ($this->article->media) {
 			echo "'screencolor': '000000',"."\n";
 			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow/glow.xml',"."\n";
 			echo "'controlbar': 'bottom',"."\n";
+			if ($this->article->media[0]->med_autoplay) echo "'autostart':'true',"."\n";
 			echo "'width': '".$config->vid_w."',"."\n";
 			if (count($this->article->media) == 1) echo "'height': '".((int)$config->vid_h+30)."'";
 			else echo "'height': '".((int)$config->vid_h+30+(int)$config->playlist_h)."'";
@@ -146,6 +147,7 @@ if ($this->article->media) {
 			echo "'screencolor': '000000',"."\n";
 			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow/glow.xml',"."\n";
 			echo "'controlbar': 'bottom',"."\n";
+			if ($this->article->media[0]->med_autoplay) echo "'autostart':'true',"."\n";
 			echo "'modes': [{type: 'flash', src: '".JURI::base( true )."/media/com_mams/vidplyr/player.swf'},{type: 'html5'},{type: 'download'}]"."\n";
 			echo ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {'itemid':".$this->article->media[0]->med_id."}";
 			if ($config->gapro)	echo ",'".JURI::base( true )."/media/com_mams/vidplyr/mamsga.js': {}";

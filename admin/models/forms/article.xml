@@ -82,7 +82,7 @@
 			size="1"
 			class="inputbox"
 			required="true"
-			default="">
+			default="1">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</field>

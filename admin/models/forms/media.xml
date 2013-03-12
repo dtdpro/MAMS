@@ -96,6 +96,18 @@
 			default=""
 			required="true"
 		/>
+		<field
+			name="med_autoplay"
+			type="radio"
+			label="COM_MAMS_MEDIA_FIELD_AUTOPLAY_LABEL"
+			description="COM_MAMS_MEDIA_FIELD_AUTOPLAY_DESC"
+			size="1"
+			class="inputbox"
+			required="true"
+			default="0">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</field>
 
 	</fieldset>
 </form>
