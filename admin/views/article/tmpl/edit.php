@@ -19,8 +19,13 @@ $params = $this->form->getFieldsets('params');
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_( 'COM_MAMS_ARTICLE_CONTENT' ); ?></legend>
+			<ul class="adminformlist">
 			<?php foreach($this->form->getFieldset('content') as $field): ?>
-			<?php echo $field->label.'<br />'.$field->input;?><br /><br />
+				<li><?php echo $field->label;echo $field->input;?></li>
+			<?php endforeach; ?>
+			</ul>
+			<?php foreach($this->form->getFieldset('article') as $field): ?>
+			<?php echo $field->label.'<div class="clr"></div>'.$field->input;?><br /><br />
 			<?php endforeach; ?>
 		</fieldset>
 	</div>
@@ -30,3 +35,4 @@ $params = $this->form->getFieldsets('params');
 	</div>
 </form>
 
+<div class="clr"></div>

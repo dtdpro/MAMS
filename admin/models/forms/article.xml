@@ -94,7 +94,7 @@
 			type="text"
 			label="COM_MAMS_ARTICLE_FIELD_THUMB_LABEL"
 			description="COM_MAMS_ARTICLE_FIELD_THUMB_DESC"
-			size="90"
+			size="70"
 			class="inputbox"
 			default=""
 		/>
@@ -127,6 +127,8 @@
 			label="COM_MAMS_ARTMED_FIELD_MEDIA_LABEL"
 			description="COM_MAMS_ARTMED_FIELD_MEDIA_DESC"
 		/>
+	</fieldset>
+	<fieldset name="article">
 		<field
 			name="art_content"
 			type="editor"
