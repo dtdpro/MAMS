@@ -70,7 +70,7 @@
 			label="COM_MAMS_ARTICLE_FIELD_PUBLISHED_LABEL"
 			description="COM_MAMS_ARTICLE_FIELD_PUBLISHED_DESC"
 			filter="user_utc"
-			format="%Y-%m-%d %H:%M:%S"
+			format="%Y-%m-%d"
 			required="true"
 			size="22"
 		/>
