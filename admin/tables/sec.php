@@ -1,25 +1,10 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: sec.php 2012-03.05 $
- * @package		MAMS.Admin
- * @subpackage	sec
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla table library
 jimport('joomla.database.table');
 
-/**
- * MAMS Section Table
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	sec
- * @since		1.0
- */
 class MAMSTableSec extends JTable
 {
 	/**

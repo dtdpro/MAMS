@@ -1,14 +1,6 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die;
-/**
- * @version		$Id: mams.php 2012-03-05 $
- * @package		MAMS.Admin
- * @subpackage	Helper
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
-
 
 abstract class MAMSHelper
 {

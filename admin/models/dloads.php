@@ -2,24 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * @version		$Id: dloads.php 2012-03-08 $
- * @package		MAMS.Admin
- * @subpackage	dloads
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
-
 jimport('joomla.application.component.modellist');
 
-/**
- * MAMS Downloads Model
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	dloads
- * @since		1.0
- */
 class MAMSModelDloads extends JModelList
 {
 	

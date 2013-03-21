@@ -1,25 +1,10 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: auth.php 2012-03-12 $
- * @package		MAMS.Admin
- * @subpackage	article
- * @copyright	Copyright (C) 2012 DtD Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
-/**
- * MAMS Article Edit Model
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	article
- * @since		1.0
- */
 class MAMSModelArticle extends JModelAdmin
 {
 	/**

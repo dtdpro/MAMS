@@ -1,25 +1,10 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: dload.php 2012-03-08 $
- * @package		MAMS.Admin
- * @subpackage	dload
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla table library
 jimport('joomla.database.table');
 
-/**
- * MAMS Download Table
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	dload
- * @since		1.0
- */
 class MAMSTableDload extends JTable
 {
 	/**

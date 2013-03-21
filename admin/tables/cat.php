@@ -1,25 +1,10 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: cat.php 2012-03-06 $
- * @package		MAMS.Admin
- * @subpackage	cat
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla table library
 jimport('joomla.database.table');
 
-/**
- * MAMS Category Table
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	cat
- * @since		1.0
- */
 class MAMSTableCat extends JTable
 {
 	/**

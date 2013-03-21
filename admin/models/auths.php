@@ -2,24 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * @version		$Id: auths.php 2012-03-07 $
- * @package		MAMS.Admin
- * @subpackage	auths
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
-
 jimport('joomla.application.component.modellist');
 
-/**
- * MAMS Authors Model
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	auths
- * @since		1.0
- */
 class MAMSModelAuths extends JModelList
 {
 	

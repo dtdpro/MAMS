@@ -2,24 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * @version		$Id: artmeds.php 2012-03-12 $
- * @package		MAMS.Admin
- * @subpackage	artmeds
- * @copyright	Copyright (C) 2012 DtD Productions.
- * @license		GNU General Public License version 2
- */
-
 jimport('joomla.application.component.modellist');
 
-/**
- * MAMS Article Media Model
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	artmeds
- * @since		1.0
- */
 class MAMSModelArtMeds extends JModelList
 {
 	

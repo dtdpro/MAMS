@@ -1,25 +1,10 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: auth.php 2012-03-07 $
- * @package		MAMS.Admin
- * @subpackage	auth
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla table library
 jimport('joomla.database.table');
 
-/**
- * MAMS Author Table
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	auht
- * @since		1.0
- */
 class MAMSTableAuth extends JTable
 {
 	/**

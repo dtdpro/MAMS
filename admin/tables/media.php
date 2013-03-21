@@ -1,25 +1,10 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: media.php 2012-03-08 $
- * @package		MAMS.Admin
- * @subpackage	media
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla table library
 jimport('joomla.database.table');
 
-/**
- * MAMS Media Table
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	medai
- * @since		1.0
- */
 class MAMSTableMedia extends JTable
 {
 	/**

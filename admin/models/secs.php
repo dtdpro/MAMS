@@ -2,24 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * @version		$Id: secs.php 2012-03.05 $
- * @package		MAMS.Admin
- * @subpackage	secs
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
-
 jimport('joomla.application.component.modellist');
 
-/**
- * MAMS Sections Model
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	secs
- * @since		1.0
- */
 class MAMSModelSecs extends JModelList
 {
 	

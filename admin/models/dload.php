@@ -1,25 +1,10 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: dload.php 2012-03-08 $
- * @package		MAMS.Admin
- * @subpackage	dload
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
-/**
- * MAMS Download Edit Model
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	dload
- * @since		1.0
- */
 class MAMSModelDload extends JModelAdmin
 {
 	/**

@@ -2,24 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * @version		$Id: medias.php 2012-03-08 $
- * @package		MAMS.Admin
- * @subpackage	medias
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
-
 jimport('joomla.application.component.modellist');
 
-/**
- * MAMS Media Model
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	medias
- * @since		1.0
- */
 class MAMSModelMedias extends JModelList
 {
 	

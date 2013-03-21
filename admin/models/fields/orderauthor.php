@@ -1,24 +1,9 @@
 <?php
-/**
- * @version		$Id: orderauthor.php 21097 2012-03-07 $
- * @package		MAMS.Admin
- * @subpackage	author
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-/**
- * Supports an HTML select list of categories
- *
- * @package		MAMS.Admin
- * @subpackage	author
- * @since		1.0
- */
 class JFormFieldOrderAuthor extends JFormField
 {
 	/**
