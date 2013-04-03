@@ -4,7 +4,8 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
-echo '<ul>';
+echo '<div id="mams-featmod">';
+echo '<ul class="mams-featmod-list">';
 foreach ($articles as $a) {
 	echo '<li>';
 	echo '<span class="mams-featmod-title">';
@@ -63,3 +64,4 @@ foreach ($articles as $a) {
 	echo '</li>';
 }
 echo '</ul>';
+echo '</div>';
