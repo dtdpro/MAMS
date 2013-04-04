@@ -34,7 +34,7 @@ class modMAMSCatHelper
 		$query->where('a.access IN ('.implode(",",$alvls).')');
 		$query->where('a.published >= 1');
 		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-		$query->order('a.art_published DESC');
+		$query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC');
 		$db->setQuery($query,0,$params->get('count',5));
 		$items = $db->loadObjectList();
 		

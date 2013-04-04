@@ -7,6 +7,7 @@ JHtml::_('behavior.tooltip');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$db =& JFactory::getDBO();
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&view=cats'); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
@@ -52,11 +53,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th width="100">
 					<?php echo JText::_('JGRID_HEADING_ACCESS'); ?>
 				</th>
+				<th width="50">
+					<?php echo JText::_('COM_MAMS_CAT_HEADING_NUMITEMS'); ?>
+				</th>
 			</tr>
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="7"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -71,6 +75,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<td><?php echo $item->cat_modified; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'cats.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
+				<td><?php 
+					$query = 'SELECT count(*) FROM #__mams_artcat WHERE ac_cat='.$item->cat_id;
+					$db->setQuery( $query );
+					$num=$db->loadResult();
+					echo $num;
+				?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

@@ -112,7 +112,7 @@ class MAMSModelArticle extends JModel
 			$query->where('a.published >= 1');
 			$query->where('a.access IN ('.implode(",",$alvls).')');
 			if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-			$query->order('a.art_published DESC');
+			$query->order('a.art_published DESC, a.ordering ASC');
 			$limit = (int)$cfg->num_related;
 			$db->setQuery($query,0,$limit);
 			$items = $db->loadObjectList();
@@ -175,7 +175,7 @@ class MAMSModelArticle extends JModel
 			$query->where('a.published >= 1');
 			$query->where('a.access IN ('.implode(",",$alvls).')');
 			if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-			$query->order('a.art_published DESC');
+			$query->order('a.art_published DESC, a.ordering ASC');
 			$limit = (int)$cfg->num_related;
 			$db->setQuery($query,0,$limit);
 			$items = $db->loadObjectList();

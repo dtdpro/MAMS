@@ -9,6 +9,8 @@ JHtml::_('behavior.multiselect');
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$saveOrder = ($listOrder == 'a.ordering' || $listOrder == 'a.art_published');
+$ordering = ($listOrder == 'a.ordering' || $listOrder == 'a.art_published');
 $published = $this->state->get('filter.published');
 $db =& JFactory::getDBO();
 ?>
@@ -69,6 +71,10 @@ $db =& JFactory::getDBO();
 				<th width="100">
 					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_SECTION'); ?>
 				</th>
+				<th width="120">
+					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'articles.saveorder'); ?>
+				</th>
 				<th width="50">
 					<?php echo JText::_('JFEATURED'); ?>
 				</th>
@@ -85,7 +91,7 @@ $db =& JFactory::getDBO();
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="13"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="14"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -100,7 +106,7 @@ $db =& JFactory::getDBO();
 				<td><?php echo $item->art_published; ?></td>
 				<td><?php 
 					//Authors
-					echo '<a href="index.php?option=com_mams&view=artauths&filter_article='.$item->art_id.'">Authors ';
+					echo '<a href="index.php?option=com_mams&view=artarticles&filter_article='.$item->art_id.'">Authors ';
 					$query = 'SELECT count(*) FROM #__mams_artauth WHERE published >= 1 && aa_art="'.$item->art_id.'"';
 					$db->setQuery( $query );
 					$num_aa=$db->loadResult();
@@ -130,6 +136,20 @@ $db =& JFactory::getDBO();
 				<td><?php echo $item->art_added; ?></td>
 				<td><?php echo $item->art_modified; ?></td>
 				<td><?php echo $item->sec_name; ?></td>
+				<td class="order">
+				<?php if ($saveOrder) :?>
+					<?php if ($listDirn == 'asc') : ?>
+						<span><?php echo $this->pagination->orderUpIcon($i, ($item->art_sec == @$this->items[$i-1]->art_sec && $item->art_published == @$this->items[$i-1]->art_published), 'articles.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->art_sec == @$this->items[$i+1]->art_sec && $item->art_published == @$this->items[$i+1]->art_published), 'articles.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+					<?php elseif ($listDirn == 'desc') : ?>
+						<span><?php echo $this->pagination->orderUpIcon($i, ($item->art_sec == @$this->items[$i-1]->art_sec && $item->art_published == @$this->items[$i-1]->art_published), 'articles.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->art_sec == @$this->items[$i+1]->art_sec && $item->art_published == @$this->items[$i+1]->art_published), 'articles.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+					<?php endif; ?>
+				<?php endif; ?>
+				<?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
+				<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
+				
+				</td>
 				<td class="center"><?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true).'<br />'.$item->feataccess_level; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'articles.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
@@ -160,7 +180,7 @@ $db =& JFactory::getDBO();
 			<option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
 			<?php echo JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', "");?>
 		</select>
-	<br />
+	<br /><br /><br />
 		<button type="submit" onclick="Joomla.submitbutton('article.batch');">
 			<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
 		</button>

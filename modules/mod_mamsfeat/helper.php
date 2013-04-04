@@ -25,7 +25,7 @@ class modMAMSFeatHelper
 		$query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$query->where('a.published >= 1');
 		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-		$query->order('a.art_published DESC');
+		$query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 		

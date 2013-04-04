@@ -7,6 +7,8 @@ JHtml::_('behavior.tooltip');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$saveOrder = $listOrder == 's.ordering';
+$ordering = ($listOrder == 's.ordering');
 $db =& JFactory::getDBO();
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&view=secs'); ?>" method="post" name="adminForm">
@@ -56,6 +58,10 @@ $db =& JFactory::getDBO();
 				<th width="100">
 					<?php echo JText::_('JGRID_HEADING_ACCESS'); ?>
 				</th>
+				<th width="10%">
+					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 's.ordering', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'secs.saveorder'); ?>
+				</th>
 				<th width="50">
 					<?php echo JText::_('COM_MAMS_SEC_HEADING_NUMITEMS'); ?>
 				</th>
@@ -63,7 +69,7 @@ $db =& JFactory::getDBO();
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -84,6 +90,20 @@ $db =& JFactory::getDBO();
 				<td><?php echo $item->sec_modified; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'secs.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
+				<td class="order">
+				<?php if ($saveOrder) :?>
+					<?php if ($listDirn == 'asc') : ?>
+						<span><?php echo $this->pagination->orderUpIcon($i, ($item->sec_type == @$this->items[$i-1]->sec_type), 'secs.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->sec_type == @$this->items[$i+1]->sec_type), 'secs.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+					<?php elseif ($listDirn == 'desc') : ?>
+						<span><?php echo $this->pagination->orderUpIcon($i, ($item->sec_type == @$this->items[$i-1]->sec_type), 'secs.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->sec_type == @$this->items[$i+1]->sec_type), 'secs.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+					<?php endif; ?>
+				<?php endif; ?>
+				<?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
+				<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
+				
+				</td>
 				<td><?php 
 					if ($item->sec_type == "article") $query = 'SELECT count(*) FROM #__mams_articles WHERE art_sec='.$item->sec_id;
 					if ($item->sec_type == "author") $query = 'SELECT count(*) FROM #__mams_authors WHERE auth_sec='.$item->sec_id;

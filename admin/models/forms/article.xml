@@ -39,6 +39,13 @@
 			default="1"
 			filter="integer"/>
 		<field
+			name="ordering"
+			type="OrderArticle"
+			class="inputbox"
+			label="JFIELD_ORDERING_LABEL"
+			description="JFIELD_ORDERING_DESC"
+		/>
+		<field
 			name="art_sec"
 			type="ArticleSecs"
 			class="inputbox"

@@ -46,9 +46,9 @@ class MAMSModelArtList extends JModelList
 		switch ($this->params->get("orderby","pubdsc")) {
 			case "titasc": $query->order('a.art_title ASC'); break;
 			case "titdsc": $query->order('a.art_title DESC'); break;
-			case "pubasc": $query->order('a.art_published ASC'); break;
-			case "pubdsc": $query->order('a.art_published DESC'); break;
-			default: $query->order('a.art_published DESC'); break;
+			case "pubasc": $query->order('a.art_published ASC, s.ordering ASC, a.ordering ASC'); break;
+			case "pubdsc": $query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC'); break;
+			default: $query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC'); break;
 		}
 		
 		return $query;

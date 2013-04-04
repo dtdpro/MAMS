@@ -423,4 +423,47 @@ class MAMSModelArticle extends JModelAdmin
 		return true;
 	}
 	
+
+	/**
+	 * Prepare and sanitise the table prior to saving.
+	 *
+	 * @since 1.6
+	 */
+	protected function prepareTable(&$table)
+	{
+		jimport('joomla.filter.output');
+		$date = JFactory::getDate();
+		$user = JFactory::getUser();
+	
+		if (empty($table->am_id)) {
+			// Set the values
+				
+			// Set ordering to the last item if not set
+			if (empty($table->ordering)) {
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_articles WHERE art_sec = "'.$table->art_sec.'" && art_published = "'.$table->art_published.'"');
+				$max = $db->loadResult();
+	
+				$table->ordering = $max+1;
+			}
+		}
+		else {
+			// Set the values
+		}
+	}
+	
+	/**
+	 * A protected method to get a set of ordering conditions.
+	 *
+	 * @param object A record object.
+	 * @return array An array of conditions to add to add to ordering queries.
+	 * @since 1.6
+	 */
+	protected function getReorderConditions($table)
+	{
+		$condition = array();
+		$condition[] = 'art_sec = "'.$table->art_sec.'" && art_published = "'.$table->art_published.'"';
+		return $condition;
+	}
+	
 }

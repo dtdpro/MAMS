@@ -103,7 +103,13 @@ class MAMSModelArticles extends JModelList
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
 		
-		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
+		if ($orderCol == 'a.ordering') {
+			$query->order($db->getEscaped('a.art_published '.$orderDirn.', s.ordering '.$orderDirn.', a.ordering '.$orderDirn));
+		} else if ($orderCol == 'a.art_published') {
+			$query->order($db->getEscaped('a.art_published '.$orderDirn.', s.ordering ASC, a.ordering ASC'));
+		} else{
+			$query->order($db->getEscaped($orderCol.' '.$orderDirn));
+		}
 				
 		return $query;
 	}

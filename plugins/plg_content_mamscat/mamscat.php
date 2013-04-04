@@ -60,7 +60,7 @@ require_once('components'.DS.'com_mams'.DS.'router.php');
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
 		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-		$query->order('a.art_published DESC');
+		$query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC');
 		$limitstart = 0;
 		$limit = 5;
 		

@@ -49,4 +49,34 @@ class MAMSModelSec extends JModelAdmin
 		return $data;
 	}
 	
+	protected function prepareTable(&$table)
+	{
+		jimport('joomla.filter.output');
+		$date = JFactory::getDate();
+		$user = JFactory::getUser();
+	
+		if (empty($table->am_id)) {
+			// Set the values
+				
+			// Set ordering to the last item if not set
+			if (empty($table->ordering)) {
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_articles WHERE sec_type = "'.$table->sec_type.'"');
+				$max = $db->loadResult();
+	
+				$table->ordering = $max+1;
+			}
+		}
+		else {
+			// Set the values
+		}
+	}
+	
+	protected function getReorderConditions($table)
+	{
+		$condition = array();
+		$condition[] = 'sec_type = "'.$table->sec_type.'"';
+		return $condition;
+	}
+	
 }

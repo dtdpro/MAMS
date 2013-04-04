@@ -16,6 +16,7 @@ class MAMSModelSecs extends JModelList
 				'sec_modified', 's.sec_modified',
 				'sec_title', 's.sec_title',
 				'sec_type', 's.sec_type',
+				'ordering', 's.ordering',
 			);
 		}
 		parent::__construct($config);
@@ -71,6 +72,10 @@ class MAMSModelSecs extends JModelList
 		
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
+		
+		if ($orderCol == 's.ordering') {
+			$orderCol = 's.sec_type '.$orderDirn.', s.ordering';
+		}
 		
 		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
 				
