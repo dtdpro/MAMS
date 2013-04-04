@@ -17,7 +17,7 @@ foreach ($articles as $a) {
 			if ($params->get('link_pubinfo',0)) $auts[]='<a href="'.$params->get('url_prefix','').JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_name.'</a>';
 			else $auts[]=$f->auth_name;
 		}
-		echo '<br /><div class="mams-featmod-author">';
+		echo '<div class="mams-featmod-author">';
 		echo implode(", ",$auts);
 		echo '</div>';
 	}
