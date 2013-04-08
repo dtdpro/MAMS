@@ -106,7 +106,7 @@ $db =& JFactory::getDBO();
 				<td><?php echo $item->art_published; ?></td>
 				<td><?php 
 					//Authors
-					echo '<a href="index.php?option=com_mams&view=artarticles&filter_article='.$item->art_id.'">Authors ';
+					echo '<a href="index.php?option=com_mams&view=artauths&filter_article='.$item->art_id.'">Authors ';
 					$query = 'SELECT count(*) FROM #__mams_artauth WHERE published >= 1 && aa_art="'.$item->art_id.'"';
 					$db->setQuery( $query );
 					$num_aa=$db->loadResult();
