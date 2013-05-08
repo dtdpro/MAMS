@@ -35,13 +35,14 @@ CREATE TABLE IF NOT EXISTS #__mams_articles (
   art_keywords text NOT NULL,
   art_content text NOT NULL,
   art_added timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  art_published datetime NOT NULL,
+  art_published date NOT NULL,
   art_modified datetime NOT NULL,
   art_hits int(11) NOT NULL,
   art_show_related tinyint(1) NOT NULL DEFAULT '1',
   access int(11) NOT NULL,
   feataccess int(11) NOT NULL,
   published int(11) NOT NULL,
+  ordering int(11) NOT NULL,
   PRIMARY KEY (art_id),
   KEY art_title (art_title)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -135,6 +136,7 @@ CREATE TABLE IF NOT EXISTS #__mams_secs (
   sec_modified datetime NOT NULL,
   published int(11) NOT NULL,
   access int(11) NOT NULL,
+  ordering int(11) NOT NULL,
   PRIMARY KEY (sec_id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

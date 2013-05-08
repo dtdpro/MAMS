@@ -61,7 +61,7 @@ class MAMSModelSec extends JModelAdmin
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__mams_articles WHERE sec_type = "'.$table->sec_type.'"');
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_secs WHERE sec_type = "'.$table->sec_type.'"');
 				$max = $db->loadResult();
 	
 				$table->ordering = $max+1;
