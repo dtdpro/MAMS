@@ -34,6 +34,15 @@
 			default="1"
 			filter="integer"/>
 		<field
+			name="feataccess"
+			type="accesslevel"
+			id="feataccess"
+			class="inputbox"
+			label="COM_MAMS_ARTICLE_FIELD_FEATACCESS_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_FEATACCESS_DESC"
+			default="1"
+			filter="integer"/>
+		<field
 			name="med_type"
 			type="list"
 			class="inputbox"

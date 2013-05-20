@@ -7,12 +7,12 @@ abstract class JHtmlMAMSAdministrator
 	 * @param	int $value	The state value
 	 * @param	int $i
 	 */
-	static function featured($value = 0, $i, $canChange = true)
+	static function featured($value = 0, $i, $canChange = true,$task="articles")
 	{
 		// Array of image, task, title, action
 		$states	= array(
-			0	=> array('disabled.png',	'articles.featured',	'COM_MAMS_DEFEATURED',	'COM_MAMS_TOGGLE_TO_FEATURE'),
-			1	=> array('featured.png',		'articles.defeatured',	'COM_MAMS_FEATURED',		'COM_MAMS_TOGGLE_TO_DEFEATURE'),
+			0	=> array('disabled.png',	$task.'.featured',	'COM_MAMS_DEFEATURED',	'COM_MAMS_TOGGLE_TO_FEATURE'),
+			1	=> array('featured.png',		$task.'.defeatured',	'COM_MAMS_FEATURED',		'COM_MAMS_TOGGLE_TO_DEFEATURE'),
 		);
 		$state	= JArrayHelper::getValue($states, (int) $value, $states[1]);
 		$html	= JHtml::_('image', 'admin/'.$state[0], JText::_($state[2]), null, true);

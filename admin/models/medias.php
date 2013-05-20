@@ -60,6 +60,12 @@ class MAMSModelMedias extends JModelList
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = m.access');
+		$query->select('mf.title AS feataccess_level');
+		$query->join('LEFT', '#__viewlevels AS mf ON mf.id = m.feataccess');
+
+		// Join over the featured.
+		$query->select('f.mf_id as featured');
+		$query->join('LEFT', '#__mams_mediafeat AS f ON f.mf_media = m.med_id');
 		
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {

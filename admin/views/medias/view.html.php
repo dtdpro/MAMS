@@ -1,25 +1,10 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: view.html.php 2012-03-08 $
- * @package		MAMS.Admin
- * @subpackage	medias
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-/**
- * MAMS Media View
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	medias
- * @since		1.0
- */
 class MAMSViewMedias extends JView
 {
 	function display($tpl = null) 
@@ -59,6 +44,8 @@ class MAMSViewMedias extends JView
 		JToolBarHelper::divider();
 		JToolBarHelper::custom('medias.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::custom('medias.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
+		JToolBarHelper::custom('medias.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
+		JToolBarHelper::custom('medias.defeatured', 'remove.png', 'remove_f2.png', 'COM_MAMS_TOOLBAR_DEFEATURE', true);
 		JToolBarHelper::divider();
 		if ($state->get('filter.published') == -2) {
 			JToolBarHelper::deleteList('', 'medias.delete', 'JTOOLBAR_EMPTY_TRASH');

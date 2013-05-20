@@ -107,11 +107,20 @@ CREATE TABLE IF NOT EXISTS `#__mams_media` (
   `med_desc` text NOT NULL,
   `med_file` varchar(255) NOT NULL,
   `med_still` varchar(255) NOT NULL,
+  `med_autoplay` tinyint(1) NOT NULL DEFAULT '0',
   `med_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `med_modified` datetime NOT NULL,
   `published` int(11) NOT NULL,
   `access` int(11) NOT NULL,
+  `feataccess` int(11) NOT NULL,
   PRIMARY KEY (`med_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__mams_mediafeat` (
+  `mf_id` int(11) NOT NULL AUTO_INCREMENT,
+  `mf_media` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  PRIMARY KEY (`mf_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_mediatrack` (

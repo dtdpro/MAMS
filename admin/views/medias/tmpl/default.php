@@ -4,7 +4,10 @@
 defined('_JEXEC') or die('Restricted Access');
 // load tooltip behavior
 JHtml::_('behavior.tooltip');
+JHtml::_('behavior.multiselect');
 
+
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $extension	= $this->escape($this->state->get('filter.extension'));
@@ -56,6 +59,9 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<th width="120">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_MEDIA_MODIFIED','m.med_modified', $listDirn, $listOrder); ?>
 				</th>		
+				<th width="50">
+					<?php echo JText::_('JFEATURED'); ?>
+				</th>
 				<th width="100">
 					<?php echo JText::_('JPUBLISHED'); ?>
 				</th>
@@ -66,7 +72,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -88,6 +94,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				?></td>
 				<td><?php echo $item->med_added; ?></td>
 				<td><?php echo $item->med_modified; ?></td>
+				<td class="center"><?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true,'medias').'<br />'.$item->feataccess_level; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'medias.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
 			</tr>
