@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS #__mams_artauth (
   ordering int(11) NOT NULL,
   published int(11) NOT NULL,
   PRIMARY KEY (aa_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS #__mams_artcat (
   ac_id int(11) NOT NULL AUTO_INCREMENT,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS #__mams_artcat (
   ordering int(11) NOT NULL,
   published int(11) NOT NULL,
   PRIMARY KEY (ac_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS #__mams_artdl (
   ad_id int(11) NOT NULL AUTO_INCREMENT,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS #__mams_artdl (
   ordering int(11) NOT NULL,
   published int(11) NOT NULL,
   PRIMARY KEY (ad_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS #__mams_articles (
   art_id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -45,7 +45,16 @@ CREATE TABLE IF NOT EXISTS #__mams_articles (
   ordering int(11) NOT NULL,
   PRIMARY KEY (art_id),
   KEY art_title (art_title)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__mams_artlinks` (
+  `al_id` int(11) NOT NULL AUTO_INCREMENT,
+  `al_art` int(11) NOT NULL,
+  `al_link` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  PRIMARY KEY (`al_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS #__mams_artmed (
   am_id int(11) NOT NULL AUTO_INCREMENT,
@@ -54,7 +63,7 @@ CREATE TABLE IF NOT EXISTS #__mams_artmed (
   ordering int(11) NOT NULL,
   published int(11) NOT NULL,
   PRIMARY KEY (am_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS #__mams_authors (
   auth_id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -70,7 +79,7 @@ CREATE TABLE IF NOT EXISTS #__mams_authors (
   access int(11) NOT NULL,
   ordering int(11) NOT NULL,
   PRIMARY KEY (auth_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS #__mams_cats (
   cat_id int(11) NOT NULL AUTO_INCREMENT,
@@ -82,7 +91,7 @@ CREATE TABLE IF NOT EXISTS #__mams_cats (
   published int(11) NOT NULL,
   access int(11) NOT NULL,
   PRIMARY KEY (cat_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS #__mams_dloads (
   dl_id int(11) NOT NULL AUTO_INCREMENT,
@@ -96,7 +105,19 @@ CREATE TABLE IF NOT EXISTS #__mams_dloads (
   published int(11) NOT NULL,
   access int(11) NOT NULL,
   PRIMARY KEY (dl_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__mams_links` (
+  `link_id` int(11) NOT NULL AUTO_INCREMENT,
+  `link_url` varchar(1024) NOT NULL,
+  `link_title` varchar(255) NOT NULL,
+  `link_target` VARCHAR( 10 ) NOT NULL DEFAULT '_blank',
+  `link_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `link_modified` DATETIME NOT NULL,
+  `published` tinyint(4) NOT NULL,
+  `access` int(11) NOT NULL,
+  PRIMARY KEY (`link_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 CREATE TABLE IF NOT EXISTS `#__mams_media` (
   `med_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -114,14 +135,14 @@ CREATE TABLE IF NOT EXISTS `#__mams_media` (
   `access` int(11) NOT NULL,
   `feataccess` int(11) NOT NULL,
   PRIMARY KEY (`med_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_mediafeat` (
   `mf_id` int(11) NOT NULL AUTO_INCREMENT,
   `mf_media` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
   PRIMARY KEY (`mf_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_mediatrack` (
   `mt_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -133,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_mediatrack` (
   `mt_percentage` int(11) NOT NULL,
   `mt_ipaddr` varchar(15) NOT NULL,
   PRIMARY KEY (`mt_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 CREATE TABLE IF NOT EXISTS #__mams_secs (
   sec_id int(11) NOT NULL AUTO_INCREMENT,
@@ -147,7 +168,7 @@ CREATE TABLE IF NOT EXISTS #__mams_secs (
   access int(11) NOT NULL,
   ordering int(11) NOT NULL,
   PRIMARY KEY (sec_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS #__mams_track (
   mt_id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -158,12 +179,12 @@ CREATE TABLE IF NOT EXISTS #__mams_track (
   mt_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   mt_ipaddr varchar(15) NOT NULL,
   PRIMARY KEY (mt_id)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_artfeat` (
   `af_id` int(11) NOT NULL AUTO_INCREMENT,
   `af_art` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
   PRIMARY KEY (`af_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 

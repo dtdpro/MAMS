@@ -86,6 +86,19 @@ class MAMSModelArticle extends JModel
 		$db->setQuery($qm);
 		$item->media=$db->loadObjectList();
 		
+		//Get Links
+		$qm=$db->getQuery(true);
+		$qm->select('l.*');
+		$qm->from('#__mams_artlinks as al');
+		$qm->join('RIGHT','#__mams_links AS l ON al.al_link = l.link_id');
+		$qm->where('al.published >= 1');
+		$qm->where('l.published >= 1');
+		$qm->where('l.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		$qm->where('al.al_art = '.$item->art_id);
+		$qm->order('al.ordering ASC');
+		$db->setQuery($qm);
+		$item->links=$db->loadObjectList();
+		
 		return $item;
 	}
 	

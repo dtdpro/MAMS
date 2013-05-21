@@ -196,6 +196,21 @@ echo '<div class="mams-article-content">';
 echo $this->article->art_content;
 echo '</div>';
 
+//Links
+if ($this->article->links) {
+	echo '<div class="mams-article-links">';
+	foreach ($this->article->links as $f) {
+		echo '<div class="mams-article-link">';
+		echo '<strong><a href="'.$f->link_url.'" ';
+		echo 'target="'.$f->link_target.'" ';
+		echo 'class="mams-article-artlink">';
+		echo $f->link_title;
+		echo '</a>';
+		echo '</div>';
+	}
+	echo '</div>';
+}
+
 //Last Modifed
 echo '<div class="mams-article-modified">';
 echo 'Last modified: '.date("F j, Y",strtotime($this->article->art_modified));
@@ -213,7 +228,7 @@ echo '<div class="mams-article-related">';
 			if ($r->art_thumb) {
 				echo '<img class="mams-article-related-artthumb"';
 				echo ' src="'.$r->art_thumb.'" ';
-				echo 'align="left" width="70" />';
+				echo 'align="left" />';
 			}
 			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias).'" class="mams-article-artlink">';
 			echo $r->art_title.'</a>';
@@ -263,7 +278,7 @@ echo '<div class="mams-article-related">';
 			if ($r->art_thumb) {
 				echo '<img class="mams-article-related-artthumb"';
 				echo ' src="'.$r->art_thumb.'" ';
-				echo 'align="left" width="70" />';
+				echo 'align="left" />';
 			}
 			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias).'" class="mams-article-artlink">';
 			echo $r->art_title.'</a>';

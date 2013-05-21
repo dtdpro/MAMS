@@ -62,6 +62,9 @@ $db =& JFactory::getDBO();
 				<th width="100">
 					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_EXTRAS'); ?>
 				</th>
+				<th width="100">
+					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_REFS'); ?>
+				</th>
 				<th width="120">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_ADDED','a.art_added', $listDirn, $listOrder); ?>
 				</th>		
@@ -131,7 +134,14 @@ $db =& JFactory::getDBO();
 					$db->setQuery( $query );
 					$num_am=$db->loadResult();
 					echo ' ['.$num_am.']</a>';
-				
+				?></td>
+				<td><?php 
+					//Links
+					echo '<a href="index.php?option=com_mams&view=artlinks&filter_article='.$item->art_id.'">Links ';
+					$query = 'SELECT count(*) FROM #__mams_artlinks WHERE published >= 1 && al_art="'.$item->art_id.'"';
+					$db->setQuery( $query );
+					$num_al=$db->loadResult();
+					echo ' ['.$num_al.']</a>';
 				?></td>
 				<td><?php echo $item->art_added; ?></td>
 				<td><?php echo $item->art_modified; ?></td>
