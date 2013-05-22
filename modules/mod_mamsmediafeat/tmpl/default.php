@@ -72,7 +72,7 @@ if ($items) {
 		echo "'screencolor': '000000',"."\n";
 		echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow/glow.xml',"."\n";
 		echo "'controlbar': 'bottom',"."\n";
-		if ($items[0]->med_autoplay) echo "'autostart':'true',"."\n";
+		//if ($items[0]->med_autoplay) echo "'autostart':'true',"."\n";
 		if (count($items) > 1 && $params->get('playlist_loc','right') == "right") echo "'width': '".((int)$params->get('player_w','512')+(int)$params->get('playlist_size','300'))."',"."\n";
 		else echo "'width': '".(int)$params->get('player_w','512')."',"."\n";
 		if (count($items) > 1 && $params->get('playlist_loc','right') == "bottom") echo "'height': '".((int)$params->get('player_h','288')+30+(int)$params->get('playlist_size','300'))."'";

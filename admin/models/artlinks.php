@@ -56,7 +56,7 @@ class MAMSModelArtLinks extends JModelList
 		}
 
 		// Join over the authors.
-		$query->select('l.*');
+		$query->select('l.link_url,l.link_title');
 		$query->join('LEFT', '#__mams_links AS l ON l.link_id = a.al_link');
 		
 		// Filter by published state
