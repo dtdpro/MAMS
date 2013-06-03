@@ -49,12 +49,12 @@ if ($items) {
 			echo "{ type: 'html5',\n";
 			echo "'config':{\n";
 			if (count($items) == 1) {
-				echo "'file':'http://".$config->vids_url."/".$items[0]->med_file."',"."\n";
+				echo "'file':'http://".$config->vid5_url."/".$items[0]->med_file."',"."\n";
 			} else {
 				echo "'playlist': ["."\n";
 				foreach ($items as $m) {
 					echo "{"."\n";
-					echo "'file':'http://".$config->vids_url."/".$m->med_file."',"."\n";
+					echo "'file':'http://".$config->vid5_url."/".$m->med_file."',"."\n";
 					echo "'image': '".JURI::base( true ).'/'.$m->med_still."',"."\n";
 					echo "'title': '".JURI::base( true ).$m->med_exttitle."',"."\n";
 					echo "'description': '".JURI::base( true ).$m->med_desc."',"."\n";
