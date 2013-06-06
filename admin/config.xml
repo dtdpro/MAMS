@@ -14,6 +14,10 @@
 		<field name="vids_app" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSAPP_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSAPP_DESC" size="120" class="inputbox" required="false" default="" />
 		<field name="vid5_url" type="text" label="COM_MAMS_CONFIG_FIELD_VID5URL_LABEL" description="COM_MAMS_CONFIG_FIELD_VID5URL_DESC" size="120" class="inputbox" required="false" default="files.mycdn.com" />
 		<field name="playlist_h" type="text" label="COM_MAMS_CONFIG_FIELD_PLAYLISTH_LABEL" description="COM_MAMS_CONFIG_FIELD_PLAYLISTH_DESC" size="5" class="inputbox" required="false" integer="true" default="200" />
+		<field name="player_fixed" type="radio" description="COM_MAMS_CONFIG_FIELD_PLAYER_FIXED_DESC" label="COM_MAMS_CONFIG_FIELD_PLAYER_FIXED_LABEL" default="0">
+			<option value="1">Fixed</option>
+			<option value="0">Responsive</option>
+		</field>
 	</fieldset>
 	<fieldset name="auido" label="COM_MAMS_CONFIG_AUDIO_LABEL" description="COM_MAMS_CONFIG_AUDIO_DESC">
 		<field name="aud_w" type="text" label="COM_MAMS_CONFIG_FIELD_AUDW_LABEL" description="COM_MAMS_CONFIG_FIELD_AUDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />

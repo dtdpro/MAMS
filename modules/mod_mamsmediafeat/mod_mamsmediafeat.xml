@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<description>MOD_MAMSMEDIAFEAT_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamsmediafeat">mod_mamsmediafeat.php</filename>
@@ -24,11 +24,10 @@
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
-				<field name="playlist_loc" type="radio" description="MOD_MAMSMEDIAFEAT_PLAYLIST_LOC_DESC" label="MOD_MAMSMEDIAFEAT_PLAYLIST_LOC_LABEL" default="right">
-					<option value="right">Right</option>
-					<option value="bottom">Bottom</option>
+				<field name="player_fixed" type="radio" description="MOD_MAMSMEDIAFEAT_PLAYER_FIXED_DESC" label="MOD_MAMSMEDIAFEAT_PLAYER_FIXED_LABEL" default="0">
+					<option value="1">Fixed</option>
+					<option value="0">Responsive</option>
 				</field>
-				<field name="playlist_size" type="text" default="300" label="MOD_MAMSMEDIAFEAT_PLAYLIST_SIZE_LABEL" description="MOD_MAMSMEDIAFEAT_PLAYLIST_SIZE_DESC" />
 				<field name="player_w" type="text" default="512" label="MOD_MAMSMEDIAFEAT_PLAYER_W_LABEL" description="MOD_MAMSMEDIAFEAT_PLAYER_W_DESC" />
 				<field name="player_h" type="text" default="288" label="MOD_MAMSMEDIAFEAT_PLAYER_H_LABEL" description="MOD_MAMSMEDIAFEAT_PLAYER_H_DESC" />
 			</fieldset>

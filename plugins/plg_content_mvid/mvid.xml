@@ -3,11 +3,11 @@
 	<name>plg_content_mvid</name>
 	<author>DtD Productions</author>
 	<creationDate>2012.12</creationDate>
-	<copyright>Copyright (C) 2012 DtD Productions. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2013 DtD Productions. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.2.0</version>
+	<version>1.3.0</version>
 	<description>PLG_CONTENT_MVID_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="mvid">mvid.php</filename>

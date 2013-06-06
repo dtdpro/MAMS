@@ -42,119 +42,115 @@ if ($this->params->get('show_pubinfo',1)) {
 if ($this->article->media) {
 	echo '<div class="mams-article-media">';
 		echo '<div align="center">';
+		
+		echo '<div class="mams-article-mediawrap"';
+		if ($config->player_fixed) echo ' style="width: '.(int)$config->vid_w.'px;"';
+		echo '>';
 		if ($this->article->media[0]->med_type == 'vid' || $this->article->media[0]->med_type == 'vids') { //Video Player
-			//flash player
-			echo '<div id="mediaspace"></div>'."\n";
-			echo "<script type='text/javascript'>"."\n";
-			echo "jwplayer('mediaspace').setup({"."\n";
-	 		if ($this->article->media[0]->med_type == "vid") {
-	   			echo "'flashplayer': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
-	 			echo "'file': '".JURI::base( true ).'/'.$this->article->media[0]->med_file."',"."\n";
-	 		}
-	 		if ($this->article->media[0]->med_type == "vids") {
-	 			echo "'modes':[";
-	 			echo "{ type: 'flash',\n";
-	   			echo "'src': '".JURI::base( true )."/media/com_mams/vidplyr/player.swf',"."\n";
-	 			echo "'config':{\n";
-	 			if (count($this->article->media) == 1) {
-		   			echo "'provider': 'rtmp',"."\n";
-		 			echo "'streamer': 'rtmp://".$config->vids_url.'/';
-		 			if ($config->vids_app) echo $config->vids_app.'/';
-		 			echo "',"."\n";
-	 				echo "'file':'mp4:".$this->article->media[0]->med_file."',"."\n";
-	 			} else {
-	 				echo "'playlist': ["."\n";
-	 				foreach ($this->article->media as $m) {
-	 					echo "{"."\n";
-			   			echo "'provider': 'rtmp',"."\n";
-			 			echo "'streamer': 'rtmp://".$config->vids_url.'/';
-			 			if ($config->vids_app) echo $config->vids_app.'/';
-			 			echo "',"."\n";
-	 					echo "'file':'mp4:".$m->med_file."',"."\n";
-	 					echo "'image': '".JURI::base( true ).'/'.$m->med_still."',"."\n";
-	 					echo "'title': '".JURI::base( true ).$m->med_exttitle."',"."\n";
-	 					echo "'description': '".JURI::base( true ).$m->med_desc."',"."\n";
-	 					echo "},"."\n";
-	 				}
-	 				echo "],"."\n";
-	 			}
-	 			echo "}\n";
-	 			echo "},\n";
-	 			echo "{ type: 'html5',\n";
-	 			echo "'config':{\n";
-	 			if (count($this->article->media) == 1) {
-	 				echo "'file':'http://".$config->vid5_url."/".$this->article->media[0]->med_file."',"."\n";
-	 			} else {
-	 				echo "'playlist': ["."\n";
-	 				foreach ($this->article->media as $m) {
-	 					echo "{"."\n";
-	 					echo "'file':'http://".$config->vid5_url."/".$m->med_file."',"."\n";
-	 					echo "'image': '".JURI::base( true ).'/'.$m->med_still."',"."\n";
-	 					echo "'title': '".JURI::base( true ).$m->med_exttitle."',"."\n";
-	 					echo "'description': '".JURI::base( true ).$m->med_desc."',"."\n";
-	 					echo "},"."\n";
-	 				}
-	 				echo "],"."\n";
-	 			}
-	 			echo "}\n";
-	 			echo "}\n";
-	 			echo "],\n";
-	 		}
-			if (count($this->article->media) == 1) echo "'image': '".JURI::base( true ).'/'.$this->article->media[0]->med_still."',"."\n";
-			echo "'frontcolor': '000000',"."\n";
-			echo "'lightcolor': 'cc9900',"."\n";
-			echo "'screencolor': '000000',"."\n";
-			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow/glow.xml',"."\n";
-			echo "'controlbar': 'bottom',"."\n";
-			if ($this->article->media[0]->med_autoplay) echo "'autostart':'true',"."\n";
-			echo "'width': '".$config->vid_w."',"."\n";
-			if (count($this->article->media) == 1) echo "'height': '".((int)$config->vid_h+30)."'";
-			else echo "'height': '".((int)$config->vid_h+30+(int)$config->playlist_h)."'";
+			echo '<div class="mams-article-media-player';
+			if (count($this->article->media) == 1) echo 'one';
+			else if ($config->player_fixed) echo 'fixed';
+			echo '">';
+			echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
+			if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
+			echo 'id="mams-article-mediaelement" src="http://'.$config->vid5_url.'/'.$this->article->media[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$this->article->media[0]->med_still.'"';
+			if ($this->article->media[0]->med_autoplay) echo ' autoplay="autoplay"';
+			echo '></video>';
+			echo '<script type="text/javascript">';
+			echo "var fmplayer = new MediaElementPlayer('#mams-article-mediaelement');";
+			echo '</script>';
 			if (count($this->article->media) > 1) {
-				echo ",'playlist.position': 'bottom',"."\n";
-				echo "'playlist.size': '".$config->playlist_h."'";
+				?>
+					<script type="text/javascript">
+					jQuery(document).ready(function() {
+						jQuery(".mams-article-media-item").click(function(){	
+							var parent = jQuery(this).parents('.mams-article-media-playlist');	
+							jQuery('.mams-article-media-item',parent).removeClass('selected');
+							jQuery(this).addClass('selected');
+						}); <?php 
+						foreach ($this->article->media as $m) {
+							echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
+						    echo "fmplayer.pause();fmplayer.setSrc('http://".$config->vid5_url.'/'.$m->med_file."');fmplayer.play();";
+							echo '}); ';
+						}?>
+					});
+					</script>
+				<?php 
 			}
-			echo ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {'itemid':".$this->article->media[0]->med_id."}";
-			if ($config->gapro)	echo ",'".JURI::base( true )."/media/com_mams/vidplyr/mamsga.js': {}";
-			echo "}"."\n";
-			echo "});"."\n";
-			echo "</script>"."\n";
+			echo '</div>';
+			if (count($this->article->media) > 1) {
+				echo '<div class="mams-article-media-playlist';
+				if ($config->player_fixed) echo 'fixed';
+				echo '">';
+				echo '<ul>';
+				$first = true;
+				foreach ($this->article->media as $m) {
+					echo '<li class="mams-article-media-item mampli-'.$m->med_id;
+					if ($first) { echo ' selected'; $first=false; }
+					echo '">';
+					echo "";
+					echo '<div class="mampli-thumb"><img src="'.$m->med_still.'" border="0" class="size-auto"></div>';
+					echo '<div class="mampli-text"><div class="mampli-title">'.$m->med_exttitle.'</div><div class="mampli-desc">'.$m->med_desc;
+					echo '</div></div>';
+					echo '</li>';
+				}
+				echo '</ul>';
+				echo '</div>';
+			}
 		}
+		
 		if ($this->article->media[0]->med_type == 'aud') { //Audio Player
-			echo '<div id="mediaspace"></div>'."\n";
-			echo '<script type="text/javascript">'."\n";
-			echo "jwplayer('mediaspace').setup({"."\n";
-			echo "'width': '".$config->aud_w."',"."\n";
-			if (count($this->article->media) == 1) echo "'height': '".((int)$config->aud_h+30)."',"."\n";
-			else echo "'height': '".((int)$config->aud_h+30+(int)$config->playlist_h)."',"."\n";
-			if (count($this->article->media) == 1) {
-				echo "'file': '".JURI::base( true ).'/'.$this->article->media[0]->med_file."',"."\n";
-			} else {
- 				echo "'playlist': ["."\n";
- 				foreach ($this->article->media as $m) {
- 					echo "{"."\n";
- 					echo "'file':'".JURI::base( true ).'/'.$m->med_file."',"."\n";
- 					echo "'image': '".JURI::base( true ).'/'.$m->med_still."',"."\n";
- 					echo "'title': '".JURI::base( true ).'/'.$m->med_exttitle."',"."\n";
- 					echo "'description': '".JURI::base( true ).'/'.$m->med_desc."',"."\n";
- 					echo "},"."\n";
- 				}
- 				echo "],"."\n";
+			echo '<div class="mams-article-media-player';
+			if (count($this->article->media) == 1) echo 'one';
+			else if ($config->player_fixed) echo 'fixed';
+			echo '">';
+			echo '<audio id="mams-article-mediaelement" width="'.(int)$config->vid_w.'" ';
+			if (!$config->player_fixed) echo 'style="width: 100%;" ';
+			echo 'src="'.JURI::base( true ).'/'.$this->article->media[0]->med_file.'" type="audio/mp3" controls="controls"></audio>';
+			echo '<script type="text/javascript">';
+			echo "var fmplayer = new MediaElementPlayer('#mams-article-mediaelement');";
+			echo '</script>';
+			if (count($this->article->media) > 1) {
+				?>
+					<script type="text/javascript">
+					jQuery(document).ready(function() {
+						jQuery(".mams-article-media-item").click(function(){	
+							var parent = jQuery(this).parents('.mams-article-media-playlist');	
+							jQuery('.mams-article-media-item',parent).removeClass('selected');
+							jQuery(this).addClass('selected');
+						}); <?php 
+						foreach ($this->article->media as $m) {
+							echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
+						    echo "fmplayer.pause();fmplayer.setSrc('".JURI::base( true ).'/'.$m->med_file."');fmplayer.play();";
+							echo '}); ';
+						}?>
+					});
+					</script>
+				<?php 
 			}
-			if (count($this->article->media) == 1) echo "'image': '".JURI::base( true ).'/'.$this->article->media[0]->med_still."',"."\n";
-			echo "'frontcolor': '000000',"."\n";
-			echo "'lightcolor': 'cc9900',"."\n";
-			echo "'screencolor': '000000',"."\n";
-			echo "'skin': '".JURI::base( true )."/media/com_mams/vidplyr/glow/glow.xml',"."\n";
-			echo "'controlbar': 'bottom',"."\n";
-			if ($this->article->media[0]->med_autoplay) echo "'autostart':'true',"."\n";
-			echo "'modes': [{type: 'flash', src: '".JURI::base( true )."/media/com_mams/vidplyr/player.swf'},{type: 'html5'},{type: 'download'}]"."\n";
-			echo ",\n'plugins': {'".JURI::base( true )."/media/com_mams/vidplyr/mamstrack.js': {'itemid':".$this->article->media[0]->med_id."}";
-			if ($config->gapro)	echo ",'".JURI::base( true )."/media/com_mams/vidplyr/mamsga.js': {}";
-			echo "}"."\n";
-			echo "});"."\n";
-			echo "</script>"."\n";
+			echo '</div>';
+			if (count($this->article->media) > 1) {
+				echo '<div class="mams-article-media-playlist';
+				if ($config->player_fixed) echo 'fixed';
+				echo '">';
+				echo '<ul>';
+				$first = true;
+				foreach ($this->article->media as $m) {
+					echo '<li class="mams-article-media-item mampli-'.$m->med_id;
+					if ($first) { echo ' selected'; $first=false; }
+					echo '">';
+					echo "";
+					echo '<div class="mampli-thumb"><img src="'.$m->med_still.'" border="0" class="size-auto"></div>';
+					echo '<div class="mampli-text"><div class="mampli-title">'.$m->med_exttitle.'</div><div class="mampli-desc">'.$m->med_desc;
+					echo '</div></div>';
+					echo '</li>';
+				}
+				echo '</ul>';
+				echo '</div>';
+			}
 		}
+		echo '</div>';
+		echo '<div style="clear:both"></div>';
 		echo '</div>';
 	echo '</div>';
 }

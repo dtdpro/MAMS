@@ -10,9 +10,14 @@ require_once('components'.DS.'com_mams'.DS.'router.php');
 
 
 $doc = &JFactory::getDocument();
-$doc->addScript('media/com_mams/vidplyr/jwplayer.js');
-$doc->addScript('media/com_mams/scripts/mams.js');
-$doc->addScriptDeclaration("var mamsuri = '".JURI::base( true )."';");
+//jQuery
+if (!JFactory::getApplication()->get('jquery')) {
+	JFactory::getApplication()->set('jquery', true);
+	// add jQuery
+	$doc->addScript('media/com_mams/scripts/jquery.js');	
+}
+$doc->addScript('media/com_mams/mediaelementjs/mediaelement-and-player.js');
+$doc->addStyleSheet('media/com_mams/mediaelementjs/mediaelementplayer.css');
 
 $items	= modMAMSMediaFeatHelper::getFeatured();
 
