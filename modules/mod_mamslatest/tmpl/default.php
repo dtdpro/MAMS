@@ -8,6 +8,13 @@ echo '<div id="mams-featmod">';
 echo '<ul class="mams-featmod-list">';
 foreach ($articles as $a) {
 	echo '<li>';
+	if ($params->get('show_thumb',0)) {
+		echo '<div class="mams-featmod-thumb">';
+		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
+		echo '<img border="0" class="mams-featmod-artthumb" src="'.$a->art_thumb.'" /></a>';
+		echo '</div>';
+	}
+	echo '<div class="mams-featmod-info">';
 	echo '<span class="mams-featmod-title">';
 	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
 	echo $a->art_title;
@@ -61,6 +68,7 @@ foreach ($articles as $a) {
 			echo '</span>';
 		}
 	}
+	echo '</div>';
 	echo '</li>';
 }
 echo '</ul>';

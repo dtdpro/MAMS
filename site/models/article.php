@@ -5,6 +5,17 @@ jimport( 'joomla.application.component.model' );
 
 class MAMSModelArticle extends JModel
 {
+	function getArticleSec($artid) {
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('a.art_sec');
+		$query->from('#__mams_articles AS a');
+		$query->where('a.art_id = '.$artid);
+		$query->where('a.published >= 1');
+		$db->setQuery($query);
+		return $db->loadResult();
+	}
+	
 	function getArticle($artid) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);

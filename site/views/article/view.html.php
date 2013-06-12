@@ -1,23 +1,9 @@
 <?php
 defined('_JEXEC') or die();
-/**
- * @version		$Id: view.html.php 2012-05-30 $
- * @package		MAMS.Site
- * @subpackage	article
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
+
 
 jimport( 'joomla.application.component.view');
 
-/**
- * MAMS Article View
- *
- * @static
- * @package		MAMS.Site
- * @subpackage	article
- * @since		1.0
- */
 class MAMSViewArticle extends JView
 {
 	protected $article = null;
@@ -51,10 +37,16 @@ class MAMSViewArticle extends JView
 				parent::display($tpl);
 			} else {
 				$urlnc = $this->getReturnURL();
-				if ($cfg->continued) $url = JRoute::_('index.php?option=com_continued&view=login&layout=login&return='.$urlnc);
-				else if ($cfg->mue) $url = JRoute::_('index.php?option=com_mue&view=login&layout=login&return='.$urlnc);
-				else $url = JRoute::_('index.php?option=com_users&view=login&return='.$urlnc);
-				$app->redirect($url,$cfg->loginmsg);
+				if ($user->id) {
+					$sec = $model->getArticleSec($art);
+					$url = JRoute::_('index.php?option=com_mams&view=artlist&secid='.$sec);
+					$msg = $cfg->noaccessmsg;
+				}
+				else {
+					$url = JRoute::_('index.php?option=com_users&view=login&return='.$urlnc);
+					$msg = $cfg->loginmsg;
+				}
+				$app->redirect($url,$msg);
 			}
 		} else {
 			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
