@@ -5024,18 +5024,22 @@ $.extend(mejs.MepDefaults,
 				postrollLink = t.container.find('link[rel="postroll"]').attr('href');
 
 			if (typeof postrollLink !== 'undefined') {
-				player.postroll =
-					$('<div class="mejs-postroll-layer mejs-layer"><a class="mejs-postroll-close" onclick="$(this).parent().hide();return false;">' + t.options.postrollCloseText + '</a><div class="mejs-postroll-layer-content"></div></div>').prependTo(layers).hide();
-
+				player.postroll = $('<div class="mejs-postroll-layer mejs-layer"><a class="mejs-postroll-close" onclick="jQuery(this).parent().hide();return false;">' + t.options.postrollCloseText + '</a><div class="mejs-postroll-layer-content"></div></div>').prependTo(layers).hide();
+				
+				t.media.addEventListener('play', function (e) { layers.find('.mejs-postroll-layer-content').html(""); postrollLink = t.container.find('link[rel="postroll"]').attr('href');},false);
+				
+				
 				t.media.addEventListener('ended', function (e) {
-					$.ajax({
-						dataType: 'html',
-						url: postrollLink,
-						success: function (data, textStatus) {
-							layers.find('.mejs-postroll-layer-content').html(data);
-						}
-					});
-					player.postroll.show();
+					if (postrollLink != '') {
+						$.ajax({
+							dataType: 'html',
+							url: postrollLink,
+							success: function (data, textStatus) {
+								layers.find('.mejs-postroll-layer-content').html(data);
+							}
+						});
+						player.postroll.show();
+					}
 				}, false);
 			}
 		}

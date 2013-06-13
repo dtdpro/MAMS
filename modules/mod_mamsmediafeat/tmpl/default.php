@@ -15,9 +15,13 @@ if ($items) {
 		echo '">';
 		echo '<video width="'.(int)$params->get('player_w','512').'" height="'.(int)$params->get('player_h','288').'" ';
 		if (!$params->get("player_fixed",0)) echo 'style="width: 100%; height: 100%;" ';
-		echo 'id="mams-featmedia-mediaelement" src="http://'.$config->vid5_url.'/'.$items[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$items[0]->med_still.'"></video>';
+		echo 'id="mams-featmedia-mediaelement" src="http://'.$config->vid5_url.'/'.$items[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$items[0]->med_still.'">';
+		echo '<link rel="postroll" href="'.JURI::base( true ).'/components/com_mams/postroll.php?medid='.$items[0]->med_id.'" />';
+		echo '</video>';
 		echo '<script type="text/javascript">';
-		echo "var fmplayer = new MediaElementPlayer('#mams-featmedia-mediaelement');"; 
+		echo "var fmplayer = new MediaElementPlayer('#mams-featmedia-mediaelement',{features: ['playpause','current','progress','duration','volume','fullscreen','googleanalytics'";
+		if ($params->get("show_postroll",0)) echo ",'postroll'";
+		echo "]});"; 
 		echo '</script>';
 		if (count($items) > 1) {
 		?>
@@ -30,7 +34,13 @@ if ($items) {
 				}); <?php 
 				foreach ($items as $m) {
 					echo 'jQuery(document).on("click", ".mfmpli-'.$m->med_id.'",function(e){';
-				    echo "fmplayer.pause();fmplayer.setSrc('http://".$config->vid5_url.'/'.$m->med_file."');fmplayer.play();";
+				    echo "fmplayer.pause();";
+				    echo "fmplayer.setSrc('http://".$config->vid5_url.'/'.$m->med_file."');";
+				    echo "fmplayer.play();";
+				    echo "jQuery('link[rel=\"postroll\"]').attr('href','";
+					if ($m->med_postroll) echo JURI::base( true ).'/components/com_mams/postroll.php?medid='.$m->med_id;
+					echo "');";
+				    echo "jQuery('.mejs-postroll-close').parent().hide();";
 					echo '}); ';
 				}?>
 			});
