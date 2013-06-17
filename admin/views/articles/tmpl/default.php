@@ -14,7 +14,7 @@ $ordering = ($listOrder == 'a.ordering' || $listOrder == 'a.art_published');
 $published = $this->state->get('filter.published');
 $db =& JFactory::getDBO();
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=articles'); ?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=articles'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
@@ -41,7 +41,7 @@ $db =& JFactory::getDBO();
 	
 	<div class="clr"> </div>
 	
-	<table class="adminlist">
+	<table class="adminlist table table-striped">
 		<thead>
 			<tr>
 				<th width="5">

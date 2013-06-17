@@ -11,7 +11,7 @@ $saveOrder = $listOrder == 's.ordering';
 $ordering = ($listOrder == 's.ordering');
 $db =& JFactory::getDBO();
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=secs'); ?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=secs'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			
@@ -31,7 +31,7 @@ $db =& JFactory::getDBO();
 	
 	<div class="clr"> </div>
 	
-	<table class="adminlist">
+	<table class="adminlist table table-striped">
 		<thead>
 			<tr>
 				<th width="5">

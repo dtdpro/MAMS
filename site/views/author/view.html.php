@@ -1,24 +1,9 @@
 <?php
 defined('_JEXEC') or die();
-/**
- * @version		$Id: view.html.php 2012-01-13 $
- * @package		MAMS.Site
- * @subpackage	article
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 jimport( 'joomla.application.component.view');
 
-/**
- * MAMS Article View
- *
- * @static
- * @package		MAMS.Site
- * @subpackage	article
- * @since		1.0
- */
-class MAMSViewAuthor extends JView
+class MAMSViewAuthor extends JViewLegacy
 {
 	protected $author = null;
 	protected $params = null;

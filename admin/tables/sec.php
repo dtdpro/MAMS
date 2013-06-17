@@ -23,13 +23,13 @@ class MAMSTableSec extends JTable
 		$user	= JFactory::getUser();
 		if ($this->sec_id) {
 			// Existing item
-			$this->sec_modified		= $date->toMySQL();
+			$this->sec_modified		= $date->toSql();
 		} else {
 			// New section. A section created on field can be set by the user,
 			// so we don't touch either of these if they are set.
 			if (!intval($this->sec_cadded)) {
-				$this->sec_added = $date->toMySQL();
-				$this->sec_modified		= $date->toMySQL();
+				$this->sec_added = $date->toSql();
+				$this->sec_modified		= $date->toSql();
 			}
 		}
 

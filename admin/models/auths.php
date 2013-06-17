@@ -81,7 +81,7 @@ class MAMSModelAuths extends JModelList
 			$orderCol = 's.sec_name '.$orderDirn.', a.ordering';
 		}
 		
-		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
+		$query->order($db->escape($orderCol.' '.$orderDirn));
 				
 		return $query;
 	}

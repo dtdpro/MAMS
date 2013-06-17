@@ -77,7 +77,7 @@ class MAMSModelSecs extends JModelList
 			$orderCol = 's.sec_type '.$orderDirn.', s.ordering';
 		}
 		
-		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
+		$query->order($db->escape($orderCol.' '.$orderDirn));
 				
 		return $query;
 	}

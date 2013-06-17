@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-class MAMSViewArticles extends JView
+class MAMSViewArticles extends JViewLegacy
 {
 	
 	protected $items;

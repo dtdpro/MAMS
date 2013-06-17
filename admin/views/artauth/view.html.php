@@ -1,26 +1,12 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: view.html.php 2012-03-12 $
- * @package		MAMS.Admin
- * @subpackage	artauth
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
+
 
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-/**
- * MAMS Article Author Edit View
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	artauth
- * @since		1.0
- */
-class MAMSViewArtAuth extends JView
+class MAMSViewArtAuth extends JViewLegacy
 {
 	/**
 	 * display method of view

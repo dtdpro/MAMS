@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.model' );
 
-class MAMSModelArticle extends JModel
+class MAMSModelArticle extends JModelLegacy
 {
 	function getArticleSec($artid) {
 		$db =& JFactory::getDBO();
@@ -249,7 +249,7 @@ class MAMSModelArticle extends JModel
 		$query->where('ac.published >= 1');
 		$query->where('ac.ac_art != '.$art);
 		$db->setQuery($query);
-		$items = $db->loadResultArray(0);
+		$items = $db->loadColumn(0);
 		return $items;
 	}
 	
@@ -264,7 +264,7 @@ class MAMSModelArticle extends JModel
 		$query->where('aa.published >= 1');
 		$query->where('aa.aa_art != '.$art);
 		$db->setQuery($query);
-		$items = $db->loadResultArray(0);
+		$items = $db->loadColumn(0);
 		return $items;
 	}
 	

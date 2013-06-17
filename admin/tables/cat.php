@@ -23,13 +23,13 @@ class MAMSTableCat extends JTable
 		$user	= JFactory::getUser();
 		if ($this->cat_id) {
 			// Existing item
-			$this->cat_modified		= $date->toMySQL();
+			$this->cat_modified		= $date->toSql();
 		} else {
 			// New section. A section created on field can be set by the user,
 			// so we don't touch either of these if they are set.
 			if (!intval($this->cat_added)) {
-				$this->cat_added = $date->toMySQL();
-				$this->cat_modified		= $date->toMySQL();
+				$this->cat_added = $date->toSql();
+				$this->cat_modified		= $date->toSql();
 			}
 		}
 

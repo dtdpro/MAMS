@@ -1,26 +1,12 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: view.html.php 2012-03-12 $
- * @package		MAMS.Admin
- * @subpackage	artcat
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-/**
- * MAMS Article Category Edit View
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	artcat
- * @since		1.0
- */
-class MAMSViewArtCat extends JView
+
+class MAMSViewArtCat extends JViewLegacy
 {
 	/**
 	 * display method of view

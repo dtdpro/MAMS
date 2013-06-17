@@ -18,13 +18,13 @@ class MAMSTableArticle extends JTable
 		$user	= JFactory::getUser();
 		if ($this->art_id) {
 			// Existing item
-			$this->art_modified		= $date->toMySQL();
+			$this->art_modified		= $date->toSql();
 		} else {
 			// New section. A section created on field can be set by the user,
 			// so we don't touch either of these if they are set.
 			if (!intval($this->art_added)) {
-				$this->art_added = $date->toMySQL();
-				$this->art_modified		= $date->toMySQL();
+				$this->art_added = $date->toSql();
+				$this->art_modified		= $date->toSql();
 			}
 		}
 

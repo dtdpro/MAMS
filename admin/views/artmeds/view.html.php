@@ -1,26 +1,11 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-/**
- * @version		$Id: view.html.php 2012-03-12 $
- * @package		MAMS.Admin
- * @subpackage	artmeds
- * @copyright	Copyright (C) 2012 DtD Productions.
- * @license		GNU General Public License version 2
- */
 
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-/**
- * MAMS Article Medias View
- *
- * @static
- * @package		MAMS.Admin
- * @subpackage	artmeds
- * @since		1.0
- */
-class MAMSViewArtMeds extends JView
+class MAMSViewArtMeds extends JViewLegacy
 {
 	function display($tpl = null) 
 	{

@@ -20,7 +20,7 @@ $saveOrder	= $listOrder == 'f.ordering';
 		</div>
 	</fieldset>
 	<div class="clr"> </div>
-	<table class="adminlist">
+	<table class="adminlist table table-striped">
 		<thead>
 			<tr>
 				<th width="1%">

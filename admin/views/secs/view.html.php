@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-class MAMSViewSecs extends JView
+class MAMSViewSecs extends JViewLegacy
 {
 	function display($tpl = null) 
 	{
