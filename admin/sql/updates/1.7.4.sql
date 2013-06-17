@@ -1,0 +1,1 @@
+ALTER TABLE  `#__mams_media` ADD  `med_postroll` TEXT NOT NULL AFTER  `med_desc`;
