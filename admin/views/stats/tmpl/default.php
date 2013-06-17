@@ -8,7 +8,7 @@ $typesl[5] = JHTML::_('select.option',  'autlist','Author Artice List');
 $typesl[6] = JHTML::_('select.option',  'authors','Authors List');
 $typesl[7] = JHTML::_('select.option',  'dload','Download');
 ?>
-<form action="" method="post" name="adminForm">
+<form action="" method="post" name="adminForm" id="adminForm">
 <div id="editcell">
 	<table class="adminlist">
     	<thead><tr>
@@ -27,7 +27,7 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 			</th>
         </tr></thead>
     </table> 
-	<table class="adminlist">
+	<table class="adminlist table table-striped">
 	<thead>
 		<tr>
 			<th width="60"><?php echo JText::_( 'NUM' ); ?></th>

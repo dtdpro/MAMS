@@ -150,7 +150,7 @@ class MAMSModelStats extends JModelList
 		$orderCol = $this->state->get('list.ordering');
 		$orderDirn = $this->state->get('list.direction');
 		
-		$q->order($db->getEscaped($orderCol.' '.$orderDirn));
+		$q->order($db->escape($orderCol.' '.$orderDirn));
 
 		return $q;
 	}

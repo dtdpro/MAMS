@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.controller');
 
-class MAMSController extends JController
+class MAMSController extends JControllerLegacy
 {
 	protected $default_view = 'mams';
 	

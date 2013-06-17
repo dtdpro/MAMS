@@ -1,24 +1,9 @@
 <?php
 defined('_JEXEC') or die();
-/**
- * @version		$Id: view.html.php 2012-01-13 $
- * @package		MAMS.Site
- * @subpackage	artlist
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 
 jimport( 'joomla.application.component.view');
 
-/**
- * MAMS Article List View
- *
- * @static
- * @package		MAMS.Site
- * @subpackage	artlist
- * @since		1.0
- */
-class MAMSViewArtList extends JView
+class MAMSViewArtList extends JViewLegacy
 {
 	protected $artlist = Array();
 	protected $secinfo = null;
@@ -26,7 +11,7 @@ class MAMSViewArtList extends JView
 	protected $catinfo = null;
 	protected $params = null;
 	protected $pagination = null;
-	protected $staet = null;
+	protected $state = null;
 	
 	public function display($tpl = null)
 	{
@@ -41,11 +26,12 @@ class MAMSViewArtList extends JView
 			case "category": 
 				$this->listCategory();
 				break;
-			case "section": 
-				$this->listSection();
-				break;
 			case "author": 
 				$this->listAuthor();
+				break;
+			case "section": 
+			default:
+				$this->listSection();
 				break;
 		}
 		
@@ -56,9 +42,9 @@ class MAMSViewArtList extends JView
 	
 	protected function listCategory() {
 		$model =& $this->getModel();
-		$sec=Jrequest::getInt('secid',0);
+		$sec=JRequest::getInt('secid',0);
 		if ($sec) $this->secinfo=$model->getSecInfo($sec);
-		$cat=Jrequest::getInt('catid');
+		$cat=JRequest::getInt('catid');
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
 			MAMSHelper::trackViewed($cat,'catlist');
@@ -70,11 +56,11 @@ class MAMSViewArtList extends JView
 	
 	protected function listSection() {
 		$model =& $this->getModel();
-		$sec=Jrequest::getInt('secid',0);
+		$sec=JRequest::getInt('secid',0);
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
 			MAMSHelper::trackViewed($sec,'seclist');
-			$artids=$model->getSecArts($sec);
+			$artids=$model->getSecArts($sec); 
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
 		}
@@ -82,9 +68,9 @@ class MAMSViewArtList extends JView
 	
 	protected function listAuthor() {
 		$model =& $this->getModel();
-		$sec=Jrequest::getInt('secid',0);
+		$sec=JRequest::getInt('secid',0);
 		if ($sec) $this->secinfo=$model->getSecInfo($sec);
-		$aut=Jrequest::getInt('autid');
+		$aut=JRequest::getInt('autid');
 		$this->autinfo=$model->getAutInfo($aut);
 		if ($this->autinfo) {
 			MAMSHelper::trackViewed($aut,'autlist');

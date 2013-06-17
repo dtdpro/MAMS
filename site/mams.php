@@ -7,24 +7,25 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Require the base controller
-require_once (JPATH_COMPONENT.DS.'controller.php');
+require_once (JPATH_COMPONENT.'/controller.php');
 
 // Require specific controller if requested
 if($controller = JRequest::getVar('controller')) {
-	require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
+	require_once (JPATH_COMPONENT.'/controllers/'.$controller.'.php');
 }
 
 // Load helper
-require_once(JPATH_COMPONENT.DS.'helpers'.DS.'mams.php');
+require_once(JPATH_COMPONENT.'/helpers/mams.php');
 
 // Load StyleSheet for template, based on config
 $cfg = MAMSHelper::getConfig();
 $doc = &JFactory::getDocument();
 //jQuery
-if (!JFactory::getApplication()->get('jquery')) {
+if (version_compare(JVERSION, '3.0.0', '>=')) {
+	JHtml::_('jquery.framework');
+} else if (!JFactory::getApplication()->get('jquery')) {
 	JFactory::getApplication()->set('jquery', true);
-	// add jQuery
-	$doc->addScript('media/com_mams/scripts/jquery.js');	
+	$doc->addScript('media/com_mams/scripts/jquery.js');
 }
 //$doc->addScript('media/com_mams/vidplyr/jwplayer.js');
 //$doc->addScript('media/com_mams/scripts/mams.js');

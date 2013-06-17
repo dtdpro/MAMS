@@ -3,7 +3,7 @@
 jimport('joomla.application.component.controller');
 
 
-class MAMSController extends JController
+class MAMSController extends JControllerLegacy
 {
 	/**
 	 * Method to display the view

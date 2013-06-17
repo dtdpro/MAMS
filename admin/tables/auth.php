@@ -23,13 +23,13 @@ class MAMSTableAuth extends JTable
 		$user	= JFactory::getUser();
 		if ($this->auth_id) {
 			// Existing item
-			$this->auth_modified		= $date->toMySQL();
+			$this->auth_modified		= $date->toSql();
 		} else {
 			// New section. A section created on field can be set by the user,
 			// so we don't touch either of these if they are set.
 			if (!intval($this->auth_added)) {
-				$this->auth_added = $date->toMySQL();
-				$this->auth_modified		= $date->toMySQL();
+				$this->auth_added = $date->toSql();
+				$this->auth_modified		= $date->toSql();
 			}
 		}
 

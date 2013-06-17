@@ -4,7 +4,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.view');
 
-class MAMSViewArticle extends JView
+class MAMSViewArticle extends JViewLegacy
 {
 	protected $article = null;
 	protected $params = null;

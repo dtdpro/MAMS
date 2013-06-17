@@ -23,13 +23,13 @@ class MAMSTableMedia extends JTable
 		$user	= JFactory::getUser();
 		if ($this->med_id) {
 			// Existing item
-			$this->med_modified		= $date->toMySQL();
+			$this->med_modified		= $date->toSql();
 		} else {
 			// New section. A section created on field can be set by the user,
 			// so we don't touch either of these if they are set.
 			if (!intval($this->med_added)) {
-				$this->med_added = $date->toMySQL();
-				$this->med_modified		= $date->toMySQL();
+				$this->med_added = $date->toSql();
+				$this->med_modified		= $date->toSql();
 			}
 		}
 		

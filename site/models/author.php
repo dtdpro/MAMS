@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.model' );
 
-class MAMSModelAuthor extends JModel
+class MAMSModelAuthor extends JModelLegacy
 {
 	function getAuthor($autid) {
 		$db =& JFactory::getDBO();
@@ -115,7 +115,7 @@ class MAMSModelAuthor extends JModel
 		$query->where('aa.aa_auth = '.(int)$aut);
 		$query->where('aa.published >= 1');
 		$db->setQuery($query);
-		$items = $db->loadResultArray(0);
+		$items = $db->loadColumn(0);
 		return $items;
 	}
 	
@@ -130,7 +130,7 @@ class MAMSModelAuthor extends JModel
 		$query->where('ca.ca_auth = '.(int)$aut);
 		$query->where('ca.published >= 1');
 		$db->setQuery($query);
-		$pubedids = $db->loadResultArray(0);
+		$pubedids = $db->loadColumn(0);
 		
 		if (!$pubedids) return false;
 		

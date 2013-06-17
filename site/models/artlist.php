@@ -156,8 +156,8 @@ class MAMSModelArtList extends JModelList
 		$query->where('a.art_sec = '.(int)$sec);
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
-		$db->setQuery($query);
-		$items = $db->loadResultArray(0);
+		$db->setQuery($query); 
+		$items = $db->loadColumn();
 		return $items;
 	}
 	
@@ -171,7 +171,7 @@ class MAMSModelArtList extends JModelList
 		$query->where('ac.ac_cat = '.(int)$cat);
 		$query->where('ac.published >= 1');
 		$db->setQuery($query);
-		$items = $db->loadResultArray(0);
+		$items = $db->loadColumn();
 		return $items;
 	}
 	
@@ -185,7 +185,7 @@ class MAMSModelArtList extends JModelList
 		$query->where('aa.aa_auth = '.(int)$aut);
 		$query->where('aa.published >= 1');
 		$db->setQuery($query);
-		$items = $db->loadResultArray(0);
+		$items = $db->loadColumn();
 		return $items;
 	}
 	

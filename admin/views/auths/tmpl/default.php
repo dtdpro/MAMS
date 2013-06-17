@@ -10,7 +10,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
 $ordering = ($listOrder == 'a.ordering');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=auths'); ?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=auths'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			
@@ -30,7 +30,7 @@ $ordering = ($listOrder == 'a.ordering');
 	
 	<div class="clr"> </div>
 	
-	<table class="adminlist">
+	<table class="adminlist table table-striped">
 		<thead>
 			<tr>
 				<th width="5">
