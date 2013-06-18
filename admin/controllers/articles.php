@@ -50,7 +50,7 @@ class MAMSControllerArticles extends JControllerAdmin
 		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 	}
 	
-	function defeatured()
+	function unfeatured()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die(JText::_('JINVALID_TOKEN'));
@@ -83,5 +83,30 @@ class MAMSControllerArticles extends JControllerAdmin
 		}
 	
 		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+	}
+	
+	public function saveOrderAjax()
+	{
+		// Get the input
+		$pks = $this->input->post->get('cid', array(), 'array');
+		$order = $this->input->post->get('order', array(), 'array');
+	
+		// Sanitize the input
+		JArrayHelper::toInteger($pks);
+		JArrayHelper::toInteger($order);
+	
+		// Get the model
+		$model = $this->getModel();
+	
+		// Save the ordering
+		$return = $model->saveorder($pks, $order);
+	
+		if ($return)
+		{
+			echo "1";
+		}
+	
+		// Close the application
+		JFactory::getApplication()->close();
 	}
 }

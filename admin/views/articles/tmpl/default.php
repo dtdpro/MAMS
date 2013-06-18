@@ -5,11 +5,14 @@ defined('_JEXEC') or die('Restricted Access');
 // load tooltip behavior
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
+JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+$archived	= $this->state->get('filter.published') == 2 ? true : false;
+$trashed	= $this->state->get('filter.published') == -2 ? true : false;
 $saveOrder = ($listOrder == 'a.ordering' || $listOrder == 'a.art_published');
 $ordering = ($listOrder == 'a.ordering' || $listOrder == 'a.art_published');
 $published = $this->state->get('filter.published');
@@ -86,7 +89,10 @@ $db =& JFactory::getDBO();
 				</th>
 				<th width="20">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
-				</th>			
+				</th>	
+				<th width="1%" style="min-width:55px" class="nowrap center">
+					<?php echo JText::_('JSTATUS'); ?>
+				</th>		
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_TITLE','a.art_title', $listDirn, $listOrder); ?>
 				</th>		
@@ -113,9 +119,6 @@ $db =& JFactory::getDBO();
 				</th>
 				<th width="50">
 					<?php echo JText::_('JFEATURED'); ?>
-				</th>
-				<th width="50">
-					<?php echo JText::_('JPUBLISHED'); ?>
 				</th>
 				<th width="100">
 					<?php echo JText::_('JGRID_HEADING_ACCESS'); ?>
@@ -149,11 +152,54 @@ $db =& JFactory::getDBO();
 
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->art_id); ?></td>
-				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=article.edit&art_id='.(int) $item->art_id); ?>">
-					<?php echo $this->escape($item->art_title); ?></a>
-					<p class="smallsub"><a href="<?php echo "/index.php?option=com_mams&view=article&secid=".$item->art_sec.":".$item->sec_alias."&artid=".$item->art_id.":".$item->art_alias; ?>" target="_blank">Internal Link</a>
-					<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->art_alias));?></p>
+				<td class="center">
+					<div class="btn-group">
+						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'articles.', true); ?>
+						<?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true); ?>
+					</div>
+				</td>
+				<td class="nowrap has-context">
+					<div class="pull-left">
+						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=article.edit&art_id='.(int) $item->art_id); ?>">
+						<?php echo $this->escape($item->art_title); ?></a>
+						<div class="small"><a href="<?php echo "/index.php?option=com_mams&view=article&secid=".$item->art_sec.":".$item->sec_alias."&artid=".$item->art_id.":".$item->art_alias; ?>" target="_blank">Internal Link</a>
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->art_alias));?></div>
+					</div>
+					<div class="pull-left">
+						<?php
+							// Create dropdown items
+							JHtml::_('dropdown.edit', $item->art_id, 'article.');
+							JHtml::_('dropdown.divider');
+							if ($item->published) :
+								JHtml::_('dropdown.unpublish', 'cb' . $i, 'articles.');
+							else :
+								JHtml::_('dropdown.publish', 'cb' . $i, 'articles.');
+							endif;
+
+							if ($item->featured) :
+								JHtml::_('dropdown.unfeatured', 'cb' . $i, 'articles.');
+							else :
+								JHtml::_('dropdown.featured', 'cb' . $i, 'articles.');
+							endif;
+
+							JHtml::_('dropdown.divider');
+
+							if ($archived) :
+								JHtml::_('dropdown.unarchive', 'cb' . $i, 'articles.');
+							else :
+								JHtml::_('dropdown.archive', 'cb' . $i, 'articles.');
+							endif;
+
+							if ($trashed) :
+								JHtml::_('dropdown.untrash', 'cb' . $i, 'articles.');
+							else :
+								JHtml::_('dropdown.trash', 'cb' . $i, 'articles.');
+							endif;
+
+							// Render dropdown list
+							echo JHtml::_('dropdown.render');
+							?>
+					</div>
 				</td>
 				<td><?php echo $item->art_published; ?></td>
 				<td><?php 
@@ -195,8 +241,7 @@ $db =& JFactory::getDBO();
 				<td><?php echo $item->art_added; ?></td>
 				<td><?php echo $item->art_modified; ?></td>
 				<td><?php echo $item->sec_name; ?></td>
-				<td class="center"><?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true).'<br />'.$item->feataccess_level; ?></td>
-				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'articles.', true);?></td>
+				<td class="center"><?php echo $item->feataccess_level; ?></td>
 				<td><?php echo $item->access_level; ?></td>
 				<td><?php echo $item->art_hits; ?></td>
 				<td><?php echo $item->art_id; ?></td>

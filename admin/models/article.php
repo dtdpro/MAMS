@@ -7,10 +7,25 @@ jimport('joomla.application.component.modeladmin');
 
 class MAMSModelArticle extends JModelAdmin
 {
-	protected function allowEdit($data = array(), $key = 'art_id')
+	protected function canDelete($record)
 	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_mams.article.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		if (!empty($record->art_id))
+		{
+			if ($record->published != -2)
+			{
+				return;
+			}
+			$user = JFactory::getUser();
+	
+			return parent::canDelete($record);
+		}
+	}
+	
+	protected function canEditState($record)
+	{
+		$user = JFactory::getUser();
+	
+		return parent::canEditState($record);
 	}
 	
 	public function getTable($type = 'Article', $prefix = 'MAMSTable', $config = array()) 
