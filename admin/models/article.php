@@ -217,18 +217,7 @@ class MAMSModelArticle extends JModelAdmin
 	
 		return true;
 	}
-	
-	/**
-	 * Method to perform batch operations on an item or a set of items.
-	 *
-	 * @param   array  $commands  An array of commands to perform.
-	 * @param   array  $pks       An array of item ids.
-	 * @param   array  $contexts  An array of item contexts.
-	 *
-	 * @return  boolean  Returns true on success, false on failure.
-	 *
-	 * @since   11.1
-	 */
+
 	public function batch($commands, $pks, $contexts)
 	{
 		// Sanitize user ids.
@@ -340,18 +329,7 @@ class MAMSModelArticle extends JModelAdmin
 	
 		return true;
 	}
-	
-	/**
-	 * Batch section changes for a group of rows.
-	 *
-	 * @param   integer  $value     The new value matching an Asset Group ID.
-	 * @param   array    $pks       An array of row IDs.
-	 * @param   array    $contexts  An array of item contexts.
-	 *
-	 * @return  boolean  True if successful, false otherwise and internal error is set.
-	 *
-	 * @since   11.1
-	 */
+
 	protected function batchSection($value, $pks, $contexts)
 	{
 		// Set the variables
@@ -390,13 +368,7 @@ class MAMSModelArticle extends JModelAdmin
 	
 		return true;
 	}
-	
 
-	/**
-	 * Prepare and sanitise the table prior to saving.
-	 *
-	 * @since 1.6
-	 */
 	protected function prepareTable(&$table)
 	{
 		jimport('joomla.filter.output');
@@ -419,19 +391,14 @@ class MAMSModelArticle extends JModelAdmin
 			// Set the values
 		}
 	}
-	
-	/**
-	 * A protected method to get a set of ordering conditions.
-	 *
-	 * @param object A record object.
-	 * @return array An array of conditions to add to add to ordering queries.
-	 * @since 1.6
-	 */
+
 	protected function getReorderConditions($table)
 	{
 		$condition = array();
-		$condition[] = 'art_sec = "'.$table->art_sec.'" && art_published = "'.$table->art_published.'"';
+		$condition[] = 'art_sec = '.$table->art_sec.' && art_published = '.$table->art_published;
 		return $condition;
 	}
+	
+	
 	
 }

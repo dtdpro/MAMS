@@ -14,6 +14,8 @@ class MAMSViewArtAuths extends JViewLegacy
 		$items = $this->get('Items');
 		$pagination = $this->get('Pagination');
 		$this->state		= $this->get('State');
+		// Set the submenu
+		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{

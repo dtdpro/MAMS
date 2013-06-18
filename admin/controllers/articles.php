@@ -3,9 +3,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
-
 
 class MAMSControllerArticles extends JControllerAdmin
 {

@@ -13,6 +13,8 @@ class MAMSViewArticle extends JViewLegacy
 		$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
+		// Set the submenu
+		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 

@@ -14,31 +14,28 @@ class MAMSViewArticles extends JViewLegacy
 	
 	function display($tpl = null) 
 	{
-		// Get data from the model
+		$this->state		= $this->get('State');
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
-		$this->state		= $this->get('State');
 		
-		// Check for errors.
+		// Set the submenu
+		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
+		
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
 
-		// Set the toolbar
 		$this->addToolBar();
-
-		// Display the template
+		$this->sidebar = JHtmlSidebar::render();		
 		parent::display($tpl);
-
-		// Set the document
-		$this->setDocument();
 	}
 
 	protected function addToolBar() 
 	{
-		$state	= $this->get('State');
+		$state	= $this->get('State');	
+		$bar = JToolBar::getInstance('toolbar');
 		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_ARTICLES'), 'mams');
 		JToolBarHelper::addNew('article.add', 'JTOOLBAR_NEW');
 		JToolBarHelper::editList('article.edit', 'JTOOLBAR_EDIT');
@@ -54,11 +51,30 @@ class MAMSViewArticles extends JViewLegacy
 		} else  {
 			JToolBarHelper::trash('articles.trash');
 		}
+		JHtml::_('bootstrap.modal', 'collapseModal');
+		$title = JText::_('JTOOLBAR_BATCH');
+		$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\"><i class=\"icon-checkbox-partial\" title=\"$title\"></i>$title</button>";
+		$bar->appendButton('Custom', $dhtml, 'batch');
+
+		
+		JHtmlSidebar::setAction('index.php?option=com_mams&view=articles');
+		
+		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
+		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_ACCESS'),'filter_access',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')));
+		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_SEC'),'filter_sec',JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', $this->state->get('filter.sec')));
+		
 	}
 	
-	protected function setDocument() 
+	protected function getSortFields()
 	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_MAMS_MANAGER_ARTICLES'));
+		return array(
+				'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+				'a.published' => JText::_('JSTATUS'),
+				'a.art_published' => JText::_('COM_MAMS_ARTICLE_HEADING_PUBLISHED'),
+				'a.art_title' => JText::_('JGLOBAL_TITLE'),
+				'a.access' => JText::_('JGRID_HEADING_ACCESS'),
+				'a.art_hits' => JText::_('JGLOBAL_HITS'),
+				'a.art_id' => JText::_('JGRID_HEADING_ID')
+		);
 	}
 }

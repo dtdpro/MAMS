@@ -17,7 +17,10 @@ class MAMSModelArticles extends JModelList
 				'art_modified', 'a.art_modified',
 				'art_published', 'a.art_published',
 				'art_title', 'a.art_title',
+				'art_hits', 'a.art_hits',
 				'ordering', 'a.ordering',
+				'published', 'a.published',
+				'access', 'a.access',
 			);
 		}
 		parent::__construct($config);
@@ -42,6 +45,17 @@ class MAMSModelArticles extends JModelList
 		
 		// List state information.
 		parent::populateState('a.art_published', 'desc');
+	}
+	
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.access');
+		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.sec');
+	
+		return parent::getStoreId($id);
 	}
 	
 	protected function getListQuery() 

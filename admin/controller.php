@@ -7,11 +7,10 @@ class MAMSController extends JControllerLegacy
 {
 	protected $default_view = 'mams';
 	
-	function display()
+	function display($cachable = false, $urlparams = false)
 	{
 		require_once JPATH_COMPONENT.'/helpers/mams.php';
-		// Set the submenu
-		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
+		
 		parent::display();
 		return $this;
 	}

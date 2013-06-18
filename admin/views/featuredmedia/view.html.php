@@ -13,6 +13,8 @@ class MAMSViewFeaturedMedia extends JViewLegacy
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
+		// Set the submenu
+		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
