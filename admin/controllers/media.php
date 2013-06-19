@@ -9,22 +9,8 @@ class MAMSControllerMedia extends JControllerForm
 {
 	protected $text_prefix = "COM_MAMS_MEDIA";
 	
-	/**
-	 * The extension for which the categories apply.
-	 *
-	 * @var    string
-	 * @since  1.0
-	 */
 	protected $extension;
 	
-	/**
-	 * Constructor.
-	 *
-	 * @param  array  $config  An optional associative array of configuration settings.
-	 *
-	 * @since  1.0
-	 * @see    JController
-	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
@@ -36,16 +22,6 @@ class MAMSControllerMedia extends JControllerForm
 		}
 	}
 	
-	/**
-	 * Gets the URL arguments to append to an item redirect.
-	 *
-	 * @param   integer  $recordId  The primary key id for the item.
-	 * @param   string   $urlVar    The name of the URL variable for the id.
-	 *
-	 * @return  string  The arguments to append to the redirect URL.
-	 *
-	 * @since   1.0
-	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'med_id')
 	{
 		$append = parent::getRedirectToItemAppend($recordId,$urlVar);
@@ -54,13 +30,6 @@ class MAMSControllerMedia extends JControllerForm
 		return $append;
 	}
 	
-	/**
-	 * Gets the URL arguments to append to a list redirect.
-	 *
-	 * @return  string  The arguments to append to the redirect URL.
-	 *
-	 * @since   1.0
-	 */
 	protected function getRedirectToListAppend()
 	{
 		$append = parent::getRedirectToListAppend();

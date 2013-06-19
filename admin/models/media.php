@@ -7,10 +7,25 @@ jimport('joomla.application.component.modeladmin');
 
 class MAMSModelMedia extends JModelAdmin
 {
-	protected function allowEdit($data = array(), $key = 'med_id')
+protected function canDelete($record)
 	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_mams.media.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		if (!empty($record->med_id))
+		{
+			if ($record->published != -2)
+			{
+				return;
+			}
+			$user = JFactory::getUser();
+	
+			return parent::canDelete($record);
+		}
+	}
+	
+	protected function canEditState($record)
+	{
+		$user = JFactory::getUser();
+	
+		return parent::canEditState($record);
 	}
 	
 	public function getTable($type = 'Media', $prefix = 'MAMSTable', $config = array()) 
@@ -27,11 +42,6 @@ class MAMSModelMedia extends JModelAdmin
 			return false;
 		}
 		return $form;
-	}
-	
-	public function getScript() 
-	{
-		return 'administrator/components/com_mams/models/forms/media.js';
 	}
 
 	protected function loadFormData() 
@@ -56,7 +66,7 @@ class MAMSModelMedia extends JModelAdmin
 		$user = JFactory::getUser();
 		$pks = (array) $pks;
 		$db	= $this->getDbo();
-			
+		$table = $this->getTable('FeaturedMedia', 'MAMSTable');
 	
 		$query	= $db->getQuery(true);
 		$query->delete();
@@ -78,7 +88,7 @@ class MAMSModelMedia extends JModelAdmin
 			}
 		}
 			
-	
+		$table->reorder();
 	
 		// Clear the component's cache
 		$this->cleanCache();

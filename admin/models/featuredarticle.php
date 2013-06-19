@@ -2,16 +2,16 @@
 // no direct access
 defined('_JEXEC') or die;
 
-require_once dirname(__FILE__) . '/medias.php';
+require_once dirname(__FILE__) . '/articles.php';
 
-class MAMSModelFeaturedMedia extends MAMSModelMedias
+class MAMSModelFeaturedArticle extends MAMSModelArticles
 {
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'med_id', 'm.med_id',
-				'med_inttitle', 'm.med_inttitle',
+				'art_id', 'a.art_id',
+				'art_title', 'a.art_title',
 				'ordering', 'f.ordering',
 			);
 		}
@@ -26,12 +26,12 @@ class MAMSModelFeaturedMedia extends MAMSModelMedias
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('m.med_id,m.med_inttitle');
-		$query->from('#__mams_media AS m');
+		$query->select('a.art_id,a.art_title');
+		$query->from('#__mams_articles AS a');
 
 		// Join over the content table.
-		$query->select('f.ordering,f.mf_id');
-		$query->join('INNER', '#__mams_mediafeat AS f ON f.mf_media = m.med_id');
+		$query->select('f.ordering,f.af_id');
+		$query->join('INNER', '#__mams_artfeat AS f ON f.af_art = a.art_id');
 
 		// Add the list ordering clause.
 		$query->order($db->escape($this->getState('list.ordering', 'f.ordering')).' '.$db->escape($this->getState('list.direction', 'ASC')));

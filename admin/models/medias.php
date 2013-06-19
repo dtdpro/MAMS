@@ -15,6 +15,9 @@ class MAMSModelMedias extends JModelList
 				'med_added', 'm.med_added',
 				'med_modified', 'm.med_modified',
 				'med_inttitle', 'm.med_inttitle',
+				'med_id', 'm.med_id',
+				'published', 'm.published',
+				'access', 'm.access',
 			);
 		}
 		parent::__construct($config);

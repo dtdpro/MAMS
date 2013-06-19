@@ -7,31 +7,30 @@ jimport('joomla.application.component.view');
 
 class MAMSViewAuths extends JViewLegacy
 {
+	
+	protected $items;
+	protected $pagination;
+	protected $state;
+	
 	function display($tpl = null) 
 	{
-		// Get data from the model
-		$items = $this->get('Items');
-		$pagination = $this->get('Pagination');
 		$this->state		= $this->get('State');
-		// Set the submenu
+		$this->items = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		
 		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
-		// Check for errors.
+		
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign data to the view
-		$this->items = $items;
-		$this->pagination = $pagination;
+		
 		// Set the toolbar
 		$this->addToolBar();
+		$this->sidebar = JHtmlSidebar::render();	
 
-		// Display the template
 		parent::display($tpl);
-
-		// Set the document
-		$this->setDocument();
 	}
 
 	/**
@@ -53,15 +52,24 @@ class MAMSViewAuths extends JViewLegacy
 		} else  {
 			JToolBarHelper::trash('auths.trash');
 		}
+		
+		JHtmlSidebar::setAction('index.php?option=com_mams&view=auths');
+		
+		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
+		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_ACCESS'),'filter_access',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')));
+		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_SEC'),'filter_sec',JHtml::_('select.options', MAMSHelper::getSections("author"), 'value', 'text', $this->state->get('filter.sec')));
 	}
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
+	
+	protected function getSortFields()
 	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_MAMS_MANAGER_AUTHS'));
+		return array(
+				'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+				'a.published' => JText::_('JSTATUS'),
+				'a.auth_added' => JText::_('COM_MAMS_AUTH_HEADING_ADDED'),
+				'a.auth_modified' => JText::_('COM_MAMS_AUTH_HEADING_MODIFIED'),
+				'a.auth_name' => JText::_('COM_MAMS_AUTH_HEADING_NAME'),
+				'a.access' => JText::_('JGRID_HEADING_ACCESS'),
+				'a.auth_id' => JText::_('JGRID_HEADING_ID')
+		);
 	}
 }

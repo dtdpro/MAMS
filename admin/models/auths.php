@@ -32,6 +32,12 @@ class MAMSModelAuths extends JModelList
 
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
+
+		$secId = $this->getUserStateFromRequest($this->context.'.filter.sec', 'filter_sec', null, 'int');
+		$this->setState('filter.sec', $secId);
+		
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
 		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
@@ -61,6 +67,11 @@ class MAMSModelAuths extends JModelList
 		$query->select('s.sec_name');
 		$query->join('LEFT', '#__mams_secs AS s ON s.sec_id = a.auth_sec');
 		
+		// Filter by section.
+		if ($sec = $this->getState('filter.sec')) {
+			$query->where('a.auth_sec = '.(int) $sec);
+		}
+		
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
 			$query->where('a.access = '.(int) $access);
@@ -72,6 +83,17 @@ class MAMSModelAuths extends JModelList
 			$query->where('a.published = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(a.published IN (0, 1))');
+		}
+		
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('a.auth_id = '.(int) substr($search, 3));
+			} else {
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+				$query->where('(a.auth_name LIKE '.$search.' OR a.auth_alias LIKE '.$search.')');
+			}
 		}
 		
 		$orderCol	= $this->state->get('list.ordering');

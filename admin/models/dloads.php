@@ -15,6 +15,9 @@ class MAMSModelDloads extends JModelList
 				'dl_added', 'd.dl_added',
 				'dl_modified', 'd.dl_modified',
 				'dl_fname', 'd.dl_fname',
+				'dl_id', 'd.dl_id',
+				'published', 'd.published',
+				'access', 'd.access',
 			);
 		}
 		parent::__construct($config);

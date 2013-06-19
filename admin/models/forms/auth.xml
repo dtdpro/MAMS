@@ -3,7 +3,11 @@
 	<fieldset name="details">
 		<field
 			name="auth_id"
-			type="hidden"
+			type="text"
+			class="readonly" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC"
+			readonly="true"
 		/>
 		<field
 			name="published"

@@ -7,36 +7,30 @@ jimport('joomla.application.component.view');
 
 class MAMSViewDloads extends JViewLegacy
 {
+	protected $items;
+	protected $pagination;
+	protected $state;
+	
 	function display($tpl = null) 
 	{
-		// Get data from the model
-		$items = $this->get('Items');
-		$pagination = $this->get('Pagination');
 		$this->state		= $this->get('State');
-		// Set the submenu
+		$this->items = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		
 		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
-		// Check for errors.
+		
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign data to the view
-		$this->items = $items;
-		$this->pagination = $pagination;
-		// Set the toolbar
+		
 		$this->addToolBar();
+		$this->sidebar = JHtmlSidebar::render();
 
-		// Display the template
 		parent::display($tpl);
-
-		// Set the document
-		$this->setDocument();
 	}
 
-	/**
-	 * Setting the toolbar
-	 */
 	protected function addToolBar() 
 	{
 		$state	= $this->get('State');
@@ -53,15 +47,22 @@ class MAMSViewDloads extends JViewLegacy
 		} else  {
 			JToolBarHelper::trash('dloads.trash');
 		}
+		
+		JHtmlSidebar::setAction('index.php?option=com_mams&view=dloads');
+		
+		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
+		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_ACCESS'),'filter_access',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')));
 	}
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	protected function setDocument() 
+	
+	protected function getSortFields()
 	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_MAMS_MANAGER_DLOADS'));
+		return array(
+				'd.published' => JText::_('JSTATUS'),
+				'd.dl_fname' => JText::_('COM_MAMS_DLOAD_HEADING_NAME'),
+				'd.access' => JText::_('JGRID_HEADING_ACCESS'),
+				'd.dl_added' => JText::_('COM_MAMS_DLOAD_ADDED'),
+				'd.dl_id' => JText::_('JGRID_HEADING_ID'),
+				'd.dl_modified' => JText::_('COM_MAMS_DLOAD_MODIFIED')
+		);
 	}
 }

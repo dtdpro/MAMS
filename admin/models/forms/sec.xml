@@ -3,7 +3,11 @@
 	<fieldset name="details">
 		<field
 			name="sec_id"
-			type="hidden"
+			type="text"
+			class="readonly" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC"
+			readonly="true"
 		/>
 		<field
 			name="published"
@@ -57,11 +61,10 @@
 		/>
 		<field
 			name="sec_type"
-			type="list"
-			class="inputbox"
+			type="radio"
+			class="btn-group"
 			label="COM_MAMS_SEC_FIELD_TYPE_LABEL"
 			description="COM_MAMS_SEC_FIELD_TYPE_DESC"
-			size="1"
 			default="article">
 			<option	value="article">Article</option>
 			<option	value="author">Author</option>

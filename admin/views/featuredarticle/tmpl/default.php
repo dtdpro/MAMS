@@ -13,8 +13,8 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $saveOrder = ($listOrder == 'f.ordering');
 if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option=com_mams&task=featuredmedia.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'MAMSFeaturedMediaList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	$saveOrderingUrl = 'index.php?option=com_mams&task=featuredarticle.saveOrderAjax&tmpl=component';
+	JHtml::_('sortablelist.sortable', 'MAMSFeaturedArticleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 $sortFields = $this->getSortFields();
 $db =& JFactory::getDBO();
@@ -36,7 +36,7 @@ $db =& JFactory::getDBO();
 		Joomla.tableOrdering(order, dirn, '');
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=featuredmedia');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=featuredarticle');?>" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="span2">
 	<?php echo $this->sidebar; ?>
@@ -69,7 +69,7 @@ $db =& JFactory::getDBO();
 	
 	<div class="clearfix"> </div>
 	
-	<table class="adminlist table table-striped" id="MAMSFeaturedMediaList">
+	<table class="adminlist table table-striped" id="MAMSFeaturedArticleList">
 		<thead>
 			<tr>
 				<th width="1%" class="nowrap center hidden-phone">
@@ -79,10 +79,10 @@ $db =& JFactory::getDBO();
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="title">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'm.med_inttitle', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.art_title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'm.med_id', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.art_id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -116,15 +116,15 @@ $db =& JFactory::getDBO();
 
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('grid.id', $i, $item->mf_id); ?>
+					<?php echo JHtml::_('grid.id', $i, $item->af_id); ?>
 				</td>
 				<td>
-					<?php echo $this->escape($item->med_inttitle); ?>
+					<?php echo $this->escape($item->art_title); ?>
 					
 				</td>
 				<td class="center">
 					<?php 
-						echo (int) $item->med_id;
+						echo (int) $item->art_id;
 					?>
 				</td>
 			</tr>

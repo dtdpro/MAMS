@@ -17,6 +17,8 @@ class MAMSModelSecs extends JModelList
 				'sec_title', 's.sec_title',
 				'sec_type', 's.sec_type',
 				'ordering', 's.ordering',
+				'published', 's.published',
+				'access', 's.access',
 			);
 		}
 		parent::__construct($config);
@@ -32,6 +34,9 @@ class MAMSModelSecs extends JModelList
 
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
+		
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
 		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
@@ -68,6 +73,17 @@ class MAMSModelSecs extends JModelList
 			$query->where('s.published = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(s.published IN (0, 1))');
+		}
+
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('s.sec_id = '.(int) substr($search, 3));
+			} else {
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+				$query->where('(s.sec_name LIKE '.$search.' OR s.sec_alias LIKE '.$search.')');
+			}
 		}
 		
 		$orderCol	= $this->state->get('list.ordering');

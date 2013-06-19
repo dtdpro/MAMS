@@ -2,7 +2,7 @@
 
 defined('_JEXEC') or die;
 
-class MAMSViewFeaturedMedia extends JViewLegacy
+class MAMSViewFeaturedArticle extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;
@@ -31,8 +31,8 @@ class MAMSViewFeaturedMedia extends JViewLegacy
 	{
 		$state	= $this->get('State');
 
-		JToolBarHelper::title(JText::_('COM_MAMS_FEATUREDMEDIA_TITLE'), 'mams');
-		JToolbarHelper::custom('featuredmedia.delete', 'remove.png', 'remove_f2.png', 'JTOOLBAR_REMOVE', true);
+		JToolBarHelper::title(JText::_('COM_MAMS_FEATUREDARTICLE_TITLE'), 'mams');
+		JToolbarHelper::custom('featuredarticle.delete', 'remove.png', 'remove_f2.png', 'JTOOLBAR_REMOVE', true);
 
 
 	}
@@ -41,8 +41,8 @@ class MAMSViewFeaturedMedia extends JViewLegacy
 	{
 		return array(
 				'f.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-				'm.med_inttitle' => JText::_('COM_MAMS_ARTICLE_HEADING_TITLE'),
-				'm.med_id' => JText::_('JGRID_HEADING_ID')
+				'a.art_title' => JText::_('COM_MAMS_ARTICLE_HEADING_NAME'),
+				'a.art_id' => JText::_('JGRID_HEADING_ID')
 		);
 	}
 }

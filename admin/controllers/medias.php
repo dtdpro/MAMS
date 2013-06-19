@@ -51,7 +51,7 @@ class MAMSControllerMedias extends JControllerAdmin
 		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 	}
 	
-	function defeatured()
+	function unfeatured()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or die(JText::_('JINVALID_TOKEN'));

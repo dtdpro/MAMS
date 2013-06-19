@@ -31,6 +31,9 @@ class MAMSModelCats extends JModelList
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 		
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
 		$this->setState('params', $params);
@@ -66,6 +69,17 @@ class MAMSModelCats extends JModelList
 			$query->where('c.published = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(c.published IN (0, 1))');
+		}
+
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('c.cat_id = '.(int) substr($search, 3));
+			} else {
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+				$query->where('(c.cat_title LIKE '.$search.' OR c.cat_alias LIKE '.$search.')');
+			}
 		}
 		
 		$orderCol	= $this->state->get('list.ordering');

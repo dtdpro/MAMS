@@ -4,11 +4,11 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modeladmin');
 
-require_once dirname(__FILE__).'/media.php';
+require_once dirname(__FILE__).'/article.php';
 
-class MAMSModelFeatureMedia extends MAMSModelMedia
+class MAMSModelFeatureArticle extends MAMSModelArticle
 {
-	public function getTable($type = 'FeaturedMedia', $prefix = 'MAMSTable', $config = array())
+	public function getTable($type = 'FeaturedArticle', $prefix = 'MAMSTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -25,12 +25,12 @@ class MAMSModelFeatureMedia extends MAMSModelMedia
 		$user = JFactory::getUser();
 		$pks = (array) $pks;
 		$db	= $this->getDbo();
-		$table = $this->getTable('FeaturedMedia', 'MAMSTable');
+		$table = $this->getTable();
 	
 		$query	= $db->getQuery(true);
 		$query->delete();
-		$query->from('#__mams_mediafeat');
-		$query->where('mf_id IN ('.implode(",",$pks).")");
+		$query->from('#__mams_artfeat');
+		$query->where('af_id IN ('.implode(",",$pks).")");
 		$db->setQuery((string)$query);
 		if (!$db->query()) {
 			$this->setError($db->getErrorMsg());

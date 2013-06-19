@@ -71,6 +71,8 @@ class MAMSViewArticles extends JViewLegacy
 				'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
 				'a.published' => JText::_('JSTATUS'),
 				'a.art_published' => JText::_('COM_MAMS_ARTICLE_HEADING_PUBLISHED'),
+				'a.art_added' => JText::_('COM_MAMS_ARTICLE_HEADING_ADDED'),
+				'a.art_modified' => JText::_('COM_MAMS_ARTICLE_HEADING_MODIFIED'),
 				'a.art_title' => JText::_('JGLOBAL_TITLE'),
 				'a.access' => JText::_('JGRID_HEADING_ACCESS'),
 				'a.art_hits' => JText::_('JGLOBAL_HITS'),

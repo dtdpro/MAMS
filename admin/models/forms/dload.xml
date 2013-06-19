@@ -3,7 +3,11 @@
 	<fieldset name="details">
 		<field
 			name="dl_id"
-			type="hidden"
+			type="text"
+			class="readonly" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC"
+			readonly="true"
 		/>
 		<field
 			name="dl_extension"
@@ -65,8 +69,8 @@
 		/>
 		<field
 			name="dl_type"
-			type="list"
-			class="inputbox"
+			type="radio"
+			class="btn-group"
 			label="COM_MAMS_DLOAD_FIELD_TYPE_LABEL"
 			description="COM_MAMS_DLOAD_FIELD_TYPE_DESC"
 			default="pdf">

@@ -3,7 +3,11 @@
 	<fieldset name="details">
 		<field
 			name="med_id"
-			type="hidden"
+			type="text"
+			class="readonly" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC"
+			readonly="true"
 		/>
 		<field
 			name="med_extension"
@@ -44,12 +48,11 @@
 			filter="integer"/>
 		<field
 			name="med_type"
-			type="list"
-			class="inputbox"
+			type="radio"
+			class="btn-group"
 			label="COM_MAMS_MEDIA_FIELD_TYPE_LABEL"
 			description="COM_MAMS_MEDIA_FIELD_TYPE_LABEL"
-			size="1"
-			default="1">
+			default="vids">
 			<option	value="vid">Video</option>
 			<option	value="vids">Streaming Video</option>
 			<option	value="aud">Audio</option>
@@ -121,9 +124,7 @@
 			type="radio"
 			label="COM_MAMS_MEDIA_FIELD_AUTOPLAY_LABEL"
 			description="COM_MAMS_MEDIA_FIELD_AUTOPLAY_DESC"
-			size="1"
-			class="inputbox"
-			required="true"
+			class="btn-group"
 			default="0">
 			<option value="1">Yes</option>
 			<option value="0">No</option>

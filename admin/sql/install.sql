@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_media` (
   `med_inttitle` varchar(255) NOT NULL,
   `med_exttitle` varchar(255) NOT NULL,
   `med_desc` text NOT NULL,
+  `med_postroll` TEXT NOT NULL,
   `med_file` varchar(255) NOT NULL,
   `med_still` varchar(255) NOT NULL,
   `med_autoplay` tinyint(1) NOT NULL DEFAULT '0',

@@ -2,14 +2,14 @@
 
 defined('_JEXEC') or die;
 
-require_once dirname(__FILE__).'/medias.php';
+require_once dirname(__FILE__).'/articles.php';
 
 
-class MAMSControllerFeaturedMedia extends MAMSControllerMedias
+class MAMSControllerFeaturedArticle extends MAMSControllerArticles
 {
 	
 
-	public function getModel($name = 'FeatureMedia', $prefix = 'MAMSModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'FeatureArticle', $prefix = 'MAMSModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
 		return $model;
@@ -38,7 +38,7 @@ class MAMSControllerFeaturedMedia extends MAMSControllerMedias
 			}
 		}
 	
-		$this->setRedirect('index.php?option=com_mams&view=featuredmedia');
+		$this->setRedirect('index.php?option=com_mams&view=featuredarticle');
 	}
 	
 	public function saveOrderAjax()

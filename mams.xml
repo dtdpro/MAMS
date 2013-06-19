@@ -57,6 +57,7 @@
 			<menu link="option=com_mams&amp;view=medias&amp;extension=com_mams">COM_MAMS_SUBMENU_MEDIAS</menu>
 			<menu link="option=com_mams&amp;view=dloads&amp;extension=com_mams">COM_MAMS_SUBMENU_DLOADS</menu>
 			<menu view="featuredmedia">COM_MAMS_SUBMENU_FEATMEDIAS</menu>
+			<menu view="featuredarticle">COM_MAMS_SUBMENU_FEATARTS</menu>
 			<menu view="stats">COM_MAMS_SUBMENU_STATS</menu>
 		</submenu>
 		<files folder="admin">

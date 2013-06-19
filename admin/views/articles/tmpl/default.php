@@ -13,8 +13,7 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $archived	= $this->state->get('filter.published') == 2 ? true : false;
 $trashed	= $this->state->get('filter.published') == -2 ? true : false;
-$saveOrder = ($listOrder == 'a.ordering' || $listOrder == 'a.art_published');
-$ordering = ($listOrder == 'a.ordering' || $listOrder == 'a.art_published');
+$saveOrder = ($listOrder == 'a.ordering');
 $published = $this->state->get('filter.published');
 if ($saveOrder) {
 	$saveOrderingUrl = 'index.php?option=com_mams&task=articles.saveOrderAjax&tmpl=component';
@@ -91,7 +90,7 @@ $db =& JFactory::getDBO();
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>	
 				<th width="1%" style="min-width:55px" class="nowrap center">
-					<?php echo JText::_('JSTATUS'); ?>
+					<?php echo JHtml::_('grid.sort','JSTATUS','s.published', $listDirn, $listOrder); ?>
 				</th>		
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_TITLE','a.art_title', $listDirn, $listOrder); ?>
@@ -108,10 +107,10 @@ $db =& JFactory::getDBO();
 				<th width="100">
 					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_REFS'); ?>
 				</th>
-				<th width="120">
+				<th width="120" class="hidden-phone">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_ADDED','a.art_added', $listDirn, $listOrder); ?>
 				</th>		
-				<th width="120">
+				<th width="120" class="hidden-phone">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_MODIFIED','a.art_modified', $listDirn, $listOrder); ?>
 				</th>	
 				<th width="100">
@@ -121,7 +120,7 @@ $db =& JFactory::getDBO();
 					<?php echo JText::_('JFEATURED'); ?>
 				</th>
 				<th width="100">
-					<?php echo JText::_('JGRID_HEADING_ACCESS'); ?>
+					<?php echo JHtml::_('grid.sort','JGRID_HEADING_ACCESS','a.access', $listDirn, $listOrder); ?>
 				</th>
 				<th width="30">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_HITS','a.art_hits', $listDirn, $listOrder); ?>
@@ -175,6 +174,8 @@ $db =& JFactory::getDBO();
 							else :
 								JHtml::_('dropdown.publish', 'cb' . $i, 'articles.');
 							endif;
+							
+							JHtml::_('dropdown.divider');
 
 							if ($item->featured) :
 								JHtml::_('dropdown.unfeatured', 'cb' . $i, 'articles.');
@@ -183,12 +184,6 @@ $db =& JFactory::getDBO();
 							endif;
 
 							JHtml::_('dropdown.divider');
-
-							if ($archived) :
-								JHtml::_('dropdown.unarchive', 'cb' . $i, 'articles.');
-							else :
-								JHtml::_('dropdown.archive', 'cb' . $i, 'articles.');
-							endif;
 
 							if ($trashed) :
 								JHtml::_('dropdown.untrash', 'cb' . $i, 'articles.');
@@ -201,8 +196,8 @@ $db =& JFactory::getDBO();
 							?>
 					</div>
 				</td>
-				<td><?php echo $item->art_published; ?></td>
-				<td><?php 
+				<td class="small"><?php echo $item->art_published; ?></td>
+				<td class="small"><?php 
 					//Authors
 					echo '<a href="index.php?option=com_mams&view=artauths&filter_article='.$item->art_id.'">Authors ';
 					$query = 'SELECT count(*) FROM #__mams_artauth WHERE published >= 1 && aa_art="'.$item->art_id.'"';
@@ -216,7 +211,7 @@ $db =& JFactory::getDBO();
 					$num_ac=$db->loadResult();
 					echo ' ['.$num_ac.']</a>';
 				?></td>
-				<td><?php 
+				<td class="small"><?php 
 					//Downloads
 					echo '<a href="index.php?option=com_mams&view=artdloads&filter_article='.$item->art_id.'">Downloads ';
 					$query = 'SELECT count(*) FROM #__mams_artdl WHERE published >= 1 && ad_art="'.$item->art_id.'"';
@@ -230,7 +225,7 @@ $db =& JFactory::getDBO();
 					$num_am=$db->loadResult();
 					echo ' ['.$num_am.']</a>';
 				?></td>
-				<td><?php 
+				<td class="small"><?php 
 					//Links
 					echo '<a href="index.php?option=com_mams&view=artlinks&filter_article='.$item->art_id.'">Links ';
 					$query = 'SELECT count(*) FROM #__mams_artlinks WHERE published >= 1 && al_art="'.$item->art_id.'"';
@@ -238,12 +233,12 @@ $db =& JFactory::getDBO();
 					$num_al=$db->loadResult();
 					echo ' ['.$num_al.']</a>';
 				?></td>
-				<td><?php echo $item->art_added; ?></td>
-				<td><?php echo $item->art_modified; ?></td>
-				<td><?php echo $item->sec_name; ?></td>
-				<td class="center"><?php echo $item->feataccess_level; ?></td>
-				<td><?php echo $item->access_level; ?></td>
-				<td><?php echo $item->art_hits; ?></td>
+				<td class="small hidden-phone"><?php echo $item->art_added; ?></td>
+				<td class="small hidden-phone"><?php echo $item->art_modified; ?></td>
+				<td class="small"><?php echo $item->sec_name; ?></td>
+				<td class="small"><?php echo $item->feataccess_level; ?></td>
+				<td class="small"><?php echo $item->access_level; ?></td>
+				<td class="small"><?php echo $item->art_hits; ?></td>
 				<td><?php echo $item->art_id; ?></td>
 				
 			</tr>
@@ -265,7 +260,7 @@ $db =& JFactory::getDBO();
 			<div class="control-group">
 				<div class="controls">
 					<?php 
-						echo '<br /><br /><br /><label id="batch-feataccess-lbl" for="batch-feataccess" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL_DESC') . '">';
+						echo '<label id="batch-feataccess-lbl" for="batch-feataccess" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL_DESC') . '">';
 						echo JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL').'</label>';
 						echo JHtml::_('access.assetgrouplist','batch[featassetgroup_id]', '','class="inputbox"',array('title' => JText::_('JLIB_HTML_BATCH_NOCHANGE'),'id' => 'batch-feataccess')); 
 					?>
@@ -274,22 +269,22 @@ $db =& JFactory::getDBO();
 			<div class="control-group">
 				<div class="controls">		
 					<?php 
-						echo '<br /><br /><br /><label id="batch-section-lbl" for="batch-section" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL_DESC') . '">';
+						echo '<label id="batch-section-lbl" for="batch-section" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL_DESC') . '">';
 						echo JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL').'</label>';
 					?>
-					<select name="batch[featsection_id]" class="inputbox">
+					<select name="batch[featsection_id]" class="inputbox" id="featsection_id">
 						<option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
 						<?php echo JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', "");?>
 					</select>
 				</div>
 			</div>
 		</div>
-		<div class="modal-footer">
-			<button type="submit" onclick="Joomla.submitbutton('article.batch');">
-				<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
+		<div class="modal-footer">	
+			<button class="btn" type="button" onclick="document.id('batch-access').value='';document.id('batch-feataccess').value='';document.id('featsection_id').value='';" data-dismiss="modal">
+				<?php echo JText::_('JCANCEL'); ?>
 			</button>
-			<button type="button" onclick="document.id('batch-access').value='';">
-				<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
+			<button class="btn btn-primary" type="submit" onclick="Joomla.submitbutton('article.batch');">
+				<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
 			</button>
 		</div>
 	</div>

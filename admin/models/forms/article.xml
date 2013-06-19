@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="details">
+	<fieldset name="accessibility">
 		<field
 			name="art_id"
-			type="hidden"
+			type="text"
+			class="readonly" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC"
+			readonly="true"
 		/>
 		<field
 			name="published"
@@ -45,20 +49,14 @@
 			label="JFIELD_ORDERING_LABEL"
 			description="JFIELD_ORDERING_DESC"
 		/>
-		<field
-			name="art_sec"
-			type="ArticleSecs"
-			class="inputbox"
-			label="COM_MAMS_ARTICLE_FIELD_SEC_LABEL"
-			description="COM_MAMS_ARTICLE_FIELD_SEC_DESC"
-			required="true"
-		/>
+		
+	</fieldset>
+	<fieldset name="info">
 		<field
 			name="art_title"
 			type="text"
 			label="COM_MAMS_ARTICLE_FIELD_TITLE_LABEL"
 			description="COM_MAMS_ARTICLE_FIELD_TITLE_DESC"
-			size="60"
 			class="inputbox"
 			required="true"
 			default=""
@@ -68,9 +66,16 @@
 			type="text"
 			label="COM_MAMS_ARTICLE_FIELD_ALIAS_LABEL"
 			description="COM_MAMS_ARTICLE_FIELD_ALIAS_DESC"
-			size="60"
 			class="inputbox"
 			default=""
+		/>
+		<field
+			name="art_sec"
+			type="ArticleSecs"
+			class="inputbox"
+			label="COM_MAMS_ARTICLE_FIELD_SEC_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_SEC_DESC"
+			required="true"
 		/>
 		<field
 			name="art_published" 
@@ -79,31 +84,6 @@
 			description="COM_MAMS_ARTICLE_FIELD_PUBLISHED_DESC"
 			format="%Y-%m-%d"
 			required="true"
-			size="22"
-		/>
-		<field
-			name="art_show_related"
-			type="radio"
-			label="COM_MAMS_ARTICLE_FIELD_SHOWRELATED_LABEL"
-			description="COM_MAMS_ARTICLE_FIELD_SHOWRELATED_DESC"
-			size="1"
-			class="inputbox"
-			required="true"
-			default="1">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</field>
-		
-	</fieldset>
-	<fieldset name="content">
-		<field
-			name="art_thumb"
-			type="text"
-			label="COM_MAMS_ARTICLE_FIELD_THUMB_LABEL"
-			description="COM_MAMS_ARTICLE_FIELD_THUMB_DESC"
-			size="70"
-			class="inputbox"
-			default=""
 		/>
 		<field
 			name="art_desc"
@@ -116,6 +96,8 @@
 			filter="safehtml"
 			buttons="false"
 		/>
+	</fieldset>
+	<fieldset name="content">
 		<field
 			name="art_keywords"
 			type="textarea"
@@ -128,14 +110,33 @@
 			buttons="false"
 		/>
 		<field
+			name="art_thumb"
+			type="text"
+			label="COM_MAMS_ARTICLE_FIELD_THUMB_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_THUMB_DESC"
+			size="70"
+			class="inputbox"
+			default=""
+		/>
+		<field
 			name="art_media"
 			type="ArticleMedias"
 			class="inputbox"
 			label="COM_MAMS_ARTMED_FIELD_MEDIA_LABEL"
 			description="COM_MAMS_ARTMED_FIELD_MEDIA_DESC"
 		/>
+		<field
+			name="art_show_related"
+			type="radio"
+			label="COM_MAMS_ARTICLE_FIELD_SHOWRELATED_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_SHOWRELATED_DESC"
+			class="btn-group"
+			default="1">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</field>
 	</fieldset>
-	<fieldset name="article">
+	<fieldset name="body">
 		<field
 			name="art_content"
 			type="editor"

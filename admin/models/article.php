@@ -203,7 +203,8 @@ class MAMSModelArticle extends JModelAdmin
 		$user = JFactory::getUser();
 		$pks = (array) $pks;
 		$db	= $this->getDbo();
-			
+
+		$table = $this->getTable('FeaturedArticle', 'MAMSTable');
 		
 		$query	= $db->getQuery(true);
 		$query->delete();
@@ -225,7 +226,7 @@ class MAMSModelArticle extends JModelAdmin
 			}
 		} 
 			
-		
+		$table->reorder();
 	
 		// Clear the component's cache
 		$this->cleanCache();
@@ -295,17 +296,6 @@ class MAMSModelArticle extends JModelAdmin
 		return true;
 	}
 	
-	/**
-	 * Batch featured access level changes for a group of rows.
-	 *
-	 * @param   integer  $value     The new value matching an Asset Group ID.
-	 * @param   array    $pks       An array of row IDs.
-	 * @param   array    $contexts  An array of item contexts.
-	 *
-	 * @return  boolean  True if successful, false otherwise and internal error is set.
-	 *
-	 * @since   11.1
-	 */
 	protected function batchFeatAccess($value, $pks, $contexts)
 	{
 		// Set the variables
