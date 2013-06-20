@@ -43,7 +43,7 @@ class MAMSViewMedias extends JViewLegacy
 		JToolBarHelper::custom('medias.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
 		JToolBarHelper::custom('medias.defeatured', 'remove.png', 'remove_f2.png', 'COM_MAMS_TOOLBAR_DEFEATURE', true);
 		JToolBarHelper::divider();
-		if ($state->get('filter.published') == -2) {
+		if ($state->get('filter.state') == -2) {
 			JToolBarHelper::deleteList('', 'medias.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		} else  {

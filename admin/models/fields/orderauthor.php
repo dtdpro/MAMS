@@ -39,10 +39,10 @@ class JFormFieldOrderAuthor extends JFormField
 		$authSec	= (int) $this->form->getValue('auth_sec');
 
 		// Build the query for the ordering list.
-		$query = 'SELECT ordering AS value, auth_name AS text' .
-				' FROM #__mams_authors' .
-				' WHERE auth_sec = '.$authSec.
-				' ORDER BY ordering';
+		$query = 'SELECT auth.ordering AS value, CONCAT(auth.auth_fname,IF(auth.auth_mi != "",CONCAT(" ",auth.auth_mi),"")," ",auth.auth_lname,IF(auth.auth_titles != "",CONCAT(", ",auth.auth_titles),""))  AS text' .
+				' FROM #__mams_authors as auth' .
+				' WHERE auth.auth_sec = '.$authSec.
+				' ORDER BY auth.ordering';
 
 		// Create a read-only list (no name) with a hidden input to store the value.
 		if ((string) $this->element['readonly'] == 'true') {

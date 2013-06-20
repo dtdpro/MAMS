@@ -20,7 +20,6 @@ if ($saveOrder) {
 	JHtml::_('sortablelist.sortable', 'MAMSArtList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 $sortFields = $this->getSortFields();
-$db =& JFactory::getDBO();
 ?>
 <script type="text/javascript">
 	Joomla.orderTable = function()
@@ -86,7 +85,7 @@ $db =& JFactory::getDBO();
 				<th width="1%" class="nowrap center hidden-phone">
 					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 				</th>
-				<th width="20">
+				<th width="1%">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>	
 				<th width="1%" style="min-width:55px" class="nowrap center">
@@ -100,12 +99,6 @@ $db =& JFactory::getDBO();
 				</th>		
 				<th width="100">
 					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_TAGS'); ?>
-				</th>
-				<th width="100">
-					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_EXTRAS'); ?>
-				</th>
-				<th width="100">
-					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_REFS'); ?>
 				</th>
 				<th width="120" class="hidden-phone">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_ADDED','a.art_added', $listDirn, $listOrder); ?>
@@ -198,40 +191,8 @@ $db =& JFactory::getDBO();
 				</td>
 				<td class="small"><?php echo $item->art_published; ?></td>
 				<td class="small"><?php 
-					//Authors
-					echo '<a href="index.php?option=com_mams&view=artauths&filter_article='.$item->art_id.'">Authors ';
-					$query = 'SELECT count(*) FROM #__mams_artauth WHERE published >= 1 && aa_art="'.$item->art_id.'"';
-					$db->setQuery( $query );
-					$num_aa=$db->loadResult();
-					echo ' ['.$num_aa.']</a><br />';
-					//Categories
-					echo '<a href="index.php?option=com_mams&view=artcats&filter_article='.$item->art_id.'">Categories ';
-					$query = 'SELECT count(*) FROM #__mams_artcat WHERE published >= 1 && ac_art="'.$item->art_id.'"';
-					$db->setQuery( $query );
-					$num_ac=$db->loadResult();
-					echo ' ['.$num_ac.']</a>';
-				?></td>
-				<td class="small"><?php 
-					//Downloads
-					echo '<a href="index.php?option=com_mams&view=artdloads&filter_article='.$item->art_id.'">Downloads ';
-					$query = 'SELECT count(*) FROM #__mams_artdl WHERE published >= 1 && ad_art="'.$item->art_id.'"';
-					$db->setQuery( $query );
-					$num_ad=$db->loadResult();
-					echo ' ['.$num_ad.']</a><br />';
-					//Media
-					echo '<a href="index.php?option=com_mams&view=artmeds&filter_article='.$item->art_id.'">Media ';
-					$query = 'SELECT count(*) FROM #__mams_artmed WHERE published >= 1 && am_art="'.$item->art_id.'"';
-					$db->setQuery( $query );
-					$num_am=$db->loadResult();
-					echo ' ['.$num_am.']</a>';
-				?></td>
-				<td class="small"><?php 
-					//Links
-					echo '<a href="index.php?option=com_mams&view=artlinks&filter_article='.$item->art_id.'">Links ';
-					$query = 'SELECT count(*) FROM #__mams_artlinks WHERE published >= 1 && al_art="'.$item->art_id.'"';
-					$db->setQuery( $query );
-					$num_al=$db->loadResult();
-					echo ' ['.$num_al.']</a>';
+					echo '<button class="btn btn-small" type="button" onclick="return listItemTask(\'cb'.$i.'\',\'articles.drilldowns\')">Drill Downs';
+					echo '</button>';
 				?></td>
 				<td class="small hidden-phone"><?php echo $item->art_added; ?></td>
 				<td class="small hidden-phone"><?php echo $item->art_modified; ?></td>

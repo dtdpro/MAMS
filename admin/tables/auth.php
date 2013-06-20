@@ -7,11 +7,6 @@ jimport('joomla.database.table');
 
 class MAMSTableAuth extends JTable
 {
-	/**
-	 * Constructor
-	 *
-	 * @param object Database connector object
-	 */
 	function __construct(&$db) 
 	{
 		parent::__construct('#__mams_authors', 'auth_id', $db);
@@ -46,13 +41,13 @@ class MAMSTableAuth extends JTable
 	public function check()
 	{
 		// check for valid name
-		if (trim($this->auth_name) == '') {
+		if (trim($this->auth_fname) == '' || trim($this->auth_lname) == '') {
 			$this->setError(JText::_('COM_MAMS_ERR_TABLES_TITLE'));
 			return false;
 		}
 
 		// check for existing name
-		$query = 'SELECT auth_id FROM #__mams_authors WHERE auth_name = '.$this->_db->Quote($this->auth_name);
+		$query = 'SELECT auth_id FROM #__mams_authors WHERE auth_fname = '.$this->_db->Quote($this->auth_fname).' && auth_lname = '.$this->_db->Quote($this->auth_lname).' && auth_mi = '.$this->_db->Quote($this->auth_mi);
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());
@@ -62,7 +57,7 @@ class MAMSTableAuth extends JTable
 		}
 
 		if (empty($this->auth_alias)) {
-			$this->auth_alias = $this->auth_name;
+			$this->auth_alias = $this->auth_fname.'-'.$this->auth_lname;
 		}
 		$this->auth_alias = JApplication::stringURLSafe($this->auth_alias);
 		if (trim(str_replace('-','',$this->auth_alias)) == '') {

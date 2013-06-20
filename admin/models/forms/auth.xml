@@ -48,16 +48,6 @@
 			description="COM_MAMS_AUTH_FIELD_SEC_DESC"
 		/>
 		<field
-			name="auth_name"
-			type="text"
-			label="COM_MAMS_AUTH_FIELD_NAME_LABEL"
-			description="COM_MAMS_AUTH_FIELD_NAME_DESC"
-			size="60"
-			class="inputbox"
-			required="true"
-			default=""
-		/>
-		<field
 			name="auth_alias"
 			type="text"
 			label="COM_MAMS_AUTH_FIELD_ALIAS_LABEL"
@@ -67,7 +57,47 @@
 			default=""
 		/>
 	</fieldset>
-	<fieldset name="content">
+	<fieldset name="nameinfo">
+		<field
+			name="auth_fname"
+			type="text"
+			label="COM_MAMS_AUTH_FIELD_FNAME_LABEL"
+			description="COM_MAMS_AUTH_FIELD_FNAME_DESC"
+			size="60"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field
+			name="auth_mi"
+			type="text"
+			label="COM_MAMS_AUTH_FIELD_MI_LABEL"
+			description="COM_MAMS_AUTH_FIELD_MI_DESC"
+			size="6"
+			class="inputbox"
+			required="false"
+			default=""
+		/>
+		<field
+			name="auth_lname"
+			type="text"
+			label="COM_MAMS_AUTH_FIELD_LNAME_LABEL"
+			description="COM_MAMS_AUTH_FIELD_LNAME_DESC"
+			size="60"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field
+			name="auth_titles"
+			type="text"
+			label="COM_MAMS_AUTH_FIELD_TITLES_LABEL"
+			description="COM_MAMS_AUTH_FIELD_TITLES_DESC"
+			size="60"
+			class="inputbox"
+			required="false"
+			default=""
+		/>
 		<field
 			name="auth_credentials"
 			type="textarea"
@@ -80,16 +110,6 @@
 			buttons="false"
 		/>
 		<field
-			name="auth_bio"
-			type="editor"
-			label="COM_MAMS_AUTH_FIELD_BIO_LABEL"
-			description="COM_MAMS_AUTH_FIELD_BIO_DESC"
-			class="inputbox"
-			required="false"
-			filter="safehtml"
-			buttons="false"
-		/>
-		<field
 			name="auth_image"
 			type="text"
 			label="COM_MAMS_AUTH_FIELD_IMAGE_LABEL"
@@ -98,6 +118,18 @@
 			class="inputbox"
 			required="false"
 			default=""
+		/>
+	</fieldset>
+	<fieldset name="content">
+		<field
+			name="auth_bio"
+			type="editor"
+			label="COM_MAMS_AUTH_FIELD_BIO_LABEL"
+			description="COM_MAMS_AUTH_FIELD_BIO_DESC"
+			class="inputbox"
+			required="false"
+			filter="safehtml"
+			buttons="false"
 		/>
 	</fieldset>
 </form>

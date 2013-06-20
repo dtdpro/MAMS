@@ -7,31 +7,30 @@ jimport('joomla.application.component.view');
 
 class MAMSViewArtLinks extends JViewLegacy
 {
+	protected $items;
+	protected $pagination;
+	protected $state;
+	protected $arttitle;
+	
 	function display($tpl = null) 
 	{
-		// Get data from the model
-		$items = $this->get('Items');
-		$pagination = $this->get('Pagination');
 		$this->state		= $this->get('State');
-		// Set the submenu
-		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
-		// Check for errors.
+		$this->items = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->arttitle = $this->get('ArticleTitle');
+		
+		MAMSHelper::addArtDDSubmenu(JRequest::getVar('view'),$this->arttitle);
+		
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign data to the view
-		$this->items = $items;
-		$this->pagination = $pagination;
-		// Set the toolbar
+		
 		$this->addToolBar();
+		$this->sidebar = JHtmlSidebar::render();	
 
-		// Display the template
 		parent::display($tpl);
-
-		// Set the document
-		$this->setDocument();
 	}
 
 	protected function addToolBar() 
@@ -44,18 +43,23 @@ class MAMSViewArtLinks extends JViewLegacy
 		JToolBarHelper::custom('artlinks.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::custom('artlinks.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
 		JToolBarHelper::divider();
-		if ($state->get('filter.published') == -2) {
+		if ($state->get('filter.state') == -2) {
 			JToolBarHelper::deleteList('', 'artlinks.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		} else  {
 			JToolBarHelper::trash('artlinks.trash');
 		}
-		JToolBarHelper::back('COM_MAMS_TOOLBAR_ARTICLES','index.php?option=com_mams&view=articles');
+		
+		JHtmlSidebar::setAction('index.php?option=com_mams&view=artlinks');
+		
+		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
+		
 	}
-
-	protected function setDocument() 
+	
+	protected function getSortFields()
 	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_MAMS_MANAGER_ARTLINKS'));
+		return array(
+				'a.ordering' => JText::_('JGRID_HEADING_ORDERING')
+		);
 	}
 }

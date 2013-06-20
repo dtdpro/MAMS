@@ -46,7 +46,7 @@ class MAMSViewAuths extends JViewLegacy
 		JToolBarHelper::custom('auths.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::custom('auths.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
 		JToolBarHelper::divider();
-		if ($state->get('filter.published') == -2) {
+		if ($state->get('filter.state') == -2) {
 			JToolBarHelper::deleteList('', 'auths.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		} else  {
@@ -67,7 +67,8 @@ class MAMSViewAuths extends JViewLegacy
 				'a.published' => JText::_('JSTATUS'),
 				'a.auth_added' => JText::_('COM_MAMS_AUTH_HEADING_ADDED'),
 				'a.auth_modified' => JText::_('COM_MAMS_AUTH_HEADING_MODIFIED'),
-				'a.auth_name' => JText::_('COM_MAMS_AUTH_HEADING_NAME'),
+				'a.auth_fname' => JText::_('COM_MAMS_AUTH_HEADING_FNAME'),
+				'a.auth_lname' => JText::_('COM_MAMS_AUTH_HEADING_LNAME'),
 				'a.access' => JText::_('JGRID_HEADING_ACCESS'),
 				'a.auth_id' => JText::_('JGRID_HEADING_ID')
 		);

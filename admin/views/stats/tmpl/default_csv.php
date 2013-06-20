@@ -9,7 +9,7 @@ $filename  =  'MAMS_Report' . '-' . date("Y-m-d").'.csv';
 $items = $this->items;
 $contents = '';	
 $contents .= "\"Section\",\"Item\",\"What\",\"When\",\"Who\",\"EMail\",";
-if ($this->config->continued || $this->config->mue) {
+if ($this->config->mue) {
 	$contents .= "\"Group\",";
 }
 $contents .= "\"Session\",\"IP Address\"\n";
@@ -33,7 +33,7 @@ foreach ($items as $row)
 	$contents .=  '"'.$row->mt_time.'",'; 
 	$contents .=  '"'.$row->users_name.'",'; 
 	$contents .=  '"'.$row->users_email.'",'; 
-	if ($this->config->continued || $this->config->mue) {
+	if ($this->config->mue) {
 		$contents .= '"'.$row->UserGroup.'",';
 	}
 	$contents .=  '"'.$row->mt_session.'",'; 

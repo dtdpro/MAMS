@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 $cfg = MAMSHelper::getConfig();
 //Title
 echo '<h2 class="title">';
-echo $this->author->auth_name; 
+echo $this->author->auth_fname.(($this->author->auth_mi) ? " ".$this->author->auth_mi : "")." ".$this->author->auth_lname.(($this->author->auth_titles) ? ", ".$this->author->auth_titles : ""); 
 echo '</h2>';
 echo '<div class="mams-author-credentials">';
 //Image
@@ -45,7 +45,7 @@ if ($this->published) {
 				echo '<div class="mams-author-related-artaut">';
 					$auts = Array();
 					foreach ($r->auts as $f) {
-						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_name.'</a>';
+						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
 					}
 					echo implode(", ",$auts);
 				echo '</div>';

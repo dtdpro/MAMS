@@ -23,10 +23,10 @@ class MAMSModelArtAuths extends JModelList
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
-		$this->setState('filter.published', $published);
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
 
-		$artId = $this->getUserStateFromRequest($this->context.'.filter.article', 'filter_article','');
+		$artId = $app->getUserState('com_mams.drilldowns.filter.article', 0);
 		$this->setState('filter.article', $artId);
 		
 		// Load the parameters.
@@ -54,18 +54,18 @@ class MAMSModelArtAuths extends JModelList
 		if (is_numeric($artId)) {
 			$query->where('a.aa_art = '.(int) $artId);
 		}
-
-		// Join over the authors.
-		$query->select('auth.auth_name');
-		$query->join('LEFT', '#__mams_authors AS auth ON auth.auth_id = a.aa_auth');
 		
 		// Filter by published state
-		$published = $this->getState('filter.published');
+		$published = $this->getState('filter.state');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(a.published IN (0, 1))');
 		}
+
+		// Join over the authors.
+		$query->select('CONCAT(auth.auth_fname,IF(auth.auth_mi != "",CONCAT(" ",auth.auth_mi),"")," ",auth.auth_lname,IF(auth.auth_titles != "",CONCAT(", ",auth.auth_titles),"")) as auth_name');
+		$query->join('LEFT', '#__mams_authors AS auth ON auth.auth_id = a.aa_auth');
 		
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
@@ -73,5 +73,21 @@ class MAMSModelArtAuths extends JModelList
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 				
 		return $query;
+	}
+	
+	public function getArticleTitle() {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$artId = $this->getState('filter.article');
+		
+		if (is_numeric($artId)) {
+			$query->select('a.art_title');
+			$query->from('#__mams_articles as a');
+			$query->where('a.art_id = '.(int) $artId);
+			$db->setQuery($query);
+			return $db->loadResult();
+		} else {
+			return "NO ARTICLE";
+		}
 	}
 }

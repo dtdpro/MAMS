@@ -44,11 +44,6 @@ class MAMSModelArticle extends JModelAdmin
 		return $form;
 	}
 	
-	public function getScript() 
-	{
-		return 'administrator/components/com_mams/models/forms/article.js';
-	}
-	
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
@@ -376,24 +371,8 @@ class MAMSModelArticle extends JModelAdmin
 
 	protected function prepareTable(&$table)
 	{
-		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
-	
-		if (empty($table->am_id)) {
-			// Set the values
-				
-			// Set ordering to the last item if not set
-			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__mams_articles WHERE art_sec = "'.$table->art_sec.'" && art_published = "'.$table->art_published.'"');
-				$max = $db->loadResult();
-	
-				$table->ordering = $max+1;
-			}
-		}
-		else {
-			// Set the values
+		if (empty($table->art_id)) {
+			$table->reorder('art_sec = "'.$table->art_sec.'" && art_published = "'.$table->art_published.'"');
 		}
 	}
 
@@ -403,7 +382,5 @@ class MAMSModelArticle extends JModelAdmin
 		$condition[] = 'art_sec = '.$table->art_sec.' && art_published = '.$table->art_published;
 		return $condition;
 	}
-	
-	
 	
 }

@@ -74,7 +74,7 @@ class MAMSModelAuthor extends JModelLegacy
 		//Get Authors
 		foreach ($items as &$i) {
 			$qa=$db->getQuery(true);
-			$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_sec');
+			$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
 			$qa->from('#__mams_artauth as aa');
 			$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 			$qa->where('aa.published >= 1');
@@ -126,7 +126,7 @@ class MAMSModelAuthor extends JModelLegacy
 		$cfg = MAMSHelper::getConfig();
 	
 		$query->select('ca.ca_course');
-		$query->from('#__ce_courseauth AS ca');
+		$query->from('#__mcme_courseauth AS ca');
 		$query->where('ca.ca_auth = '.(int)$aut);
 		$query->where('ca.published >= 1');
 		$db->setQuery($query);
@@ -137,9 +137,9 @@ class MAMSModelAuthor extends JModelLegacy
 		$alvls = $user->getAuthorisedViewLevels();
 		$alvls = array_merge($alvls,$cfg->reggroup);
 		
-		$query->select('a.*,c.cat_id,c.cat_name');
-		$query->from('#__ce_courses AS a');
-		$query->join('RIGHT','#__ce_cats AS c ON c.cat_id = a.course_cat');
+		$query->select('a.*,c.sec_id,c.sec_title');
+		$query->from('#__mcme_courses AS a');
+		$query->join('RIGHT','#__mcme_secs AS c ON c.sec_id = a.course_sec');
 		$query->where('a.course_id IN ('.implode(",",$pubedids).')');
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
@@ -151,7 +151,7 @@ class MAMSModelAuthor extends JModelLegacy
 		//Get Authors
 		foreach ($items as &$i) {
 			$qa=$db->getQuery(true);
-			$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_sec');
+			$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
 			$qa->from('#__ce_courseauth as ca');
 			$qa->join('RIGHT','#__mams_authors AS a ON ca.ca_auth = a.auth_id');
 			$qa->where('ca.published >= 1');
@@ -167,7 +167,7 @@ class MAMSModelAuthor extends JModelLegacy
 		foreach ($items as &$i) {
 			$qc=$db->getQuery(true);
 			$qc->select('c.cat_id,c.cat_title,c.cat_alias');
-			$qc->from('#__ce_coursecat as cc');
+			$qc->from('#__mcme_coursecat as cc');
 			$qc->join('RIGHT','#__mams_cats AS c ON cc.cc_cat = c.cat_id');
 			$qc->where('cc.published >= 1');
 			$qc->where('c.published >= 1');

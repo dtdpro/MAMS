@@ -85,14 +85,15 @@ $db =& JFactory::getDBO();
 				<th width="1%" class="nowrap center hidden-phone">
 					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 				</th>
-				<th width="20">
+				<th width="1%">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>	
-				<th width="100">
-					<?php echo JHtml::_('grid.sort','JPUBLISHED','a.published', $listDirn, $listOrder); ?>
-				</th>		
+				<th width="1%" style="min-width:55px" class="nowrap center">
+					<?php echo JHtml::_('grid.sort','JSTATUS','a.published', $listDirn, $listOrder); ?>
+				</th>			
 				<th>
-					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_HEADING_NAME','a.auth_name', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_HEADING_FNAME','a.auth_fname', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_HEADING_LNAME','a.auth_lname', $listDirn, $listOrder); ?>
 				</th>		
 				<th width="120">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_AUTH_HEADING_SEC','a.auth_sec', $listDirn, $listOrder); ?>
@@ -136,7 +137,7 @@ $db =& JFactory::getDBO();
 				<td class="nowrap has-context">
 					<div class="pull-left">
 						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=auth.edit&auth_id='.(int) $item->auth_id); ?>">
-						<?php echo $this->escape($item->auth_name); ?></a>
+						<?php echo $this->escape($item->auth_fname).(($item->auth_mi) ? " ".$this->escape($item->auth_mi) : "")." ".$this->escape($item->auth_lname).(($item->auth_titles) ? ", ".$this->escape($item->auth_titles) : ""); ?></a>
 						<div class="small"><?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->auth_alias));?></div>
 					</div>
 					<div class="pull-left">

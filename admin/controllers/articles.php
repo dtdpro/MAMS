@@ -109,4 +109,28 @@ class MAMSControllerArticles extends JControllerAdmin
 		// Close the application
 		JFactory::getApplication()->close();
 	}
+	
+	function drilldowns()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	
+		$app = JFactory::getApplication();
+		$context = "com_mams.drilldowns";
+	
+		// Get items to remove from the request.
+		$cid = JRequest::getVar('cid', array(), '', 'array');
+	
+		if (!is_array($cid) || count($cid) < 1)
+		{
+			JError::raiseWarning(500, JText::_('COM_MCME_PAGE_NO_ITEM_SELECTED'));
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=pages', false));
+		}
+		else
+		{
+			$app->setUserState($context . '.filter.article',$cid[0]);
+		}
+	
+		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=artauths', false));
+	}
 }

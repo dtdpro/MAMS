@@ -31,8 +31,8 @@ class MAMSModelMedias extends JModelList
 		$extension = $app->getUserStateFromRequest($this->context.'.filter.extension', 'extension', 'com_mams', 'cmd');
 		$this->setState('filter.extension', $extension);
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
-		$this->setState('filter.published', $published);
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
 
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
@@ -76,7 +76,7 @@ class MAMSModelMedias extends JModelList
 		}
 		
 		// Filter by published state
-		$published = $this->getState('filter.published');
+		$published = $this->getState('filter.state');
 		if (is_numeric($published)) {
 			$query->where('m.published = '.(int) $published);
 		} else if ($published === '') {

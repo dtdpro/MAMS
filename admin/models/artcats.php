@@ -23,10 +23,10 @@ class MAMSModelArtCats extends JModelList
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
-		$this->setState('filter.published', $published);
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
 
-		$artId = $this->getUserStateFromRequest($this->context.'.filter.article', 'filter_article','');
+		$artId = $app->getUserState('com_mams.drilldowns.filter.article', 0);
 		$this->setState('filter.article', $artId);
 		
 		// Load the parameters.
@@ -60,7 +60,7 @@ class MAMSModelArtCats extends JModelList
 		$query->join('LEFT', '#__mams_cats AS cat ON cat.cat_id = a.ac_cat');
 		
 		// Filter by published state
-		$published = $this->getState('filter.published');
+		$published = $this->getState('filter.state');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		} else if ($published === '') {
@@ -73,5 +73,21 @@ class MAMSModelArtCats extends JModelList
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 				
 		return $query;
+	}
+	
+	public function getArticleTitle() {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$artId = $this->getState('filter.article');
+		
+		if (is_numeric($artId)) {
+			$query->select('a.art_title');
+			$query->from('#__mams_articles as a');
+			$query->where('a.art_id = '.(int) $artId);
+			$db->setQuery($query);
+			return $db->loadResult();
+		} else {
+			return "NO ARTICLE";
+		}
 	}
 }

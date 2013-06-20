@@ -1,32 +1,40 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('dropdown.init');
+JHtml::_('formbehavior.chosen', 'select');
 
-$typesl[1] = JHTML::_('select.option',  'article','Article Page');
-$typesl[2] = JHTML::_('select.option',  'author','Author Page');
-$typesl[3] = JHTML::_('select.option',  'seclist','Section Artice List');
-$typesl[4] = JHTML::_('select.option',  'catlist','Category Artice List');
-$typesl[5] = JHTML::_('select.option',  'autlist','Author Artice List');
-$typesl[6] = JHTML::_('select.option',  'authors','Authors List');
-$typesl[7] = JHTML::_('select.option',  'dload','Download');
+
 ?>
 <form action="" method="post" name="adminForm" id="adminForm">
-<div id="editcell">
-	<table class="adminlist">
-    	<thead><tr>
-        	<th align="left" width="50%"><?php
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+	<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+	<div id="filter-bar" class="btn-toolbar">
+		<div class="pull-left form-horizontal btn-group">
+			<label for="startdate" class="element-invisible">Start: </label>
+			<?php echo JHtml::_('calendar',$this->model->getState('startdate'),'startdate','startdate','%Y-%m-%d','onchange="this.form.submit()"'); ?>
+		</div>
+		<div class="pull-left form-horizontal btn-group">
+			<label> to </label>
+		</div>
+		<div class="pull-left form-horizontal btn-group">
+			<label for="enddate" class="element-invisible">End: </label>
+			<?php echo JHtml::_('calendar',$this->model->getState('enddate'),'enddate','enddate','%Y-%m-%d','onchange="this.form.submit()"'); ?>
+		</div>
+		<div class="btn-group pull-right hidden-phone">
+			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+			<?php echo $this->pagination->getLimitBox(); ?>
+		</div>
+	</div>
+	
+	<div class="clearfix"> </div>
 
-            ?></th>
-            <th align="right" width="50%"><?php
-				echo JText::_('Item Type:').JHTML::_('select.genericlist',$typesl,'filter_type','onchange="submitform();"','value','text',$this->filter_type,'filter_type');
-            	echo 'Start: '.JHTML::_('calendar',$this->startdate,'startdate','startdate','%Y-%m-%d','onchange="this.form.submit()"');
-				echo ' End: '.JHTML::_('calendar',$this->enddate,'enddate','enddate','%Y-%m-%d','onchange="this.form.submit()"');
-				if ($this->config->continued || $this->config->mue) {
-					echo JText::_(' User Group:').JHTML::_('select.genericlist',$this->grouplist,'filter_group','onchange="submitform();"','value','text',$this->filter_group,'filter_group');
-				}
-            ?>
-
-			</th>
-        </tr></thead>
-    </table> 
 	<table class="adminlist table table-striped">
 	<thead>
 		<tr>
@@ -37,7 +45,7 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 			<th><?php echo JText::_( 'When' ); ?></th>
 			<th><?php echo JText::_( 'Who' ); ?></th>
 			<?php 
-				if ($this->config->continued || $this->config->mue) {
+				if ($this->config->mue) {
 					echo '<th>'.JText::_( 'Group' ).'</th>';
 				}
 			?>
@@ -45,6 +53,11 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
         	<th width="70"><?php echo JText::_( 'IP Address' ); ?></th>
 		</tr>			
 	</thead>
+	 <tfoot><tr>
+		<td colspan="<?php echo ($this->config->mue) ? 9 : 8; ?>">
+			<?php echo $this->pagination->getListFooter(); ?>
+		</td></tr>
+	</tfoot>
 	<?php
 	$k = 0;
 	for ($i=0, $n=count( $this->items ); $i < $n; $i++)
@@ -54,10 +67,10 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 		
 		?>
 		<tr class="<?php echo "row$k"; ?>">
-			<td><?php echo $i + 1 + $this->pagination->limitstart; ?></td>
-			<td><?php echo $row->sec_title; ?></td>
-			<td><?php echo $row->item_title; ?></td>
-			<td><?php 
+			<td class="small"><?php echo $i + 1 + $this->pagination->limitstart; ?></td>
+			<td class="small"><?php echo $row->sec_title; ?></td>
+			<td class="small"><?php echo $row->item_title; ?></td>
+			<td class="small"><?php 
 				switch ($row->mt_type) {
 					case "article": echo "Article Page"; break;
 					case "author": echo "Author Page"; break;
@@ -69,28 +82,24 @@ $typesl[7] = JHTML::_('select.option',  'dload','Download');
 				}
 			
 			?></td>
-            <td><?php echo $row->mt_time; ?></td>
-			<td><?php 
+            <td class="small"><?php echo $row->mt_time; ?></td>
+			<td class="small"><?php 
 				echo $row->users_name; 
 			?></td>
 			<?php 
-				if ($this->config->continued || $this->config->mue) {
+				if ($this->config->mue) {
 					echo '<td>'.$row->UserGroup.'</td>';
 				}
 			?>
-			<td><?php echo $row->mt_session; ?></td>
-			<td><?php echo $row->mt_ipaddr; ?></td>
+			<td class="small"><?php echo $row->mt_session; ?></td>
+			<td class="small"><?php echo $row->mt_ipaddr; ?></td>
 
 		</tr>
 		<?php
 		$k = 1 - $k;
 	}
 	?>
-         <tfoot>
-		<td colspan="8">
-			<?php echo $this->pagination->getListFooter(); ?>
-		</td>
-	</tfoot>
+        
 	</table>
 </div>
 

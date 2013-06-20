@@ -7,12 +7,27 @@ jimport('joomla.application.component.modeladmin');
 
 class MAMSModelArtLink extends JModelAdmin
 {
-	protected function allowEdit($data = array(), $key = 'al_id')
+	protected function canDelete($record)
 	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_mams.artlink.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		if (!empty($record->aa_id))
+		{
+			if ($record->published != -2)
+			{
+				return;
+			}
+			$user = JFactory::getUser();
+	
+			return parent::canDelete($record);
+		}
 	}
-
+	
+	protected function canEditState($record)
+	{
+		$user = JFactory::getUser();
+	
+		return parent::canEditState($record);
+	}
+	
 	public function getTable($type = 'ArtLink', $prefix = 'MAMSTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
@@ -28,22 +43,17 @@ class MAMSModelArtLink extends JModelAdmin
 		}
 		return $form;
 	}
-
-	public function getScript() 
-	{
-		return 'administrator/components/com_mams/models/forms/artlink.js';
-	}
-
+	
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_mams.edit.artdload.data', array());
+		$data = JFactory::getApplication()->getUserState('com_mams.edit.artlink.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
 			if ($this->getState('artlink.al_id') == 0) {
 				$app = JFactory::getApplication();
-				$data->set('al_art', JRequest::getInt('al_art', $app->getUserState('com_mams.artlinks.filter.article')));
+				$data->set('al_art', JRequest::getInt('al_art', $app->getUserState('com_mams.drilldowns.filter.article')));
 			}
 		}
 		return $data;

@@ -24,9 +24,9 @@ class JFormFieldArticleAuths extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 
 		// Build the query for the ordering list.
-		$query = 'SELECT auth_id AS value, auth_name AS text' .
-				' FROM #__mams_authors' .
-				' ORDER BY auth_name';
+		$query = 'SELECT auth.auth_id AS value, CONCAT(auth.auth_fname,IF(auth.auth_mi != "",CONCAT(" ",auth.auth_mi),"")," ",auth.auth_lname,IF(auth.auth_titles != "",CONCAT(", ",auth.auth_titles),""))  AS text' .
+				' FROM #__mams_authors as auth' .
+				' ORDER BY auth.auth_lname';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
 		$html[] = '<option value="">'.JText::_('COM_MAMS_SELECT_AUTHOR').'</option>';

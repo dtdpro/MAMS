@@ -45,7 +45,7 @@ class MAMSViewArticles extends JViewLegacy
 		JToolBarHelper::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
 		JToolBarHelper::custom('articles.unfeatured', 'remove.png', 'remove_f2.png', 'COM_MAMS_TOOLBAR_DEFEATURE', true);
 		JToolBarHelper::divider();
-		if ($state->get('filter.published') == -2) {
+		if ($state->get('filter.state') == -2) {
 			JToolBarHelper::deleteList('', 'articles.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		} else  {

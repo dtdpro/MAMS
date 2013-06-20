@@ -45,6 +45,17 @@ abstract class MAMSHelper
 		}
 	}
 	
+	public static function addArtDDSubmenu($submenu,$arttitle) 
+	{
+		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTICLESRETURN'),'index.php?option=com_mams&view=articles',$submenu == 'articles');
+		JHtmlSidebar::addEntry('<span class="nav-header">'.$arttitle.'</span>');
+		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTAUTHS'),'index.php?option=com_mams&view=artauths',$submenu == 'artauths');
+		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTCATS'),'index.php?option=com_mams&view=artcats',$submenu == 'artcats');
+		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTMEDIAS'),'index.php?option=com_mams&view=artmeds',$submenu == 'artmeds');
+		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTDLOADS'),'index.php?option=com_mams&view=artdloads',$submenu == 'artdloads');
+		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTLINKS'),'index.php?option=com_mams&view=artlinks',$submenu == 'artlinks');
+	}
+	
 	static function getSections($type = "article")
 	{
 		$db = JFactory::getDbo();
@@ -65,13 +76,6 @@ abstract class MAMSHelper
 		return $options;
 	}
 
-	/**
-	 * Get configuration for component.
-	 *
-	 * @return object The current config parameters
-	 *
-	 * @since 1.00
-	 */
 	function getConfig() {
 		$menuConfig = JComponentHelper::getParams('com_mams');
 		$mamscfg = $menuConfig->toObject();

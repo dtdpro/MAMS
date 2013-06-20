@@ -65,21 +65,25 @@ CREATE TABLE IF NOT EXISTS #__mams_artmed (
   PRIMARY KEY (am_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS #__mams_authors (
-  auth_id bigint(20) NOT NULL AUTO_INCREMENT,
-  auth_sec int(11) NOT NULL,
-  auth_name varchar(255) NOT NULL,
-  auth_alias varchar(255) NOT NULL,
-  auth_credentials text NOT NULL,
-  auth_bio text NOT NULL,
-  auth_image varchar(255) NOT NULL,
-  auth_added timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  auth_modified datetime NOT NULL,
-  published int(11) NOT NULL,
-  access int(11) NOT NULL,
-  ordering int(11) NOT NULL,
-  PRIMARY KEY (auth_id)
+CREATE TABLE IF NOT EXISTS `#__mams_authors` (
+  `auth_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `auth_sec` int(11) NOT NULL,
+  `auth_fname` varchar(255) NOT NULL,
+  `auth_mi` varchar(5) NOT NULL,
+  `auth_lname` varchar(255) NOT NULL,
+  `auth_titles` varchar(255) NOT NULL,
+  `auth_alias` varchar(255) NOT NULL,
+  `auth_credentials` text NOT NULL,
+  `auth_bio` text NOT NULL,
+  `auth_image` varchar(255) NOT NULL,
+  `auth_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `auth_modified` datetime NOT NULL,
+  `published` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  PRIMARY KEY (`auth_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE IF NOT EXISTS #__mams_cats (
   cat_id int(11) NOT NULL AUTO_INCREMENT,

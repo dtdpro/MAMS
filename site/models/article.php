@@ -47,7 +47,7 @@ class MAMSModelArticle extends JModelLegacy
 		
 		//Get Authors
 		$qa=$db->getQuery(true);
-		$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_credentials,a.auth_sec');
+		$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_credentials,a.auth_sec');
 		$qa->from('#__mams_artauth as aa');
 		$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 		$qa->where('aa.published >= 1');
@@ -144,7 +144,7 @@ class MAMSModelArticle extends JModelLegacy
 			//Get Authors
 			foreach ($items as &$i) {
 				$qa=$db->getQuery(true);
-				$qa->select('a.auth_id,a.auth_name,a.auth_alias');
+				$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias');
 				$qa->from('#__mams_artauth as aa');
 				$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 				$qa->where('aa.published >= 1');
@@ -207,7 +207,7 @@ class MAMSModelArticle extends JModelLegacy
 			//Get Authors
 			foreach ($items as &$i) {
 				$qa=$db->getQuery(true);
-				$qa->select('a.auth_id,a.auth_name,a.auth_alias');
+				$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias');
 				$qa->from('#__mams_artauth as aa');
 				$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 				$qa->where('aa.published >= 1');

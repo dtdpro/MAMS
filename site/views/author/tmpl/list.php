@@ -21,7 +21,7 @@ if ($this->autlist) {
 							}
 							echo '<div class="mams-author-authname"><a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec.":".$f->sec_alias."&autid=".$f->auth_id.":".$f->auth_alias).'" ';
 							echo 'class="mams-article-autlink">';
-							echo $f->auth_name;
+							echo $f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "");
 							echo '</a></div>';
 							if ($this->params->get("show_cred",0) && $f->auth_credentials) echo '<div class="mams-author-authcred">'.$f->auth_credentials.'</div>';
 						if ($this->params->get("show_aimg",0) || $this->params->get("show_cred",0)) echo '</div>';

@@ -14,7 +14,8 @@ class MAMSModelAuths extends JModelList
 			$config['filter_fields'] = array(
 				'auth_added', 'a.auth_added',
 				'auth_modified', 'a.auth_modified',
-				'auth_name', 'a.auth_name',
+				'auth_fname', 'a.auth_fname',
+				'auth_lname', 'a.auth_lname',
 				'auth_sec', 'a.auth_sec',
 				'ordering', 'a.ordering',
 			);
@@ -27,8 +28,8 @@ class MAMSModelAuths extends JModelList
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
-		$this->setState('filter.published', $published);
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
 
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
@@ -78,7 +79,7 @@ class MAMSModelAuths extends JModelList
 		}
 		
 		// Filter by published state
-		$published = $this->getState('filter.published');
+		$published = $this->getState('filter.state');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		} else if ($published === '') {

@@ -8,10 +8,25 @@ jimport('joomla.application.component.modeladmin');
 
 class MAMSModelArtCat extends JModelAdmin
 {
-	protected function allowEdit($data = array(), $key = 'ac_id')
+protected function canDelete($record)
 	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_mams.artcat.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		if (!empty($record->aa_id))
+		{
+			if ($record->published != -2)
+			{
+				return;
+			}
+			$user = JFactory::getUser();
+	
+			return parent::canDelete($record);
+		}
+	}
+	
+	protected function canEditState($record)
+	{
+		$user = JFactory::getUser();
+	
+		return parent::canEditState($record);
 	}
 	
 	public function getTable($type = 'ArtCat', $prefix = 'MAMSTable', $config = array()) 
@@ -30,11 +45,6 @@ class MAMSModelArtCat extends JModelAdmin
 		return $form;
 	}
 	
-	public function getScript() 
-	{
-		return 'administrator/components/com_mams/models/forms/artcat.js';
-	}
-	
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
@@ -44,7 +54,7 @@ class MAMSModelArtCat extends JModelAdmin
 			$data = $this->getItem();
 			if ($this->getState('artcat.ac_id') == 0) {
 				$app = JFactory::getApplication();
-				$data->set('ac_art', JRequest::getInt('ac_art', $app->getUserState('com_mams.artcats.filter.article')));
+				$data->set('ac_art', JRequest::getInt('ac_art', $app->getUserState('com_mams.drilldowns.filter.article')));
 			}
 		}
 		return $data;
