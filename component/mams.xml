@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.1" method="upgrade">
+	<name>com_mams</name>
+	<creationDate>2012.01</creationDate>
+	<author>DtD Productions</author>
+	<authorEmail>mike@dtdpro.com</authorEmail>
+	<authorUrl>http://www.dtdpro.com</authorUrl>
+	<copyright>Copyright 2012-2013 DtD Productions</copyright>
+	<license>GPL v2</license>
+	<version>2.0.0</version>
+	<releaseDate>2013.06.12</releaseDate>
+	<releaseType>Update</releaseType>
+	<downloadUrl>http://www.dtdpro.com/</downloadUrl>
+	<description>COM_MAMS_DESC</description>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">sql/install.sql</file>
+		</sql>
+	</install>	
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates</schemapath>
+		</schemas>
+	</update>
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>mams.php</filename>
+		<filename>dl.php</filename>
+		<filename>postroll.php</filename>
+		<filename>router.php</filename>
+		<filename>controller.php</filename>
+		<filename>mediatrack.php</filename>
+		<filename>metadata.xml</filename>
+		<folder>models</folder>
+		<folder>views</folder>
+		<folder>helpers</folder>
+	</files>
+	<media destination="com_mams" folder="media">
+            <filename>index.html</filename>
+			<folder>mediaelementjs</folder>
+			<folder>vidplyr</folder>
+			<folder>scripts</folder>
+			<folder>images</folder>
+			<folder>templates</folder>
+    </media>
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB.com_mams.ini</language>
+	</languages>
+	<administration>
+		<!-- Administration Menu Section -->
+		<menu img="../media/com_mams/images/mams-16x16.png">COM_MAMS_MENU</menu>
+		<submenu>
+			<menu view="articles">COM_MAMS_SUBMENU_ARTICLES</menu>
+			<menu view="secs">COM_MAMS_SUBMENU_SECS</menu>
+			<menu view="cats">COM_MAMS_SUBMENU_CATS</menu>
+			<menu view="auths">COM_MAMS_SUBMENU_AUTHS</menu>
+			<menu view="links">COM_MAMS_SUBMENU_LINKS</menu>
+			<menu link="option=com_mams&amp;view=medias&amp;extension=com_mams">COM_MAMS_SUBMENU_MEDIAS</menu>
+			<menu link="option=com_mams&amp;view=dloads&amp;extension=com_mams">COM_MAMS_SUBMENU_DLOADS</menu>
+			<menu view="featuredmedia">COM_MAMS_SUBMENU_FEATMEDIAS</menu>
+			<menu view="featuredarticle">COM_MAMS_SUBMENU_FEATARTS</menu>
+			<menu view="stats">COM_MAMS_SUBMENU_STATS</menu>
+		</submenu>
+		<files folder="admin">
+			<filename>index.html</filename>
+			<filename>mams.php</filename>
+			<filename>controller.php</filename>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<folder>models</folder>
+			<folder>helpers</folder>
+			<folder>controllers</folder>
+			<folder>views</folder>
+			<folder>tables</folder>
+			<folder>sql</folder>		
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB.com_mams.ini</language>
+			<language tag="en-GB">language/en-GB.com_mams.sys.ini</language>
+		</languages>	
+	</administration>
+</extension>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="details">
+		<field
+			name="link_id"
+			type="text"
+			class="readonly" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC"
+			readonly="true"
+		/>
+		<field
+			name="published"
+			type="list"
+			id="published"
+			class="inputbox"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			size="1"
+			default="1"
+			filter="integer">
+			<option	value="1">JPUBLISHED</option>
+			<option	value="0">JUNPUBLISHED</option>
+			<option	value="2">JARCHIVED</option>
+			<option	value="-2">JTRASHED</option>
+		</field>
+		<field
+			name="access"
+			type="accesslevel"
+			id="access"
+			class="inputbox"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			default="1"
+			filter="integer"/>
+		<field
+			name="link_title"
+			type="text"
+			label="COM_MAMS_LINK_FIELD_TITLE_LABEL"
+			description="COM_MAMS_LINK_FIELD_TITLE_DESC"
+			size="60"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field
+			name="link_url"
+			type="url"
+			label="COM_MAMS_LINK_FIELD_URL_LABEL"
+			description="COM_MAMS_LINK_FIELD_URL_DESC"
+			size="60"
+			class="inputbox"
+			default=""
+			required="true"
+			filter="url"
+		/>
+		<field
+			name="link_target"
+			type="radio"
+			class="btn-group"
+			label="COM_MAMS_LINK_FIELD_TARGET_LABEL"
+			description="COM_MAMS_LINK_FIELD_TARGET_DESC"
+			default="_blank">
+			<option	value="_blank">New Page</option>
+			<option	value="_top">Current Page</option>
+		</field>
+
+	</fieldset>
+</form>
+
