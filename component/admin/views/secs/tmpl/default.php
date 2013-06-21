@@ -110,7 +110,7 @@ $db =& JFactory::getDBO();
 					<?php echo JText::_('COM_MAMS_SEC_HEADING_NUMITEMS'); ?>
 				</th>
 				<th width="1%">
-					<?php echo JText::_('COM_MAMS_SEC_HEADING_ID'); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_SEC_HEADING_ID','s.sec_id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		

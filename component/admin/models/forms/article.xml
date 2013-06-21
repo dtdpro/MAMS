@@ -108,7 +108,7 @@
 			class="inputbox"
 			filter="safehtml"
 			buttons="false"
-		/>
+		/>	
 		<field
 			name="art_thumb"
 			type="text"
@@ -117,13 +117,6 @@
 			size="70"
 			class="inputbox"
 			default=""
-		/>
-		<field
-			name="art_media"
-			type="ArticleMedias"
-			class="inputbox"
-			label="COM_MAMS_ARTMED_FIELD_MEDIA_LABEL"
-			description="COM_MAMS_ARTMED_FIELD_MEDIA_DESC"
 		/>
 		<field
 			name="art_show_related"

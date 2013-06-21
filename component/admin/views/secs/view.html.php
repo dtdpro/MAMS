@@ -59,6 +59,7 @@ class MAMSViewSecs extends JViewLegacy
 		return array(
 				's.ordering' => JText::_('JGRID_HEADING_ORDERING'),
 				's.published' => JText::_('JSTATUS'),
+				's.sec_id' => JText::_('JGRID_HEADING_ID'),
 				's.sec_type' => JText::_('COM_MAMS_SEC_HEADING_TYPE'),
 				's.sec_name' => JText::_('COM_MAMS_SEC_HEADING_NAME'),
 				's.access' => JText::_('JGRID_HEADING_ACCESS'),
