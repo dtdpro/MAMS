@@ -41,7 +41,40 @@ class MAMSModelArticle extends JModelAdmin
 		{
 			return false;
 		}
+		
 		return $form;
+	}
+	
+	public function getItem($pk = null)
+	{
+		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
+		$table = $this->getTable();
+	
+		if ($pk > 0)
+		{
+			// Attempt to load the row.
+			$return = $table->load($pk);
+	
+			// Check for a table object error.
+			if ($return === false && $table->getError())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+		}
+	
+		// Convert to the JObject before adding other data.
+		$properties = $table->getProperties(1);
+		$item = JArrayHelper::toObject($properties, 'JObject');
+	
+		if (property_exists($item, 'art_fielddata'))
+		{
+			$registry = new JRegistry;
+			$registry->loadString($item->art_fielddata);
+			$item->art_fielddata = $registry->toArray();
+		}
+	
+		return $item;
 	}
 	
 	protected function loadFormData() 
@@ -56,6 +89,45 @@ class MAMSModelArticle extends JModelAdmin
 			}
 		}
 		return $data;
+	}
+	
+	protected function getAdditionalFields() {
+		$db	= $this->getDbo();
+		$query	= $db->getQuery(true);
+		$query->select('*');
+		$query->from("#__mams_article_fieldgroups");
+		$query->where("group_id > 1");
+		$query->order("ordering asc");
+		$db->setQuery($query);
+		$groups = $db->loadObjectList();
+		foreach ($groups as &$g) {
+			$query = $db->getQuery(true);
+			$query->select('*');
+			$query->from("#__mams_article_fields");
+			$query->where("field_group = ".$g->group_id);
+			$query->order("ordering asc");
+			$db->setQuery($query);
+			$g->fields = $db->loadObjectList();
+		}
+		return $groups;
+	}
+	
+	public function getAdditionalForms($item) {
+		$groups = $this->getAdditionalFields();
+		foreach ($groups as &$g) {
+			$formxml='<?xml version="1.0" encoding="utf-8"?><form><fieldset name="'.$g->group_name.'">';
+			foreach ($g->fields as $f) {
+				switch ($f->field_type) {
+					case "textfield": $formxml .=  '<field name="'.$f->field_name.'" type="text" default="" label="'.$f->field_title.'" description="" />'; break;
+					case "textbox": $formxml .=  '<field name="'.$f->field_name.'" type="textarea" default="" label="'.$f->field_title.'" description="" filter="safehtml"/>'; break;
+					case "editor": $formxml .=  '<field name="'.$f->field_name.'" label ="'.$f->field_title.'" type="editor" filter="raw" />'; break;
+				}
+			}
+			$formxml.='</fieldset></form>';
+			$g->form = JForm::getInstance($g->group_name,$formxml, array('control' => 'jform[art_fielddata]'));
+			$g->form->bind($item->art_fielddata);
+		}
+		return $groups;
 	}
 	
 	public function featured(&$pks,$feat)

@@ -12,6 +12,18 @@ class MAMSTableArticle extends JTable
 		parent::__construct('#__mams_articles', 'art_id', $db);
 	}
 	
+	public function bind($array, $ignore = '')
+	{
+		if (isset($array['art_fielddata']) && is_array($array['art_fielddata']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($array['art_fielddata']);
+			$array['art_fielddata'] = (string) $registry;
+		}
+	
+		return parent::bind($array, $ignore);
+	}
+	
 	public function store($updateNulls = false)
 	{
 		$date	= JFactory::getDate();

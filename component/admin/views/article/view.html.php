@@ -18,6 +18,8 @@ class MAMSViewArticle extends JViewLegacy
 		$this->state = $this->get('State');
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
+		$model = $this->getModel();
+		$this->addfields = $model->getAdditionalForms($this->item);
 		
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
