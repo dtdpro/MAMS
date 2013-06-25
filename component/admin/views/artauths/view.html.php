@@ -54,6 +54,7 @@ class MAMSViewArtAuths extends JViewLegacy
 		JHtmlSidebar::setAction('index.php?option=com_mams&view=artauths');
 		
 		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
+		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_FIELD'),'filter_field',JHtml::_('select.options', MAMSHelper::getFields("auths"), 'value', 'text', $this->state->get('filter.sec')));
 		
 	}
 	

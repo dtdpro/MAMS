@@ -29,6 +29,13 @@
 			type="hidden"
 		/>
 		<field
+			name="aa_field"
+			type="AuthFields"
+			class="inputbox"
+			label="COM_MAMS_DRILLDOWN_FIELD_FIELD_LABEL"
+			description="COM_MAMS_DRILLDOWN_FIELD_FIELD_DESC"
+		/>
+		<field
 			name="aa_auth"
 			type="ArticleAuths"
 			class="inputbox"

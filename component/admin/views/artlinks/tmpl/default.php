@@ -80,11 +80,14 @@ $sortFields = $this->getSortFields();
 				<th width="1%" class="nowrap center hidden-phone">
 					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 				</th>
-				<th width="20">
+				<th width="1%">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>			
 				<th width="1%" style="min-width:55px" class="nowrap center">
 					<?php echo JText::_('JSTATUS'); ?>
+				</th>			
+				<th width="15%">
+					<?php echo JText::_('COM_MAMS_ARTLINK_HEADING_FIELD'); ?>
 				</th>			
 				<th>
 					<?php echo JText::_('COM_MAMS_ARTLINK_HEADING_NAME'); ?>
@@ -96,7 +99,7 @@ $sortFields = $this->getSortFields();
 		<tfoot><tr><td colspan="5"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
-			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="artlinks">
+			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->al_field; ?>">
 				<td class="order nowrap center hidden-phone">
 					<?php 
 					$disableClassName = '';
@@ -113,6 +116,7 @@ $sortFields = $this->getSortFields();
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->al_id); ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'artlinks.', true);?></td>
+				<td><?php echo $this->escape($item->field_title); ?></td>
 				<td>
 					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=artlink.edit&ad_id='.(int) $item->al_id); ?>">
 					<?php echo $this->escape($item->link_title)." - ".$this->escape($item->link_url); ?></a>

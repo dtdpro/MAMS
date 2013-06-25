@@ -29,6 +29,13 @@
 			type="hidden"
 		/>
 		<field
+			name="ad_field"
+			type="DLoadFields"
+			class="inputbox"
+			label="COM_MAMS_DRILLDOWN_FIELD_FIELD_LABEL"
+			description="COM_MAMS_DRILLDOWN_FIELD_FIELD_DESC"
+		/>
+		<field
 			name="ad_dload"
 			type="ArticleDloads"
 			class="inputbox"

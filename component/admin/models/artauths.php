@@ -25,6 +25,9 @@ class MAMSModelArtAuths extends JModelList
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
+		
+		$field = $this->getUserStateFromRequest($this->context.'.filter.field', 'filter_field', '', 'string');
+		$this->setState('filter.state', $field);
 
 		$artId = $app->getUserState('com_mams.drilldowns.filter.article', 0);
 		$this->setState('filter.article', $artId);
@@ -49,11 +52,19 @@ class MAMSModelArtAuths extends JModelList
 		// From the table
 		$query->from('#__mams_artauth as a');
 		
+		// Join over the fields.
+		$query->select('f.field_title');
+		$query->join('LEFT', '#__mams_article_fields AS f ON f.field_id = a.aa_field');
+		
 		// Filter by article.
 		$artId = $this->getState('filter.article');
 		if (is_numeric($artId)) {
 			$query->where('a.aa_art = '.(int) $artId);
 		}
+		
+		//Filter by Field
+		$field = $this->getState('filter.field');
+		if (is_numeric($field))	$query->where('a.aa_field = '.(int) $field);
 		
 		// Filter by published state
 		$published = $this->getState('filter.state');
@@ -67,10 +78,7 @@ class MAMSModelArtAuths extends JModelList
 		$query->select('CONCAT(auth.auth_fname,IF(auth.auth_mi != "",CONCAT(" ",auth.auth_mi),"")," ",auth.auth_lname,IF(auth.auth_titles != "",CONCAT(", ",auth.auth_titles),"")) as auth_name');
 		$query->join('LEFT', '#__mams_authors AS auth ON auth.auth_id = a.aa_auth');
 		
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
-		
-		$query->order($db->escape($orderCol.' '.$orderDirn));
+		$query->order($db->escape('f.ordering asc, a.ordering asc'));
 				
 		return $query;
 	}

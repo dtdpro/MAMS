@@ -36,3 +36,4 @@ class JFormFieldArticleAuths extends JFormField
 		return implode($html);
 	}
 }
+

@@ -54,6 +54,7 @@ class MAMSModelArtMed extends JModelAdmin
 			if ($this->getState('artmed.am_id') == 0) {
 				$app = JFactory::getApplication();
 				$data->set('am_art', JRequest::getInt('am_art', $app->getUserState('com_mams.drilldowns.filter.article')));
+				$data->set('am_field', JRequest::getInt('am_field', $app->getUserState('com_mams.artmeds.filter.field')));
 			}
 		}
 		return $data;
@@ -71,7 +72,7 @@ class MAMSModelArtMed extends JModelAdmin
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__mams_artmed WHERE am_art = "'.$table->am_art.'"');
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_artmed WHERE am_field = "'.$table->am_field.'" && am_art = "'.$table->am_art.'"');
 				$max = $db->loadResult();
 				
 				$table->ordering = $max+1;
@@ -85,7 +86,7 @@ class MAMSModelArtMed extends JModelAdmin
 	protected function getReorderConditions($table)
 	{
 		$condition = array();
-		$condition[] = 'am_art = '.(int) $table->am_art;
+		$condition[] = 'am_field = "'.$table->am_field.'" && am_art = '.(int) $table->am_art;
 		return $condition;
 	}
 	

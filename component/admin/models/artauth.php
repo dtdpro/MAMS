@@ -54,6 +54,7 @@ class MAMSModelArtAuth extends JModelAdmin
 			if ($this->getState('artauth.aa_id') == 0) {
 				$app = JFactory::getApplication();
 				$data->set('aa_art', JRequest::getInt('aa_art', $app->getUserState('com_mams.drilldowns.filter.article')));
+				$data->set('aa_field', JRequest::getInt('aa_field', $app->getUserState('com_mams.artauths.filter.field')));
 			}
 		}
 		return $data;
@@ -71,7 +72,7 @@ class MAMSModelArtAuth extends JModelAdmin
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__mams_artauth WHERE aa_art = "'.$table->aa_art.'"');
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_artauth WHERE aa_field = "'.$table->aa_field.'" && aa_art = "'.$table->aa_art.'"');
 				$max = $db->loadResult();
 				
 				$table->ordering = $max+1;
@@ -85,7 +86,7 @@ class MAMSModelArtAuth extends JModelAdmin
 	protected function getReorderConditions($table)
 	{
 		$condition = array();
-		$condition[] = 'aa_art = '.(int) $table->aa_art;
+		$condition[] = 'aa_field = "'.$table->aa_field.'" && aa_art = '.(int) $table->aa_art;
 		return $condition;
 	}
 	

@@ -116,6 +116,7 @@ class MAMSModelArticle extends JModelAdmin
 		$groups = $this->getAdditionalFields();
 		foreach ($groups as &$g) {
 			$formxml='<?xml version="1.0" encoding="utf-8"?><form><fieldset name="'.$g->group_name.'">';
+			$formxml.='<field name="show_'.$g->group_name.'" type="radio" label="Show '.$g->group_title.'" class="btn-group" default="0"><option value="1">Yes</option><option value="0">No</option></field>';
 			foreach ($g->fields as $f) {
 				switch ($f->field_type) {
 					case "textfield": $formxml .=  '<field name="'.$f->field_name.'" type="text" default="" label="'.$f->field_title.'" description="" />'; break;

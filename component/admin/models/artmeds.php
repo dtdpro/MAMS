@@ -25,6 +25,9 @@ class MAMSModelArtMeds extends JModelList
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
+		
+		$field = $this->getUserStateFromRequest($this->context.'.filter.field', 'filter_field', '', 'string');
+		$this->setState('filter.state', $field);
 
 		$artId = $app->getUserState('com_mams.drilldowns.filter.article', 0);
 		$this->setState('filter.article', $artId);
@@ -54,6 +57,14 @@ class MAMSModelArtMeds extends JModelList
 		if (is_numeric($artId)) {
 			$query->where('a.am_art = '.(int) $artId);
 		}
+		
+		// Join over the fields.
+		$query->select('f.field_title');
+		$query->join('LEFT', '#__mams_article_fields AS f ON f.field_id = a.am_field');
+		
+		//Filter by Field
+		$field = $this->getState('filter.field');
+		if (is_numeric($field))	$query->where('a.am_field = '.(int) $field);
 
 		// Join over the authors.
 		$query->select('med.med_inttitle');
@@ -67,10 +78,7 @@ class MAMSModelArtMeds extends JModelList
 			$query->where('(a.published IN (0, 1))');
 		}
 		
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
-		
-		$query->order($db->escape($orderCol.' '.$orderDirn));
+		$query->order($db->escape('f.ordering asc, a.ordering asc'));
 				
 		return $query;
 	}

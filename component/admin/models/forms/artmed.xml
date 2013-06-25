@@ -29,6 +29,13 @@
 			type="hidden"
 		/>
 		<field
+			name="am_field"
+			type="MediaFields"
+			class="inputbox"
+			label="COM_MAMS_DRILLDOWN_FIELD_FIELD_LABEL"
+			description="COM_MAMS_DRILLDOWN_FIELD_FIELD_DESC"
+		/>
+		<field
 			name="am_media"
 			type="ArticleMedias"
 			class="inputbox"

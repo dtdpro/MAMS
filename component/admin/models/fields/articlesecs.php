@@ -30,7 +30,6 @@ class JFormFieldArticleSecs extends JFormField
 				' ORDER BY sec_name';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
-		$html[] = '<option value="">'.JText::_('COM_MAMS_SELECT_SEC').'</option>';
 		$html[] = JHtml::_('select.options',$db->loadObjectList(),"value","text",$this->value);
 		$html[] = '</select>';		
 

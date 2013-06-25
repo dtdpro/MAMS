@@ -17,6 +17,8 @@ abstract class MAMSHelper
 			JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_MEDIAS'),'index.php?option=com_mams&view=medias&extension=com_mams',$submenu == 'medias');
 			JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_FEATMEDIAS'),'index.php?option=com_mams&view=featuredmedia',$submenu == 'featuredmedia');
 			JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_FEATARTS'),'index.php?option=com_mams&view=featuredarticle',$submenu == 'featuredarticle');
+			JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_FIELDS'),'index.php?option=com_mams&view=fields',$submenu == 'fields');
+			JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_FIELDGROUPS'),'index.php?option=com_mams&view=fieldgroups',$submenu == 'fieldgroups');
 			JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_STATS'),'index.php?option=com_mams&view=stats',$submenu == 'stats');
 		} else {
 			// Try to find the component helper.
@@ -33,8 +35,6 @@ abstract class MAMSHelper
 			
 					if (is_callable(array($cName, 'addSubmenu'))) {
 						$lang = JFactory::getLanguage();
-						// loading language file from the administrator/language directory then
-						// loading language file from the administrator/components/*extension*/language directory
 						$lang->load($extension, JPATH_BASE, null, false, false)
 						||	$lang->load($extension, JPath::clean(JPATH_ADMINISTRATOR.'/components/'.$extension), null, false, false)
 						||	$lang->load($extension, JPATH_BASE, $lang->getDefault(), false, false)
@@ -50,8 +50,8 @@ abstract class MAMSHelper
 	{
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTICLESRETURN'),'index.php?option=com_mams&view=articles',$submenu == 'articles');
 		JHtmlSidebar::addEntry('<span class="nav-header">'.$arttitle.'</span>');
-		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTAUTHS'),'index.php?option=com_mams&view=artauths',$submenu == 'artauths');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTCATS'),'index.php?option=com_mams&view=artcats',$submenu == 'artcats');
+		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTAUTHS'),'index.php?option=com_mams&view=artauths',$submenu == 'artauths');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTMEDIAS'),'index.php?option=com_mams&view=artmeds',$submenu == 'artmeds');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTDLOADS'),'index.php?option=com_mams&view=artdloads',$submenu == 'artdloads');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTLINKS'),'index.php?option=com_mams&view=artlinks',$submenu == 'artlinks');
@@ -64,6 +64,26 @@ abstract class MAMSHelper
 			'SELECT sec_id AS value, sec_name AS text' .
 			' FROM #__mams_secs WHERE sec_type = "'.$type.'" ' .
 			' ORDER BY sec_name'
+		);
+		$options = $db->loadObjectList();
+		
+		// Check for a database error.
+		if ($db->getErrorNum())
+		{
+		JError::raiseNotice(500, $db->getErrorMsg());
+		return null;
+		}
+		
+		return $options;
+	}
+	
+	static function getFields($type = "auths")
+	{
+		$db = JFactory::getDbo();
+		$db->setQuery(
+			'SELECT field_id AS value, field_title AS text' .
+			' FROM #__mams_article_fields WHERE field_type = "'.$type.'" ' .
+			' ORDER BY ordering'
 		);
 		$options = $db->loadObjectList();
 		
