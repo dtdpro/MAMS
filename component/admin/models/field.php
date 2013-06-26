@@ -10,7 +10,9 @@ class MAMSModelField extends JModelAdmin
 {
 	protected function canDelete($record)
 	{
-		if (!empty($record->sec_id))
+		if ($record->field_id < 10) return false;
+		
+		if (!empty($record->field_id))
 		{
 			if ($record->published != -2)
 			{
@@ -24,6 +26,8 @@ class MAMSModelField extends JModelAdmin
 	
 	protected function canEditState($record)
 	{
+		if ($record->field_id < 10) return false;
+		
 		$user = JFactory::getUser();
 	
 		return parent::canEditState($record);
@@ -120,5 +124,113 @@ class MAMSModelField extends JModelAdmin
 		else {
 			// Set the values
 		}
+	}
+	
+	public function reorder($pks, $delta = 0)
+	{
+		$table = $this->getTable();
+		$pks = (array) $pks;
+		$result = true;
+	
+		$allowed = true;
+	
+		foreach ($pks as $i => $pk)
+		{
+			$table->reset();
+	
+			if ($table->load($pk) && $this->checkout($pk))
+			{
+				$where = array();
+				$where = $this->getReorderConditions($table);
+	
+				if (!$table->move($delta, $where))
+				{
+					$this->setError($table->getError());
+					unset($pks[$i]);
+					$result = false;
+				}
+	
+				$this->checkin($pk);
+			}
+			else
+			{
+				$this->setError($table->getError());
+				unset($pks[$i]);
+				$result = false;
+			}
+		}
+	
+		if ($allowed === false && empty($pks))
+		{
+			$result = null;
+		}
+	
+		// Clear the component's cache
+		if ($result == true)
+		{
+			$this->cleanCache();
+		}
+	
+		return $result;
+	}
+	
+	public function saveorder($pks = null, $order = null)
+	{
+		$table = $this->getTable();
+		$conditions = array();
+	
+		if (empty($pks))
+		{
+			return JError::raiseWarning(500, JText::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'));
+		}
+	
+		// Update ordering values
+		foreach ($pks as $i => $pk)
+		{
+			$table->load((int) $pk);
+	
+			// Access checks.
+			if ($table->ordering != $order[$i])
+			{
+				$table->ordering = $order[$i];
+	
+				if (!$table->store())
+				{
+					$this->setError($table->getError());
+					return false;
+				}
+	
+				// Remember to reorder within position and client_id
+				$condition = $this->getReorderConditions($table);
+				$found = false;
+	
+				foreach ($conditions as $cond)
+				{
+					if ($cond[1] == $condition)
+					{
+						$found = true;
+						break;
+					}
+				}
+	
+				if (!$found)
+				{
+					$key = $table->getKeyName();
+					$conditions[] = array($table->$key, $condition);
+				}
+			}
+		}
+		
+		// Execute reorder for each category.
+		foreach ($conditions as $cond)
+		{
+			$table->load($cond[0]);
+			$table->reorder($cond[1]);
+		}
+		
+		// Clear the component's cache
+		$this->cleanCache();
+		
+		return true;
 	}
 }

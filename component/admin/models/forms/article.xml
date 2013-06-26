@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="accessibility">
+	<fieldset name="details">
 		<field
 			name="art_id"
 			type="text"
@@ -10,9 +10,26 @@
 			readonly="true"
 		/>
 		<field
-			name="published"
+			name="art_title"
+			type="text"
+			label="COM_MAMS_ARTICLE_FIELD_TITLE_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_TITLE_DESC"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field
+			name="art_sec"
+			type="ArticleSecs"
+			class="inputbox"
+			label="COM_MAMS_ARTICLE_FIELD_SEC_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_SEC_DESC"
+			required="true"
+		/>
+		<field
+			name="state"
 			type="list"
-			id="published"
+			id="state"
 			class="inputbox"
 			label="JSTATUS"
 			description="JFIELD_PUBLISHED_DESC"
@@ -49,17 +66,21 @@
 			label="JFIELD_ORDERING_LABEL"
 			description="JFIELD_ORDERING_DESC"
 		/>
-		
-	</fieldset>
-	<fieldset name="info">
 		<field
-			name="art_title"
-			type="text"
-			label="COM_MAMS_ARTICLE_FIELD_TITLE_LABEL"
-			description="COM_MAMS_ARTICLE_FIELD_TITLE_DESC"
-			class="inputbox"
-			required="true"
-			default=""
+			name="art_publish_up" 
+			type="calendar"
+			label="COM_MAMS_ARTICLE_FIELD_PUBLISH_UP_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_PUBLISH_UP_DESC"
+			format="%Y-%m-%d"
+			required="false"
+		/>
+		<field
+			name="art_publish_down" 
+			type="calendar"
+			label="COM_MAMS_ARTICLE_FIELD_PUBLISH_DOWN_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_PUBLISH_DOWN_DESC"
+			format="%Y-%m-%d"
+			required="false"
 		/>
 		<field
 			name="art_alias"
@@ -70,21 +91,15 @@
 			default=""
 		/>
 		<field
-			name="art_sec"
-			type="ArticleSecs"
+			name="art_thumb"
+			type="text"
+			label="COM_MAMS_ARTICLE_FIELD_THUMB_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_THUMB_DESC"
+			size="70"
 			class="inputbox"
-			label="COM_MAMS_ARTICLE_FIELD_SEC_LABEL"
-			description="COM_MAMS_ARTICLE_FIELD_SEC_DESC"
-			required="true"
+			default=""
 		/>
-		<field
-			name="art_published" 
-			type="calendar"
-			label="COM_MAMS_ARTICLE_FIELD_PUBLISHED_LABEL"
-			description="COM_MAMS_ARTICLE_FIELD_PUBLISHED_DESC"
-			format="%Y-%m-%d"
-			required="true"
-		/>
+		
 		<field
 			name="art_desc"
 			type="textarea"
@@ -96,43 +111,7 @@
 			filter="safehtml"
 			buttons="false"
 		/>
-	</fieldset>
-	<fieldset name="content">
-		<field
-			name="art_keywords"
-			type="textarea"
-			label="COM_MAMS_ARTICLE_FIELD_KEYWORDS_LABEL"
-			description="COM_MAMS_ARTICLE_FIELD_KEYWORDS_DESC"
-			rows="4"
-			cols="70"
-			class="inputbox"
-			filter="safehtml"
-			buttons="false"
-		/>	
-		<field
-			name="art_thumb"
-			type="text"
-			label="COM_MAMS_ARTICLE_FIELD_THUMB_LABEL"
-			description="COM_MAMS_ARTICLE_FIELD_THUMB_DESC"
-			size="70"
-			class="inputbox"
-			default=""
-		/>
-		<field
-			name="art_show_related"
-			type="radio"
-			label="COM_MAMS_ARTICLE_FIELD_SHOWRELATED_LABEL"
-			description="COM_MAMS_ARTICLE_FIELD_SHOWRELATED_DESC"
-			class="btn-group"
-			default="1">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</field>
-	</fieldset>
-	<fieldset name="hidden">
-		<field name="art_fielddata" type="hidden"></field>
-	</fieldset>
-	<fieldset name="body">
+		
 		<field
 			name="art_content"
 			type="editor"
@@ -142,6 +121,93 @@
 			required="false"
 			filter="raw"
 		/>
+		<field name="metakey" type="textarea"
+			label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC"
+			class="inputbox" rows="3" cols="30" labelclass="control-label" 
+		/>
+		
+		<field name="metadesc" type="textarea"
+			label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC"
+			class="inputbox" rows="3" cols="30" labelclass="control-label" 
+		/>
+		
+		<field name="art_fielddata[]" type="hidden"></field>
+		
+		<field name="art_added" type="calendar" label="COM_MAMS_ARTICLE_FIELD_ADDED_LABEL"
+			description="COM_MAMS_ARTICLE_FIELD_ADDED_DESC" class="inputbox" size="22"
+			format="%Y-%m-%d %H:%M:%S" filter="user_utc" labelclass="control-label" 
+		/>
+			
+		<field name="art_added_by" type="user"
+			label="COM_MAMS_ARTICLE_FIELD_ADDED_BY_LABEL" description="COM_MAMS_ARTICLE_FIELD_ADDED_BY_DESC" labelclass="control-label" 
+		/>
+
+		<field name="art_modified" type="calendar" class="readonly"
+			label="JGLOBAL_FIELD_MODIFIED_LABEL" 
+			size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc" labelclass="control-label" 
+		/>
+
+		<field name="art_modified_by" type="user"
+			label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+			class="readonly"
+			readonly="true"
+			filter="unset"
+			labelclass="control-label"
+		/>
+		
+		<field name="checked_out" type="hidden" filter="unset" />
+
+		<field name="checked_out_time" type="hidden" filter="unset" />
+		
 	</fieldset>
+	<fields name="metadata">
+		<fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+			<field name="tags" type="tag"
+			label="JTAG" description="JTAG_DESC"
+			class="inputbox" multiple="true"
+			>
+			</field>
+			
+			<field name="robots"
+			type="list"
+			label="JFIELD_METADATA_ROBOTS_LABEL"
+			description="JFIELD_METADATA_ROBOTS_DESC"
+			>
+			<option value="">JGLOBAL_USE_GLOBAL</option>
+			<option value="index, follow">JGLOBAL_INDEX_FOLLOW</option>
+			<option value="noindex, follow">JGLOBAL_NOINDEX_FOLLOW</option>
+			<option value="index, nofollow">JGLOBAL_INDEX_NOFOLLOW</option>
+			<option value="noindex, nofollow">JGLOBAL_NOINDEX_NOFOLLOW</option>
+			</field>
+			
+			<field name="rights" type="text"
+			label="JFIELD_META_RIGHTS_LABEL" description="JFIELD_META_RIGHTS_DESC"
+			required="false" filter="string" cols="30" rows="2" />
+		</fieldset>
+	</fields>
+	<fields name="params">
+		<fieldset name="jbasic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="show_pubinfo" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBINFO_DESC" label="COM_MAMS_FIELD_SHOW_PUBINFO_LABEL" default="">	
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_title2" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_TITLE2_DESC" label="COM_MAMS_FIELD_SHOW_TITLE2_LABEL" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_pubdate" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBDATE_DESC" label="COM_MAMS_FIELD_SHOW_PUBDATE_LABEL" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_related" type="radio" label="COM_MAMS_FIELD_SHOW_RELATED_LABEL" description="COM_MAMS_FIELD_SHOW_RELATED_DESC" class="btn-group" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fieldset>
+	</fields>
 </form>
 

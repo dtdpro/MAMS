@@ -15,11 +15,12 @@ class MAMSModelArticles extends JModelList
 				'art_id', 'a.art_id',
 				'art_added', 'a.art_added',
 				'art_modified', 'a.art_modified',
-				'art_published', 'a.art_published',
+				'art_publish_up', 'a.art_publish_up',
+				'art_publish_down', 'a.art_publish_down',
 				'art_title', 'a.art_title',
 				'art_hits', 'a.art_hits',
 				'ordering', 'a.ordering',
-				'published', 'a.published',
+				'state', 'a.state',
 				'access', 'a.access',
 			);
 		}
@@ -44,7 +45,7 @@ class MAMSModelArticles extends JModelList
 		$this->setState('filter.search', $search);
 		
 		// List state information.
-		parent::populateState('a.art_published', 'desc');
+		parent::populateState('a.art_publish_up', 'desc');
 	}
 	
 	protected function getStoreId($id = '')
@@ -52,7 +53,7 @@ class MAMSModelArticles extends JModelList
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.access');
-		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.state');
 		$id .= ':' . $this->getState('filter.sec');
 	
 		return parent::getStoreId($id);
@@ -98,9 +99,9 @@ class MAMSModelArticles extends JModelList
 		// Filter by published state
 		$published = $this->getState('filter.state');
 		if (is_numeric($published)) {
-			$query->where('a.published = '.(int) $published);
+			$query->where('a.state = '.(int) $published);
 		} else if ($published === '') {
-			$query->where('(a.published IN (0, 1))');
+			$query->where('(a.state IN (0, 1))');
 		}
 		
 		// Filter by search in title
@@ -118,9 +119,9 @@ class MAMSModelArticles extends JModelList
 		$orderDirn	= $this->state->get('list.direction');
 		
 		if ($orderCol == 'a.ordering') {
-			$query->order($db->escape('a.art_published '.$orderDirn.', s.ordering '.$orderDirn.', a.ordering '.$orderDirn));
-		} else if ($orderCol == 'a.art_published') {
-			$query->order($db->escape('a.art_published '.$orderDirn.', s.ordering ASC, a.ordering ASC'));
+			$query->order($db->escape('a.art_publish_up '.$orderDirn.', s.ordering '.$orderDirn.', a.ordering '.$orderDirn));
+		} else if ($orderCol == 'a.art_publish_up') {
+			$query->order($db->escape('a.art_publish_up '.$orderDirn.', s.ordering ASC, a.ordering ASC'));
 		} else{
 			$query->order($db->escape($orderCol.' '.$orderDirn));
 		}

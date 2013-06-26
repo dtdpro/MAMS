@@ -24,7 +24,7 @@ class JFormFieldAuthors extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 
 		// Build the query for the ordering list.
-		$query = 'SELECT CONCAT(auth_id,":",auth_alias) AS value, auth_name AS text' .
+		$query = 'SELECT CONCAT(auth_id,":",auth_alias) AS value, CONCAT(auth.auth_fname,IF(auth.auth_mi != "",CONCAT(" ",auth.auth_mi),"")," ",auth.auth_lname,IF(auth.auth_titles != "",CONCAT(", ",auth.auth_titles),""))   AS text' .
 				' FROM #__mams_authors' .
 				' ORDER BY auth_name';
 		$db->setQuery($query);

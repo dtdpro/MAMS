@@ -109,7 +109,10 @@ $db =& JFactory::getDBO();
 
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->field_id); ?></td>
-				<td class="center"><?php if ($item->field_id >= 10) echo JHtml::_('jgrid.published', $item->published, $i, 'fields.', true);?></td>
+				<td class="center"><?php 
+					if ($item->field_id >= 10) echo JHtml::_('jgrid.published', $item->published, $i, 'fields.', true);
+					else echo '<a class="btn btn-micro disabled jgrid"  title="Protected extension"><i class="icon-lock"></i></a>';
+				?></td>
 				<td><?php 
 					echo $this->escape($item->group_title);
 				?></td>
@@ -129,6 +132,8 @@ $db =& JFactory::getDBO();
 						case "dloads": echo "Downloads"; break;
 						case "media": echo "Media"; break;
 						case "links": echo "Links"; break;
+						case "pubinfo": echo "Publish Info"; break;
+						case "related": echo "Related Items"; break;
 					}
 				?></td>
 				<td class="small hidden-phone"><?php echo $item->access_level; ?></td>

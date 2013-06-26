@@ -11,7 +11,7 @@ class MAMSModelArticle extends JModelAdmin
 	{
 		if (!empty($record->art_id))
 		{
-			if ($record->published != -2)
+			if ($record->state != -2)
 			{
 				return;
 			}
@@ -73,6 +73,19 @@ class MAMSModelArticle extends JModelAdmin
 			$registry->loadString($item->art_fielddata);
 			$item->art_fielddata = $registry->toArray();
 		}
+		
+		// Convert the metadata field to an array.
+		$registry = new JRegistry;
+		$registry->loadString($item->metadata);
+		$item->metadata = $registry->toArray();
+		
+		//Tags
+		if (!empty($item->id))
+		{
+			$item->tags = new JHelperTags;
+			$item->tags->getTagIds($item->id, 'com_mams.article');
+			$item->metadata['tags'] = $item->tags;
+		}
 	
 		return $item;
 	}
@@ -80,12 +93,13 @@ class MAMSModelArticle extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_mams.edit.article.data', array());
+		$app = JFactory::getApplication();
+		$data = $app->getUserState('com_mams.edit.article.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
-			if ($this->getState('article.art_id') == 0) {
-				
+			if ($data->art_id == 0) {
+				$data->set('art_sec', $app->input->getInt('art_sec', $app->getUserState('com_mams.articles.filter.sec')));
 			}
 		}
 		return $data;
@@ -311,14 +325,14 @@ class MAMSModelArticle extends JModelAdmin
 	protected function prepareTable(&$table)
 	{
 		if (empty($table->art_id)) {
-			$table->reorder('art_sec = "'.$table->art_sec.'" && art_published = "'.$table->art_published.'"');
+			$table->reorder('art_sec = "'.$table->art_sec.'" && art_publish_up = "'.$table->art_publish_up.'"');
 		}
 	}
 
 	protected function getReorderConditions($table)
 	{
 		$condition = array();
-		$condition[] = 'art_sec = '.$table->art_sec.' && art_published = '.$table->art_published;
+		$condition[] = 'art_sec = '.$table->art_sec.' && art_publish_up = '.$table->art_publish_up;
 		return $condition;
 	}
 	

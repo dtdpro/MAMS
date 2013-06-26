@@ -18,17 +18,47 @@ class MAMSViewArticle extends JViewLegacy
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
 		$dispatcher	= JDispatcher::getInstance();
-		$this->params = $app->getParams();
+		
+
 		
 		$model =& $this->getModel();
 		$art=JRequest::getInt('artid',0);
 		$this->article=$model->getArticle($art);
 		
 		if ($this->article) {
+			$this->params = $this->article->params;
+			
+			//Set Metadata Info
+			if ($this->article->metadesc) {
+				$this->document->setDescription($this->article->metadesc);
+			} elseif (!$this->article->metadesc && $this->params->get('menu-meta_description')) {
+				$this->document->setDescription($this->params->get('menu-meta_description'));
+			}
+			
+			if ($this->article->metakey) {
+				$this->document->setMetadata('keywords', $this->article->metakey);
+			} elseif (!$this->article->metakey && $this->params->get('menu-meta_keywords')) {
+				$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+			}
+			
+			if ($this->params->get('robots')) {
+				$this->document->setMetadata('robots', $this->params->get('robots'));
+			}
+			
+			$mdata = $this->article->metadata->toArray();
+			foreach ($mdata as $k => $v) {
+				if ($v)	$this->document->setMetadata($k, $v);
+			}
+			
+			if ($this->article->auts) {	
+				$a = $this->article->auts[0];
+				$this->document->setMetaData('author', $a->auth_fname.(($a->auth_mi) ? " ".$a->auth_mi : "")." ".$a->auth_lname.(($a->auth_titles) ? ", ".$a->auth_titles : ""));
+			}
+			
 			if (in_array($this->article->access,$user->getAuthorisedViewLevels())) {
 				$this->document->setTitle($this->article->art_title);
 				MAMSHelper::trackViewed($art,'article');
-				if ($this->article->art_show_related) {
+				if ($this->params->get('show_related',1)) {
 					$this->relatedbycat=$model->getRelatedByCat($art,$this->article->cats,$this->article->sec_id);
 					$this->relatedbyaut=$model->getRelatedByAut($art,$this->article->auts,$this->article->sec_id);
 				}

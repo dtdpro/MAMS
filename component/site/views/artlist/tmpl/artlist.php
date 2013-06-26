@@ -39,7 +39,7 @@ foreach ($this->articles as $a) {
 						//Pub Date
 						if ($this->params->get('show_pubdate',1)) {
 							echo ' published on <strong>';
-							echo date("F j, Y",strtotime($a->art_published));
+							echo date("F j, Y",strtotime($a->art_publish_up));
 							echo '</strong>';
 						}
 						

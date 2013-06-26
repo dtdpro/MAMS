@@ -64,10 +64,10 @@ class MAMSModelAuthor extends JModelLegacy
 		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id IN ('.implode(",",$pubedids).')');
-		$query->where('a.published >= 1');
+		$query->where('a.state >= 1');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
-		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-		$query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC');
+		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+		$query->order('a.art_publish_up DESC, s.ordering ASC, a.ordering ASC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 		

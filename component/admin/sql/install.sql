@@ -1,68 +1,117 @@
-CREATE TABLE IF NOT EXISTS #__mams_artauth (
-  aa_id int(11) NOT NULL AUTO_INCREMENT,
-  aa_art int(11) NOT NULL,
-  aa_auth int(11) NOT NULL,
-  ordering int(11) NOT NULL,
-  published int(11) NOT NULL,
-  PRIMARY KEY (aa_id)
+CREATE TABLE IF NOT EXISTS `#__mams_artauth` (
+  `aa_id` int(11) NOT NULL AUTO_INCREMENT,
+  `aa_field` int(11) NOT NULL DEFAULT '5',
+  `aa_art` int(11) NOT NULL,
+  `aa_auth` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  PRIMARY KEY (`aa_id`),
+  KEY `aa_field` (`aa_field`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS #__mams_artcat (
-  ac_id int(11) NOT NULL AUTO_INCREMENT,
-  ac_art int(11) NOT NULL,
-  ac_cat int(11) NOT NULL,
-  ordering int(11) NOT NULL,
-  published int(11) NOT NULL,
-  PRIMARY KEY (ac_id)
+CREATE TABLE IF NOT EXISTS `#__mams_artcat` (
+  `ac_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ac_art` int(11) NOT NULL,
+  `ac_cat` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  PRIMARY KEY (`ac_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS #__mams_artdl (
-  ad_id int(11) NOT NULL AUTO_INCREMENT,
-  ad_dload int(11) NOT NULL,
-  ad_art int(11) NOT NULL,
-  ordering int(11) NOT NULL,
-  published int(11) NOT NULL,
-  PRIMARY KEY (ad_id)
+CREATE TABLE IF NOT EXISTS `#__mams_artdl` (
+  `ad_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ad_field` int(11) NOT NULL DEFAULT '7',
+  `ad_dload` int(11) NOT NULL,
+  `ad_art` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  PRIMARY KEY (`ad_id`),
+  KEY `ad_field` (`ad_field`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS #__mams_articles (
-  art_id bigint(20) NOT NULL AUTO_INCREMENT,
-  art_sec int(11) NOT NULL,
-  art_title varchar(255) NOT NULL,
-  art_alias varchar(255) NOT NULL,
-  art_thumb varchar(255) NOT NULL,
-  art_desc text NOT NULL,
-  art_keywords text NOT NULL,
-  art_content text NOT NULL,
-  art_added timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  art_published date NOT NULL,
-  art_modified datetime NOT NULL,
-  art_hits int(11) NOT NULL,
-  art_show_related tinyint(1) NOT NULL DEFAULT '1',
-  access int(11) NOT NULL,
-  feataccess int(11) NOT NULL,
-  published int(11) NOT NULL,
-  ordering int(11) NOT NULL,
-  PRIMARY KEY (art_id),
-  KEY art_title (art_title)
+CREATE TABLE IF NOT EXISTS `#__mams_artfeat` (
+  `af_id` int(11) NOT NULL AUTO_INCREMENT,
+  `af_art` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  PRIMARY KEY (`af_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__mams_articles` (
+  `art_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `art_sec` int(11) NOT NULL,
+  `art_title` varchar(255) NOT NULL,
+  `art_alias` varchar(255) NOT NULL,
+  `art_thumb` varchar(255) NOT NULL,
+  `art_desc` text NOT NULL,
+  `metadesc` text NOT NULL,
+  `metakey` text NOT NULL,
+  `art_content` text NOT NULL,
+  `art_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `art_publish_up` date NOT NULL,
+  `art_publish_down` date NOT NULL,
+  `art_modified` datetime NOT NULL,
+  `art_modified_by` int(11) NOT NULL,
+  `checked_out` int(11) NOT NULL,
+  `checked_out_time` datetime NOT NULL,
+  `art_added_by` int(11) NOT NULL,
+  `art_hits` int(11) NOT NULL,
+  `art_fielddata` text NOT NULL,
+  `access` int(11) NOT NULL,
+  `feataccess` int(11) NOT NULL,
+  `state` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `metadata` text NOT NULL,
+  `params` text NOT NULL,
+  PRIMARY KEY (`art_id`),
+  KEY `art_title` (`art_title`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__mams_article_fieldgroups` (
+  `group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(20) NOT NULL,
+  `group_title` varchar(255) NOT NULL,
+  `group_show_title` tinyint(1) NOT NULL DEFAULT '1',
+  `ordering` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__mams_article_fields` (
+  `field_id` int(11) NOT NULL AUTO_INCREMENT,
+  `field_name` varchar(100) NOT NULL,
+  `field_title` varchar(255) NOT NULL,
+  `field_rssname` varchar(100) NOT NULL,
+  `field_type` varchar(20) NOT NULL,
+  `field_group` int(11) NOT NULL,
+  `field_show_page` tinyint(1) NOT NULL DEFAULT '0',
+  `field_show_title` tinyint(1) NOT NULL DEFAULT '0',
+  `ordering` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  PRIMARY KEY (`field_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_artlinks` (
   `al_id` int(11) NOT NULL AUTO_INCREMENT,
+  `al_field` int(11) NOT NULL DEFAULT '8',
   `al_art` int(11) NOT NULL,
   `al_link` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
   `published` int(11) NOT NULL,
-  PRIMARY KEY (`al_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`al_id`),
+  KEY `al_field` (`al_field`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS #__mams_artmed (
-  am_id int(11) NOT NULL AUTO_INCREMENT,
-  am_art int(11) NOT NULL,
-  am_media int(11) NOT NULL,
-  ordering int(11) NOT NULL,
-  published int(11) NOT NULL,
-  PRIMARY KEY (am_id)
+CREATE TABLE IF NOT EXISTS `#__mams_artmed` (
+  `am_id` int(11) NOT NULL AUTO_INCREMENT,
+  `am_field` int(11) NOT NULL DEFAULT '6',
+  `am_art` int(11) NOT NULL,
+  `am_media` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  PRIMARY KEY (`am_id`),
+  KEY `am_field` (`am_field`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_authors` (
@@ -84,44 +133,43 @@ CREATE TABLE IF NOT EXISTS `#__mams_authors` (
   PRIMARY KEY (`auth_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-
-CREATE TABLE IF NOT EXISTS #__mams_cats (
-  cat_id int(11) NOT NULL AUTO_INCREMENT,
-  cat_title varchar(255) NOT NULL,
-  cat_alias varchar(255) NOT NULL,
-  cat_desc text NOT NULL,
-  cat_added timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  cat_modified datetime NOT NULL,
-  published int(11) NOT NULL,
-  access int(11) NOT NULL,
-  PRIMARY KEY (cat_id)
+CREATE TABLE IF NOT EXISTS `#__mams_cats` (
+  `cat_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cat_title` varchar(255) NOT NULL,
+  `cat_alias` varchar(255) NOT NULL,
+  `cat_desc` text NOT NULL,
+  `cat_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `cat_modified` datetime NOT NULL,
+  `published` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
+  PRIMARY KEY (`cat_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS #__mams_dloads (
-  dl_id int(11) NOT NULL AUTO_INCREMENT,
-  dl_extension varchar(255) NOT NULL DEFAULT 'com_mams',
-  dl_lname varchar(50) NOT NULL,
-  dl_fname varchar(255) NOT NULL,
-  dl_type enum('pdf','mp3') NOT NULL,
-  dl_loc varchar(255) NOT NULL,
-  dl_added timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  dl_modified datetime NOT NULL,
-  published int(11) NOT NULL,
-  access int(11) NOT NULL,
-  PRIMARY KEY (dl_id)
+CREATE TABLE IF NOT EXISTS `#__mams_dloads` (
+  `dl_id` int(11) NOT NULL AUTO_INCREMENT,
+  `dl_extension` varchar(255) NOT NULL DEFAULT 'com_mams',
+  `dl_lname` varchar(50) NOT NULL,
+  `dl_fname` varchar(255) NOT NULL,
+  `dl_type` enum('pdf','mp3') NOT NULL,
+  `dl_loc` varchar(255) NOT NULL,
+  `dl_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dl_modified` datetime NOT NULL,
+  `published` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
+  PRIMARY KEY (`dl_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_links` (
   `link_id` int(11) NOT NULL AUTO_INCREMENT,
   `link_url` varchar(1024) NOT NULL,
   `link_title` varchar(255) NOT NULL,
-  `link_target` VARCHAR( 10 ) NOT NULL DEFAULT '_blank',
-  `link_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `link_modified` DATETIME NOT NULL,
+  `link_target` varchar(10) NOT NULL DEFAULT '_blank',
+  `link_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `link_modified` datetime NOT NULL,
   `published` tinyint(4) NOT NULL,
   `access` int(11) NOT NULL,
   PRIMARY KEY (`link_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_media` (
   `med_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -130,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_media` (
   `med_inttitle` varchar(255) NOT NULL,
   `med_exttitle` varchar(255) NOT NULL,
   `med_desc` text NOT NULL,
-  `med_postroll` TEXT NOT NULL,
+  `med_postroll` text NOT NULL,
   `med_file` varchar(255) NOT NULL,
   `med_still` varchar(255) NOT NULL,
   `med_autoplay` tinyint(1) NOT NULL DEFAULT '0',
@@ -140,14 +188,14 @@ CREATE TABLE IF NOT EXISTS `#__mams_media` (
   `access` int(11) NOT NULL,
   `feataccess` int(11) NOT NULL,
   PRIMARY KEY (`med_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_mediafeat` (
   `mf_id` int(11) NOT NULL AUTO_INCREMENT,
   `mf_media` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
   PRIMARY KEY (`mf_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_mediatrack` (
   `mt_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -159,37 +207,47 @@ CREATE TABLE IF NOT EXISTS `#__mams_mediatrack` (
   `mt_percentage` int(11) NOT NULL,
   `mt_ipaddr` varchar(15) NOT NULL,
   PRIMARY KEY (`mt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS #__mams_secs (
-  sec_id int(11) NOT NULL AUTO_INCREMENT,
-  sec_type enum('author','article') NOT NULL DEFAULT 'article',
-  sec_name varchar(255) NOT NULL,
-  sec_alias varchar(255) NOT NULL,
-  sec_desc text NOT NULL,
-  sec_added timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  sec_modified datetime NOT NULL,
-  published int(11) NOT NULL,
-  access int(11) NOT NULL,
-  ordering int(11) NOT NULL,
-  PRIMARY KEY (sec_id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS #__mams_track (
-  mt_id bigint(20) NOT NULL AUTO_INCREMENT,
-  mt_user int(11) NOT NULL,
-  mt_item int(11) NOT NULL,
-  mt_type enum('author','article','seclist','catlist','autlist','authors','dload') NOT NULL,
-  mt_session varchar(60) NOT NULL,
-  mt_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  mt_ipaddr varchar(15) NOT NULL,
-  PRIMARY KEY (mt_id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__mams_artfeat` (
-  `af_id` int(11) NOT NULL AUTO_INCREMENT,
-  `af_art` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `#__mams_secs` (
+  `sec_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sec_type` enum('author','article') NOT NULL DEFAULT 'article',
+  `sec_name` varchar(255) NOT NULL,
+  `sec_alias` varchar(255) NOT NULL,
+  `sec_desc` text NOT NULL,
+  `sec_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `sec_modified` datetime NOT NULL,
+  `published` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
-  PRIMARY KEY (`af_id`)
+  PRIMARY KEY (`sec_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__mams_track` (
+  `mt_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `mt_user` int(11) NOT NULL,
+  `mt_item` int(11) NOT NULL,
+  `mt_type` enum('author','article','seclist','catlist','autlist','authors','dload') NOT NULL,
+  `mt_session` varchar(60) NOT NULL,
+  `mt_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `mt_ipaddr` varchar(15) NOT NULL,
+  PRIMARY KEY (`mt_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`) VALUES
+('MAMS Article', 'com_mams.article', '{"special":{"dbtable":"#__mams_articles","key":"art_id","type":"MAMS","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__core_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":[{"core_content_item_id":"art_id","core_title":"art_title","core_state":"published","core_alias":"art_alias","core_created_time":"art_added","core_modified_time":"art_modified","core_body":"art_content", "core_hits":"art_hits","core_publish_up":"art_publish_up","core_publish_down":"art_publish_down","core_access":"access", "core_params":"params", "core_metadata":"metadata", "core_version":"art_version", "core_ordering":"ordering", "core_metakey":"metakey", "core_metadesc":"metadesc", "asset_id":"asset_id","core_catid":"art_sec"}]}', 'MAMSHelperRoute::getArticleRoute');
+
+INSERT INTO `#__mams_article_fieldgroups` (`group_id`, `group_name`, `group_title`, `group_show_title`, `ordering`, `access`, `published`) VALUES
+(1, 'article', 'Main', 0, 1, 1, 1);
+
+INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `field_rssname`, `field_type`, `field_group`, `field_show_page`, `field_show_title`, `ordering`, `access`, `published`) VALUES
+(1, 'art_title', 'Article Title', 'title', 'textfield', 1, 1, 0, 4, 1, 1),
+(2, 'art_desc', 'Article Description', 'description', 'textbox', 1, 0, 0, 6, 1, 1),
+(3, 'art_content', 'Article Body', 'body', 'editor', 1, 1, 0, 7, 1, 1),
+(4, 'art_pubinfo', 'Article Publishing Information', '', 'pubinfo', 1, 1, 0, 5, 1, 1),
+(5, 'art_auths', 'Article Authors', 'author', 'auths', 1, 1, 0, 8, 1, 1),
+(6, 'art_media', 'Article Media', '', 'media', 1, 1, 0, 9, 1, 1),
+(7, 'art_dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 10, 1, 1),
+(8, 'art_links', 'Article Links', '', 'links', 1, 1, 0, 11, 1, 1),
+(9, 'art_related', 'Related Items', '', 'related', 1, 1, 1, 19, 1, 1);
 

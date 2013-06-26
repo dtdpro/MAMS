@@ -9,7 +9,7 @@ class MAMSModelArtDload extends JModelAdmin
 {
 	protected function canDelete($record)
 	{
-		if (!empty($record->aa_id))
+		if (!empty($record->ad_id))
 		{
 			if ($record->published != -2)
 			{

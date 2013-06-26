@@ -23,4 +23,23 @@ class MAMSTableField extends JTable
 		// Attempt to store the user data.
 		return parent::store($updateNulls);
 	}
+	
+	public function check()
+	{
+		// check for valid name
+		if (trim($this->field_title) == '') {
+			$this->setError(JText::_('COM_MAMS_ERR_TABLES_TITLE'));
+			return false;
+		}
+
+		if (empty($this->field_name)) {
+			$this->field_name = $this->field_title;
+		}
+		$this->field_name = JApplication::stringURLSafe($this->field_name);
+		if (trim(str_replace('-','',$this->field_name)) == '') {
+			$this->field_name = JFactory::getDate()->format("Y-m-d-H-i-s");
+		}
+
+		return true;
+	}
 }

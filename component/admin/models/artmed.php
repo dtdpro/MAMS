@@ -9,7 +9,7 @@ class MAMSModelArtMed extends JModelAdmin
 {
 	protected function canDelete($record)
 	{
-		if (!empty($record->aa_id))
+		if (!empty($record->am_id))
 		{
 			if ($record->published != -2)
 			{

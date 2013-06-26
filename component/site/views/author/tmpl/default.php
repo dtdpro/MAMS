@@ -56,7 +56,7 @@ if ($this->published) {
 			
 			//Pub Date
 			echo ' published on <strong>';
-			echo date("F j, Y",strtotime($r->art_published));
+			echo date("F j, Y",strtotime($r->art_publish_up));
 			echo '</strong>';
 			
 			//Cat Links

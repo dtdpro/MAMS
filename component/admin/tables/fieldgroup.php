@@ -23,4 +23,23 @@ class MAMSTableFieldGroup extends JTable
 		// Attempt to store the user data.
 		return parent::store($updateNulls);
 	}
+	
+	public function check()
+	{
+		// check for valid name
+		if (trim($this->group_title) == '') {
+			$this->setError(JText::_('COM_MAMS_ERR_TABLES_TITLE'));
+			return false;
+		}
+
+		if (empty($this->group_name)) {
+			$this->group_name = $this->group_title;
+		}
+		$this->group_name = JApplication::stringURLSafe($this->group_name);
+		if (trim(str_replace('-','',$this->group_name)) == '') {
+			$this->group_name = JFactory::getDate()->format("Y-m-d-H-i-s");
+		}
+
+		return true;
+	}
 }

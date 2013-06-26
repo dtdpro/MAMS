@@ -6,10 +6,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.database.table');
 
 class MAMSTableArticle extends JTable
-{
+{	
+	protected $tagsHelper = null;
+
 	function __construct(&$db) 
 	{
 		parent::__construct('#__mams_articles', 'art_id', $db);
+
+		$this->tagsHelper = new JHelperTags();
+		$this->tagsHelper->typeAlias = 'com_mams.article';
 	}
 	
 	public function bind($array, $ignore = '')
@@ -19,6 +24,21 @@ class MAMSTableArticle extends JTable
 			$registry = new JRegistry;
 			$registry->loadArray($array['art_fielddata']);
 			$array['art_fielddata'] = (string) $registry;
+		}
+		
+		if (isset($array['params']) && is_array($array['params']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($array['params']);
+			$array['params'] = (string) $registry;
+		}
+		
+		
+		if (isset($array['metadata']) && is_array($array['metadata']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($array['metadata']);
+			$array['metadata'] = (string) $registry;
 		}
 	
 		return parent::bind($array, $ignore);
@@ -31,13 +51,28 @@ class MAMSTableArticle extends JTable
 		if ($this->art_id) {
 			// Existing item
 			$this->art_modified		= $date->toSql();
+			$this->art_modified_by	= $user->get('id');
 		} else {
-			// New section. A section created on field can be set by the user,
+			// New section. A article created on field can be set by the user,
 			// so we don't touch either of these if they are set.
 			if (!intval($this->art_added)) {
 				$this->art_added = $date->toSql();
-				$this->art_modified		= $date->toSql();
 			}
+		}
+		if (empty($this->art_added_by)) {
+			$this->art_added_by	= $user->get('id');
+		}
+		
+		// Set publish_up to now if not set
+		if (!$this->art_publish_up || $this->art_publish_up == "0000-00-00")
+		{
+			$this->art_publish_up = $date->toSql();
+		}
+		
+		// Set publish_down to null date if not set
+		if (!$this->art_publish_down)
+		{
+			$this->art_publish_down = $this->_db->getNullDate();
 		}
 
 		// Verify that the alias is unique
@@ -47,8 +82,10 @@ class MAMSTableArticle extends JTable
 			return false;
 		}
 		
-		// Attempt to store the user data.
-		return parent::store($updateNulls);
+		// Attempt to store the user data.	
+		$this->tagsHelper->preStoreProcess($this);
+		$result = parent::store($updateNulls);
+		return $result && $this->tagsHelper->postStoreProcess($this);
 	}
 	
 	public function check()
@@ -66,10 +103,117 @@ class MAMSTableArticle extends JTable
 		if (trim(str_replace('-','',$this->art_alias)) == '') {
 			$this->art_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
+		
+
+		// Check the publish down date is not earlier than publish up.
+		if ($this->art_publish_down != "0000-00-00" && $this->art_publish_down < $this->art_publish_up)
+		{
+			$this->setError(JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+			return false;
+		}
+		
+		// clean up keywords -- eliminate extra spaces between phrases
+		// and cr (\r) and lf (\n) characters from string
+		if (!empty($this->metakey))
+		{
+			// only process if not empty
+			$bad_characters = array("\n", "\r", "\"", "<", ">"); // array of characters to remove
+			$after_clean = JString::str_ireplace($bad_characters, "", $this->metakey); // remove bad characters
+			$keys = explode(',', $after_clean); // create array using commas as delimiter
+			$clean_keys = array();
+		
+			foreach ($keys as $key)
+			{
+				if (trim($key)) { // ignore blank keywords
+					$clean_keys[] = trim($key);
+				}
+			}
+			$this->metakey = implode(", ", $clean_keys); // put array back together delimited by ", "
+		}
 
 		if (!empty($this->art_thumb)) {
 			$this->art_thumb=ltrim($this->art_thumb,"/");
 		}
 		return true;
 	}	
+	
+	public function delete($pk = null)
+	{
+		$result = parent::delete($pk);
+		return $result && $this->tagsHelper->deleteTagData($this, $pk);
+	}
+	
+	public function publish($pks = null, $state = 1, $userId = 0)
+	{
+		$k = $this->_tbl_key;
+	
+		// Sanitize input.
+		JArrayHelper::toInteger($pks);
+		$userId = (int) $userId;
+		$state = (int) $state;
+	
+		// If there are no primary keys set check to see if the instance key is set.
+		if (empty($pks))
+		{
+			if ($this->$k)
+			{
+				$pks = array($this->$k);
+			}
+			// Nothing to set publishing state on, return false.
+			else {
+				$this->setError(JText::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
+				return false;
+			}
+		}
+	
+		// Build the WHERE clause for the primary keys.
+		$where = $k.'='.implode(' OR '.$k.'=', $pks);
+	
+		// Determine if there is checkin support for the table.
+		if (!property_exists($this, 'checked_out') || !property_exists($this, 'checked_out_time'))
+		{
+			$checkin = '';
+		}
+		else
+		{
+			$checkin = ' AND (checked_out = 0 OR checked_out = '.(int) $userId.')';
+		}
+	
+		// Update the publishing state for rows with the given primary keys.
+		$this->_db->setQuery(
+				'UPDATE '.$this->_db->quoteName($this->_tbl) .
+				' SET '.$this->_db->quoteName('state').' = '.(int) $state .
+				' WHERE ('.$where.')' .
+				$checkin
+		);
+	
+		try
+		{
+			$this->_db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			$this->setError($e->getMessage());
+			return false;
+		}
+	
+		// If checkin is supported and all rows were adjusted, check them in.
+		if ($checkin && (count($pks) == $this->_db->getAffectedRows()))
+		{
+			// Checkin the rows.
+			foreach ($pks as $pk)
+			{
+				$this->checkin($pk);
+			}
+		}
+	
+		// If the JTable instance value is in the list of primary keys that were set, set the instance.
+		if (in_array($this->$k, $pks))
+		{
+			$this->state = $state;
+		}
+	
+		$this->setError('');
+		return true;
+	}
 }

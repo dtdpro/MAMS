@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.model' );
 
-class MAMSModelArticle extends JModelLegacy
+class MAMSModelArticle extends JModelItem
 {
 	function getArticleSec($artid) {
 		$db =& JFactory::getDBO();
@@ -11,12 +11,13 @@ class MAMSModelArticle extends JModelLegacy
 		$query->select('a.art_sec');
 		$query->from('#__mams_articles AS a');
 		$query->where('a.art_id = '.$artid);
-		$query->where('a.published >= 1');
+		$query->where('a.state >= 1');
 		$db->setQuery($query);
 		return $db->loadResult();
 	}
 	
 	function getArticle($artid) {
+		$app = JFactory::getApplication('site');
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
@@ -29,12 +30,27 @@ class MAMSModelArticle extends JModelLegacy
 		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id = '.$artid);
-		$query->where('a.published >= 1');
+		$query->where('a.state >= 1');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
-		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-		$query->order('a.art_published DESC');
+		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+		$query->order('a.art_publish_up DESC');
 		$db->setQuery($query);
 		$item = $db->loadObject();
+		
+		//Load up the Params
+		$registry = new JRegistry;
+		$registry->loadString($item->params);
+		$item->params = $registry;
+		
+		// Merge menu item params with item params, item params take precedence
+		$params = $app->getParams();
+		$params->merge($item->params);
+		$item->params = $params;
+		
+		//Metadata
+		$registry = new JRegistry;
+		$registry->loadString($item->metadata);
+		$item->metadata = $registry;
 		
 		if (!$item) return 0;
 		
@@ -133,10 +149,10 @@ class MAMSModelArticle extends JModelLegacy
 			$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 			$query->where('a.art_id IN ('.implode(",",$relatedids).')');
 			$query->where('a.art_sec = '.$secid);
-			$query->where('a.published >= 1');
+			$query->where('a.state >= 1');
 			$query->where('a.access IN ('.implode(",",$alvls).')');
-			if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-			$query->order('a.art_published DESC, a.ordering ASC');
+			if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+			$query->order('a.art_publish_up DESC, a.ordering ASC');
 			$limit = (int)$cfg->num_related;
 			$db->setQuery($query,0,$limit);
 			$items = $db->loadObjectList();
@@ -196,10 +212,10 @@ class MAMSModelArticle extends JModelLegacy
 			$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 			$query->where('a.art_id IN ('.implode(",",$relatedids).')');
 			$query->where('a.art_sec = '.$secid);
-			$query->where('a.published >= 1');
+			$query->where('a.state >= 1');
 			$query->where('a.access IN ('.implode(",",$alvls).')');
-			if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-			$query->order('a.art_published DESC, a.ordering ASC');
+			if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+			$query->order('a.art_publish_up DESC, a.ordering ASC');
 			$limit = (int)$cfg->num_related;
 			$db->setQuery($query,0,$limit);
 			$items = $db->loadObjectList();

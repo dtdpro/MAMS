@@ -103,7 +103,10 @@ $db =& JFactory::getDBO();
 
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->group_id); ?></td>
-				<td class="center"><?php if ($item->group_id != 1) echo JHtml::_('jgrid.published', $item->published, $i, 'fieldgroups.', true);?></td>
+				<td class="center"><?php 
+					if ($item->group_id != 1) echo JHtml::_('jgrid.published', $item->published, $i, 'fieldgroups.', true);
+					else echo '<a class="btn btn-micro disabled jgrid"  title="Protected extension"><i class="icon-lock"></i></a>';
+				?></td>
 				<td class="nowrap has-context">
 					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=fieldgroup.edit&group_id='.(int) $item->group_id); ?>">
 					<?php echo $this->escape($item->group_title); ?></a>

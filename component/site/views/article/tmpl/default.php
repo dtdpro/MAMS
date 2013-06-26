@@ -16,7 +16,7 @@ if ($this->params->get('show_pubinfo',1)) {
 		//Pub Date
 		if ($this->params->get('show_pubdate',1)) {
 			echo ' published on <strong>';
-			echo date("F j, Y",strtotime($this->article->art_published));
+			echo date("F j, Y",strtotime($this->article->art_publish_up));
 			echo '</strong>';
 		}
 		
@@ -244,7 +244,7 @@ echo '<div class="mams-article-related">';
 			
 			//Pub Date
 			echo ' published on <strong>';
-			echo date("F j, Y",strtotime($r->art_published));
+			echo date("F j, Y",strtotime($r->art_publish_up));
 			echo '</strong>';
 			
 			//Cat Links
@@ -294,7 +294,7 @@ echo '<div class="mams-article-related">';
 			
 			//Pub Date
 			echo ' published on <strong>';
-			echo date("F j, Y",strtotime($r->art_published));
+			echo date("F j, Y",strtotime($r->art_publish_up));
 			echo '</strong>';
 			
 			//Cat Links

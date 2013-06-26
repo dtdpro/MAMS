@@ -40,7 +40,7 @@ class JFormFieldOrderArticle extends JFormField
 		// Build the query for the ordering list.
 		$query = 'SELECT ordering AS value, art_title AS text' .
 				' FROM #__mams_articles' .
-				' WHERE art_sec = "'.$this->form->getValue('art_sec').'" && art_published = "'.$this->form->getValue('art_published').'"' .
+				' WHERE art_sec = "'.$this->form->getValue('art_sec').'" && art_publish_up = "'.$this->form->getValue('art_publish_up').'"' .
 				' ORDER BY ordering';
 
 		// Create a read-only list (no name) with a hidden input to store the value.

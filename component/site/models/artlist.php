@@ -40,15 +40,15 @@ class MAMSModelArtList extends JModelList
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id IN ('.implode(",",$this->artids).')');
 		if ($this->secid) $query->where('a.art_sec = '.$this->secid);
-		$query->where('a.published >= 1');
+		$query->where('a.state >= 1');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
-		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
+		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
 		switch ($this->params->get("orderby","pubdsc")) {
 			case "titasc": $query->order('a.art_title ASC'); break;
 			case "titdsc": $query->order('a.art_title DESC'); break;
-			case "pubasc": $query->order('a.art_published ASC, s.ordering ASC, a.ordering ASC'); break;
-			case "pubdsc": $query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC'); break;
-			default: $query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC'); break;
+			case "pubasc": $query->order('a.art_publish_up ASC, s.ordering ASC, a.ordering ASC'); break;
+			case "pubdsc": $query->order('a.art_publish_up DESC, s.ordering ASC, a.ordering ASC'); break;
+			default: $query->order('a.art_publish_up DESC, s.ordering ASC, a.ordering ASC'); break;
 		}
 		
 		return $query;
@@ -154,7 +154,7 @@ class MAMSModelArtList extends JModelList
 		$query->select('a.art_id');
 		$query->from('#__mams_articles AS a');
 		$query->where('a.art_sec = '.(int)$sec);
-		$query->where('a.published >= 1');
+		$query->where('a.state >= 1');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
 		$db->setQuery($query); 
 		$items = $db->loadColumn();

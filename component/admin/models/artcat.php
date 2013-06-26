@@ -5,12 +5,11 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
-
 class MAMSModelArtCat extends JModelAdmin
 {
-protected function canDelete($record)
+	protected function canDelete($record)
 	{
-		if (!empty($record->aa_id))
+		if (!empty($record->ac_id))
 		{
 			if ($record->published != -2)
 			{

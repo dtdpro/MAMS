@@ -9,6 +9,9 @@ JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+$app	= JFactory::getApplication();
+$user	= JFactory::getUser();
+$userId	= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $archived	= $this->state->get('filter.published') == 2 ? true : false;
@@ -94,9 +97,12 @@ $sortFields = $this->getSortFields();
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_TITLE','a.art_title', $listDirn, $listOrder); ?>
 				</th>		
-				<th width="10%">
-					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISHED','a.art_published', $listDirn, $listOrder); ?>
+				<th width="8%">
+					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISH_ON','a.art_publish_up', $listDirn, $listOrder); ?>
 				</th>		
+				<th width="8%">
+					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISH_DOWN','a.art_publish_down', $listDirn, $listOrder); ?>
+				</th>	
 				<th width="10%">
 					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_TAGS'); ?>
 				</th>
@@ -124,33 +130,53 @@ $sortFields = $this->getSortFields();
 		</thead>
 		<tfoot><tr><td colspan="15"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
-		<?php foreach($this->items as $i => $item): ?>
-			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->art_published?>">
+		<?php foreach($this->items as $i => $item): 
+			$canCreate = $user->authorise('core.create', 'com_mams.sec.'.$item->art_sec);
+			$canEdit = $user->authorise('core.edit', 'com_mams.article.'.$item->art_id);
+			$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+			$canEditOwn = $user->authorise('core.edit.own', 'com_mams.article.'.$item->art_id) && $item->created_by == $userId;
+			$canChange = $user->authorise('core.edit.state', 'com_mams.article.'.$item->art_id) && $canCheckin;
+			?>
+			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->art_publish_up?>">
 				<td class="order nowrap center hidden-phone">
-					<?php 
-					$disableClassName = '';
-					$disabledLabel	  = '';
-					if (!$saveOrder) :
-						$disabledLabel    = JText::_('JORDERINGDISABLED');
-						$disableClassName = 'inactive tip-top';
-					endif; ?>
-					<span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
+					<?php if ($canChange) :
+						$disableClassName = '';
+						$disabledLabel	  = '';
+						if (!$saveOrder) :
+							$disabledLabel    = JText::_('JORDERINGDISABLED');
+							$disableClassName = 'inactive tip-top';
+						endif; ?>
+						<span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
+							<i class="icon-menu"></i>
+						</span>
+						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering;?>" class="width-20 text-area-order " /> 
+					<?php else : ?>	
+						<span class="sortable-handler inactive" >
 						<i class="icon-menu"></i>
-					</span>
-					<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering;?>" class="width-20 text-area-order " />
+						</span>
+					<?php endif; ?>
 
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->art_id); ?></td>
 				<td class="center">
 					<div class="btn-group">
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'articles.', true); ?>
-						<?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true); ?>
+						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange); ?>
+						<?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, $canChange); ?>
 					</div>
 				</td>
 				<td class="nowrap has-context">
 					<div class="pull-left">
-						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=article.edit&art_id='.(int) $item->art_id); ?>">
-						<?php echo $this->escape($item->art_title); ?></a>
+					
+						<?php if ($item->checked_out) : ?>
+							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'articles.', $canCheckin); ?>
+						<?php endif; ?>
+						<?php if ($canEdit || $canEditOwn) : ?>
+							<a href="<?php echo JRoute::_('index.php?option=com_mams&task=article.edit&art_id=' . $item->art_id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
+							<?php echo $this->escape($item->art_title); ?></a>
+						<?php else : ?>
+							<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->art_title); ?></span>
+						<?php endif; ?>
+					
 						<div class="small">Section: <?php echo $item->sec_name;?></div>
 					</div>
 					<div class="pull-left">
@@ -185,7 +211,8 @@ $sortFields = $this->getSortFields();
 							?>
 					</div>
 				</td>
-				<td class="small"><?php echo $item->art_published; ?></td>
+				<td class="small"><?php echo $item->art_publish_up; ?></td>
+				<td class="small"><?php echo $item->art_publish_down; ?></td>
 				<td class="small"><?php 
 					echo '<button class="btn btn-small" type="button" onclick="return listItemTask(\'cb'.$i.'\',\'articles.drilldowns\')">Drill Downs';
 					echo '</button>';
