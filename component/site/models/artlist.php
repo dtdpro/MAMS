@@ -8,6 +8,17 @@ class MAMSModelArtList extends JModelList
 	protected $artids = Array();
 	protected $secid = 0;
 	protected $params = null;
+	protected $alvls = Array();
+	
+	function __construct($config = array()) {
+		$user = JFactory::getUser();
+		$cfg = MAMSHelper::getConfig();
+		
+		$this->alvls = $user->getAuthorisedViewLevels();
+		$this->alvls = array_merge($this->alvls,$cfg->reggroup);
+
+		parent::__construct($config);
+	}
 	
 	function populateState($ordering = null, $direction = null)
 	{
@@ -28,12 +39,6 @@ class MAMSModelArtList extends JModelList
 	{
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$user = JFactory::getUser();
-		$cfg = MAMSHelper::getConfig();
-		
-		$alvls = Array();
-		$alvls = $user->getAuthorisedViewLevels();
-		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
@@ -41,8 +46,8 @@ class MAMSModelArtList extends JModelList
 		$query->where('a.art_id IN ('.implode(",",$this->artids).')');
 		if ($this->secid) $query->where('a.art_sec = '.$this->secid);
 		$query->where('a.state >= 1');
-		$query->where('a.access IN ('.implode(",",$alvls).')');
-		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+		$query->where('a.access IN ('.implode(",",$this->alvls).')');
+		if (!in_array($cfg->ovgroup,$this->alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
 		switch ($this->params->get("orderby","pubdsc")) {
 			case "titasc": $query->order('a.art_title ASC'); break;
 			case "titdsc": $query->order('a.art_title DESC'); break;
@@ -63,8 +68,6 @@ class MAMSModelArtList extends JModelList
 	function getItems() {
 		
 		$db =& JFactory::getDBO();
-		$user = JFactory::getUser();
-		$cfg = MAMSHelper::getConfig();
 		
 		$query = $this->getListQuery();
 		$limitstart = $this->getState('list.start');
@@ -72,42 +75,115 @@ class MAMSModelArtList extends JModelList
 		
 		$db->setQuery($query, $limitstart, $limit);
 		$items = $db->loadObjectList();
-		
-		$alvls = Array();
-		$alvls = $user->getAuthorisedViewLevels();
-		$alvls = array_merge($alvls,$cfg->reggroup);
 				
-		//Get Authors
+		//Get Authors, Cats, Fields
 		foreach ($items as &$i) {
-			$qa=$db->getQuery(true);
-			$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
-			$qa->from('#__mams_artauth as aa');
-			$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
-			$qa->where('aa.published >= 1');
-			$qa->where('a.published >= 1');
-			$qa->where('a.access IN ('.implode(",",$alvls).')');
-			$qa->where('aa.aa_art = '.$i->art_id);
-			$qa->order('aa.ordering ASC');
-			$db->setQuery($qa);
-			$i->auts=$db->loadObjectList();
-		}
-		
-		//Get Cats
-		foreach ($items as &$i) {
+			$i->auts=$this->getFieldAuthors($i->art_id,"5");
+			
 			$qc=$db->getQuery(true);
 			$qc->select('c.cat_id,c.cat_title,c.cat_alias');
 			$qc->from('#__mams_artcat as ac');
 			$qc->join('RIGHT','#__mams_cats AS c ON ac.ac_cat = c.cat_id');
 			$qc->where('ac.published >= 1');
 			$qc->where('c.published >= 1');
-			$qc->where('c.access IN ('.implode(",",$alvls).')');
+			$qc->where('c.access IN ('.implode(",",$this->alvls).')');
 			$qc->where('ac.ac_art = '.$i->art_id);
 			$qc->order('ac.ordering ASC');
 			$db->setQuery($qc);
 			$i->cats=$db->loadObjectList();
+			
+			if ($i->art_fielddata)
+			{
+				$registry = new JRegistry;
+				$registry->loadString($i->art_fielddata);
+				$i->art_fielddata = $registry->toObject();
+			}
+			
+			$i->fields = $this->getArticleListFields($i->art_id);
 		}
 		
 		return $items;
+	}
+	
+	protected function getArticleListFields($artid) {
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		
+		$query->select('*');
+		$query->from("#__mams_article_fields as f");
+		$query->select('g.group_title');
+		$query->join('LEFT', '#__mams_article_fieldgroups AS g ON g.group_id = f.field_group');
+		$query->where('f.published >= 1');
+		$query->where('f.access IN ('.implode(",",$this->alvls).')');
+		$query->where('g.published >= 1');
+		$query->where('g.access IN ('.implode(",",$this->alvls).')');
+		$query->where('f.field_show_list = 1');
+		$query->where('f.field_id >= 100');
+		$query->order('f.ordering ASC');
+		$db->setQuery($query);
+		$items = $db->loadObjectList();
+		
+		foreach ($items as &$i) {
+			switch ($i->field_type) {
+				case "auths": $i->data = $this->getFieldAuthors($artid,$i->field_id); break;
+				case "dloads": $i->data = $this->getFieldDownloads($artid,$i->field_id); break;
+				case "links": $i->data = $this->getFieldLinks($artid,$i->field_id); break;
+			}
+			
+			$registry = new JRegistry;
+			$registry->loadString($i->params);
+			$i->params = $registry->toObject();
+		}
+			
+		return $items;
+	}
+	
+	protected function getFieldAuthors($artid, $fid) {
+		$db =& JFactory::getDBO();
+		$qa=$db->getQuery(true);
+		$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
+		$qa->from('#__mams_artauth as aa');
+		$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
+		$qa->where('aa.published >= 1');
+		$qa->where('a.published >= 1');
+		$qa->where('a.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('aa.aa_art = '.$artid);
+		$qa->where('aa.aa_field = '.$fid);
+		$qa->order('aa.ordering ASC');
+		$db->setQuery($qa);
+		return $db->loadObjectList();
+	}
+	
+	protected function getFieldDownloads($artid, $fid) {		
+		$db =& JFactory::getDBO();
+		$qa=$db->getQuery(true);
+		$qa->select('d.*');
+		$qa->from('#__mams_artdl as ad');
+		$qa->join('RIGHT','#__mams_dloads AS d ON ad.ad_dload = d.dl_id');
+		$qa->where('ad.published >= 1');
+		$qa->where('d.published >= 1');
+		$qa->where('d.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('ad.ad_art = '.$artid);
+		$qa->where('ad.ad_field = '.$fid);
+		$qa->order('ad.ordering ASC');
+		$db->setQuery($qa);
+		return $db->loadObjectList();
+	}
+	
+	protected function getFieldLinks($artid, $fid) {
+		$db =& JFactory::getDBO();
+		$qa=$db->getQuery(true);
+		$qa->select('l.*');
+		$qa->from('#__mams_artlinks as al');
+		$qa->join('RIGHT','#__mams_links AS l ON al.al_link = l.link_id');
+		$qa->where('al.published >= 1');
+		$qa->where('l.published >= 1');
+		$qa->where('l.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('al.al_art = '.$artid);
+		$qa->where('al.al_field = '.$fid);
+		$qa->order('al.ordering ASC');
+		$db->setQuery($qa);
+		return $db->loadObjectList();
 	}
 	
 	public function getPagination() {
@@ -144,18 +220,12 @@ class MAMSModelArtList extends JModelList
 	function getSecArts($sec) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$user = JFactory::getUser();
-		$cfg = MAMSHelper::getConfig();
-		
-		$alvls = Array();
-		$alvls = $user->getAuthorisedViewLevels();
-		$alvls = array_merge($alvls,$cfg->reggroup);
 		
 		$query->select('a.art_id');
 		$query->from('#__mams_articles AS a');
 		$query->where('a.art_sec = '.(int)$sec);
 		$query->where('a.state >= 1');
-		$query->where('a.access IN ('.implode(",",$alvls).')');
+		$query->where('a.access IN ('.implode(",",$this->alvls).')');
 		$db->setQuery($query); 
 		$items = $db->loadColumn();
 		return $items;

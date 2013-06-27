@@ -12,6 +12,18 @@ class MAMSTableField extends JTable
 		parent::__construct('#__mams_article_fields', 'field_id', $db);
 	}
 	
+	public function bind($array, $ignore = '')
+	{
+		if (isset($array['params']) && is_array($array['params']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($array['params']);
+			$array['params'] = (string) $registry;
+		}
+	
+		return parent::bind($array, $ignore);
+	}
+	
 	public function store($updateNulls = false)
 	{
 		// Verify that the alias is unique

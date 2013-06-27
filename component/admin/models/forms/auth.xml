@@ -99,6 +99,14 @@
 			default=""
 		/>
 		<field
+			name="auth_name"
+			type="text"
+			class="readonly" 
+			label="COM_MAMS_AUTH_FIELD_NAME_LABEL"
+			description ="COM_MAMS_AUTH_FIELD_NAME_DESC"
+			readonly="true"
+		/>
+		<field
 			name="auth_credentials"
 			type="textarea"
 			label="COM_MAMS_AUTH_FIELD_DESC_LABEL"
@@ -111,13 +119,9 @@
 		/>
 		<field
 			name="auth_image"
-			type="text"
+			type="media"
 			label="COM_MAMS_AUTH_FIELD_IMAGE_LABEL"
 			description="COM_MAMS_AUTH_FIELD_IMAGE_DESC"
-			size="60"
-			class="inputbox"
-			required="false"
-			default=""
 		/>
 	</fieldset>
 	<fieldset name="content">
@@ -132,5 +136,14 @@
 			buttons="false"
 		/>
 	</fieldset>
+	<fields name="metadata">
+		<fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+			<field name="tags" type="tag"
+			label="JTAG" description="JTAG_DESC"
+			class="inputbox" multiple="true"
+			>
+			</field>
+		</fieldset>
+	</fields>
 </form>
 

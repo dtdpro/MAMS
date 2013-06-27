@@ -81,11 +81,18 @@ class MAMSModelArticles extends JModelList
 		$query->select('s.sec_name,s.sec_alias');
 		$query->join('LEFT', '#__mams_secs AS s ON s.sec_id = a.art_sec');
 		
-		
 		// Join over the featured.
 		$query->select('f.af_id as featured');
 		$query->join('LEFT', '#__mams_artfeat AS f ON f.af_art = a.art_id');
 		
+		// Join over the users for the author who added.
+		$query->select('ua.name AS adder')
+		->join('LEFT', '#__users AS ua ON ua.id = a.art_added_by');
+		
+		// Join over the users for the author who modified.
+		$query->select('um.name AS modifier')
+		->join('LEFT', '#__users AS um ON um.id = a.art_modified_by');
+				
 		// Filter by section.
 		if ($sec = $this->getState('filter.sec')) {
 			$query->where('a.art_sec = '.(int) $sec);

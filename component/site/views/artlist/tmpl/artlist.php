@@ -21,18 +21,20 @@ foreach ($this->articles as $a) {
 		
 		echo '<div class="mams-artlist-arttpdrm">';
 		
-			echo '<div class="mams-artlist-artpubdesc">';
 			
-				//Thumb, Section, Pub Date & Cat
-				echo '<div class="mams-artlist-artpubcat">';
-					//Thumb
-					if ($a->art_thumb) {
-						echo '<img class="mams-artlist-artthumb"';
-						echo ' src="'.$a->art_thumb.'" ';
-						echo 'align="left" />';
-					}
-					
+			
+			//Further Article Details
+			echo '<div class="mams-artlist-artdetails">';
+				//Thumb
+				if ($a->art_thumb) {
+					echo '<div class="mams-artlist-artimg"><img class="mams-artlist-artthumb"';
+					echo ' src="'.$a->art_thumb.'" ';
+					echo ' /></div>';
+				}
+				//Article Pub info and description
+				echo '<div class="mams-artlist-artinfo">';
 					if ($this->params->get('show_pubinfo',1)) {
+						echo '<div class="mams-artlist-pubinfo">';
 						//Section Link
 						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$a->sec_id.":".$a->sec_alias).'" class="mams-artlist-seclink">'.$a->sec_name.'</a>';
 						
@@ -57,28 +59,109 @@ foreach ($this->articles as $a) {
 							echo implode(", ",$cats);
 							echo '</em>';
 						}
+						echo '</div>';
 					}
+				
+					//Desc
+					echo '<div class="mams-artlist-artdesc">';
+						echo $a->art_desc;
+					echo '</div>';
 				echo '</div>';
 				
-				//Desc
-				echo '<div class="mams-artlist-artdsec">';
-					echo $a->art_desc;
-				echo '</div>';
-			
+				//Read More
+				if ($this->params->get('show_readmore',1)) {
+					echo '<div class="mams-artlist-artreadmore">';
+					echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'" class="mams-artlist-artlink read-more">';
+					echo $this->params->get('readmore_text',"Read More");
+					echo '</a>';
+					echo '</div>';
+				}
 			echo '</div>';
 			
-			//Read More
-			if ($this->params->get('show_readmore',1)) {
-				echo '<div class="mams-artlist-artreadmore">';
-				echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'" class="mams-artlist-artlink read-more">';
-				echo $this->params->get('readmore_text',"Read More");
-				echo '</a>';
-				echo '</div>';
+			//Additional Fields
+			if ($a->fields) {
+				$curgroup = "";
+				$first=true;
+				foreach ($a->fields as $f) {
+					$fn = $f->field_name; 
+					if ($a->art_fielddata->$fn || $f->data) {
+						if ($f->group_name != $curgroup) {
+							if (!$first) { echo '</div>'; $fisrt=false; }
+							echo '<div class="mams-artlist-'.$f->group_name.'">';
+							$curgroup = $f->group_name;
+							if ($f->group_show_title) {
+								echo '<div class="mams-artlist-'.$f->group_name.'-title">';
+								echo $f->group_title;
+								echo '</div>';
+							}
+						}
+						if ($f->field_show_title) {
+							echo '<div class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'-title">';
+							echo $f->field_title;
+							echo '</div>';
+						}
+						echo '<div class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'">';
+						if ($f->params->pretext) echo $f->params->pretext.' ';
+						switch ($f->field_type) {
+							case "textfield":
+								if ($f->params->linktext==1) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'#'.$f->field_name.'">';
+								if ($f->params->linktext==2) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'#'.$f->group_name.'">';
+								echo $a->art_fielddata->$fn;
+								if ($f->params->linktext) echo '</a>';
+								break;
+							case "textbox":
+							case "editor":
+								echo $a->art_fielddata->$fn;
+								break;
+							case "auths":
+								$auts = Array();
+								foreach ($f->data as $d) {
+									$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$d->auth_sec."&autid=".$d->auth_id.":".$d->auth_alias).'" class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'-autlink">'.$d->auth_fname.(($d->auth_mi) ? " ".$d->auth_mi : "")." ".$d->auth_lname.(($d->auth_titles) ? ", ".$d->auth_titles : "").'</a>';
+								}
+								echo implode(", ",$auts);
+								break;
+							case "dloads":
+								$firstdl=true;
+								foreach ($f->data as $d) {
+									echo '<div class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'-dload">';
+									echo '<a href="'.JRoute::_("components/com_mams/dl.php?dlid=".$d->dl_id).'" ';
+									echo 'target="_blank" ';
+									echo 'class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'-artdload';
+									if ($firstdl) { echo ' firstdload'; $firstdl=false; }
+									echo '">';
+									echo 'Download '.$d->dl_lname;
+									echo '</a>';
+									echo '</div>';
+								}
+								break;
+							case "links":
+								$firstlink=true;
+								foreach ($f->data as $d) {
+									echo '<div class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'-link">';
+									echo '<a href="'.$d->link_url.'" ';
+									echo 'target="'.$d->link_target.'" ';
+									echo 'class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'-artlink';
+									if ($firstlink) { echo ' firstlink'; $firstlink=false; }
+									echo '">';
+									echo $d->link_title;
+									echo '</a>';
+									echo '</div>';
+								}
+								break;
+						}
+						if ($f->params->posttext) echo ' '.$f->params->posttext;
+						echo '</div>';
+					}
+				}
+				if (!$first) echo '</div>';
 			}
+			
 		echo '</div>';
 	
 	echo '</div>';
 	echo '<div class="mams-artlist-seperator"></div>';
+	//echo '<pre>'; print_r($a); echo '</pre>';
+	//echo '<div class="mams-artlist-seperator"></div>';
 
 }
 echo '<div class="mams-artlist-pagination">';

@@ -7,14 +7,26 @@ jimport('joomla.database.table');
 
 class MAMSTableSec extends JTable
 {
-	/**
-	 * Constructor
-	 *
-	 * @param object Database connector object
-	 */
+	protected $tagsHelper = null;
+	
 	function __construct(&$db) 
 	{
 		parent::__construct('#__mams_secs', 'sec_id', $db);
+
+		$this->tagsHelper = new JHelperTags();
+		$this->tagsHelper->typeAlias = 'com_mams.sec';
+	}
+	
+	public function bind($array, $ignore = '')
+	{
+		if (isset($array['metadata']) && is_array($array['metadata']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($array['metadata']);
+			$array['metadata'] = (string) $registry;
+		}
+	
+		return parent::bind($array, $ignore);
 	}
 	
 	public function store($updateNulls = false)
@@ -39,8 +51,10 @@ class MAMSTableSec extends JTable
 			$this->setError(JText::_('COM_MAMS_ERROR_UNIQUE_ALIAS'));
 			return false;
 		}
-		// Attempt to store the user data.
-		return parent::store($updateNulls);
+		// Attempt to store the user data.	
+		$this->tagsHelper->preStoreProcess($this);
+		$result = parent::store($updateNulls);
+		return $result && $this->tagsHelper->postStoreProcess($this);
 	}
 	
 	public function check()
@@ -70,6 +84,12 @@ class MAMSTableSec extends JTable
 		}
 
 		return true;
+	}
+	
+	public function delete($pk = null)
+	{
+		$result = parent::delete($pk);
+		return $result && $this->tagsHelper->deleteTagData($this, $pk);
 	}
 	
 }

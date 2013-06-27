@@ -41,7 +41,7 @@ class MAMSViewAuthor extends JViewLegacy
 			$this->document->setTitle($this->author->auth_name);
 			if ($this->params->get('show_pubed',1)) { 
 				 $this->published=$model->getPublished($aut);
-				 $this->courses=$model->getAuthCourses($aut);
+				 //$this->courses=$model->getAuthCourses($aut);
 			}
 			return true;
 		} else {

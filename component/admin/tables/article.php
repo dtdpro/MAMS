@@ -21,9 +21,9 @@ class MAMSTableArticle extends JTable
 	{
 		if (isset($array['art_fielddata']) && is_array($array['art_fielddata']))
 		{
-			$registry = new JRegistry;
-			$registry->loadArray($array['art_fielddata']);
-			$array['art_fielddata'] = (string) $registry;
+			$registryfd = new JRegistry;
+			$registryfd->loadArray($array['art_fielddata']);
+			$array['art_fielddata'] = $registryfd->toString();
 		}
 		
 		if (isset($array['params']) && is_array($array['params']))

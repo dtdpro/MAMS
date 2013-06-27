@@ -81,7 +81,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 		<thead>
 			<tr>
 				<th width="1%">
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>	
 				<th width="1%">
 					<?php echo JHtml::_('grid.sort','JSTATUS','m.published', $listDirn, $listOrder); ?>

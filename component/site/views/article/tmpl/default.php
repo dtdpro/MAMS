@@ -174,7 +174,8 @@ if ($this->article->auts) {
 			echo '<strong><a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" ';
 			echo 'class="mams-article-autlink">';
 			echo $f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "");
-			echo '</a></strong><br />'.$f->auth_credentials;
+			echo '</a></strong>';
+			if ($this->params->get('show_authcred',1)) echo '<br />'.$f->auth_credentials;
 			echo '</div>';
 		}
 	echo '</div>';
@@ -197,7 +198,7 @@ if ($this->article->links) {
 	echo '<div class="mams-article-links">';
 	foreach ($this->article->links as $f) {
 		echo '<div class="mams-article-link">';
-		echo '<strong><a href="'.$f->link_url.'" ';
+		echo '<a href="'.$f->link_url.'" ';
 		echo 'target="'.$f->link_target.'" ';
 		echo 'class="mams-article-artlink">';
 		echo $f->link_title;

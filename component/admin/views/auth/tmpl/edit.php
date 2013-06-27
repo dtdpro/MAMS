@@ -36,6 +36,16 @@ $params = $this->form->getFieldsets('params');
 							<div class="controls"><?php echo $field->input;?></div>
 						</div>
 					<?php endforeach; ?>
+					<div class="control-group">
+						<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
+							<?php if ($field->name == 'jform[metadata][tags][]') :?>
+								<div class="control-group">
+									<div class="control-label"><?php echo $field->label; ?></div>
+									<div class="controls"><?php echo $field->input; ?></div>
+								</div>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</div>
 		</div>
 	</div>
 	<div class="row-fluid">

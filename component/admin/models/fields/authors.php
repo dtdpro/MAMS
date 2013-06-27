@@ -25,8 +25,8 @@ class JFormFieldAuthors extends JFormField
 
 		// Build the query for the ordering list.
 		$query = 'SELECT CONCAT(auth_id,":",auth_alias) AS value, CONCAT(auth.auth_fname,IF(auth.auth_mi != "",CONCAT(" ",auth.auth_mi),"")," ",auth.auth_lname,IF(auth.auth_titles != "",CONCAT(", ",auth.auth_titles),""))   AS text' .
-				' FROM #__mams_authors' .
-				' ORDER BY auth_name';
+				' FROM #__mams_authors as auth' .
+				' ORDER BY auth_lname';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
 		$html[] = '<option value="">'.JText::_('COM_MAMS_SELECT_AUTHOR').'</option>';

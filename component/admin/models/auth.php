@@ -28,6 +28,44 @@ class MAMSModelAuth extends JModelAdmin
 		return parent::canEditState($record);
 	}
 	
+	public function getItem($pk = null)
+	{
+		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
+		$table = $this->getTable();
+	
+		if ($pk > 0)
+		{
+			// Attempt to load the row.
+			$return = $table->load($pk);
+	
+			// Check for a table object error.
+			if ($return === false && $table->getError())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+		}
+	
+		// Convert to the JObject before adding other data.
+		$properties = $table->getProperties(1);
+		$item = JArrayHelper::toObject($properties, 'JObject');
+		
+		// Convert the metadata field to an array.
+		$registry = new JRegistry;
+		$registry->loadString($item->metadata);
+		$item->metadata = $registry->toArray();
+	
+		//Tags
+		if (!empty($item->auth_id))
+		{
+			$item->tags = new JHelperTags;
+			$item->tags->getTagIds($item->auth_id, 'com_mams.auth');
+			$item->metadata['tags'] = $item->tags;
+		}
+	
+		return $item;
+	}
+	
 	public function getTable($type = 'Auth', $prefix = 'MAMSTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);

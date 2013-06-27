@@ -80,6 +80,14 @@ $params = $this->form->getFieldsets('params');
 						<div class="control-label"><?php echo $this->form->getLabel('art_modified'); ?></div>
 						<div class="controls"><?php echo $this->form->getInput('art_modified'); ?></div>
 					</div>
+					<div class="control-group">
+						<div class="control-label"><?php echo $this->form->getLabel('version'); ?></div>
+						<div class="controls"><?php echo $this->form->getInput('version'); ?></div>
+					</div>
+					<div class="control-group">
+						<div class="control-label"><?php echo $this->form->getLabel('art_hits'); ?></div>
+						<div class="controls"><?php echo $this->form->getInput('art_hits'); ?></div>
+					</div>
 				</div>
 			</div>
 		<?php echo JHtml::_('bootstrap.endTab'); 
@@ -128,7 +136,7 @@ $params = $this->form->getFieldsets('params');
 			echo JHtml::_('bootstrap.endTab');
 
 		}
-		JHtml::_('bootstrap.endTabSet'); 
+		echo JHtml::_('bootstrap.endTabSet'); 
 		
 		?>
 		</div>

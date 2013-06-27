@@ -81,7 +81,7 @@ $sortFields = $this->getSortFields();
 					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 				</th>
 				<th width="1%">
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>			
 				<th width="1%" style="min-width:55px" class="nowrap center">
 					<?php echo JText::_('JSTATUS'); ?>

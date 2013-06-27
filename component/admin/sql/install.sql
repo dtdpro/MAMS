@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_articles` (
   `ordering` int(11) NOT NULL,
   `metadata` text NOT NULL,
   `params` text NOT NULL,
+  `version` int(11) NOT NULL,
   PRIMARY KEY (`art_id`),
   KEY `art_title` (`art_title`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -75,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_article_fieldgroups` (
   `access` int(11) NOT NULL,
   `published` int(11) NOT NULL,
   PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 CREATE TABLE IF NOT EXISTS `#__mams_article_fields` (
   `field_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -85,12 +86,14 @@ CREATE TABLE IF NOT EXISTS `#__mams_article_fields` (
   `field_type` varchar(20) NOT NULL,
   `field_group` int(11) NOT NULL,
   `field_show_page` tinyint(1) NOT NULL DEFAULT '0',
+  `field_show_list` tinyint(1) NOT NULL DEFAULT '0',
   `field_show_title` tinyint(1) NOT NULL DEFAULT '0',
   `ordering` int(11) NOT NULL,
   `access` int(11) NOT NULL,
   `published` int(11) NOT NULL,
+  `params` text NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 CREATE TABLE IF NOT EXISTS `#__mams_artlinks` (
   `al_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -121,6 +124,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_authors` (
   `auth_mi` varchar(5) NOT NULL,
   `auth_lname` varchar(255) NOT NULL,
   `auth_titles` varchar(255) NOT NULL,
+  `auth_name` varchar(255) NOT NULL,
   `auth_alias` varchar(255) NOT NULL,
   `auth_credentials` text NOT NULL,
   `auth_bio` text NOT NULL,
@@ -130,6 +134,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_authors` (
   `published` int(11) NOT NULL,
   `access` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
+  `metadata` text NOT NULL,
   PRIMARY KEY (`auth_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -220,6 +225,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_secs` (
   `published` int(11) NOT NULL,
   `access` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
+  `metadata` text NOT NULL,
   PRIMARY KEY (`sec_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -237,17 +243,23 @@ CREATE TABLE IF NOT EXISTS `#__mams_track` (
 INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`) VALUES
 ('MAMS Article', 'com_mams.article', '{"special":{"dbtable":"#__mams_articles","key":"art_id","type":"MAMS","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__core_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":[{"core_content_item_id":"art_id","core_title":"art_title","core_state":"published","core_alias":"art_alias","core_created_time":"art_added","core_modified_time":"art_modified","core_body":"art_content", "core_hits":"art_hits","core_publish_up":"art_publish_up","core_publish_down":"art_publish_down","core_access":"access", "core_params":"params", "core_metadata":"metadata", "core_version":"art_version", "core_ordering":"ordering", "core_metakey":"metakey", "core_metadesc":"metadesc", "asset_id":"asset_id","core_catid":"art_sec"}]}', 'MAMSHelperRoute::getArticleRoute');
 
+INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`) VALUES
+('MAMS Author', 'com_mams.auth', '{"special":{"dbtable":"#__mams_authors","key":"auth_id","type":"MAMS","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__core_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":[{"core_content_item_id":"auth_id","core_title":"auth_name","core_state":"published","core_alias":"auth_alias","core_created_time":"auth_added","core_modified_time":"auth_modified","core_body":"auth_bio", "core_access":"access", "core_params":"params", "core_metadata":"metadata", "core_ordering":"ordering", "asset_id":"asset_id","core_catid":"auth_sec"}]}', 'MAMSHelperRoute::getAuthorRoute');
+
+INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`) VALUES
+('MAMS Section', 'com_mams.auth', '{"special":{"dbtable":"#__mams_secs","key":"sec_id","type":"MAMS","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__core_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":[{"core_content_item_id":"sec_id","core_title":"sec_name","core_state":"published","core_alias":"sec_alias","core_created_time":"sec_added","core_modified_time":"auth_modified","core_body":"sec_desc", "core_access":"access", "core_params":"params", "core_metadata":"metadata", "core_ordering":"ordering", "asset_id":"asset_id"}]}', 'MAMSHelperRoute::getSectionRoute');
+
 INSERT INTO `#__mams_article_fieldgroups` (`group_id`, `group_name`, `group_title`, `group_show_title`, `ordering`, `access`, `published`) VALUES
 (1, 'article', 'Main', 0, 1, 1, 1);
 
-INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `field_rssname`, `field_type`, `field_group`, `field_show_page`, `field_show_title`, `ordering`, `access`, `published`) VALUES
-(1, 'art_title', 'Article Title', 'title', 'textfield', 1, 1, 0, 4, 1, 1),
-(2, 'art_desc', 'Article Description', 'description', 'textbox', 1, 0, 0, 6, 1, 1),
-(3, 'art_content', 'Article Body', 'body', 'editor', 1, 1, 0, 7, 1, 1),
-(4, 'art_pubinfo', 'Article Publishing Information', '', 'pubinfo', 1, 1, 0, 5, 1, 1),
-(5, 'art_auths', 'Article Authors', 'author', 'auths', 1, 1, 0, 8, 1, 1),
-(6, 'art_media', 'Article Media', '', 'media', 1, 1, 0, 9, 1, 1),
-(7, 'art_dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 10, 1, 1),
-(8, 'art_links', 'Article Links', '', 'links', 1, 1, 0, 11, 1, 1),
-(9, 'art_related', 'Related Items', '', 'related', 1, 1, 1, 19, 1, 1);
+INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `field_rssname`, `field_type`, `field_group`, `field_show_page`, `field_show_list`, `field_show_title`, `ordering`, `access`, `published`) VALUES
+(1, 'art_title', 'Article Title', 'title', 'textfield', 1, 1, 1, 0, 4, 1, 1),
+(2, 'art_desc', 'Article Description', 'description', 'textbox', 1, 0, 1, 0, 6, 1, 1),
+(3, 'art_content', 'Article Body', 'body', 'editor', 1, 1, 0, 0, 7, 1, 1),
+(4, 'art_pubinfo', 'Article Publishing Information', '', 'pubinfo', 1, 1, 1, 0, 5, 1, 1),
+(5, 'art_auths', 'Article Authors', 'author', 'auths', 1, 1, 1, 0, 8, 1, 1),
+(6, 'art_media', 'Article Media', '', 'media', 1, 1, 0, 0, 9, 1, 1),
+(7, 'art_dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 0, 10, 1, 1),
+(8, 'art_links', 'Article Links', '', 'links', 1, 1, 0, 0, 11, 1, 1),
+(9, 'art_related', 'Related Items', '', 'related', 1, 1, 0, 1, 19, 1, 1);
 

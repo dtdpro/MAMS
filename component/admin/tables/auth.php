@@ -7,9 +7,26 @@ jimport('joomla.database.table');
 
 class MAMSTableAuth extends JTable
 {
+	protected $tagsHelper = null;
+
 	function __construct(&$db) 
 	{
 		parent::__construct('#__mams_authors', 'auth_id', $db);
+
+		$this->tagsHelper = new JHelperTags();
+		$this->tagsHelper->typeAlias = 'com_mams.auth';
+	}
+	
+	public function bind($array, $ignore = '')
+	{
+		if (isset($array['metadata']) && is_array($array['metadata']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($array['metadata']);
+			$array['metadata'] = (string) $registry;
+		}
+	
+		return parent::bind($array, $ignore);
 	}
 	
 	public function store($updateNulls = false)
@@ -34,8 +51,13 @@ class MAMSTableAuth extends JTable
 			$this->setError(JText::_('COM_MAMS_ERROR_UNIQUE_ALIAS'));
 			return false;
 		}
-		// Attempt to store the user data.
-		return parent::store($updateNulls);
+		
+		$this->auth_name = $this->auth_fname.(($this->auth_mi) ? " ".$this->auth_mi : "")." ".$this->auth_lname.(($this->auth_titles) ? ", ".$this->auth_titles : "");
+		
+		// Attempt to store the user data.	
+		$this->tagsHelper->preStoreProcess($this);
+		$result = parent::store($updateNulls);
+		return $result && $this->tagsHelper->postStoreProcess($this);
 	}
 	
 	public function check()
@@ -68,6 +90,12 @@ class MAMSTableAuth extends JTable
 			$this->auth_image=ltrim($this->auth_image,"/");
 		}
 		return true;
+	}
+	
+	public function delete($pk = null)
+	{
+		$result = parent::delete($pk);
+		return $result && $this->tagsHelper->deleteTagData($this, $pk);
 	}
 	
 }

@@ -97,10 +97,8 @@ $sortFields = $this->getSortFields();
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_TITLE','a.art_title', $listDirn, $listOrder); ?>
 				</th>		
-				<th width="8%">
-					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISH_ON','a.art_publish_up', $listDirn, $listOrder); ?>
-				</th>		
-				<th width="8%">
+				<th width="13%">
+					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISH_ON','a.art_publish_up', $listDirn, $listOrder); ?> - 
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISH_DOWN','a.art_publish_down', $listDirn, $listOrder); ?>
 				</th>	
 				<th width="10%">
@@ -211,14 +209,13 @@ $sortFields = $this->getSortFields();
 							?>
 					</div>
 				</td>
-				<td class="small"><?php echo $item->art_publish_up; ?></td>
-				<td class="small"><?php echo $item->art_publish_down; ?></td>
+				<td class="small"><?php echo $item->art_publish_up; ?> - <?php echo $item->art_publish_down; ?></td>
 				<td class="small"><?php 
 					echo '<button class="btn btn-small" type="button" onclick="return listItemTask(\'cb'.$i.'\',\'articles.drilldowns\')">Drill Downs';
 					echo '</button>';
 				?></td>
-				<td class="small hidden-phone"><?php echo $item->art_added; ?></td>
-				<td class="small hidden-phone"><?php echo $item->art_modified; ?></td>
+				<td class="small hidden-phone"><?php echo $item->art_added.'<br />'.$item->adder; ?></td>
+				<td class="small hidden-phone"><?php echo $item->art_modified.'<br />'.$item->modifier; ?></td>
 				<td class="small"><?php echo $item->feataccess_level; ?></td>
 				<td class="small"><?php echo $item->access_level; ?></td>
 				<td class="small"><?php echo $item->art_hits; ?></td>

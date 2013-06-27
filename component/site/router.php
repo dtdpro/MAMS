@@ -139,15 +139,16 @@ function MAMSBuildRoute(&$query)
 			$query['Itemid'] = $foundsec;
 			unset ($query['view']);
 			unset ($query['secid']);
-			if (strpos($query['autid'], ':') === false) {
+			unset ($query['layout']);
+			if (strpos($query['autid'], ':') === false && isset($query['autid'])) {
 				$db = JFactory::getDbo();
 				$aquery = $db->setQuery($db->getQuery(true)
 					->select('auth_alias')
 					->from('#__mams_authors')
-					->where('auth_id='.(int)$query['artid'])
+					->where('auth_id='.(int)$query['autid'])
 				);
 				$alias = $db->loadResult();
-				$query['artid'] = $query['artid'].':'.$alias;
+				$query['autid'] = $query['autid'].':'.$alias;
 			}
 			$segments[] = $query['autid'];
 			unset ($query['autid']);

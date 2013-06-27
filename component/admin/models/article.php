@@ -80,10 +80,10 @@ class MAMSModelArticle extends JModelAdmin
 		$item->metadata = $registry->toArray();
 		
 		//Tags
-		if (!empty($item->id))
+		if (!empty($item->art_id))
 		{
 			$item->tags = new JHelperTags;
-			$item->tags->getTagIds($item->id, 'com_mams.article');
+			$item->tags->getTagIds($item->art_id, 'com_mams.article');
 			$item->metadata['tags'] = $item->tags;
 		}
 	
@@ -250,28 +250,16 @@ class MAMSModelArticle extends JModelAdmin
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 	
-		foreach ($pks as $pk)
-		{
-			if ($user->authorise('core.edit', $contexts[$pk]))
-			{
+		foreach ($pks as $pk) {
+			if ($user->authorise('core.edit', $contexts[$pk])) {
 				$table->reset();
 				$table->load($pk);
 				$table->feataccess = (int) $value;
 	
-				if (!$table->check())
-				{
-					$this->setError($table->getError());
-					return false;
-				}
+				if (!$table->check()) { $this->setError($table->getError()); return false; }
 	
-				if (!$table->store())
-				{
-					$this->setError($table->getError());
-					return false;
-				}
-			}
-			else
-			{
+				if (!$table->store()) { $this->setError($table->getError()); return false; }
+			} else {
 				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 				return false;
 			}
@@ -289,28 +277,16 @@ class MAMSModelArticle extends JModelAdmin
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 	
-		foreach ($pks as $pk)
-		{
-			if ($user->authorise('core.edit', $contexts[$pk]))
-			{
+		foreach ($pks as $pk) {
+			if ($user->authorise('core.edit', $contexts[$pk]))	{
 				$table->reset();
 				$table->load($pk);
 				$table->art_sec = (int) $value;
 	
-				if (!$table->check())
-				{
-					$this->setError($table->getError());
-					return false;
-				}
+				if (!$table->check()) {	$this->setError($table->getError()); return false; }
 	
-				if (!$table->store())
-				{
-					$this->setError($table->getError());
-					return false;
-				}
-			}
-			else
-			{
+				if (!$table->store()) { $this->setError($table->getError()); return false; }
+			} else {
 				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 				return false;
 			}
@@ -327,6 +303,9 @@ class MAMSModelArticle extends JModelAdmin
 		if (empty($table->art_id)) {
 			$table->reorder('art_sec = "'.$table->art_sec.'" && art_publish_up = "'.$table->art_publish_up.'"');
 		}
+		
+		//Increment Version Number
+		$table->version++;
 	}
 
 	protected function getReorderConditions($table)
