@@ -39,6 +39,7 @@ class MAMSModelArtList extends JModelList
 	{
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
+		$cfg = MAMSHelper::getConfig();
 		
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');

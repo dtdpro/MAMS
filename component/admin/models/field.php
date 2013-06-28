@@ -77,15 +77,12 @@ class MAMSModelField extends JModelAdmin
 		
 		//Disallow editing of primary fields
 		if ($data->field_id < 100 && $data->field_id != 0) {
-			$form->setFieldAttribute('field_title', 'disabled', 'true');
-			$form->setFieldAttribute('field_name', 'disabled', 'true');
-			$form->setFieldAttribute('field_group', 'disabled', 'true');
 			$form->setFieldAttribute('published', 'disabled', 'true');
 			$form->setFieldAttribute('access', 'disabled', 'true');
 				
-			$form->setFieldAttribute('field_title', 'filter', 'unset');
-			$form->setFieldAttribute('field_name', 'filter', 'unset');
-			$form->setFieldAttribute('field_group', 'filter', 'unset');
+			$form->setFieldAttribute('field_name', 'type', 'hidden');
+			$form->setFieldAttribute('field_group', 'type', 'hidden');
+			$form->setFieldAttribute('field_type', 'type', 'hidden');
 			$form->setFieldAttribute('published', 'filter', 'unset');
 			$form->setFieldAttribute('access', 'filter', 'unset');
 			

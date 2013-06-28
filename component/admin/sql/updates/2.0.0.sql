@@ -67,13 +67,14 @@ CREATE TABLE IF NOT EXISTS `#__mams_article_fields` (
   PRIMARY KEY (`field_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=100 ;
 
-INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `field_rssname`, `field_type`, `field_group`, `field_show_page`, `field_show_list`, `field_show_title`, `ordering`, `access`, `published`) VALUES
-(1, 'art_title', 'Article Title', 'title', 'textfield', 1, 1, 1, 0, 4, 1, 1),
-(2, 'art_desc', 'Article Description', 'description', 'textbox', 1, 0, 1, 0, 6, 1, 1),
-(3, 'art_content', 'Article Body', 'body', 'editor', 1, 1, 0, 0, 7, 1, 1),
-(4, 'art_pubinfo', 'Article Publishing Information', '', 'pubinfo', 1, 1, 1, 0, 5, 1, 1),
-(5, 'art_auths', 'Article Authors', 'author', 'auths', 1, 1, 1, 0, 8, 1, 1),
-(6, 'art_media', 'Article Media', '', 'media', 1, 1, 0, 0, 9, 1, 1),
-(7, 'art_dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 0, 10, 1, 1),
-(8, 'art_links', 'Article Links', '', 'links', 1, 1, 0, 0, 11, 1, 1),
-(9, 'art_related', 'Related Items', '', 'related', 1, 1, 0, 1, 19, 1, 1);
+INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `field_rssname`, `field_type`, `field_group`, `field_show_page`, `field_show_list`, `ordering`, `access`, `published`, `params`) VALUES
+(1, 'art-title', 'Article Title', 'title', 'title', 1, 1, 1, 1, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(2, 'art-desc', 'Article Description', 'description', 'desc', 1, 0, 1, 3, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(3, 'art-content', 'Article Body', 'body', 'body', 1, 1, 0, 7, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(4, 'art-pubinfo', 'Article Publishing Information', '', 'pubinfo', 1, 1, 1, 2, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(5, 'art-auths', 'Article Authors', 'author', 'auths', 1, 1, 1, 6, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(6, 'art-media', 'Article Media', '', 'media', 1, 1, 0, 4, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(7, 'art-dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 5, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(8, 'art-links', 'Article Links', '', 'links', 1, 1, 0, 8, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(9, 'art-related', 'Related Items', '', 'related', 1, 1, 0, 9, 1, 1, '{"show_title_page":"1","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}');
+

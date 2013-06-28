@@ -86,7 +86,8 @@ foreach ($this->articles as $a) {
 					$fn = $f->field_name; 
 					if ($a->art_fielddata->$fn || $f->data) {
 						if ($f->group_name != $curgroup) {
-							if (!$first) { echo '</div>'; $fisrt=false; }
+							if (!$first) { echo '</div>';  }
+							else { $first=false; }
 							echo '<div class="mams-artlist-'.$f->group_name.'">';
 							$curgroup = $f->group_name;
 							if ($f->group_show_title) {
@@ -95,7 +96,7 @@ foreach ($this->articles as $a) {
 								echo '</div>';
 							}
 						}
-						if ($f->field_show_title) {
+						if ($f->params->show_title_desc) {
 							echo '<div class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'-title">';
 							echo $f->field_title;
 							echo '</div>';

@@ -59,8 +59,7 @@ class MAMSViewArticle extends JViewLegacy
 				$this->document->setTitle($this->article->art_title);
 				MAMSHelper::trackViewed($art,'article');
 				if ($this->params->get('show_related',1)) {
-					$this->relatedbycat=$model->getRelatedByCat($art,$this->article->cats,$this->article->sec_id);
-					$this->relatedbyaut=$model->getRelatedByAut($art,$this->article->auts,$this->article->sec_id);
+					$this->related=$model->getRelated($art,$this->article->cats,$this->article->auts,$this->article->sec_id);
 				}
 				//run plugins
 				$results = $dispatcher->trigger('onMAMSPrepare', array(&$this->article->art_content));

@@ -1,317 +1,283 @@
 <?php
 defined('_JEXEC') or die();
 $config=MAMSHelper::getConfig();
-//Title
-echo '<h2 class="title">';
-echo $this->article->art_title; 
-echo '</h2>';
+//echo '<pre>';
+//print_r($this->article);
+//echo '</pre>';
 
-if ($this->params->get('show_pubinfo',1)) {
-	//Pub Info
-	echo '<div class="mams-article-pubinfo">';
-	
-		//Section Link
-		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$this->article->sec_id.":".$this->article->sec_alias).'" class="mams-article-seclink">'.$this->article->sec_name.'</a>';
-		
-		//Pub Date
-		if ($this->params->get('show_pubdate',1)) {
-			echo ' published on <strong>';
-			echo date("F j, Y",strtotime($this->article->art_publish_up));
-			echo '</strong>';
-		}
-		
-		//Cat Links
-		if ($this->article->cats) {
-			if ($this->params->get('show_pubdate',1)) { 
-				echo ' in <em>';
-			} else {
-				echo ' - <em>';
-			}
-			$cats = Array();
-			foreach ($this->article->cats as $c) {
-				$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$this->article->sec_id.":".$this->article->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>';
-			}
-			echo implode(", ",$cats);
-			echo '</em>';
-		}
-		
-	echo '</div>';
-}
-
-//Media
-if ($this->article->media) {
-	echo '<div class="mams-article-media">';
-		echo '<div align="center">';
-		
-		echo '<div class="mams-article-mediawrap"';
-		if ($config->player_fixed) echo ' style="width: '.(int)$config->vid_w.'px;"';
-		echo '>';
-		if ($this->article->media[0]->med_type == 'vid' || $this->article->media[0]->med_type == 'vids') { //Video Player
-			echo '<div class="mams-article-media-player';
-			if (count($this->article->media) == 1) echo 'one';
-			else if ($config->player_fixed) echo 'fixed';
-			echo '">';
-			echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
-			if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
-			echo 'id="mams-article-mediaelement" src="http://'.$config->vid5_url.'/'.$this->article->media[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$this->article->media[0]->med_still.'"';
-			if ($this->article->media[0]->med_autoplay) echo ' autoplay="autoplay"';
-			echo '></video>';
-			echo '<script type="text/javascript">';
-			echo "var fmplayer = new MediaElementPlayer('#mams-article-mediaelement');";
-			echo '</script>';
-			if (count($this->article->media) > 1) {
-				?>
-					<script type="text/javascript">
-					jQuery(document).ready(function() {
-						jQuery(".mams-article-media-item").click(function(){	
-							var parent = jQuery(this).parents('.mams-article-media-playlist');	
-							jQuery('.mams-article-media-item',parent).removeClass('selected');
-							jQuery(this).addClass('selected');
-						}); <?php 
-						foreach ($this->article->media as $m) {
-							echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
-						    echo "fmplayer.pause();fmplayer.setSrc('http://".$config->vid5_url.'/'.$m->med_file."');fmplayer.play();";
-							echo '}); ';
-						}?>
-					});
-					</script>
-				<?php 
-			}
-			echo '</div>';
-			if (count($this->article->media) > 1) {
-				echo '<div class="mams-article-media-playlist';
-				if ($config->player_fixed) echo 'fixed';
-				echo '">';
-				echo '<ul>';
-				$first = true;
-				foreach ($this->article->media as $m) {
-					echo '<li class="mams-article-media-item mampli-'.$m->med_id;
-					if ($first) { echo ' selected'; $first=false; }
-					echo '">';
-					echo "";
-					echo '<div class="mampli-thumb"><img src="'.$m->med_still.'" border="0" class="size-auto"></div>';
-					echo '<div class="mampli-text"><div class="mampli-title">'.$m->med_exttitle.'</div><div class="mampli-desc">'.$m->med_desc;
-					echo '</div></div>';
-					echo '</li>';
-				}
-				echo '</ul>';
+//Fields Renderer
+if ($this->article->fields) {
+	$curgroup = "";
+	$first=true;
+	foreach ($this->article->fields as $f) {
+		$fn = $f->field_name;
+		$gns = "show_".$f->group_name; 
+		if ($f->group_name != $curgroup && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
+			if (!$first) { echo '<div style="clear:both"></div>'; echo '</div>';  }
+			else { $first=false; }
+			echo '<div class="mams-article-'.$f->group_name.'">';
+			$curgroup = $f->group_name;
+			if ($f->group_show_title) {
+				echo '<div class="mams-article-'.$f->group_name.'-title">';
+				echo $f->group_title;
 				echo '</div>';
 			}
 		}
-		
-		if ($this->article->media[0]->med_type == 'aud') { //Audio Player
-			echo '<div class="mams-article-media-player';
-			if (count($this->article->media) == 1) echo 'one';
-			else if ($config->player_fixed) echo 'fixed';
-			echo '">';
-			echo '<audio id="mams-article-mediaelement" width="'.(int)$config->vid_w.'" ';
-			if (!$config->player_fixed) echo 'style="width: 100%;" ';
-			echo 'src="'.JURI::base( true ).'/'.$this->article->media[0]->med_file.'" type="audio/mp3" controls="controls"></audio>';
-			echo '<script type="text/javascript">';
-			echo "var fmplayer = new MediaElementPlayer('#mams-article-mediaelement');";
-			echo '</script>';
-			if (count($this->article->media) > 1) {
-				?>
-					<script type="text/javascript">
-					jQuery(document).ready(function() {
-						jQuery(".mams-article-media-item").click(function(){	
-							var parent = jQuery(this).parents('.mams-article-media-playlist');	
-							jQuery('.mams-article-media-item',parent).removeClass('selected');
-							jQuery(this).addClass('selected');
-						}); <?php 
-						foreach ($this->article->media as $m) {
-							echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
-						    echo "fmplayer.pause();fmplayer.setSrc('".JURI::base( true ).'/'.$m->med_file."');fmplayer.play();";
-							echo '}); ';
-						}?>
-					});
-					</script>
-				<?php 
+		echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'">';
+		if ($f->params->show_title_page && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
+			echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-title">';
+			echo $f->field_title;
+			echo '</div>';
+		}
+		if ($f->field_type != "title" && $f->field_type != "body" && $f->field_type != "pubinfo" && $f->field_type != "related" && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
+			
+			switch ($f->field_type) {
+				case "textfield":
+				case "textbox":
+				case "editor":
+					echo $this->article->art_fielddata->$fn;
+					break;
+				case "auths":
+					if ($f->field_name == "art_auths") $auths = $this->article->auts;
+					else $auths = $f->data;
+					foreach ($auths as $d) {
+						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth mams-article-auth">';
+						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$d->auth_sec."&autid=".$d->auth_id.":".$d->auth_alias).'" class="mams-article-'.$f->group_name.'-'.$f->field_name.'-autlink">'.$d->auth_fname.(($d->auth_mi) ? " ".$d->auth_mi : "")." ".$d->auth_lname.(($d->auth_titles) ? ", ".$d->auth_titles : "").'</a>';
+						if ($this->params->get('show_authcred',1)) echo '<br />'.$d->auth_credentials;
+						echo '</div>';
+					}
+					break;
+				case "dloads":
+					if ($f->field_name == "art_dloads") $dloads = $this->article->dloads;
+					else $dloads = $f->data;
+					$firstdl=true;
+					foreach ($dloads as $d) {
+						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-dload">';
+						echo '<a href="'.JRoute::_("components/com_mams/dl.php?dlid=".$d->dl_id).'" ';
+						echo 'target="_blank" ';
+						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artdload mams-article-dllink';
+						if ($firstdl) { echo ' firstdload'; $firstdl=false; }
+						echo '">';
+						echo 'Download '.$d->dl_lname;
+						echo '</a>';
+						echo '</div>';
+					}
+					break;
+				case "links":
+					if ($f->field_name == "art_links") $links = $this->article->links;
+					else $links = $f->data;
+					$firstlink=true;
+					foreach ($links as $d) {
+						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-link mams-article-link">';
+						echo '<a href="'.$d->link_url.'" ';
+						echo 'target="'.$d->link_target.'" ';
+						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artlink';
+						if ($firstlink) { echo ' firstlink'; $firstlink=false; }
+						echo '">';
+						echo $d->link_title;
+						echo '</a>';
+						echo '</div>';
+					}
+					break;
+				case "media":
+					if ($f->field_name == "art_media") $media = $this->article->media;
+					else $media = $f->data;
+					echo '<div align="center">'; //Center the player, enoyingly needed
+					echo '<div class="mams-article-mediawrap"';
+					if ($config->player_fixed) echo ' style="width: '.(int)$config->vid_w.'px;"';
+					echo '>';
+					//Video Player
+					if ($media[0]->med_type == 'vid' || $media[0]->med_type == 'vids') {
+						echo '<div class="mams-article-media-player';
+						if (count($media) == 1) echo 'one';
+						else if ($config->player_fixed) echo 'fixed';
+						echo '">';
+						echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
+						if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
+						echo 'id="mams-article-mediaelement-'.$f->field_name.'" src="http://'.$config->vid5_url.'/'.$media[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$media[0]->med_still.'"';
+						if ($media[0]->med_autoplay) echo ' autoplay="autoplay"';
+						echo '></video>';
+						echo '<script type="text/javascript">';
+						echo "var fmplayer_".$f->field_name." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."');";
+						echo '</script>';
+						if (count($media) > 1) {
+							?>
+								<script type="text/javascript">
+								jQuery(document).ready(function() {
+									jQuery(".mams-article-media-item").click(function(){	
+										var parent = jQuery(this).parents('.mams-article-media-playlist');	
+										jQuery('.mams-article-media-item',parent).removeClass('selected');
+										jQuery(this).addClass('selected');
+									}); <?php 
+									foreach ($media as $m) {
+										echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
+									    echo "fmplayer_".$f->field_name.".pause();fmplayer_".$f->field_name.".setSrc('http://".$config->vid5_url.'/'.$m->med_file."');fmplayer_".$f->field_name.".play();";
+										echo '}); ';
+									}?>
+								});
+								</script>
+							<?php 
+						}
+						echo '</div>';
+					}
+							
+					//Audio Player
+					if ($media[0]->med_type == 'aud') { 
+						echo '<div class="mams-article-media-player';
+						if (count($media) == 1) echo 'one';
+						else if ($config->player_fixed) echo 'fixed';
+						echo '">';
+						echo '<audio id="mams-article-mediaelement-'.$f->field_name.'" width="'.(int)$config->vid_w.'" ';
+						if (!$config->player_fixed) echo 'style="width: 100%;" ';
+						echo 'src="'.JURI::base( true ).'/'.$media[0]->med_file.'" type="audio/mp3" controls="controls"></audio>';
+						echo '<script type="text/javascript">';
+						echo "var fmplayer_".$f->field_name." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."');";
+						echo '</script>';
+						if (count($media) > 1) {
+							?>
+								<script type="text/javascript">
+								jQuery(document).ready(function() {
+									jQuery(".mams-article-media-item").click(function(){	
+										var parent = jQuery(this).parents('.mams-article-media-playlist');	
+										jQuery('.mams-article-media-item',parent).removeClass('selected');
+										jQuery(this).addClass('selected');
+									}); <?php 
+									foreach ($media as $m) {
+										echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
+									    echo "fmplayer_".$f->field_name.".pause();fmplayer_".$f->field_name.".setSrc('".JURI::base( true ).'/'.$m->med_file."');fmplayer_".$f->field_name.".play();";
+										echo '}); ';
+									}?>
+								});
+								</script>
+							<?php 
+						}
+						echo '</div>';
+					}
+					//Playlist
+					if (count($media) > 1) {
+						echo '<div class="mams-article-media-playlist';
+						if ($config->player_fixed) echo 'fixed';
+						echo '">';
+						echo '<ul>';
+						$first = true;
+						foreach ($media as $m) {
+							echo '<li class="mams-article-media-item mampli-'.$m->med_id;
+							if ($first) { echo ' selected'; $first=false; }
+							echo '">';
+							echo "";
+							echo '<div class="mampli-thumb"><img src="'.$m->med_still.'" border="0" class="size-auto"></div>';
+							echo '<div class="mampli-text"><div class="mampli-title">'.$m->med_exttitle.'</div><div class="mampli-desc">'.$m->med_desc;
+							echo '</div></div>';
+							echo '</li>';
+						}
+						echo '</ul>';
+						echo '</div>';
+					}
+					echo '</div>';
+					echo '<div style="clear:both"></div>';
+					echo '</div>';
+					break;
+			} 
+		} else if ($f->field_type == "title") {
+			//Title
+			echo '<h2 class="title">';
+			echo $this->article->art_title;
+			echo '</h2>';
+		} else if ($f->field_type == "body") {
+			//Body
+			echo '<div class="mams-article-content">';
+			echo $this->article->art_content;
+			echo '</div>';
+		} else if ($f->field_type == "pubinfo" && $this->params->get('show_pubinfo',1)) {
+			//Pub Info
+			echo '<div class="mams-article-pubinfo">';
+
+			//Section Link
+			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$this->article->sec_id.":".$this->article->sec_alias).'" class="mams-article-seclink">'.$this->article->sec_name.'</a>';
+				
+			//Pub Date
+			if ($this->params->get('show_pubdate',1)) {
+				echo ' published on <strong>';
+				echo date("F j, Y",strtotime($this->article->art_publish_up));
+				echo '</strong>';
+			}
+				
+			//Cat Links
+			if ($this->article->cats) {
+				if ($this->params->get('show_pubdate',1)) {
+					echo ' in <em>';
+				} else {
+					echo ' - <em>';
+				}
+				$cats = Array();
+				foreach ($this->article->cats as $c) {
+					$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$this->article->sec_id.":".$this->article->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>';
+				}
+				echo implode(", ",$cats);
+				echo '</em>';
 			}
 			echo '</div>';
-			if (count($this->article->media) > 1) {
-				echo '<div class="mams-article-media-playlist';
-				if ($config->player_fixed) echo 'fixed';
+		} else if ($f->field_type == "related") {
+			$rlfirst = true;
+			echo '<div class="mams-article-related-links">';
+			foreach ($this->related as $r) {
+				echo '<div class="mams-article-related-link';
+				if ($rlfirst) { echo ' firstlink'; $rlfirst=false; }
 				echo '">';
-				echo '<ul>';
-				$first = true;
-				foreach ($this->article->media as $m) {
-					echo '<li class="mams-article-media-item mampli-'.$m->med_id;
-					if ($first) { echo ' selected'; $first=false; }
-					echo '">';
-					echo "";
-					echo '<div class="mampli-thumb"><img src="'.$m->med_still.'" border="0" class="size-auto"></div>';
-					echo '<div class="mampli-text"><div class="mampli-title">'.$m->med_exttitle.'</div><div class="mampli-desc">'.$m->med_desc;
-					echo '</div></div>';
-					echo '</li>';
+				//Thumb
+				if ($r->art_thumb) {
+					echo '<div class="mams-article-related-thumb">';
+					echo '<img class="mams-article-related-artthumb"';
+					echo ' src="'.$r->art_thumb.'" ';
+					echo ' />';
+					echo '</div>';
 				}
-				echo '</ul>';
+				echo '<div class="mams-article-related-details">';
+				echo '<div class="mams-article-related-title">';
+				echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias).'" class="mams-article-related-artlink">';
+				echo $r->art_title.'</a>';
+				echo '</div>';
+				//Authors
+				if ($r->auts) {
+					echo '<div class="mams-article-related-artaut">';
+					$auts = Array();
+					foreach ($r->auts as $f) {
+						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-article-related-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
+					}
+					echo implode(", ",$auts);
+					echo '</div>';
+				}
+				echo '<div class="mams-article-related-pubinfo">';
+				//Section Link
+				echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$r->sec_id.":".$r->sec_alias).'" class="mams-article-related-seclink">'.$r->sec_name.'</a>';
+					
+				//Pub Date
+				echo ' published on <strong>';
+				echo date("F j, Y",strtotime($r->art_publish_up));
+				echo '</strong>';
+					
+				//Cat Links
+				if ($r->cats) {
+					echo ' in <em>';
+					$cats = Array();
+					foreach ($r->cats as $c) {
+						$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$r->sec_id.":".$r->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-related-catlink">'.$c->cat_title.'</a>';
+					}
+					echo implode(", ",$cats);
+					echo '</em>';
+				}
+				echo '</div>';
+				echo '</div>';
 				echo '</div>';
 			}
-		}
-		echo '</div>';
-		echo '<div style="clear:both"></div>';
-		echo '</div>';
-	echo '</div>';
-}
-
-//Downloads
-if ($this->article->dloads) {
-	echo '<div class="mams-article-downloads">';
-		$dloads = Array();
-		foreach ($this->article->dloads as $d) {
-			$dloads[]='<a href="'.JRoute::_("components/com_mams/dl.php?dlid=".$d->dl_id).'" class="mams-article-dllink" target="_blank">Download '.$d->dl_lname.'</a>';
-		}
-		echo implode(" ",$dloads);
-	echo '</div>';
-}
-
-//Authors
-if ($this->article->auts) {
-	echo '<div class="mams-article-auths">';
-		foreach ($this->article->auts as $f) {
-			echo '<div class="mams-article-auth">';
-			echo '<strong><a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" ';
-			echo 'class="mams-article-autlink">';
-			echo $f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "");
-			echo '</a></strong>';
-			if ($this->params->get('show_authcred',1)) echo '<br />'.$f->auth_credentials;
 			echo '</div>';
 		}
-	echo '</div>';
-}
-
-//Article Title
-if ($this->params->get('show_title2',0)) {
-	echo '<div class="mams-article-title">';
-	echo $this->article->art_title;
-	echo '</div>';
-}
-
-//Article Body
-echo '<div class="mams-article-content">';
-echo $this->article->art_content;
-echo '</div>';
-
-//Links
-if ($this->article->links) {
-	echo '<div class="mams-article-links">';
-	foreach ($this->article->links as $f) {
-		echo '<div class="mams-article-link">';
-		echo '<a href="'.$f->link_url.'" ';
-		echo 'target="'.$f->link_target.'" ';
-		echo 'class="mams-article-artlink">';
-		echo $f->link_title;
-		echo '</a>';
 		echo '</div>';
 	}
-	echo '</div>';
+	if (!$first) { echo '<div style="clear:both"></div>'; echo '</div>'; }
 }
 
 //Last Modifed
 echo '<div class="mams-article-modified">';
 echo 'Last modified: '.date("F j, Y",strtotime($this->article->art_modified));
 echo '</div>';
-
-
-//Related Items
-if ($this->relatedbycat) {
-echo '<div class="mams-article-related">';
-	echo '<div class="mams-article-related-title">Related Items by Category</div>';
-	echo '<div class="mams-article-related-links">';
-		foreach ($this->relatedbycat as $r) {
-			echo '<div class="mams-article-related-link">';
-			//Thumb
-			if ($r->art_thumb) {
-				echo '<img class="mams-article-related-artthumb"';
-				echo ' src="'.$r->art_thumb.'" ';
-				echo 'align="left" />';
-			}
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias).'" class="mams-article-artlink">';
-			echo $r->art_title.'</a>';
-			//Authors
-			if ($r->auts) {
-				echo '<div class="mams-article-related-artaut">';
-					$auts = Array();
-					foreach ($r->auts as $f) {
-						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
-					}
-					echo implode(", ",$auts);
-				echo '</div>';
-			}
-			echo '<div class="mams-article-related-pubinfo">';
-			//Section Link
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$r->sec_id.":".$r->sec_alias).'" class="mams-article-seclink">'.$r->sec_name.'</a>';
-			
-			//Pub Date
-			echo ' published on <strong>';
-			echo date("F j, Y",strtotime($r->art_publish_up));
-			echo '</strong>';
-			
-			//Cat Links
-			if ($r->cats) {
-				echo ' in <em>';
-				$cats = Array();
-				foreach ($r->cats as $c) {
-					$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$r->sec_id.":".$r->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
-				}
-				echo implode(", ",$cats);
-				echo '</em>';
-			}
-			echo '</div>';
-			echo '</div>';
-		}
-	echo '</div>';
-echo '</div>';
-}
-
-if ($this->relatedbyaut) {
-echo '<div class="mams-article-related">';
-	echo '<div class="mams-article-related-title">Related Items by Author</div>';
-	echo '<div class="mams-article-related-links">';
-		foreach ($this->relatedbyaut as $r) {
-			echo '<div class="mams-article-related-link">';
-			//Thumb
-			if ($r->art_thumb) {
-				echo '<img class="mams-article-related-artthumb"';
-				echo ' src="'.$r->art_thumb.'" ';
-				echo 'align="left" />';
-			}
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias).'" class="mams-article-artlink">';
-			echo $r->art_title.'</a>';
-			//Authors
-			if ($r->auts) {
-				echo '<div class="mams-article-related-artaut">';
-					$auts = Array();
-					foreach ($r->auts as $f) {
-						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
-					}
-					echo implode(", ",$auts);
-				echo '</div>';
-			}
-			echo '<div class="mams-article-related-pubinfo">';
-			//Section Link
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$r->sec_id.":".$r->sec_alias).'" class="mams-article-seclink">'.$r->sec_name.'</a>';
-			
-			//Pub Date
-			echo ' published on <strong>';
-			echo date("F j, Y",strtotime($r->art_publish_up));
-			echo '</strong>';
-			
-			//Cat Links
-			if ($r->cats) {
-				echo ' in <em>';
-				$cats = Array();
-				foreach ($r->cats as $c) {
-					$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$r->sec_id.":".$r->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
-				}
-				echo implode(", ",$cats);
-				echo '</em>';
-			}
-			echo '</div>';
-			echo '</div>';
-		}
-	echo '</div>';
-echo '</div>';
-}
-
