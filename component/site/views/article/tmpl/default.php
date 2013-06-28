@@ -98,7 +98,7 @@ if ($this->article->fields) {
 						if ($media[0]->med_autoplay) echo ' autoplay="autoplay"';
 						echo '></video>';
 						echo '<script type="text/javascript">';
-						echo "var fmplayer_".$f->field_name." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."');";
+						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."');";
 						echo '</script>';
 						if (count($media) > 1) {
 							?>
@@ -111,7 +111,7 @@ if ($this->article->fields) {
 									}); <?php 
 									foreach ($media as $m) {
 										echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
-									    echo "fmplayer_".$f->field_name.".pause();fmplayer_".$f->field_name.".setSrc('http://".$config->vid5_url.'/'.$m->med_file."');fmplayer_".$f->field_name.".play();";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".pause();fmplayer_".str_replace("-","_",$f->field_name).".setSrc('http://".$config->vid5_url.'/'.$m->med_file."');fmplayer_".str_replace("-","_",$f->field_name).".play();";
 										echo '}); ';
 									}?>
 								});
@@ -131,7 +131,7 @@ if ($this->article->fields) {
 						if (!$config->player_fixed) echo 'style="width: 100%;" ';
 						echo 'src="'.JURI::base( true ).'/'.$media[0]->med_file.'" type="audio/mp3" controls="controls"></audio>';
 						echo '<script type="text/javascript">';
-						echo "var fmplayer_".$f->field_name." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."');";
+						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."');";
 						echo '</script>';
 						if (count($media) > 1) {
 							?>
@@ -144,7 +144,7 @@ if ($this->article->fields) {
 									}); <?php 
 									foreach ($media as $m) {
 										echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
-									    echo "fmplayer_".$f->field_name.".pause();fmplayer_".$f->field_name.".setSrc('".JURI::base( true ).'/'.$m->med_file."');fmplayer_".$f->field_name.".play();";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".pause();fmplayer_".str_replace("-","_",$f->field_name).".setSrc('".JURI::base( true ).'/'.$m->med_file."');fmplayer_".str_replace("-","_",$f->field_name).".play();";
 										echo '}); ';
 									}?>
 								});
