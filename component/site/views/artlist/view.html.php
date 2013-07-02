@@ -42,8 +42,8 @@ class MAMSViewArtList extends JViewLegacy
 	
 	protected function listCategory() {
 		$model =& $this->getModel();
-		$sec=JRequest::getInt('secid',0);
-		if ($sec) $this->secinfo=$model->getSecInfo($sec);
+		$sec=$this->getSecs();
+		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
 		$cat=JRequest::getInt('catid');
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
@@ -56,7 +56,7 @@ class MAMSViewArtList extends JViewLegacy
 	
 	protected function listSection() {
 		$model =& $this->getModel();
-		$sec=JRequest::getInt('secid',0);
+		$sec=$this->getSecs();
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
 			MAMSHelper::trackViewed($sec,'seclist');
@@ -68,8 +68,8 @@ class MAMSViewArtList extends JViewLegacy
 	
 	protected function listAuthor() {
 		$model =& $this->getModel();
-		$sec=JRequest::getInt('secid',0);
-		if ($sec) $this->secinfo=$model->getSecInfo($sec);
+		$sec=$this->getSecs();
+		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
 		$aut=JRequest::getInt('autid');
 		$this->autinfo=$model->getAutInfo($aut);
 		if ($this->autinfo) {
@@ -78,6 +78,15 @@ class MAMSViewArtList extends JViewLegacy
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
 		}
+	}
+	
+	protected function getSecs() {
+		$secs = array();
+		foreach (JRequest::getVar('secid', array(), '', 'array') as $s) {
+			if ((int)$s) $secs[] = (int)$s;
+		}
+		return $secs;
+		
 	}
 	
 	

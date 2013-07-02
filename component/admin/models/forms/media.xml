@@ -111,13 +111,9 @@
 		/>
 		<field
 			name="med_still"
-			type="text"
+			type="media"
 			label="COM_MAMS_MEDIA_FIELD_STILL_LABEL"
 			description="COM_MAMS_MEDIA_FIELD_STILL_DESC"
-			size="60"
-			class="inputbox"
-			default=""
-			required="true"
 		/>
 		<field
 			name="med_autoplay"
