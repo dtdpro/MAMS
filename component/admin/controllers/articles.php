@@ -18,10 +18,10 @@ class MAMSControllerArticles extends JControllerAdmin
 	function featured()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 	
 		// Get items to remove from the request.
-		$cid = JRequest::getVar('cid', array(), '', 'array');
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
 	
 		if (!is_array($cid) || count($cid) < 1)
 		{
@@ -53,10 +53,10 @@ class MAMSControllerArticles extends JControllerAdmin
 	function unfeatured()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 	
 		// Get items to remove from the request.
-		$cid = JRequest::getVar('cid', array(), '', 'array');
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
 	
 		if (!is_array($cid) || count($cid) < 1)
 		{
@@ -113,13 +113,13 @@ class MAMSControllerArticles extends JControllerAdmin
 	function drilldowns()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 	
 		$app = JFactory::getApplication();
 		$context = "com_mams.drilldowns";
 	
 		// Get items to remove from the request.
-		$cid = JRequest::getVar('cid', array(), '', 'array');
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
 	
 		if (!is_array($cid) || count($cid) < 1)
 		{

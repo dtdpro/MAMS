@@ -19,6 +19,7 @@ class JFormFieldCats extends JFormField
 		$attr .= $this->element['class'] ? ' class="'.(string) $this->element['class'].'"' : '';
 		$attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
+		$attr .= $this->element['multiple'] ? ' multiple ' : '';
 
 		// Initialize JavaScript field attributes.
 		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';

@@ -10,6 +10,7 @@ if ($this->article->fields) {
 	$curgroup = "";
 	$first=true;
 	foreach ($this->article->fields as $f) {
+		if ($f->field_type == "related" && !$this->params->get('show_related',1)) { break; }
 		$fn = $f->field_name;
 		$gns = "show_".$f->group_name; 
 		if ($f->group_name != $curgroup && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
@@ -17,6 +18,7 @@ if ($this->article->fields) {
 			else { $first=false; }
 			echo '<div class="mams-article-'.$f->group_name.'">';
 			$curgroup = $f->group_name;
+			echo '<a name="'.$f->group_name.'"></a>';
 			if ($f->group_show_title) {
 				echo '<div class="mams-article-'.$f->group_name.'-title">';
 				echo $f->group_title;
@@ -24,6 +26,7 @@ if ($this->article->fields) {
 			}
 		}
 		echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'">';
+		echo '<a name="'.$f->group_name.'-'.$f->field_name.'"></a>';
 		if ($f->params->show_title_page && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
 			echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-title">';
 			echo $f->field_title;
@@ -217,7 +220,7 @@ if ($this->article->fields) {
 				echo '</em>';
 			}
 			echo '</div>';
-		} else if ($f->field_type == "related") {
+		} else if ($f->field_type == "related" && $this->params->get('show_related',1)) {
 			$rlfirst = true;
 			echo '<div class="mams-article-related-links">';
 			foreach ($this->related as $r) {

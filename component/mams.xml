@@ -25,6 +25,7 @@
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>mams.php</filename>
+		<filename>mams.css</filename>
 		<filename>dl.php</filename>
 		<filename>postroll.php</filename>
 		<filename>router.php</filename>

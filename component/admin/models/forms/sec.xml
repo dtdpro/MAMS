@@ -9,6 +9,7 @@
 			description ="JGLOBAL_FIELD_ID_DESC"
 			readonly="true"
 		/>
+		<field name="asset_id" type="hidden" filter="unset" />
 		<field
 			name="published"
 			type="list"
@@ -90,5 +91,11 @@
 			</field>
 		</fieldset>
 	</fields>
+	<fieldset>
+		<field name="rules" type="rules" label="JFIELD_RULES_LABEL"
+		translate_label="false" class="inputbox" filter="rules"
+		component="com_mams" section="sec" validate="rules"
+		/>
+	</fieldset>
 </form>
 

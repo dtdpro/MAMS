@@ -20,6 +20,7 @@ class MAMSViewArticle extends JViewLegacy
 		$this->item = $this->get('Item');
 		$model = $this->getModel();
 		$this->addfields = $model->getAdditionalForms($this->item);
+		$this->canDo	= MAMSHelper::getArticleActions($this->state->get('filter.sec'));
 		
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -41,11 +42,11 @@ class MAMSViewArticle extends JViewLegacy
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->art_id == 0;
+		$canDo		= MAMSHelper::getArticleActions($this->state->get('filter.sec'), $this->item->art_id);
 		JToolBarHelper::title($isNew ? JText::_('COM_MAMS_MANAGER_ARTICLE_NEW') : JText::_('COM_MAMS_MANAGER_ARTICLE_EDIT'), 'mams');
 		// Built the actions for new and existing records.
-		if ($isNew) 
+		if ($isNew && (count(MAMSHelper::getAuthorisedSecs('core.create')) > 0)) 
 		{
-			// For new records, check the create permission.
 			JToolBarHelper::apply('article.apply', 'JTOOLBAR_APPLY');
 			JToolBarHelper::save('article.save', 'JTOOLBAR_SAVE');
 			JToolBarHelper::custom('article.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
@@ -53,10 +54,18 @@ class MAMSViewArticle extends JViewLegacy
 		}
 		else
 		{
-			JToolBarHelper::apply('article.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save('article.save', 'JTOOLBAR_SAVE');
-			JToolBarHelper::custom('article.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			JToolBarHelper::custom('article.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			// For new records, check the create permission.
+			if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId))
+			{
+				JToolBarHelper::apply('article.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('article.save', 'JTOOLBAR_SAVE');
+				if ($canDo->get('core.create')) {
+					JToolBarHelper::custom('article.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				}
+			}
+			if ($canDo->get('core.create')) {
+				JToolBarHelper::custom('article.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			}
 			JToolBarHelper::cancel('article.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}

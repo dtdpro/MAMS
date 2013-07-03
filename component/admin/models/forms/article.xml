@@ -9,6 +9,7 @@
 			description ="JGLOBAL_FIELD_ID_DESC"
 			readonly="true"
 		/>
+		<field name="asset_id" type="hidden" filter="unset" />
 		<field
 			name="art_title"
 			type="text"
@@ -159,6 +160,12 @@
 		<field name="version" type="text" class="readonly" label="COM_MAMS_ARTICLE_FIELD_VERSION_LABEL" size="6" description="COM_MAMS_ARTICLE_FIELD_VERSION_DESC" readonly="true" filter="unset" labelclass="control-label" />
 		
 		<field name="art_hits" type="text" class="readonly" label="COM_MAMS_ARTICLE_FIELD_HITS_LABEL" size="6" description="COM_MAMS_ARTICLE_FIELD_HITS_DESC" readonly="true" filter="unset" labelclass="control-label" />
+		
+		
+		<field name="rules" type="rules" label="JFIELD_RULES_LABEL"
+		translate_label="false" class="inputbox" filter="rules"
+		component="com_mams" section="article" validate="rules"
+		/>
 				
 	</fieldset>
 	<fields name="metadata">

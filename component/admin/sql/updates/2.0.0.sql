@@ -18,8 +18,12 @@ ALTER TABLE  `#__mams_articles` ADD  `art_modified_by` INT NOT NULL AFTER  `art_
 ALTER TABLE  `#__mams_articles` ADD  `checked_out` INT NOT NULL AFTER  `art_modified_by` ,
 ADD  `checked_out_time` DATETIME NOT NULL AFTER  `checked_out` ;
 ALTER TABLE  `#__mams_articles` ADD  `version` INT NOT NULL ;
+ALTER TABLE  `#__mams_articles` ADD  `asset_id` INT NOT NULL ,
+ADD INDEX (  `asset_id` ) ;
 
 ALTER TABLE  `#__mams_secs` ADD  `metadata` TEXT NOT NULL ;
+ALTER TABLE  `#__mams_secs` ADD  `asset_id` INT NOT NULL ,
+ADD INDEX (  `asset_id` ) ;
 
 ALTER TABLE  `#__mams_artauth` ADD  `aa_field` INT NOT NULL DEFAULT  '5' AFTER  `aa_id` , ADD INDEX (  `aa_field` );
 ALTER TABLE  `#__mams_artmed` ADD  `am_field` INT NOT NULL DEFAULT  '6' AFTER  `am_id` , ADD INDEX (  `am_field` );

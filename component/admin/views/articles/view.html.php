@@ -34,28 +34,38 @@ class MAMSViewArticles extends JViewLegacy
 
 	protected function addToolBar() 
 	{
+		$canDo = MAMSHelper::getArticleActions($this->state->get('filter.sec'));
+		$user  = JFactory::getUser();
 		$state	= $this->get('State');	
 		$bar = JToolBar::getInstance('toolbar');
 		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_ARTICLES'), 'mams');
-		JToolBarHelper::addNew('article.add', 'JTOOLBAR_NEW');
-		JToolBarHelper::editList('article.edit', 'JTOOLBAR_EDIT');
-		JToolBarHelper::divider();
-		JToolBarHelper::custom('articles.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::custom('articles.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
-		JToolBarHelper::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
-		JToolBarHelper::custom('articles.unfeatured', 'remove.png', 'remove_f2.png', 'COM_MAMS_TOOLBAR_DEFEATURE', true);
-		JToolBarHelper::divider();
-		if ($state->get('filter.state') == -2) {
+		if ($canDo->get('core.create') || (count(MAMSHelper::getAuthorisedSecs('core.create'))) > 0 ) {
+			JToolBarHelper::addNew('article.add', 'JTOOLBAR_NEW');
+		}
+		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own'))) {
+			JToolBarHelper::editList('article.edit', 'JTOOLBAR_EDIT');
+		}
+		if ($canDo->get('core.edit.state')) {
+			JToolBarHelper::custom('articles.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			JToolBarHelper::custom('articles.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
+			JToolBarHelper::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
+			JToolBarHelper::custom('articles.unfeatured', 'remove.png', 'remove_f2.png', 'COM_MAMS_TOOLBAR_DEFEATURE', true);
+		}
+		if ($state->get('filter.state') == -2 && $canDo->get('core.delete')) {
 			JToolBarHelper::deleteList('', 'articles.delete', 'JTOOLBAR_EMPTY_TRASH');
-			JToolBarHelper::divider();
-		} else  {
+		} else if ($canDo->get('core.edit.state')) {
 			JToolBarHelper::trash('articles.trash');
 		}
-		JHtml::_('bootstrap.modal', 'collapseModal');
-		$title = JText::_('JTOOLBAR_BATCH');
-		$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\"><i class=\"icon-checkbox-partial\" title=\"$title\"></i>$title</button>";
-		$bar->appendButton('Custom', $dhtml, 'batch');
-
+		if ($user->authorise('core.edit')) {
+			JHtml::_('bootstrap.modal', 'collapseModal');
+			$title = JText::_('JTOOLBAR_BATCH');
+			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\"><i class=\"icon-checkbox-partial\" title=\"$title\"></i>$title</button>";
+			$bar->appendButton('Custom', $dhtml, 'batch');
+		}
+		if ($canDo->get('core.admin'))
+		{
+			JToolbarHelper::preferences('com_mams');
+		}
 		
 		JHtmlSidebar::setAction('index.php?option=com_mams&view=articles');
 		

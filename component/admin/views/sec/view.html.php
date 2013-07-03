@@ -42,8 +42,9 @@ class MAMSViewSec extends JViewLegacy
 		$userId = $user->id;
 		$isNew = $this->item->sec_id == 0;
 		JToolBarHelper::title($isNew ? JText::_('COM_MAMS_MANAGER_SEC_NEW') : JText::_('COM_MAMS_MANAGER_SEC_EDIT'), 'mams');
+		$this->canDo		= MAMSHelper::getSecActions($this->item->id);
 		// Built the actions for new and existing records.
-		if ($isNew) 
+		if ($isNew && $canDo->get('core.create')) 
 		{
 			// For new records, check the create permission.
 			JToolBarHelper::apply('sec.apply', 'JTOOLBAR_APPLY');
@@ -53,10 +54,16 @@ class MAMSViewSec extends JViewLegacy
 		}
 		else
 		{
-			JToolBarHelper::apply('sec.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save('sec.save', 'JTOOLBAR_SAVE');
-			JToolBarHelper::custom('sec.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			JToolBarHelper::custom('sec.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			if ($canDo->get('core.edit') || $canDo->get('core.edit.own')) {
+				JToolBarHelper::apply('sec.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('sec.save', 'JTOOLBAR_SAVE');
+				if ($canDo->get('core.create')) {
+					JToolBarHelper::custom('sec.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				}
+			}
+			if ($canDo->get('core.create')) {
+				JToolBarHelper::custom('sec.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+			}
 			JToolBarHelper::cancel('sec.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}

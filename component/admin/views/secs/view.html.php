@@ -33,18 +33,24 @@ class MAMSViewSecs extends JViewLegacy
 
 	protected function addToolBar() 
 	{
+		$canDo = MAMSHelper::getSecActions();
+		$user  = JFactory::getUser();
 		$state	= $this->get('State');
 		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_SECS'), 'mams');
-		JToolBarHelper::addNew('sec.add', 'JTOOLBAR_NEW');
-		JToolBarHelper::editList('sec.edit', 'JTOOLBAR_EDIT');
-		JToolBarHelper::divider();
-		JToolBarHelper::custom('secs.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::custom('secs.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
-		JToolBarHelper::divider();
-		if ($state->get('filter.state') == -2) {
+		if ($canDo->get('core.create')) {
+			JToolBarHelper::addNew('sec.add', 'JTOOLBAR_NEW');
+		}
+		if (($canDo->get('core.edit'))) {
+			JToolBarHelper::editList('sec.edit', 'JTOOLBAR_EDIT');
+		}
+		if ($canDo->get('core.edit.state')) {
+			JToolBarHelper::custom('secs.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			JToolBarHelper::custom('secs.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
+		}
+		if ($state->get('filter.state') == -2 && $canDo->get('core.delete')) {
 			JToolBarHelper::deleteList('', 'secs.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
-		} else  {
+		} else if ($canDo->get('core.edit.state')) {
 			JToolBarHelper::trash('secs.trash');
 		}
 		

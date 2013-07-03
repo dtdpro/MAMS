@@ -25,8 +25,12 @@ class MAMSModelSec extends JModelAdmin
 	protected function canEditState($record)
 	{
 		$user = JFactory::getUser();
-	
-		return parent::canEditState($record);
+		if (!empty($record->sec_id))
+		{
+			return $user->authorise('core.edit.state', 'com_content.article.' . (int) $record->sec_id);
+		} else { 
+			return parent::canEditState("com_mams");
+		}
 	}
 	
 	public function getItem($pk = null)

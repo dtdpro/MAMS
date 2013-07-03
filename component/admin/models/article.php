@@ -20,12 +20,25 @@ class MAMSModelArticle extends JModelAdmin
 			return parent::canDelete($record);
 		}
 	}
-	
 	protected function canEditState($record)
 	{
 		$user = JFactory::getUser();
 	
-		return parent::canEditState($record);
+		// Check for existing article.
+		if (!empty($record->art_id))
+		{
+			return $user->authorise('core.edit.state', 'com_mams.article.' . (int) $record->art_id);
+		}
+		// New article, so check against the category.
+		elseif (!empty($record->art_sec))
+		{
+			return $user->authorise('core.edit.state', 'com_mams.sec.' . (int) $record->art_sec);
+		}
+		// Default to component settings if neither article nor category known.
+		else
+		{
+			return parent::canEditState('com_mams');
+		}
 	}
 	
 	public function getTable($type = 'Article', $prefix = 'MAMSTable', $config = array()) 
@@ -232,6 +245,16 @@ class MAMSModelArticle extends JModelAdmin
 			$done = true;
 		}
 	
+		if ($commands['batch-addcat'] != 0)
+		{
+			if (!$this->batchAddCat($commands['batch-addcat'], $pks, $contexts))
+			{
+				return false;
+			}
+	
+			$done = true;
+		}
+	
 		if (!$done)
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
@@ -283,6 +306,40 @@ class MAMSModelArticle extends JModelAdmin
 				$table->load($pk);
 				$table->art_sec = (int) $value;
 	
+				if (!$table->check()) {	$this->setError($table->getError()); return false; }
+	
+				if (!$table->store()) { $this->setError($table->getError()); return false; }
+			} else {
+				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				return false;
+			}
+		}
+	
+		// Clean the cache
+		$this->cleanCache();
+	
+		return true;
+	}
+
+	protected function batchAddCat($value, $pks, $contexts)
+	{
+		// Set the variables
+		$user = JFactory::getUser();
+		
+	
+		foreach ($pks as $pk) {
+			if ($user->authorise('core.edit', $contexts[$pk]))	{
+				$table = $this->getTable("ArtCat","MAMSTable");
+				$table->ac_art=$pk;
+				$table->ac_cat=$value;
+				$table->published=1;
+				
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_artcat WHERE ac_art = "'.$pk.'"');
+				$max = $db->loadResult();
+				
+				$table->ordering = $max+1;
+				
 				if (!$table->check()) {	$this->setError($table->getError()); return false; }
 	
 				if (!$table->store()) { $this->setError($table->getError()); return false; }

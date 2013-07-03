@@ -77,6 +77,26 @@ abstract class MAMSHelper
 		return $options;
 	}
 	
+	static function getCats()
+	{
+		$db = JFactory::getDbo();
+		$db->setQuery(
+			'SELECT cat_id AS value, cat_title AS text' .
+			' FROM #__mams_cats ' .
+			' ORDER BY cat_title'
+		);
+		$options = $db->loadObjectList();
+		
+		// Check for a database error.
+		if ($db->getErrorNum())
+		{
+		JError::raiseNotice(500, $db->getErrorMsg());
+		return null;
+		}
+		
+		return $options;
+	}
+	
 	static function getFields($type = "auths")
 	{
 		$db = JFactory::getDbo();
@@ -101,6 +121,87 @@ abstract class MAMSHelper
 		$menuConfig = JComponentHelper::getParams('com_mams');
 		$mamscfg = $menuConfig->toObject();
 		return $mamscfg;
+	}
+	
+	public static function getArticleActions($secId = 0, $articleId = 0)
+	{
+		// Reverted a change for version 2.5.6
+		$user	= JFactory::getUser();
+		$result	= new JObject;
+	
+		if (empty($articleId) && empty($secId))
+		{
+			$assetName = 'com_mams';
+		}
+		elseif (empty($articleId))
+		{
+			$assetName = 'com_mams.sec.'.(int) $secId;
+		}
+		else
+		{
+			$assetName = 'com_mams.article.'.(int) $articleId;
+		}
+	
+		$actions = array(
+				'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
+		);
+	
+		foreach ($actions as $action)
+		{
+			$result->set($action,	$user->authorise($action, $assetName));
+		}
+	
+		return $result;
+	}
+	
+	public static function getSecActions($secId = 0)
+	{
+		$user	= JFactory::getUser();
+		$result	= new JObject;
+	
+		if (empty($secId))
+		{
+			$assetName = 'com_mams';
+		}
+		else
+		{
+			$assetName = 'com_mams.sec.'.(int) $secId;
+		}
+	
+		$actions = array(
+				'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
+		);
+	
+		foreach ($actions as $action)
+		{
+			$result->set($action,	$user->authorise($action, $assetName));
+		}
+	
+		return $result;
+	}
+	
+	public function getAuthorisedSecs($action)
+	{
+		// Brute force method: get all published category rows for the component and check each one
+		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
+		$db = JFactory::getDbo();
+		$user	= JFactory::getUser();
+		$query = $db->getQuery(true)
+		->select('s.sec_id AS id, a.name AS asset_name')
+		->from('#__mams_secs AS s')
+		->join('INNER', '#__assets AS a ON s.asset_id = a.id')
+		->where('s.published = 1');
+		$db->setQuery($query);
+		$allSecs = $db->loadObjectList('id');
+		$allowedSecs = array();
+		foreach ($allSecs as $section)
+		{
+			if ($user->authorise($action, $section->asset_name))
+			{
+				$allowedSecs[] = (int) $section->id;
+			}
+		}
+		return $allowedSecs;
 	}
 	
 }

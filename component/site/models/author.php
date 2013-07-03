@@ -29,7 +29,7 @@ class MAMSModelAuthor extends JModelLegacy
 		$qsec->select('sec_id, sec_name, sec_alias');
 		$qsec->from('#__mams_secs');
 		$qsec->where('sec_type = "author"');
-		if ($secid) $qsec->where('sec_id = '.$secid);
+		if ($secid) $qsec->where('sec_id IN ('.implode(",",$secid).')');
 		$qsec->order('ordering ASC');
 		$db->setQuery($qsec);
 		$secs = $db->loadObjectList();

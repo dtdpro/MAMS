@@ -239,7 +239,7 @@ class MAMSModelArtList extends JModelList
 		
 		$query->select('ac.ac_art');
 		$query->from('#__mams_artcat AS ac');
-		$query->where('ac.ac_cat = '.(int)$cat);
+		$query->where('ac.ac_cat IN ( '.implode(",",$cat).')');
 		$query->where('ac.published >= 1');
 		$db->setQuery($query);
 		$items = $db->loadColumn();

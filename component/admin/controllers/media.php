@@ -18,7 +18,7 @@ class MAMSControllerMedia extends JControllerForm
 		// Guess the JText message prefix. Defaults to the option.
 		if (empty($this->extension))
 		{
-			$this->extension = JRequest::getCmd('extension', 'com_mams');
+			$this->extension = JFactory::getApplication()->input->get('extension', 'com_mams');
 		}
 	}
 	

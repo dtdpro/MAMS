@@ -7,6 +7,10 @@
 		<field name="loginmsg" type="text" label="COM_MAMS_CONFIG_FIELD_LOGINMSG_LABEL" description="COM_MAMS_CONFIG_FIELD_LOGINMSG_DESC" size="70" class="inputbox" required="false" default="Login required" />
 		<field name="noaccessmsg" type="text" label="COM_MAMS_CONFIG_FIELD_NOACCESSMSG_LABEL" description="COM_MAMS_CONFIG_FIELD_NOACCESSMSG_DESC" size="70" class="inputbox" required="false" default="Access level not met" />
 		<field name="num_related" type="text" label="COM_MAMS_CONFIG_FIELD_NUMRELATED_LABEL" description="COM_MAMS_CONFIG_FIELD_NUMRELATED_DESC" size="10" class="inputbox" required="false" default="10" />
+		<field name="compcss" type="radio" label="COM_MAMS_CONFIG_FIELD_COMPCSS_LABEL" description="COM_MAMS_CONFIG_FIELD_COMPCSS_DESC" default="0" class="btn-group">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 	</fieldset>
 	<fieldset name="jbasic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
 		<field name="show_pubinfo" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBINFO_DESC" label="COM_MAMS_FIELD_SHOW_PUBINFO_LABEL" default="1">	
@@ -33,11 +37,9 @@
 	<fieldset name="video" label="COM_MAMS_CONFIG_VIDEO_LABEL" description="COM_MAMS_CONFIG_VIDEO_DESC">
 		<field name="vid_w" type="text" label="COM_MAMS_CONFIG_FIELD_VIDW_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />
 		<field name="vid_h" type="text" label="COM_MAMS_CONFIG_FIELD_VIDH_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDH_DESC" size="5" class="inputbox" required="false" integer="true" default="432" />
-		<field name="vids_url" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSURL_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSURL_DESC" size="120" class="inputbox" required="false" default="streams.mycdn.com" />
-		<field name="vids_app" type="text" label="COM_MAMS_CONFIG_FIELD_VIDSAPP_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDSAPP_DESC" size="120" class="inputbox" required="false" default="" />
 		<field name="vid5_url" type="text" label="COM_MAMS_CONFIG_FIELD_VID5URL_LABEL" description="COM_MAMS_CONFIG_FIELD_VID5URL_DESC" size="120" class="inputbox" required="false" default="files.mycdn.com" />
 		<field name="playlist_h" type="text" label="COM_MAMS_CONFIG_FIELD_PLAYLISTH_LABEL" description="COM_MAMS_CONFIG_FIELD_PLAYLISTH_DESC" size="5" class="inputbox" required="false" integer="true" default="200" />
-		<field name="player_fixed" type="radio" description="COM_MAMS_CONFIG_FIELD_PLAYER_FIXED_DESC" label="COM_MAMS_CONFIG_FIELD_PLAYER_FIXED_LABEL" default="0">
+		<field name="player_fixed" type="radio" description="COM_MAMS_CONFIG_FIELD_PLAYER_FIXED_DESC" label="COM_MAMS_CONFIG_FIELD_PLAYER_FIXED_LABEL" default="0" class="btn-group">
 			<option value="1">Fixed</option>
 			<option value="0">Responsive</option>
 		</field>
@@ -47,11 +49,11 @@
 		<field name="aud_h" type="text" label="COM_MAMS_CONFIG_FIELD_AUDH_LABEL" description="COM_MAMS_CONFIG_FIELD_AUDH_DESC" size="5" class="inputbox" required="false" integer="true" default="432" />
 	</fieldset>
 	<fieldset name="reporting" label="COM_MAMS_CONFIG_REPORTING_LABEL" description="COM_MAMS_CONFIG_REPORTING_DESC">
-		<field name="gapro" type="radio" label="COM_MAMS_CONFIG_FIELD_GANAL_LABEL" description="COM_MAMS_CONFIG_FIELD_GANAL_DESC" default="1">
+		<field name="gapro" type="radio" label="COM_MAMS_CONFIG_FIELD_GANAL_LABEL" description="COM_MAMS_CONFIG_FIELD_GANAL_DESC" default="1" class="btn-group">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
-		<field name="mue" type="radio" label="COM_MAMS_CONFIG_FIELD_MUE_LABEL" description="COM_MAMS_CONFIG_FIELD_MUE_DESC" default="0">
+		<field name="mue" type="radio" label="COM_MAMS_CONFIG_FIELD_MUE_LABEL" description="COM_MAMS_CONFIG_FIELD_MUE_DESC" default="0" class="btn-group">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>

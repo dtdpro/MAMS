@@ -123,6 +123,17 @@ $params = $this->form->getFieldsets('params');
 			echo JHtml::_('bootstrap.endTab'); 
 		endforeach; 
 		
+
+
+		if ($this->canDo->get('core.admin')) : ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_MAMS_ARTICLE_RULES', true)); ?>
+				<fieldset>
+					<?php echo $this->form->getInput('rules'); ?>
+				</fieldset>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php endif; 
+						
+		
 		//Aditional Fields
 		foreach ($this->addfields as $g) {
 			echo JHtml::_('bootstrap.addTab', 'myTab', $g->group_name,$g->group_title);

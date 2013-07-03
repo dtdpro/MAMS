@@ -44,10 +44,10 @@ class MAMSViewArtList extends JViewLegacy
 		$model =& $this->getModel();
 		$sec=$this->getSecs();
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
-		$cat=JRequest::getInt('catid');
+		$cat=JRequest::getVar('catid', array(), '', 'array');
+		JArrayHelper::toInteger($cat);
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
-			MAMSHelper::trackViewed($cat,'catlist');
 			$artids=$model->getCatArts($cat);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
@@ -59,7 +59,6 @@ class MAMSViewArtList extends JViewLegacy
 		$sec=$this->getSecs();
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
-			MAMSHelper::trackViewed($sec,'seclist');
 			$artids=$model->getSecArts($sec); 
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
@@ -73,7 +72,6 @@ class MAMSViewArtList extends JViewLegacy
 		$aut=JRequest::getInt('autid');
 		$this->autinfo=$model->getAutInfo($aut);
 		if ($this->autinfo) {
-			MAMSHelper::trackViewed($aut,'autlist');
 			$artids=$model->getAuthArts($aut);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
@@ -86,7 +84,6 @@ class MAMSViewArtList extends JViewLegacy
 			if ((int)$s) $secs[] = (int)$s;
 		}
 		return $secs;
-		
 	}
 	
 	

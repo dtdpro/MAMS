@@ -17,6 +17,49 @@ class MAMSTableArticle extends JTable
 		$this->tagsHelper->typeAlias = 'com_mams.article';
 	}
 	
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+		return 'com_mams.article.' . (int) $this->$k;
+	}
+	
+	protected function _getAssetTitle()
+	{
+		return $this->sec_name;
+	}
+	
+	protected function _getAssetParentId($table = null, $id = null)
+	{
+		$assetId = null;
+	
+		// This is a article under a category.
+		if ($this->art_sec)
+		{
+			// Build the query to get the asset id for the parent category.
+			$query = $this->_db->getQuery(true)
+			->select($this->_db->quoteName('asset_id'))
+			->from($this->_db->quoteName('#__mams_secs'))
+			->where($this->_db->quoteName('sec_id') . ' = ' . (int) $this->art_sec);
+	
+			// Get the asset id from the database.
+			$this->_db->setQuery($query);
+			if ($result = $this->_db->loadResult())
+			{
+				$assetId = (int) $result;
+			}
+		}
+	
+		// Return the asset id.
+		if ($assetId)
+		{
+			return $assetId;
+		}
+		else
+		{
+			return parent::_getAssetParentId($table, $id);
+		}
+	}
+	
 	public function bind($array, $ignore = '')
 	{
 		if (isset($array['art_fielddata']) && is_array($array['art_fielddata']))
@@ -39,6 +82,13 @@ class MAMSTableArticle extends JTable
 			$registry = new JRegistry;
 			$registry->loadArray($array['metadata']);
 			$array['metadata'] = (string) $registry;
+		}
+		
+		// Bind the rules.
+		if (isset($array['rules']) && is_array($array['rules']))
+		{
+			$rules = new JAccessRules($array['rules']);
+			$this->setRules($rules);
 		}
 	
 		return parent::bind($array, $ignore);

@@ -52,8 +52,16 @@ class MAMSViewAuthor extends JViewLegacy
 	protected function listAuthors() {
 		MAMSHelper::trackViewed(0,'authors');
 		$model =& $this->getModel();
-		$this->autlist = $model->getAuthorList(JRequest::getInt("secid",0)); 
+		$this->autlist = $model->getAuthorList($this->getSecs()); 
 		return true;
+	}
+	
+	protected function getSecs() {
+		$secs = array();
+		foreach (JRequest::getVar('secid', array(), '', 'array') as $s) {
+			if ((int)$s) $secs[] = (int)$s;
+		}
+		return $secs;
 	}
 	
 }

@@ -5,7 +5,7 @@
 	</layout>
 	<fields name="request" addfieldpath="administrator/components/com_mams/models/fields">
 		<fieldset name="request">
-			<field name="secid" type="AuthorSecs" description="COM_MAMS_FIELD_SELECT_SEC_DESC" label="COM_MAMS_FIELD_SELECT_SEC_LABEL" required="false" />
+			<field name="secid" type="Secs" description="COM_MAMS_FIELD_SELECT_SEC_DESC" label="COM_MAMS_FIELD_SELECT_SEC_LABEL" required="false" multiple="true" mamssec="author" />
 		</fieldset>
 	</fields>
 	

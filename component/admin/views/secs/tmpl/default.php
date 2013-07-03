@@ -8,6 +8,8 @@ JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 
+
+$user	= JFactory::getUser();
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $archived	= $this->state->get('filter.published') == 2 ? true : false;
@@ -118,19 +120,27 @@ $db =& JFactory::getDBO();
 		</thead>
 		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
-		<?php foreach($this->items as $i => $item): ?>
+		<?php foreach($this->items as $i => $item): 
+			$canEdit = $user->authorise('core.edit.com_mams.sec.' . $item->sec_id);
+			$canChange = $user->authorise('core.edit.state.com_mams.sec.' . $item->sec_id);
+			?>
 			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->sec_type; ?>">
 				<td class="order nowrap center hidden-phone">
-					<?php 
-					$disableClassName = '';
-					$disabledLabel	  = '';
-					if (!$saveOrder) :
-						$disabledLabel    = JText::_('JORDERINGDISABLED');
-						$disableClassName = 'inactive tip-top';
-					endif; ?>
-					<span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
+					<?php if ($canChange) :
+						$disableClassName = '';
+						$disabledLabel	  = '';
+						if (!$saveOrder) :
+							$disabledLabel    = JText::_('JORDERINGDISABLED');
+							$disableClassName = 'inactive tip-top';
+						endif; ?>
+						<span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
+							<i class="icon-menu"></i>
+						</span>
+					<?php else : ?>
+						<span class="sortable-handler inactive">
 						<i class="icon-menu"></i>
-					</span>
+						</span>
+					<?php endif; ?>
 					<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering;?>" class="width-20 text-area-order " />
 
 				</td>
@@ -138,8 +148,12 @@ $db =& JFactory::getDBO();
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'secs.', true);?></td>
 				<td class="nowrap has-context">
 					<div class="pull-left">
-						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=sec.edit&sec_id='.(int) $item->sec_id); ?>">
-						<?php echo $this->escape($item->sec_name); ?></a>
+						<?php if ($canEdit) : ?>
+							<a href="<?php echo JRoute::_('index.php?option=com_mams&task=sec.edit&sec_id='.(int) $item->sec_id); ?>">
+							<?php echo $this->escape($item->sec_name); ?></a>
+						<?php else : ?>
+							<?php echo $this->escape($item->sec_name); ?>
+						<?php endif; ?>
 					</div>
 					<div class="pull-left">
 						<?php

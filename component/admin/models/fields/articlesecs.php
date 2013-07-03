@@ -29,8 +29,49 @@ class JFormFieldArticleSecs extends JFormField
 				' WHERE sec_type = "article"' .
 				' ORDER BY sec_name';
 		$db->setQuery($query);
+		
+		$options = $db->loadObjectList();
+		
+		$user = JFactory::getUser();
+		
+		if ($this->value == 0)
+		{
+			foreach ($options as $i => $option)
+			{
+				if ($user->authorise('core.create.com_mams.sec.' . $option->value) != true)
+				{
+					unset($options[$i]);
+				}
+			}
+		}
+		else
+		{
+			foreach ($options as $i => $option)
+			{
+				if ($user->authorise('core.edit.state.com_mams.sec.' . $this->value) != true)
+				{
+					if ($option->value != $this->value)
+					{
+						unset($options[$i]);
+					}
+				}
+				if (($user->authorise('core.create.com_mams.sec.' . $option->value) != true) && ($option->value != $this->value))
+				{
+					{
+						unset($options[$i]);
+					}
+				}
+				if (($user->authorise('core.create.com_mams.sec.' . $option->value) != true))
+				{
+					{
+						unset($options[$i]);
+					}
+				}
+			}
+		}
+		
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
-		$html[] = JHtml::_('select.options',$db->loadObjectList(),"value","text",$this->value);
+		$html[] = JHtml::_('select.options',$options,"value","text",$this->value);
 		$html[] = '</select>';		
 
 		return implode($html);

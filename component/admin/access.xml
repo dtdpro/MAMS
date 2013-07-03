@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- $Id: access.xml 32 2009-11-14 21:24:02Z chdemko $ -->
 <access component="com_mams">
 	<section name="component">
 		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
@@ -9,9 +8,16 @@
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 	</section>
-	<section name="ugroup">
-		<action name="core.delete" title="JACTION_DELETE" description="COM_MAMS_ACCESS_DELETE_DESC" />
-		<action name="core.edit" title="JACTION_EDIT" description="COM_MAMS_ACCESS_EDIT_DESC" />
+	<section name="sec">
+		<action name="core.create" title="JACTION_CREATE" description="COM_MAMS_SEC_ACCESS_CREATE_DESC" />
+		<action name="core.delete" title="JACTION_DELETE" description="COM_MAMS_SEC_ACCESS_DELETE_DESC" />
+		<action name="core.edit" title="JACTION_EDIT" description="COM_MAMS_SEC_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="JACTION_EDITSTATE" description="COM_MAMS_SEC_ACCESS_EDITSTATE_DESC" />
+	</section>
+	<section name="article">
+		<action name="core.delete" title="JACTION_DELETE" description="COM_MAMS_ARTICLE_ACCESS_DELETE_DESC" />
+		<action name="core.edit" title="JACTION_EDIT" description="COM_MAMS_ARTICLE_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state" title="JACTION_EDITSTATE" description="COM_MAMS_ARTICLE_ACCESS_EDITSTATE_DESC" />
 	</section>
 </access>
 

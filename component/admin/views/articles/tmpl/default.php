@@ -132,7 +132,7 @@ $sortFields = $this->getSortFields();
 			$canCreate = $user->authorise('core.create', 'com_mams.sec.'.$item->art_sec);
 			$canEdit = $user->authorise('core.edit', 'com_mams.article.'.$item->art_id);
 			$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-			$canEditOwn = $user->authorise('core.edit.own', 'com_mams.article.'.$item->art_id) && $item->created_by == $userId;
+			$canEditOwn = $user->authorise('core.edit.own', 'com_mams.article.'.$item->art_id) && $item->added_by == $userId;
 			$canChange = $user->authorise('core.edit.state', 'com_mams.article.'.$item->art_id) && $canCheckin;
 			?>
 			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->art_publish_up?>">
@@ -249,12 +249,24 @@ $sortFields = $this->getSortFields();
 			<div class="control-group">
 				<div class="controls">		
 					<?php 
-						echo '<label id="batch-section-lbl" for="batch-section" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL_DESC') . '">';
+						echo '<label id="batch-section-lbl" for="featsection_id" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL_DESC') . '">';
 						echo JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL').'</label>';
 					?>
 					<select name="batch[featsection_id]" class="inputbox" id="featsection_id">
 						<option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
 						<?php echo JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', "");?>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">		
+					<?php 
+						echo '<label id="batch-section-lbl" for="batch-addcat" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_ADDCAT_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_ADDCAT_DESC') . '">';
+						echo JText::_('COM_MAMS_ARTICLE_BATCH_ADDCAT_LABEL').'</label>';
+					?>
+					<select name="batch[batch-addcat]" class="inputbox" id="batch-addcat">
+						<option value="*"><?php echo JText::_('COM_MAMS_SELECT_Cat');?></option>
+						<?php echo JHtml::_('select.options', MAMSHelper::getCats(), 'value', 'text', "");?>
 					</select>
 				</div>
 			</div>

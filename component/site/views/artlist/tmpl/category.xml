@@ -9,7 +9,7 @@
 			<field name="secid" type="Secs" description="COM_MAMS_FIELD_SELECT_SEC_DESC" label="COM_MAMS_FIELD_SELECT_SEC_LABEL" required="false" multiple="true" mamssec="article" />
 		</fieldset>
 		<fieldset name="request">
-			<field name="catid" type="Cats" description="COM_MAMS_FIELD_SELECT_CAT_DESC" label="COM_MAMS_FIELD_SELECT_CAT_LABEL" required="true" />
+			<field name="catid" type="Cats" description="COM_MAMS_FIELD_SELECT_CAT_DESC" label="COM_MAMS_FIELD_SELECT_CAT_LABEL" required="true" multiple="true" />
 		</fieldset>
 	</fields>
 	<fields name="params">

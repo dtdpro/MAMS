@@ -10,7 +10,7 @@ class MAMSViewMAMS extends JViewLegacy
 		JToolBarHelper::title(   JText::_( 'MAMS Article Management System' ), 'mams' );
 		JToolBarHelper::preferences('com_mams');
 		// Set the submenu
-		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
+		MAMSHelper::addSubmenu('mams',JRequest::getCmd('extension', 'com_mams'));
 		$this->sidebar = JHtmlSidebar::render();
 		parent::display($tpl);
 	}

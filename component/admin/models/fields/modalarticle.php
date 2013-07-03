@@ -11,8 +11,7 @@ class JFormFieldModalArticle extends JFormField
 	protected function getInput()
 	{
 		// Load the javascript
-		JHtml::_('behavior.framework');
-		JHtml::_('behavior.modal', 'input.modal');
+		JHtml::_('behavior.modal', 'a.modal');
 
 		// Build the script.
 		$script = array();
@@ -24,17 +23,6 @@ class JFormFieldModalArticle extends JFormField
 
 		// Add the script to the document head.
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-
-		// Build the script.
-		$script = array();
-		$script[] = '	window.addEvent("domready", function() {';
-		$script[] = '		var div = new Element("div").setStyle("display", "none").injectBefore(document.id("menu-types"));';
-		$script[] = '		document.id("menu-types").injectInside(div);';
-		$script[] = '	});';
-
-		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-
 
 		// Get the title of the linked chart
 		$db = JFactory::getDBO();
@@ -55,9 +43,12 @@ class JFormFieldModalArticle extends JFormField
 
 		$link = 'index.php?option=com_mams&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;function=jSelectMAMSArticle_'.$this->id;
 
-		JHtml::_('behavior.modal', 'a.modal');
-		$html = "\n".'<div class="fltlft"><input type="text" id="'.$this->id.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
-		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.JText::_('COM_MAMS_CHANGE_ARTICLE_BUTTON').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_MAMS_CHANGE_ARTICLE_BUTTON').'</a></div></div>'."\n";
+		
+		$html[] = '<span class="input-append">';
+		$html[] = '<input type="text" class="input-medium" id="'.$this->id.'_name" value="'.$title.'" disabled="disabled" size="35" />';
+		$html[] = '<a class="modal btn" title="'.JText::_('COM_MAMS_CHANGE_ARTICLE_BUTTON').'" href="'.$link.'&amp;'.JSession::getFormToken().'=1" rel="{handler: \'iframe\', size: {x: 900, y: 450}}"><i class="icon-file"></i> '.JText::_('JSELECT').'</a>';
+		$html[] = '</span>';
+		
 		// The active newsfeed id field.
 		if (0 == (int)$this->value) {
 			$value = '';
@@ -70,9 +61,9 @@ class JFormFieldModalArticle extends JFormField
 		if ($this->required) {
 			$class = ' class="required modal-value"';
 		}
+		
+		$html[] = '<input type="hidden" id="'.$this->id.'_id"'.$class.' name="'.$this->name.'" value="'.$value.'" />';
 
-		$html .= '<input type="hidden" id="'.$this->id.'_id"'.$class.' name="'.$this->name.'" value="'.$value.'" />';
-
-		return $html;
+		return implode("\n", $html);
 	}
 }
