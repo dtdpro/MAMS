@@ -63,8 +63,10 @@ CREATE TABLE IF NOT EXISTS `#__mams_articles` (
   `metadata` text NOT NULL,
   `params` text NOT NULL,
   `version` int(11) NOT NULL,
+  `asset_id` int(11) NOT NULL,
   PRIMARY KEY (`art_id`),
-  KEY `art_title` (`art_title`)
+  KEY `art_title` (`art_title`),
+  KEY `asset_id` (`asset_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_article_fieldgroups` (
@@ -226,14 +228,16 @@ CREATE TABLE IF NOT EXISTS `#__mams_secs` (
   `access` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
   `metadata` text NOT NULL,
-  PRIMARY KEY (`sec_id`)
+  `asset_id` int(11) NOT NULL,
+  PRIMARY KEY (`sec_id`),
+  KEY `asset_id` (`asset_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_track` (
   `mt_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `mt_user` int(11) NOT NULL,
   `mt_item` int(11) NOT NULL,
-  `mt_type` enum('author','article','seclist','catlist','autlist','authors','dload') NOT NULL,
+  `mt_type` enum('author','article','authors','dload') NOT NULL,
   `mt_session` varchar(60) NOT NULL,
   `mt_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `mt_ipaddr` varchar(15) NOT NULL,

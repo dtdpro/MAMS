@@ -127,9 +127,7 @@ $params = $this->form->getFieldsets('params');
 
 		if ($this->canDo->get('core.admin')) : ?>
 			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_MAMS_ARTICLE_RULES', true)); ?>
-				<fieldset>
 					<?php echo $this->form->getInput('rules'); ?>
-				</fieldset>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 		<?php endif; 
 						
@@ -151,13 +149,13 @@ $params = $this->form->getFieldsets('params');
 		
 		?>
 		</div>
-	</div>
 		<!-- Begin Sidebar -->
 			<?php echo JLayoutHelper::render('joomla.edit.details', $this); ?>
 		<!-- End Sidebar -->
 
 		<input type="hidden" name="task" value="article.edit" />
 		<?php echo JHtml::_('form.token'); ?>
+	</div>
 
 </form>
 

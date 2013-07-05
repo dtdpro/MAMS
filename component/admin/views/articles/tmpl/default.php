@@ -132,7 +132,9 @@ $sortFields = $this->getSortFields();
 			$canCreate = $user->authorise('core.create', 'com_mams.sec.'.$item->art_sec);
 			$canEdit = $user->authorise('core.edit', 'com_mams.article.'.$item->art_id);
 			$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-			$canEditOwn = $user->authorise('core.edit.own', 'com_mams.article.'.$item->art_id) && $item->added_by == $userId;
+			$canEditOwn = $user->authorise('core.edit.own', 'com_mams.article.'.$item->art_id) && $item->art_added_by == $userId;
+			$canEditDrilldowns = $user->authorise('core.edit.drilldowns', 'com_mams.article.'.$item->art_id);
+			$canFeature = $user->authorise('core.edit.featured', 'com_mams.article.'.$item->art_id);
 			$canChange = $user->authorise('core.edit.state', 'com_mams.article.'.$item->art_id) && $canCheckin;
 			?>
 			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->art_publish_up?>">
@@ -159,7 +161,7 @@ $sortFields = $this->getSortFields();
 				<td class="center">
 					<div class="btn-group">
 						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange); ?>
-						<?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, $canChange); ?>
+						<?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, $canFeature); ?>
 					</div>
 				</td>
 				<td class="nowrap has-context">
@@ -180,39 +182,49 @@ $sortFields = $this->getSortFields();
 					<div class="pull-left">
 						<?php
 							// Create dropdown items
-							JHtml::_('dropdown.edit', $item->art_id, 'article.');
-							JHtml::_('dropdown.divider');
-							if ($item->published) :
-								JHtml::_('dropdown.unpublish', 'cb' . $i, 'articles.');
-							else :
-								JHtml::_('dropdown.publish', 'cb' . $i, 'articles.');
+							if ($canEdit || $canEditOwn) :
+								JHtml::_('dropdown.edit', $item->art_id, 'article.');
+								JHtml::_('dropdown.divider');
 							endif;
 							
-							JHtml::_('dropdown.divider');
-
-							if ($item->featured) :
-								JHtml::_('dropdown.unfeatured', 'cb' . $i, 'articles.');
-							else :
-								JHtml::_('dropdown.featured', 'cb' . $i, 'articles.');
+							if ($canChange) :
+								if ($item->state) :
+									JHtml::_('dropdown.unpublish', 'cb' . $i, 'articles.');
+								else :
+									JHtml::_('dropdown.publish', 'cb' . $i, 'articles.');
+								endif;
+								
+								JHtml::_('dropdown.divider');
+								
+								if ($canFeature) :
+									if ($item->featured) :
+										JHtml::_('dropdown.unfeatured', 'cb' . $i, 'articles.');
+									else :
+										JHtml::_('dropdown.featured', 'cb' . $i, 'articles.');
+									endif;
+									
+									JHtml::_('dropdown.divider');
+								endif;
+		
+								if ($trashed) :
+									JHtml::_('dropdown.untrash', 'cb' . $i, 'articles.');
+								else :
+									JHtml::_('dropdown.trash', 'cb' . $i, 'articles.');
+								endif;
 							endif;
-
-							JHtml::_('dropdown.divider');
-
-							if ($trashed) :
-								JHtml::_('dropdown.untrash', 'cb' . $i, 'articles.');
-							else :
-								JHtml::_('dropdown.trash', 'cb' . $i, 'articles.');
-							endif;
-
 							// Render dropdown list
-							echo JHtml::_('dropdown.render');
+							if ($canEdit || $canEditOwn || $canChange) :
+								echo JHtml::_('dropdown.render');
+							endif;
 							?>
 					</div>
 				</td>
 				<td class="small"><?php echo $item->art_publish_up; ?> - <?php echo $item->art_publish_down; ?></td>
 				<td class="small"><?php 
-					echo '<button class="btn btn-small" type="button" onclick="return listItemTask(\'cb'.$i.'\',\'articles.drilldowns\')">Drill Downs';
-					echo '</button>';
+					if ($canEditDrilldowns) :
+						echo '<button class="btn btn-small" type="button" onclick="return listItemTask(\'cb'.$i.'\',\'articles.drilldowns\')">Drill Downs';
+						echo '</button>';
+					endif;
 				?></td>
 				<td class="small hidden-phone"><?php echo $item->art_added.'<br />'.$item->adder; ?></td>
 				<td class="small hidden-phone"><?php echo $item->art_modified.'<br />'.$item->modifier; ?></td>

@@ -2,32 +2,24 @@
 
 defined('JPATH_BASE') or die;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
+JFormHelper::loadFieldClass('list');
 
-class JFormFieldArticleSecs extends JFormField
+class JFormFieldArticleSecs extends JFormFieldList
 {
-	protected $type = 'ArticleSecs';
+	public $type = 'ArticleSecs';
 
-	protected function getInput()
+	protected function getOptions()
 	{
 		// Initialize variables.
-		$html = array();
-		$attr = '';
+		$options = array();
 		$db = JFactory::getDBO();
-		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="'.(string) $this->element['class'].'"' : '';
-		$attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
-
-		// Initialize JavaScript field attributes.
-		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
-
+		
 		// Build the query for the ordering list.
-		$query = 'SELECT sec_id AS value, sec_name AS text' .
-				' FROM #__mams_secs' .
-				' WHERE sec_type = "article"' .
-				' ORDER BY sec_name';
+		$query = $db->getQuery(true);
+		$query->select('sec_id AS value, sec_name AS text');
+		$query->from('#__mams_secs');
+		$query->where('sec_type = "article" && published > 0');
+		$query->order('sec_name');
 		$db->setQuery($query);
 		
 		$options = $db->loadObjectList();
@@ -38,30 +30,30 @@ class JFormFieldArticleSecs extends JFormField
 		{
 			foreach ($options as $i => $option)
 			{
-				if ($user->authorise('core.create.com_mams.sec.' . $option->value) != true)
+				if ($user->authorise('core.create','com_mams.sec.' . $option->value) != true)
 				{
-					unset($options[$i]);
+					unset($options[$i]); 
 				}
 			}
 		}
 		else
 		{
 			foreach ($options as $i => $option)
-			{
-				if ($user->authorise('core.edit.state.com_mams.sec.' . $this->value) != true)
+			{ 
+				if ($user->authorise('core.edit.state','com_mams.sec.' . $this->value) != true)
 				{
 					if ($option->value != $this->value)
 					{
 						unset($options[$i]);
 					}
 				}
-				if (($user->authorise('core.create.com_mams.sec.' . $option->value) != true) && ($option->value != $this->value))
+				if (($user->authorise('core.create','com_mams.sec.' . $option->value) != true) && ($option->value != $this->value))
 				{
 					{
 						unset($options[$i]);
 					}
 				}
-				if (($user->authorise('core.create.com_mams.sec.' . $option->value) != true))
+				if (($user->authorise('core.create','com_mams.sec.' . $option->value) != true))
 				{
 					{
 						unset($options[$i]);
@@ -69,11 +61,8 @@ class JFormFieldArticleSecs extends JFormField
 				}
 			}
 		}
-		
-		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
-		$html[] = JHtml::_('select.options',$options,"value","text",$this->value);
-		$html[] = '</select>';		
+			
 
-		return implode($html);
+		return $options;
 	}
 }

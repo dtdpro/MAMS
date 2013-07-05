@@ -55,7 +55,7 @@ class MAMSViewArticle extends JViewLegacy
 		else
 		{
 			// For new records, check the create permission.
-			if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId))
+			if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->art_added_by == $userId))
 			{
 				JToolBarHelper::apply('article.apply', 'JTOOLBAR_APPLY');
 				JToolBarHelper::save('article.save', 'JTOOLBAR_SAVE');

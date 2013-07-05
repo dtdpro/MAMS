@@ -121,8 +121,8 @@ $db =& JFactory::getDBO();
 		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): 
-			$canEdit = $user->authorise('core.edit.com_mams.sec.' . $item->sec_id);
-			$canChange = $user->authorise('core.edit.state.com_mams.sec.' . $item->sec_id);
+			$canEdit = $user->authorise('core.edit','com_mams.sec.' . $item->sec_id);
+			$canChange = $user->authorise('core.edit.state','com_mams.sec.' . $item->sec_id);
 			?>
 			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->sec_type; ?>">
 				<td class="order nowrap center hidden-phone">

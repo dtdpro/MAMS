@@ -21,9 +21,20 @@ class MAMSControllerArticles extends JControllerAdmin
 		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 	
 		// Get items to remove from the request.
-		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
 	
-		if (!is_array($cid) || count($cid) < 1)
+		// Access checks.
+		foreach ($ids as $i => $id)
+		{
+			if (!$user->authorise('core.edit.featured', 'com_mams.article.'.(int) $id))
+			{
+				// Prune items that you can't change.
+				unset($ids[$i]);
+				JError::raiseNotice(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+			}
+		}
+		
+		if (!is_array($ids) || count($ids) < 1)
 		{
 			JError::raiseWarning(500, JText::_($this->text_prefix . '_NO_ITEM_SELECTED'));
 		}
@@ -34,12 +45,12 @@ class MAMSControllerArticles extends JControllerAdmin
 				
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($cid);
+			JArrayHelper::toInteger($ids);
 				
 			// Remove the items.
-			if ($model->featured($cid,1))
+			if ($model->featured($ids,1))
 			{
-				$this->setMessage(JText::plural($this->text_prefix . '_N_ITEMS_FEATURED', count($cid)));
+				$this->setMessage(JText::plural($this->text_prefix . '_N_ITEMS_FEATURED', count($ids)));
 			}
 			else
 			{
@@ -56,9 +67,20 @@ class MAMSControllerArticles extends JControllerAdmin
 		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 	
 		// Get items to remove from the request.
-		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
 	
-		if (!is_array($cid) || count($cid) < 1)
+		// Access checks.
+		foreach ($ids as $i => $id)
+		{
+			if (!$user->authorise('core.edit.featured', 'com_mams.article.'.(int) $id))
+			{
+				// Prune items that you can't change.
+				unset($ids[$i]);
+				JError::raiseNotice(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+			}
+		}
+		
+		if (!is_array($ids) || count($ids) < 1)
 		{
 			JError::raiseWarning(500, JText::_($this->text_prefix . '_NO_ITEM_SELECTED'));
 		}
@@ -69,12 +91,12 @@ class MAMSControllerArticles extends JControllerAdmin
 	
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($cid);
+			JArrayHelper::toInteger($ids);
 	
 			// Remove the items.
-			if ($model->featured($cid,0))
+			if ($model->featured($ids,0))
 			{
-				$this->setMessage(JText::plural($this->text_prefix . '_N_ITEMS_DEFEATURED', count($cid)));
+				$this->setMessage(JText::plural($this->text_prefix . '_N_ITEMS_DEFEATURED', count($ids)));
 			}
 			else
 			{
@@ -119,16 +141,27 @@ class MAMSControllerArticles extends JControllerAdmin
 		$context = "com_mams.drilldowns";
 	
 		// Get items to remove from the request.
-		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
 	
-		if (!is_array($cid) || count($cid) < 1)
+		// Access checks.
+		foreach ($ids as $i => $id)
+		{
+			if (!$user->authorise('core.edit.featured', 'com_mams.article.'.(int) $id))
+			{
+				// Prune items that you can't change.
+				unset($ids[$i]);
+				JError::raiseNotice(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+			}
+		}
+		
+		if (!is_array($ids) || count($ids) < 1)
 		{
 			JError::raiseWarning(500, JText::_('COM_MCME_PAGE_NO_ITEM_SELECTED'));
 			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=pages', false));
 		}
 		else
 		{
-			$app->setUserState($context . '.filter.article',$cid[0]);
+			$app->setUserState($context . '.filter.article',$ids[0]);
 		}
 	
 		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=artauths', false));

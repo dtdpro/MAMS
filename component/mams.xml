@@ -53,15 +53,6 @@
 		<submenu>
 			<menu view="articles">COM_MAMS_SUBMENU_ARTICLES</menu>
 			<menu view="secs">COM_MAMS_SUBMENU_SECS</menu>
-			<menu view="cats">COM_MAMS_SUBMENU_CATS</menu>
-			<menu view="auths">COM_MAMS_SUBMENU_AUTHS</menu>
-			<menu view="links">COM_MAMS_SUBMENU_LINKS</menu>
-			<menu link="option=com_mams&amp;view=medias&amp;extension=com_mams">COM_MAMS_SUBMENU_MEDIAS</menu>
-			<menu link="option=com_mams&amp;view=dloads&amp;extension=com_mams">COM_MAMS_SUBMENU_DLOADS</menu>
-			<menu view="featuredmedia">COM_MAMS_SUBMENU_FEATMEDIAS</menu>
-			<menu view="featuredarticle">COM_MAMS_SUBMENU_FEATARTS</menu>
-			<menu view="fields">COM_MAMS_SUBMENU_FIELDS</menu>
-			<menu view="fieldgroups">COM_MAMS_SUBMENU_FIELDGROUPS</menu>
 			<menu view="stats">COM_MAMS_SUBMENU_STATS</menu>
 		</submenu>
 		<files folder="admin">

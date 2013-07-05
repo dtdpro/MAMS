@@ -54,6 +54,44 @@ class MAMSModelArticle extends JModelAdmin
 		{
 			return false;
 		}
+		$jinput = JFactory::getApplication()->input;
+		
+		$id = $jinput->get('art_id', 0);
+		
+		// Determine correct permissions to check.
+		if ($id)
+		{
+			// Existing record. Can only edit in selected sections.
+			$form->setFieldAttribute('art_sec', 'action', 'core.edit');
+			// Existing record. Can only edit own articles in selected sections.
+			$form->setFieldAttribute('art_sec', 'action', 'core.edit.own');
+		}
+		else
+		{
+			// New record. Can only create in selected sections.
+			$form->setFieldAttribute('art_sec', 'action', 'core.create');
+		}
+		
+		$user = JFactory::getUser();
+		
+		// Check for existing article.
+		// Modify the form based on Edit State access controls.
+		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_mams.article.' . (int) $id))	|| ($id == 0 && !$user->authorise('core.edit.state', 'com_mams'))
+		)
+		{
+			// Disable fields for display.
+			$form->setFieldAttribute('ordering', 'disabled', 'true');
+			$form->setFieldAttribute('publish_up', 'disabled', 'true');
+			$form->setFieldAttribute('publish_down', 'disabled', 'true');
+			$form->setFieldAttribute('state', 'disabled', 'true');
+		
+			// Disable fields while saving.
+			// The controller has already verified this is an article you can edit.
+			$form->setFieldAttribute('ordering', 'filter', 'unset');
+			$form->setFieldAttribute('publish_up', 'filter', 'unset');
+			$form->setFieldAttribute('publish_down', 'filter', 'unset');
+			$form->setFieldAttribute('state', 'filter', 'unset');
+		}
 		
 		return $form;
 	}

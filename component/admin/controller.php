@@ -8,9 +8,7 @@ class MAMSController extends JControllerLegacy
 	protected $default_view = 'mams';
 	
 	function display($cachable = false, $urlparams = false)
-	{
-		require_once JPATH_COMPONENT.'/helpers/mams.php';
-		
+	{		
 		$view = $this->input->get('view', 'articles');
 		$layout = $this->input->get('layout', 'articles');
 		$art_id = $this->input->getInt('art_id');

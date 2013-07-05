@@ -7,12 +7,18 @@
 		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
+		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
+		<action name="core.edit.featured" title="COM_MAMS_SEC_ACCESS_EDITFEATURED_LABEL" description="COM_MAMS_SEC_ACCESS_EDITFEATURED_DESC" />
+		<action name="core.edit.drilldowns" title="COM_MAMS_SEC_ACCESS_EDITDRILLDOWNS_LABEL" description="COM_MAMS_SEC_ACCESS_EDITDRILLDOWNS_DESC" />
 	</section>
 	<section name="sec">
 		<action name="core.create" title="JACTION_CREATE" description="COM_MAMS_SEC_ACCESS_CREATE_DESC" />
 		<action name="core.delete" title="JACTION_DELETE" description="COM_MAMS_SEC_ACCESS_DELETE_DESC" />
 		<action name="core.edit" title="JACTION_EDIT" description="COM_MAMS_SEC_ACCESS_EDIT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="COM_MAMS_SEC_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own" title="JACTION_EDITOWN" description="COM_MAMS_SEC_ACCESS_EDITOWN_DESC" />
+		<action name="core.edit.featured" title="COM_MAMS_SEC_ACCESS_EDITFEATURED_LABEL" description="COM_MAMS_SEC_ACCESS_EDITFEATURED_DESC" />
+		<action name="core.edit.drilldowns" title="COM_MAMS_SEC_ACCESS_EDITDRILLDOWNS_LABEL" description="COM_MAMS_SEC_ACCESS_EDITDRILLDOWNS_DESC" />
 	</section>
 	<section name="article">
 		<action name="core.delete" title="JACTION_DELETE" description="COM_MAMS_ARTICLE_ACCESS_DELETE_DESC" />
