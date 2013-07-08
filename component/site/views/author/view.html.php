@@ -15,13 +15,13 @@ class MAMSViewAuthor extends JViewLegacy
 		$layout = $this->getLayout();
 		$app = JFactory::getApplication();
 		$this->params = $app->getParams();
-		$aut=JRequest::getInt('autid',0);
+		$aut=$app->input->getInt('autid',0);
 		
 		if ($aut) { $layout="default"; $this->setLayout('default;'); }
 		
 		switch($layout) {
 			case "default": 
-				$err=$this->showAuthor();
+				$err=$this->showAuthor($aut);
 				break;
 			case "list": 
 				$err=$this->listAuthors();
@@ -31,10 +31,9 @@ class MAMSViewAuthor extends JViewLegacy
 		else return false;
 	}
 	
-	protected function showAuthor() {
+	protected function showAuthor($aut) {
 		$cfg = MAMSHelper::getConfig();
 		$model =& $this->getModel();
-		$aut=JRequest::getInt('autid',0);
 		$this->author=$model->getAuthor($aut);
 		if ($this->author) {
 			MAMSHelper::trackViewed($aut,'author');
@@ -58,7 +57,7 @@ class MAMSViewAuthor extends JViewLegacy
 	
 	protected function getSecs() {
 		$secs = array();
-		foreach (JRequest::getVar('secid', array(), '', 'array') as $s) {
+		foreach (JFactory::getApplication()->input->get('secid', array(), 'array') as $s) {
 			if ((int)$s) $secs[] = (int)$s;
 		}
 		return $secs;

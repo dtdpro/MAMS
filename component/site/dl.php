@@ -1,30 +1,28 @@
 <?php
-/*
-MAMS DownLoader
-(C) 2011 DtD Productions  http://dtdpro.com
-dl.php - External downloader
-*/
 define( '_JEXEC', 1 );
 
 define('JPATH_BASE', dirname(__FILE__) . '/../..' );
 define('JPATH_CORE', JPATH_BASE . '/../..');
-define( 'DS', DIRECTORY_SEPARATOR );
 
-require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
-require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
-require_once(JPATH_BASE.DS.'components/com_mams/helpers'.DS.'mams.php');
+require_once ( JPATH_BASE.'/includes/defines.php' );
+require_once ( JPATH_BASE.'/includes/framework.php' );
+require_once(JPATH_BASE.'/components/com_mams/helpers/mams.php');
 jimport('joomla.filesystem.file');
 
-$mainframe =& JFactory::getApplication('site');
-$session =& JFactory::getSession();
-$cfg =& JFactory::getConfig();
-$db  =& JFactory::getDBO();
-$user =& JFactory::getUser();
+$app = JFactory::getApplication('site');
+$session = JFactory::getSession();
+$cfg = JFactory::getConfig();
+$db  = JFactory::getDBO();
+$user = JFactory::getUser();
 
-$dlid=JRequest::getVar('dlid');
+$dlid=$app->input->getInt('dlid',0);
 
-
-$q='SELECT * FROM #__mams_dloads WHERE  published = 1 && access IN ('.implode(",",$user->getAuthorisedViewLevels()).') && dl_id = '.$dlid;
+$q=$db->getQuery(true);
+$q->select('*');
+$q->from('#__mams_dloads');
+$q->where('dl_id = '.$dlid);
+$q->where('published >= 1');
+$q->where('access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 $db->setQuery($q);
 $r=$db->loadObject();
 
@@ -49,7 +47,7 @@ if ($r->dl_id) {
 	readfile(JPATH_BASE.'/'.$r->dl_loc.$r->dl_fname);
 } else {
 	$url=JRoute::_("index.php");
-	$mainframe->redirect($url, JText::_('Access Denied') );
+	$app->redirect($url, JText::_('Access Denied') );
 }
 exit();
 ?>

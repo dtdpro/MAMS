@@ -1,46 +1,14 @@
 <?php
-/**
- * @version		$Id: mams.php 2012-01.24 $
- * @package		MAMS.Site
- * @subpackage	com_mams
- * @copyright	Copyright (C) 2012 Corona Productions.
- * @license		GNU General Public License version 2
- */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * MAMS Component Helper
- *
- * @static
- * @package		MAMS.Site
- * @subpackage	com_mams
- * @since		1.00
- */
 class MAMSHelper {
 
-	/**
-	* Get configuration for component.
-	*
-	* @return object The current config parameters
-	*
-	* @since 1.00
-	*/
 	function getConfig() {
 		$menuConfig = JComponentHelper::getParams('com_mams'); 
 		$mamscfg = $menuConfig->toObject();
 		return $mamscfg;
 	}
 	
-	/**
-	* Track item Viewed
-	*
-	* @param int $item Item id number
-	* @param string $type Item type.
-	*
-	* @return boolean true if scucessfull, false if not.
-	*
-	* @since 1.0
-	*/
 	function trackViewed($item, $type) {
 		$db =& JFactory::getDBO();
 		$sewn = JFactory::getSession();

@@ -138,6 +138,7 @@ class MAMSControllerArticles extends JControllerAdmin
 		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 	
 		$app = JFactory::getApplication();
+		$user = JFactory::getUser();
 		$context = "com_mams.drilldowns";
 	
 		// Get items to remove from the request.

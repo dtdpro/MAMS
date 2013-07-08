@@ -23,14 +23,14 @@ class MAMSModelArtList extends JModelList
 	function populateState($ordering = null, $direction = null)
 	{
 		// Initiliase variables.
-		$app	= JFactory::getApplication('site');
+		$app = JFactory::getApplication('site');
 		
 		// Load the parameters. Merge Global and Menu Item params into new object
 		$this->params = $app->getParams();
 		$this->setState('params', $params);
 		
 		// pagination
-		$this->setState('list.start', JRequest::getVar('limitstart', 0, '', 'int'));
+		$this->setState('list.start', $app->input->get('limitstart', 0, 'uint'));
 		$limit = $this->params->get("items_page",10);
 		$this->setState('list.limit', $limit);
 	}
@@ -253,7 +253,8 @@ class MAMSModelArtList extends JModelList
 		
 		$query->select('aa.aa_art');
 		$query->from('#__mams_artauth AS aa');
-		$query->where('aa.aa_auth = '.(int)$aut);
+		$query->where('aa.aa_auth IN ( '.implode(",",$aut).')');
+		$query->where('aa.aa_field = 5');
 		$query->where('aa.published >= 1');
 		$db->setQuery($query);
 		$items = $db->loadColumn();
@@ -282,11 +283,11 @@ class MAMSModelArtList extends JModelList
 		
 		$query->select('c.*');
 		$query->from('#__mams_cats AS c');
-		$query->where('c.cat_id = '.(int)$cat);
+		$query->where('c.cat_id IN ('.implode(",",$cat).')');
 		$query->where('c.published >= 1');
 		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$db->setQuery($query);
-		$info = $db->loadObject();
+		$info = $db->loadObjectList();
 		return $info;
 	}
 	
@@ -297,11 +298,11 @@ class MAMSModelArtList extends JModelList
 		
 		$query->select('a.*');
 		$query->from('#__mams_authors AS a');
-		$query->where('a.auth_id = '.(int)$aut);
+		$query->where('a.auth_id IN ( '.implode(",",$aut).')');
 		$query->where('a.published >= 1');
 		$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$db->setQuery($query);
-		$info = $db->loadObject();
+		$info = $db->loadObjectList();
 		return $info;
 	}
 	

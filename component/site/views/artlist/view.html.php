@@ -44,8 +44,7 @@ class MAMSViewArtList extends JViewLegacy
 		$model =& $this->getModel();
 		$sec=$this->getSecs();
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
-		$cat=JRequest::getVar('catid', array(), '', 'array');
-		JArrayHelper::toInteger($cat);
+		$cat=$this->getCats();
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
 			$artids=$model->getCatArts($cat);
@@ -69,7 +68,7 @@ class MAMSViewArtList extends JViewLegacy
 		$model =& $this->getModel();
 		$sec=$this->getSecs();
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
-		$aut=JRequest::getInt('autid');
+		$aut=$this->getAuts();
 		$this->autinfo=$model->getAutInfo($aut);
 		if ($this->autinfo) {
 			$artids=$model->getAuthArts($aut);
@@ -80,10 +79,26 @@ class MAMSViewArtList extends JViewLegacy
 	
 	protected function getSecs() {
 		$secs = array();
-		foreach (JRequest::getVar('secid', array(), '', 'array') as $s) {
+		foreach (JFactory::getApplication()->input->get('secid', array(), 'array') as $s) {
 			if ((int)$s) $secs[] = (int)$s;
 		}
 		return $secs;
+	}
+	
+	protected function getCats() {
+		$cats = array();
+		foreach (JFactory::getApplication()->input->get('catid', array(), 'array') as $c) {
+			if ((int)$c) $cats[] = (int)$c;
+		}
+		return $cats;
+	}
+	
+	protected function getAuts() {
+		$auts = array();
+		foreach (JFactory::getApplication()->input->get('autid', array(), 'array') as $a) {
+			if ((int)$a) $auts[] = (int)$a;
+		}
+		return $auts;
 	}
 	
 	

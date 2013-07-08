@@ -1,12 +1,7 @@
 <?php
-
 defined('_JEXEC') or die;
 
 jimport('joomla.application.categories');
-
-
-
-
 
 function MAMSBuildRoute(&$query)
 {
@@ -164,16 +159,6 @@ function MAMSBuildRoute(&$query)
 	
 }
 
-
-
-/**
- * Parse the segments of a URL.
- *
- * @param	array	The segments of the URL to parse.
- *
- * @return	array	The URL attributes to be used by the application.
- * @since	1.5
- */
 function MAMSParseRoute($segments)
 {
 	$vars = array();

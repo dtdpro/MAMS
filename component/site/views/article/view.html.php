@@ -1,7 +1,6 @@
 <?php
 defined('_JEXEC') or die();
 
-
 jimport( 'joomla.application.component.view');
 
 class MAMSViewArticle extends JViewLegacy
@@ -22,7 +21,7 @@ class MAMSViewArticle extends JViewLegacy
 
 		
 		$model =& $this->getModel();
-		$art=JRequest::getInt('artid',0);
+		$art=$app->input->getInt('artid',0);
 		$this->article=$model->getArticle($art);
 		
 		if ($this->article) {

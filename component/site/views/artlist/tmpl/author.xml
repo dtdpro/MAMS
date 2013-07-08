@@ -9,7 +9,7 @@
 			<field name="secid" type="Secs" description="COM_MAMS_FIELD_SELECT_SEC_DESC" label="COM_MAMS_FIELD_SELECT_SEC_LABEL" multiple="true" mamssec="article" />
 		</fieldset>
 		<fieldset name="request">
-			<field name="autid" type="Authors" description="COM_MAMS_FIELD_SELECT_AUT_DESC" label="COM_MAMS_FIELD_SELECT_AUT_LABEL" required="true" />
+			<field name="autid" type="Authors" description="COM_MAMS_FIELD_SELECT_AUT_DESC" label="COM_MAMS_FIELD_SELECT_AUT_LABEL" required="true" multiple="true" />
 		</fieldset>
 	</fields>
 	<fields name="params">

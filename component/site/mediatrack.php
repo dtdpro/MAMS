@@ -5,21 +5,21 @@ define( '_JEXEC', 1 );
 define('JPATH_BASE', dirname(__FILE__) . '/../..' );
 define( 'DS', DIRECTORY_SEPARATOR );
 
-require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
-require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
+require_once ( JPATH_BASE .'/includes/defines.php' );
+require_once ( JPATH_BASE .'/includes/framework.php' );
 
-$mainframe =& JFactory::getApplication('site');
-$db  =& JFactory::getDBO();
-$user = &JFactory::getUser();
+$app = JFactory::getApplication('site');
+$db  = JFactory::getDBO();
+$user = JFactory::getUser();
 
 
 
-$item_id = urldecode(JRequest::getVar('item_id'));
-$track_id = urldecode(JRequest::getVar('track_id'));
-$secs_played  = urldecode(JRequest::getVar('secs_played'));
-$per_played  = urldecode(JRequest::getVar('per_played'));
+$item_id = urldecode($app->input->getInt('item_id'));
+$track_id = urldecode($app->input->getInt('track_id'));
+$secs_played  = urldecode($app->input->getInt('secs_played'));
+$per_played  = urldecode($app->input->get('per_played'));
 $userid = $user->id;
-$session =& JFactory::getSession();
+$session = JFactory::getSession();
 
 if (!$track_id) { 
 	$qc = 'INSERT INTO #__mams_mediatrack (mt_user,mt_item,mt_seconds,mt_percentage,mt_session,mt_ipaddr) ';
