@@ -19,6 +19,7 @@ class MAMSControllerArticles extends JControllerAdmin
 	{
 		// Check for request forgeries
 		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+		$user = JFactory::getUser();
 	
 		// Get items to remove from the request.
 		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
@@ -65,6 +66,7 @@ class MAMSControllerArticles extends JControllerAdmin
 	{
 		// Check for request forgeries
 		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+		$user = JFactory::getUser();
 	
 		// Get items to remove from the request.
 		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');

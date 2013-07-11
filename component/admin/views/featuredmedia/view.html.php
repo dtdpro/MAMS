@@ -41,7 +41,7 @@ class MAMSViewFeaturedMedia extends JViewLegacy
 	{
 		return array(
 				'f.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-				'm.med_inttitle' => JText::_('COM_MAMS_ARTICLE_HEADING_TITLE'),
+				'm.med_inttitle' => JText::_('JGLOBAL_TITLE'),
 				'm.med_id' => JText::_('JGRID_HEADING_ID')
 		);
 	}

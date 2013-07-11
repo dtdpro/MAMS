@@ -23,9 +23,9 @@ class modMAMSFeatHelper
 		$query->join('LEFT', '#__mams_articles AS a ON a.art_id = f.af_art');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		$query->where('a.published >= 1');
-		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-		$query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC');
+		$query->where('a.state >= 1');
+		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+		$query->order('f.ordering');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 		
@@ -35,13 +35,14 @@ class modMAMSFeatHelper
 		//Get Authors
 		foreach ($items as &$i) {
 			$qa=$db->getQuery(true);
-			$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_sec');
+			$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
 			$qa->from('#__mams_artauth as aa');
 			$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 			$qa->where('aa.published >= 1');
 			$qa->where('a.published >= 1');
 			$qa->where('a.access IN ('.implode(",",$alvls).')');
 			$qa->where('aa.aa_art = '.$i->art_id);
+			$qa->where('aa.aa_field = 5');
 			$qa->order('aa.ordering ASC');
 			$db->setQuery($qa);
 			$i->auts=$db->loadObjectList();

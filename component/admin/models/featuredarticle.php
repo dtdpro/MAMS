@@ -18,6 +18,11 @@ class MAMSModelFeaturedArticle extends MAMSModelArticles
 
 		parent::__construct($config);
 	}
+	
+	protected function populateState($ordering = null, $direction = null)
+	{
+		parent::populateState('f.ordering', 'desc');
+	}
 
 	function getListQuery($resolveFKs = true)
 	{

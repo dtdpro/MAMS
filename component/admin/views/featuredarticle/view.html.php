@@ -41,7 +41,7 @@ class MAMSViewFeaturedArticle extends JViewLegacy
 	{
 		return array(
 				'f.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-				'a.art_title' => JText::_('COM_MAMS_ARTICLE_HEADING_NAME'),
+				'a.art_title' => JText::_('JGLOBAL_TITLE'),
 				'a.art_id' => JText::_('JGRID_HEADING_ID')
 		);
 	}

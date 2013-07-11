@@ -16,16 +16,21 @@ class modMAMSLatestHelper
 		$alvls = $user->getAuthorisedViewLevels();
 		$alvls = array_merge($alvls,$cfg->reggroup);
 		
+		$secs = array();
+		foreach ($params->get('secid') as $s) {
+			if ((int)$s) $secs[] = (int)$s;
+		}
+		
 		$query	= $db->getQuery(true);
 
 		$query->select('a.*,s.*');
 		$query->from('#__mams_articles as a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
-		$query->where('a.published >= 1');
-		$query->where('a.art_sec='.(int)$params->get('secid'));
-		if (!in_array($cfg->ovgroup,$alvls)) $query->where('a.art_published <= NOW()');
-		$query->order('a.art_published DESC, s.ordering ASC, a.ordering ASC');
+		$query->where('a.state >= 1');
+		$query->where('a.art_sec IN ('.implode(",",$secs).')');
+		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+		$query->order('a.art_publish_up DESC, s.ordering ASC, a.ordering ASC');
 		$db->setQuery($query,0,$params->get('count',5));
 		$items = $db->loadObjectList();
 		
@@ -35,13 +40,14 @@ class modMAMSLatestHelper
 		//Get Authors
 		foreach ($items as &$i) {
 			$qa=$db->getQuery(true);
-			$qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_sec');
+			$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
 			$qa->from('#__mams_artauth as aa');
 			$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 			$qa->where('aa.published >= 1');
 			$qa->where('a.published >= 1');
 			$qa->where('a.access IN ('.implode(",",$alvls).')');
 			$qa->where('aa.aa_art = '.$i->art_id);
+			$qa->where('aa.aa_field = 5');
 			$qa->order('aa.ordering ASC');
 			$db->setQuery($qa);
 			$i->auts=$db->loadObjectList();
