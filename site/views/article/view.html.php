@@ -43,7 +43,7 @@ class MAMSViewArticle extends JViewLegacy
 					$msg = $cfg->noaccessmsg;
 				}
 				else {
-					$url = JRoute::_('index.php?option=com_users&view=login&return='.$urlnc);
+					$url = JRoute::_('index.php?option=com_users&view=login&return='.$urlnc,false);
 					$msg = $cfg->loginmsg;
 				}
 				$app->redirect($url,$msg);
