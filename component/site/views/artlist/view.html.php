@@ -35,6 +35,13 @@ class MAMSViewArtList extends JViewLegacy
 				break;
 		}
 		
+		//RSS Feed Link
+		$link = '&format=feed&limitstart=';
+		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+		$this->document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
+		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+		$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
+		
 		parent::display($tpl);
 		$this->setLayout('artlist');
 		parent::display($tpl);

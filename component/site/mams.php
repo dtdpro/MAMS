@@ -24,8 +24,10 @@ $doc = &JFactory::getDocument();
 //jQuery
 JHtml::_('jquery.framework');
 $doc->addScript('media/com_mams/mediaelementjs/mediaelement-and-player.js');
-$doc->addStyleSheet('media/com_mams/mediaelementjs/mediaelementplayer.css');
-if ($cfg->compcss) $doc->addStyleSheet('components/com_mams/mams.css');
+if (JFactory::getApplication()->input->get('format') != "feed") {
+	$doc->addStyleSheet('media/com_mams/mediaelementjs/mediaelementplayer.css');
+	if ($cfg->compcss) $doc->addStyleSheet('components/com_mams/mams.css');
+}
 
 // Create the controller
 $classname	= 'MAMSController'.$controller;
