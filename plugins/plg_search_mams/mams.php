@@ -6,7 +6,7 @@ defined('_JEXEC') or die;
 jimport('joomla.plugin.plugin');
 
 require_once JPATH_SITE.'/components/com_mams/router.php';
-require_once('components'.DS.'com_mams'.DS.'helpers'.DS.'mams.php');
+require_once('components/com_mams/helpers/mams.php');
 
 class plgSearchMAMS extends JPlugin
 {
@@ -43,7 +43,7 @@ class plgSearchMAMS extends JPlugin
 
 		$nullDate		= $db->getNullDate();
 		$date = JFactory::getDate();
-		$now = $date->toMySQL();
+		$now = $date->toSql();
 
 		$text = trim($text);
 		if ($text == '') {
@@ -53,11 +53,12 @@ class plgSearchMAMS extends JPlugin
 		$wheres = array();
 		switch ($phrase) {
 			case 'exact':
-				$text		= $db->Quote('%'.$db->getEscaped($text, true).'%', false);
+				$text		= $db->quote('%'.$db->escape($text, true).'%', false);
 				$wheres2	= array();
 				$wheres2[]	= 'a.art_title LIKE '.$text;
 				$wheres2[]	= 'a.art_content LIKE '.$text;
-				$wheres2[]	= 'a.art_keywords LIKE '.$text;
+				$wheres2[]	= 'a.metakey LIKE '.$text;
+				$wheres2[]	= 'a.metadesc LIKE '.$text;
 				$wheres2[]	= 'a.art_desc LIKE '.$text;
 				$where		= '(' . implode(') OR (', $wheres2) . ')';
 				break;
@@ -68,11 +69,12 @@ class plgSearchMAMS extends JPlugin
 				$words = explode(' ', $text);
 				$wheres = array();
 				foreach ($words as $word) {
-					$word		= $db->Quote('%'.$db->getEscaped($word, true).'%', false);
+					$word		= $db->quote('%'.$db->escape($word, true).'%', false);
 					$wheres2	= array();
 					$wheres2[]	= 'a.art_title LIKE '.$word;
 					$wheres2[]	= 'a.art_content LIKE '.$word;
-					$wheres2[]	= 'a.art_keywords LIKE '.$word;
+					$wheres2[]	= 'a.metakey LIKE '.$word;
+					$wheres2[]	= 'a.metadesc LIKE '.$word;
 					$wheres2[]	= 'a.art_desc LIKE '.$word;
 					$wheres[]	= implode(' OR ', $wheres2);
 				}
@@ -83,7 +85,7 @@ class plgSearchMAMS extends JPlugin
 		$morder = '';
 		switch ($ordering) {
 			case 'oldest':
-				$order = 'a.art_published ASC';
+				$order = 'a.art_publish_up ASC';
 				break;
 
 			case 'popular':
@@ -101,7 +103,7 @@ class plgSearchMAMS extends JPlugin
 
 			case 'newest':
 			default:
-				$order = 'a.art_published DESC';
+				$order = 'a.art_publish_up DESC';
 				break;
 		}
 
@@ -112,15 +114,15 @@ class plgSearchMAMS extends JPlugin
 		if ($limit > 0)
 		{
 			$query->clear();
-			$query->select('a.art_title AS title, a.art_desc as metadesc, a.art_keywords as metakey, a.art_published AS created, '
+			$query->select('a.art_title AS title, a.metadesc as metadesc, a.metakey as metakey, a.art_publish_up AS created, '
 						.'a.art_desc AS text, c.sec_name AS section, '
 						.'CASE WHEN CHAR_LENGTH(a.art_alias) THEN CONCAT_WS(":", a.art_id, a.art_alias) ELSE a.art_id END as slug, '
 						.'CASE WHEN CHAR_LENGTH(c.sec_alias) THEN CONCAT_WS(":", c.sec_id, c.sec_alias) ELSE c.sec_id END as catslug, '
 						.'"2" AS browsernav');
 			$query->from('#__mams_articles AS a');
 			$query->innerJoin('#__mams_secs AS c ON c.sec_id=a.art_sec');
-			$query->where('('. $where .')' . 'AND a.published >= 1 AND c.published >= 1 AND a.access IN ('.$groups.') '
-						.'AND c.access IN ('.$groups.') AND a.art_published <= NOW()');
+			$query->where('('. $where .')' . 'AND a.state >= 1 AND c.published >= 1 AND a.access IN ('.$groups.') '
+						.'AND c.access IN ('.$groups.') AND a.art_publish_up <= NOW() AND (a.art_publish_down >= NOW() OR a.art_publish_down = "0000-00-00")');
 			$query->group('a.art_id');
 			$query->order($order);
 
