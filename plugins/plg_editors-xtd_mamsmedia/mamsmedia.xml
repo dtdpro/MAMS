@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="editors-xtd" method="upgrade">
+<extension version="3.1" type="plugin" group="editors-xtd" method="upgrade">
 	<name>plg_editors-xtd_mamsmedia</name>
 	<author>DtD Productions</author>
 	<creationDate>June 2012</creationDate>
-	<copyright>Copyright (C) 2012 DtD Productions. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2012-2013 DtD Productions. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<description>PLG_MAMSMEDIA_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="mamsmedia">mamsmedia.php</filename>

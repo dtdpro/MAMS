@@ -1,6 +1,4 @@
 <?php
-
-
 // no direct access
 defined('_JEXEC') or die;
 
@@ -34,11 +32,11 @@ class plgButtonMAMSMedia extends JPlugin
 		$link = 'index.php?option=com_mams&amp;view=medias&amp;layout=modal&amp;tmpl=component&amp;'.JSession::getFormToken().'=1';
 
 		$button = new JObject();
-		$button->set('modal', true);
-		$button->set('link', $link);
-		$button->set('text', JText::_('PLG_MAMSMEDIA_BUTTON_ARTICLE'));
-		$button->set('name', 'image');
-		$button->set('options', "{handler: 'iframe', size: {x: 770, y: 400}}");
+		$button->modal=true;
+		$button->link=$link;
+		$button->text=JText::_('PLG_MAMSMEDIA_BUTTON_ARTICLE');
+		$button->name='picture';
+		$button->options="{handler: 'iframe', size: {x: 770, y: 400}}";
 
 		return $button;
 	}

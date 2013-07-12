@@ -4,17 +4,24 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
+echo '<div id="mams-featmod">';
 echo '<ul class="mams-featmod-list">';
 foreach ($articles as $a) {
 	echo '<li class="mams-featmod-listitem">';
+	if ($params->get('show_thumb',0)) {
+		echo '<div class="mams-featmod-thumb">';
+		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
+		echo '<img border="0" class="mams-featmod-artthumb" src="'.$a->art_thumb.'" /></a>';
+		echo '</div>';
+	}
 	echo '<div class="mams-featmod-title">';
-	echo '<a href="'.$params->get('url_prefix','').JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
+	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
 	echo $a->art_title;
 	echo '</a></div>';
 	if ($a->auts && $params->get('show_author',1)) {
 		$auts = Array();
 		foreach ($a->auts as $f) {
-			if ($params->get('link_pubinfo',0)) $auts[]='<a href="'.$params->get('url_prefix','').JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
+			if ($params->get('link_pubinfo',0)) $auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
 			else $auts[]=$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "");
 		}
 		echo '<div class="mams-featmod-author">';
@@ -27,7 +34,7 @@ foreach ($articles as $a) {
 		if ($params->get('show_pubsec',1)) {
 			
 			echo '<span class="mams-featmod-sec">';
-			if ($params->get('link_pubinfo',0)) echo '<a href="'.$params->get('url_prefix','').JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$a->sec_id.":".$a->sec_alias).'" class="mams-artlist-seclink">';
+			if ($params->get('link_pubinfo',0)) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$a->sec_id.":".$a->sec_alias).'" class="mams-artlist-seclink">';
 			echo '<em>'.$a->sec_name.'</em>';
 			if ($params->get('link_pubinfo',0)) echo '</a>';
 			echo '</span>';
@@ -52,7 +59,7 @@ foreach ($articles as $a) {
 			}
 			$cats = Array();
 			foreach ($a->cats as $c) {
-				if ($params->get('link_pubinfo',0)) $cats[]='<a href="'.$params->get('url_prefix','').JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
+				if ($params->get('link_pubinfo',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
 				else $cats[]=$c->cat_title;
 			}
 			echo implode(", ",$cats);
@@ -71,10 +78,11 @@ foreach ($articles as $a) {
 	//Readmore
 	if ($params->get('show_readmore',0)) {
 		echo '<div class="mams-featmod-readmore">';
-		echo '<a href="'.$params->get('url_prefix','').JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'" class="mams-featmod-artlink read-more">';
+		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'" class="mams-featmod-artlink read-more">';
 		echo $params->get('text_readmore',"Read More");
 		echo '</a></div>';
 	}
 	echo '</li>';
 }
 echo '</ul>';
+echo '</div>';

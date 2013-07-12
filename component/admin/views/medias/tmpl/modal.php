@@ -10,73 +10,71 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $extension	= $this->escape($this->state->get('filter.extension'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=medias&layout=modal&tmpl=component'); ?>" method="post" name="adminForm">
-	<fieldset id="filter-bar">
-		<div class="filter-search fltlft">
-			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_MAMS_SEARCH_MEDIA'); ?>" />
-			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=medias&layout=modal&tmpl=component'); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
+	<div id="filter-bar" class="btn-toolbar">
+		<div class="filter-search btn-group pull-left">
+			<label class="element-invisible" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('COM_MAMS_SEARCH_MEDIA'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_MAMS_SEARCH_IN_TITLE'); ?>" />
 		</div>
-		<div class="filter-select fltrt">
-			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
-			</select>
-			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
-			</select>
-
-		</div>
-	</fieldset>
+		<div class="btn-group pull-left">
+			<button class="btn hasTooltip" type="submit" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
+			<button class="btn hasTooltip" type="button" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
+		</div>	
+	</div>
+	<hr class="hr-condensed" />
+	<div class="filters pull-left">
+		<select name="filter_access" class="input-medium" onchange="this.form.submit()">
+			<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
+			<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+		</select>
 	
-	<div class="clr"> </div>
+		<select name="filter_published" class="input-medium" onchange="this.form.submit()">
+			<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+			<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+		</select>
+	</div>
 	
-	<table class="adminlist">
+	<div class="clearfix"> </div>
+	
+	<table class="table table-striped table-condensed">
 		<thead>
 			<tr>
-				<th width="5">
-					<?php echo JText::_('COM_MAMS_MEDIA_HEADING_ID'); ?>
-				</th>
-				<th width="20">
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
-				</th>			
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_MEDIA_HEADING_NAME','m.med_title', $listDirn, $listOrder); ?>
 				</th>	
-				<th width="100">
+				<th width="10%">
 					<?php echo JText::_('COM_MAMS_MEDIA_TYPE'); ?>
 				</th>
-				<th width="120">
+				<th width="15%">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_MEDIA_ADDED','m.med_added', $listDirn, $listOrder); ?>
 				</th>	
-				<th width="120">
+				<th width="15%">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_MEDIA_MODIFIED','m.med_modified', $listDirn, $listOrder); ?>
 				</th>		
-				<th width="100">
+				<th width="10%">
 					<?php echo JText::_('JPUBLISHED'); ?>
 				</th>
-				<th width="100">
+				<th width="15%">
 					<?php echo JText::_('JGRID_HEADING_ACCESS'); ?>
+				</th>
+				<th width="1%">
+					<?php echo JText::_('COM_MAMS_MEDIA_HEADING_ID'); ?>
 				</th>
 			</tr>
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="7"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
-				<td><?php echo $item->med_id; ?></td>
-				<td><?php echo JHtml::_('grid.id', $i, $item->med_id); ?></td>
 				<td>
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->med_id; ?>');">
 					<?php echo $this->escape($item->med_inttitle); ?></a>
 				</td>
 				<td><?php 
 					switch ($item->med_type) {
-						case 'vids': echo 'Streaming Video'; break;
+						case 'vids': echo 'CDN Video'; break;
 						case 'vid': echo 'Video'; break;
 						case 'aud': echo 'Audio'; break;
 					} 
@@ -86,6 +84,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<td><?php echo $item->med_modified; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'medias.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
+				<td><?php echo $item->med_id; ?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

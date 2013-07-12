@@ -139,7 +139,7 @@ class MAMSViewArtList extends JViewLegacy
 			$title = html_entity_decode($title, ENT_COMPAT, 'UTF-8');
 		
 			// Url link to article
-			$link = JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias);
+			$link = JRoute::_("index.php?option=com_mams&view=article&secid=".$row->sec_id.":".$row->sec_alias."&artid=".$row->art_id.":".$row->art_alias);
 		
 			// Get description, author and date
 			$description = $row->art_desc;

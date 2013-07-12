@@ -7,31 +7,30 @@ JHtml::_('behavior.keepalive');
 echo '<div id="mams-featmod">';
 echo '<ul class="mams-featmod-list">';
 foreach ($articles as $a) {
-	echo '<li>';
+	echo '<li class="mams-featmod-listitem">';
 	if ($params->get('show_thumb',0)) {
 		echo '<div class="mams-featmod-thumb">';
 		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
 		echo '<img border="0" class="mams-featmod-artthumb" src="'.$a->art_thumb.'" /></a>';
 		echo '</div>';
 	}
-	echo '<div class="mams-featmod-info">';
-	echo '<span class="mams-featmod-title">';
+	echo '<div class="mams-featmod-title">';
 	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
 	echo $a->art_title;
-	echo '</a></span>';
+	echo '</a></div>';
 	if ($a->auts && $params->get('show_author',1)) {
 		$auts = Array();
 		foreach ($a->auts as $f) {
 			if ($params->get('link_pubinfo',0)) $auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-artlist-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
 			else $auts[]=$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "");
 		}
-		echo '<br /><span class="mams-featmod-author">';
+		echo '<div class="mams-featmod-author">';
 		echo implode(", ",$auts);
-		echo '</span>';
+		echo '</div>';
 	}
 	if ($params->get('show_pubinfo',1)) {
 		//Section Link
-		echo '<br />';
+		echo '<div class="mams-featmod-pubinfo">';
 		if ($params->get('show_pubsec',1)) {
 			
 			echo '<span class="mams-featmod-sec">';
@@ -45,7 +44,7 @@ foreach ($articles as $a) {
 		if ($params->get('show_pubdate',1)) {
 			echo '<span class="mams-featmod-pubdate">';
 			echo ' published on <strong>';
-			echo date("F j, Y",strtotime($a->art_published));
+			echo date("F j, Y",strtotime($a->art_publish_up));
 			echo '</strong>';
 			echo '</span>';
 		}
@@ -67,8 +66,22 @@ foreach ($articles as $a) {
 			echo '</em>';
 			echo '</span>';
 		}
+		echo '</div>';
 	}
-	echo '</div>';
+		
+	//Description
+	if ($params->get('show_desc',0)) {
+		echo '<div class="mams-featmod-desc">';
+		echo $a->art_desc;
+		echo '</div>';
+	}
+	//Readmore
+	if ($params->get('show_readmore',0)) {
+		echo '<div class="mams-featmod-readmore">';
+		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'" class="mams-featmod-artlink read-more">';
+		echo $params->get('text_readmore',"Read More");
+		echo '</a></div>';
+	}
 	echo '</li>';
 }
 echo '</ul>';

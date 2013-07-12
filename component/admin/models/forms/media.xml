@@ -53,7 +53,7 @@
 			label="COM_MAMS_MEDIA_FIELD_TYPE_LABEL"
 			description="COM_MAMS_MEDIA_FIELD_TYPE_LABEL"
 			default="vids">
-			<option	value="vids">Video Server</option>
+			<option	value="vids">CDN Video</option>
 			<option	value="vid">Video</option>
 			<option	value="aud">Audio</option>
 		</field>

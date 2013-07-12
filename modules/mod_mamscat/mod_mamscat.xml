@@ -25,6 +25,10 @@
 			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
 				<field name="catid" type="Cats" description="MOD_MAMSCAT_CAT_DESC" label="MOD_MAMSCAT_CAT_LABEL" required="true" />
 				<field name="count" type="text" default="5" label="MOD_MAMSCAT_COUNT_LABEL" description="MOD_MAMSCAT_COUNT_DESC" />
+				<field name="show_thumb" type="radio" class="btn-group" description="MOD_MAMSCAT_SHOW_THUMB_DESC" label="MOD_MAMSCAT_SHOW_THUMB_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 				<field name="show_author" type="radio" class="btn-group" description="MOD_MAMSCAT_SHOW_AUTHOR_DESC" label="MOD_MAMSCAT_SHOW_AUTHOR_LABEL" default="1">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>

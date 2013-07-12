@@ -150,7 +150,7 @@ abstract class MAMSHelper
 		}
 	
 		$actions = array(
-				'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete','core.featured','core.drilldowns'
+				'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete','core.edit.featured','core.edit.drilldowns'
 		);
 	
 		foreach ($actions as $action)

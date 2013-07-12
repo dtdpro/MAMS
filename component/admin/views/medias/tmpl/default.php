@@ -163,7 +163,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<td class="small"><?php echo $item->med_file; ?></td>
 				<td class="small"><?php 
 					switch ($item->med_type) {
-						case 'vids': echo 'Streaming Video'; break;
+						case 'vids': echo 'CDN Video'; break;
 						case 'vid': echo 'Video'; break;
 						case 'aud': echo 'Audio'; break;
 					} 

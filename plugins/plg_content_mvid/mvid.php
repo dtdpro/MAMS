@@ -1,10 +1,4 @@
 <?php
-/**
- * MAMS Video plugin for Content
- * @license http://www.gnu.org/licenses/gpl.html GNU/GPL.
- * @by Mike Amundsen
- * @Copyright (C) 2012 
-  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class  plgContentMVid extends JPlugin
@@ -48,14 +42,10 @@ class  plgContentMVid extends JPlugin
 		
 		$output = "";
 		if ($media) {
-			require_once('components'.DS.'com_mams'.DS.'helpers'.DS.'mams.php');
+			require_once('components/com_mams/helpers/mams.php');
 			$mamscfg = MAMSHelper::getConfig();
 			$doc = &JFactory::getDocument();
-			if (!JFactory::getApplication()->get('jquery')) {
-				JFactory::getApplication()->set('jquery', true);
-				// add jQuery
-				$doc->addScript('media/com_mams/scripts/jquery.js');	
-			}
+			JHtml::_('jquery.framework');
 			$doc->addScript('media/com_mams/mediaelementjs/mediaelement-and-player.js');
 			$doc->addStyleSheet('media/com_mams/mediaelementjs/mediaelementplayer.css');
 			

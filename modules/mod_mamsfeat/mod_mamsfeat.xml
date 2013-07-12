@@ -24,6 +24,10 @@
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
+				<field name="show_thumb" type="radio" class="btn-group" description="MOD_MAMSFEAT_SHOW_THUMB_DESC" label="MOD_MAMSFEAT_SHOW_THUMB_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 				<field name="show_author" type="radio" class="btn-group" description="MOD_MAMSFEAT_SHOW_AUTHOR_DESC" label="MOD_MAMSFEAT_SHOW_AUTHOR_LABEL" default="1">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
