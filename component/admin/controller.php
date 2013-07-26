@@ -10,7 +10,7 @@ class MAMSController extends JControllerLegacy
 	function display($cachable = false, $urlparams = false)
 	{		
 		$view = $this->input->get('view', 'articles');
-		$layout = $this->input->get('layout', 'articles');
+		$layout = $this->input->get('layout', 'default');
 		$art_id = $this->input->getInt('art_id');
 		
 		// Check for edit form.

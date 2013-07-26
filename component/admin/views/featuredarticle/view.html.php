@@ -2,7 +2,7 @@
 
 defined('_JEXEC') or die;
 
-class MAMSViewFeaturedArticle extends JViewLegacy
+class MAMSViewFeaturedarticle extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;

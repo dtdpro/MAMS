@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-class MAMSViewFieldGroups extends JViewLegacy
+class MAMSViewFieldgroups extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;

@@ -7,7 +7,7 @@ jimport('joomla.application.component.modeladmin');
 
 class MAMSModelMedia extends JModelAdmin
 {
-protected function canDelete($record)
+	protected function canDelete($record)
 	{
 		if (!empty($record->med_id))
 		{

@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.view' );
 
-class MAMSViewMAMS extends JViewLegacy
+class MAMSViewMams extends JViewLegacy
 {
 	function display($tpl = null)
 	{
