@@ -19,13 +19,6 @@ class MAMSTableAuth extends JTable
 	
 	public function bind($array, $ignore = '')
 	{
-		if (isset($array['metadata']) && is_array($array['metadata']))
-		{
-			$registry = new JRegistry;
-			$registry->loadArray($array['metadata']);
-			$array['metadata'] = (string) $registry;
-		}
-	
 		return parent::bind($array, $ignore);
 	}
 	

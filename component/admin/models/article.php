@@ -135,7 +135,6 @@ class MAMSModelArticle extends JModelAdmin
 		{
 			$item->tags = new JHelperTags;
 			$item->tags->getTagIds($item->art_id, 'com_mams.article');
-			$item->metadata['tags'] = $item->tags;
 		}
 	
 		return $item;

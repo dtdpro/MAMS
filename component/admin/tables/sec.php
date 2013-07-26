@@ -61,13 +61,6 @@ class MAMSTableSec extends JTable
 	
 	public function bind($array, $ignore = '')
 	{
-		if (isset($array['metadata']) && is_array($array['metadata']))
-		{
-			$registry = new JRegistry;
-			$registry->loadArray($array['metadata']);
-			$array['metadata'] = (string) $registry;
-		}
-		
 
 		// Bind the rules.
 		if (isset($array['rules']) && is_array($array['rules']))

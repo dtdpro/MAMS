@@ -55,17 +55,11 @@ class MAMSModelSec extends JModelAdmin
 		$properties = $table->getProperties(1);
 		$item = JArrayHelper::toObject($properties, 'JObject');
 	
-		// Convert the metadata field to an array.
-		$registry = new JRegistry;
-		$registry->loadString($item->metadata);
-		$item->metadata = $registry->toArray();
-	
 		//Tags
-		if (!empty($item->auth_id))
+		if (!empty($item->sec_id))
 		{
 			$item->tags = new JHelperTags;
 			$item->tags->getTagIds($item->sec_id, 'com_mams.sec');
-			$item->metadata['tags'] = $item->tags;
 		}
 	
 		return $item;

@@ -56,6 +56,7 @@
 			class="inputbox"
 			default=""
 		/>
+		<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true"></field>
 	</fieldset>
 	<fieldset name="nameinfo">
 		<field
@@ -136,14 +137,5 @@
 			buttons="false"
 		/>
 	</fieldset>
-	<fields name="metadata">
-		<fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
-			<field name="tags" type="tag"
-			label="JTAG" description="JTAG_DESC"
-			class="inputbox" multiple="true"
-			>
-			</field>
-		</fieldset>
-	</fields>
 </form>
 
