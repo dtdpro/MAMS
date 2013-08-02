@@ -44,75 +44,76 @@ class plgSearchMAMS extends JPlugin
 		$nullDate		= $db->getNullDate();
 		$date = JFactory::getDate();
 		$now = $date->toSql();
-
+		$rows = array();
+			
 		$text = trim($text);
 		if ($text == '') {
 			return array();
 		}
-
-		$wheres = array();
-		switch ($phrase) {
-			case 'exact':
-				$text		= $db->quote('%'.$db->escape($text, true).'%', false);
-				$wheres2	= array();
-				$wheres2[]	= 'a.art_title LIKE '.$text;
-				$wheres2[]	= 'a.art_content LIKE '.$text;
-				$wheres2[]	= 'a.metakey LIKE '.$text;
-				$wheres2[]	= 'a.metadesc LIKE '.$text;
-				$wheres2[]	= 'a.art_desc LIKE '.$text;
-				$where		= '(' . implode(') OR (', $wheres2) . ')';
-				break;
-
-			case 'all':
-			case 'any':
-			default:
-				$words = explode(' ', $text);
-				$wheres = array();
-				foreach ($words as $word) {
-					$word		= $db->quote('%'.$db->escape($word, true).'%', false);
-					$wheres2	= array();
-					$wheres2[]	= 'a.art_title LIKE '.$word;
-					$wheres2[]	= 'a.art_content LIKE '.$word;
-					$wheres2[]	= 'a.metakey LIKE '.$word;
-					$wheres2[]	= 'a.metadesc LIKE '.$word;
-					$wheres2[]	= 'a.art_desc LIKE '.$word;
-					$wheres[]	= implode(' OR ', $wheres2);
-				}
-				$where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
-				break;
-		}
-
-		$morder = '';
-		switch ($ordering) {
-			case 'oldest':
-				$order = 'a.art_publish_up ASC';
-				break;
-
-			case 'popular':
-				$order = 'a.art_hits DESC';
-				break;
-
-			case 'alpha':
-				$order = 'a.art_title ASC';
-				break;
-
-			case 'category':
-				$order = 'c.sec_name ASC, a.art_title ASC';
-				$morder = 'a.art_title ASC';
-				break;
-
-			case 'newest':
-			default:
-				$order = 'a.art_publish_up DESC';
-				break;
-		}
-
-		$rows = array();
-		$query	= $db->getQuery(true);
-
+		
 		// search articles
 		if ($limit > 0)
 		{
+			$wheres = array();
+			switch ($phrase) {
+				case 'exact':
+					$text		= $db->quote('%'.$db->escape($text, true).'%', false);
+					$wheres2	= array();
+					$wheres2[]	= 'a.art_title LIKE '.$text;
+					$wheres2[]	= 'a.art_content LIKE '.$text;
+					$wheres2[]	= 'a.metakey LIKE '.$text;
+					$wheres2[]	= 'a.metadesc LIKE '.$text;
+					$wheres2[]	= 'a.art_desc LIKE '.$text;
+					$where		= '(' . implode(') OR (', $wheres2) . ')';
+					break;
+	
+				case 'all':
+				case 'any':
+				default:
+					$words = explode(' ', $text);
+					$wheres = array();
+					foreach ($words as $word) {
+						$word		= $db->quote('%'.$db->escape($word, true).'%', false);
+						$wheres2	= array();
+						$wheres2[]	= 'a.art_title LIKE '.$word;
+						$wheres2[]	= 'a.art_content LIKE '.$word;
+						$wheres2[]	= 'a.metakey LIKE '.$word;
+						$wheres2[]	= 'a.metadesc LIKE '.$word;
+						$wheres2[]	= 'a.art_desc LIKE '.$word;
+						$wheres[]	= implode(' OR ', $wheres2);
+					}
+					$where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
+					break;
+			}
+	
+			$morder = '';
+			switch ($ordering) {
+				case 'oldest':
+					$order = 'a.art_publish_up ASC';
+					break;
+	
+				case 'popular':
+					$order = 'a.art_hits DESC';
+					break;
+	
+				case 'alpha':
+					$order = 'a.art_title ASC';
+					break;
+	
+				case 'category':
+					$order = 'c.sec_name ASC, a.art_title ASC';
+					$morder = 'a.art_title ASC';
+					break;
+	
+				case 'newest':
+				default:
+					$order = 'a.art_publish_up DESC';
+					break;
+			}
+	
+			$query	= $db->getQuery(true);
+
+
 			$query->clear();
 			$query->select('a.art_title AS title, a.metadesc as metadesc, a.metakey as metakey, a.art_publish_up AS created, '
 						.'a.art_desc AS text, c.sec_name AS section, '
@@ -135,6 +136,93 @@ class plgSearchMAMS extends JPlugin
 				foreach($list as $key => $item)
 				{
 					$list[$key]->href = JRoute::_("index.php?option=com_mams&view=article&secid=".$item->catslug."&artid=".$item->slug);
+				}
+			}
+			$rows[] = $list;
+		}
+		
+		// search authors
+		if ($limit > 0)
+		{
+			$wheres = array();
+			switch ($phrase) {
+				case 'exact':
+					$text		= $db->quote('%'.$db->escape($text, true).'%', false);
+					$wheres2	= array();
+					$wheres2[]	= 'a.auth_name LIKE '.$text;
+					$wheres2[]	= 'a.auth_credentials LIKE '.$text;
+					$wheres2[]	= 'a.auth_bio LIKE '.$text;
+					$wheres2[]	= 'a.metakey LIKE '.$text;
+					$wheres2[]	= 'a.metadesc LIKE '.$text;
+					$where		= '(' . implode(') OR (', $wheres2) . ')';
+					break;
+		
+				case 'all':
+				case 'any':
+				default:
+					$words = explode(' ', $text);
+					$wheres = array();
+					foreach ($words as $word) {
+						$word		= $db->quote('%'.$db->escape($word, true).'%', false);
+						$wheres2	= array();
+						$wheres2[]	= 'a.auth_name LIKE '.$word;
+						$wheres2[]	= 'a.auth_credentials LIKE '.$word;
+						$wheres2[]	= 'a.auth_bio LIKE '.$word;
+						$wheres2[]	= 'a.metakey LIKE '.$word;
+						$wheres2[]	= 'a.metadesc LIKE '.$word;
+						$wheres[]	= implode(' OR ', $wheres2);
+					}
+					$where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
+					break;
+			}
+		
+			$morder = '';
+			switch ($ordering) {
+				case 'oldest':
+					$order = 'a.auth_added ASC';
+					break;
+		
+				case 'alpha':
+				case 'popular':
+					$order = 'a.auth_lname ASC';
+					break;
+		
+				case 'category':
+					$order = 'c.sec_name ASC, a.auth_lname ASC';
+					$morder = 'a.auth_lanme ASC';
+					break;
+		
+				case 'newest':
+				default:
+					$order = 'a.auth_added DESC';
+					break;
+			}
+		
+			$query	= $db->getQuery(true);
+		
+		
+			$query->clear();
+			$query->select('a.auth_name AS title, a.metadesc as metadesc, a.metakey as metakey, a.auth_added AS created, '
+					.'a.metadesc AS text, c.sec_name AS section, '
+					.'CASE WHEN CHAR_LENGTH(a.auth_alias) THEN CONCAT_WS(":", a.auth_id, a.auth_alias) ELSE a.auth_id END as slug, '
+					.'CASE WHEN CHAR_LENGTH(c.sec_alias) THEN CONCAT_WS(":", c.sec_id, c.sec_alias) ELSE c.sec_id END as catslug, '
+					.'"2" AS browsernav');
+			$query->from('#__mams_authors AS a');
+			$query->innerJoin('#__mams_secs AS c ON c.sec_id=a.auth_sec');
+			$query->where('('. $where .')' . 'AND a.published >= 1 AND c.published >= 1 AND a.access IN ('.$groups.') '
+					.'AND c.access IN ('.$groups.') AND a.auth_added <= NOW()');
+			$query->group('a.auth_id');
+			$query->order($order);
+		
+			$db->setQuery($query, 0, $limit);
+			$list = $db->loadObjectList();
+			$limit -= count($list);
+		
+			if (isset($list))
+			{
+				foreach($list as $key => $item)
+				{
+					$list[$key]->href = JRoute::_("index.php?option=com_mams&view=author&secid=".$item->catslug."&autid=".$item->slug);
 				}
 			}
 			$rows[] = $list;
