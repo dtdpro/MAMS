@@ -19,7 +19,7 @@ $params = $this->form->getFieldsets('params');
 	
 	
 	<div class="row-fluid">
-		<div class="span6 form-horizontal">
+		<div class="span4 form-horizontal">
 					<h4><?php echo JText::_( 'COM_MAMS_AUTH_NAMEINFO' ); ?></h4>
 					<?php foreach($this->form->getFieldset('nameinfo') as $field): ?>
 						<div class="control-group">
@@ -28,9 +28,19 @@ $params = $this->form->getFieldsets('params');
 						</div>
 					<?php endforeach; ?>
 		</div>
-		<div class="span6 form-horizontal">
+		<div class="span4 form-horizontal">
 					<h4><?php echo JText::_( 'COM_MAMS_AUTH_DETAILS' ); ?></h4>
 					<?php foreach($this->form->getFieldset('details') as $field): ?>
+						<div class="control-group">
+							<div class="control-label"><?php echo $field->label;?></div>
+							<div class="controls"><?php echo $field->input;?></div>
+						</div>
+					<?php endforeach; ?>
+					
+		</div>
+		<div class="span4 form-horizontal">
+					<h4><?php echo JText::_( 'JGLOBAL_FIELDSET_METADATA_OPTIONS' ); ?></h4>
+					<?php foreach($this->form->getFieldset('metadata') as $field): ?>
 						<div class="control-group">
 							<div class="control-label"><?php echo $field->label;?></div>
 							<div class="controls"><?php echo $field->input;?></div>

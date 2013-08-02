@@ -43,13 +43,16 @@
 .mams-author-authsec { padding-bottom: 16px;}
 .mams-author-authsec-title { font-weight:bold; font-size:16px; padding-bottom:4px;}
 .mams-author-authsec-auths { padding-left: 10px;}
-.mams-author-authitem { float:left; margin-right:10px; padding: 4px 0; border-bottom: 1px dotted #999999; width:48%;height:120px;}
+.mams-author-authitem { float:left; margin-right:10px; padding: 4px 0; border-bottom: 1px dotted #999999; width:100%; clear:both;}
 .mams-author-authitem:hover { background: #eeeeee; }
-.mams-author-authimg { width:20%; float:left; }
+.mams-author-authimg { width:10%; float:left; }
+.mams-author-authimg img { width:80px; }
 .mams-author-listimage {-webkit-box-shadow:  1px 1px 1px 0px #000000; box-shadow:  1px 1px 1px 0px #000000;}
-.mams-author-authinfo { width:80%; float:left; }
+.mams-author-authinfo { width:90%; float:left; }
 .mams-author-authname { font-weight:bold; padding-left:6px;}
 .mams-author-authcred { font-size:11px; padding-left:10px;} 
+.mams-author-authdesc { font-size:11px; padding-left:10px; padding-top:10px;} 
+.mams-author-authreadmore { float:right;  margin:8px 0;} 
 
 .mams-article-article {padding: 10px 0; }
 .mams-article-pubinfo { padding-bottom: 4px; font-size:10px; }
