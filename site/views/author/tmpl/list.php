@@ -29,7 +29,7 @@ if ($this->autlist) {
 							if ($this->params->get("show_cred",0) && $f->auth_credentials) echo '<div class="mams-author-authcred">'.$f->auth_credentials.'</div>';
 							
 							//Description
-							if ($this->params->get("show_authdesc",1)) echo '<div class="mams-author-authdesc">'.$f->metadesc.'</div>';
+							if ($this->params->get("show_desc",1)) echo '<div class="mams-author-authdesc">'.$f->metadesc.'</div>';
 							
 							//Read More
 							if ($this->params->get('show_readmore',1)) {
