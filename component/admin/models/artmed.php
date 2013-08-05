@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
-class MAMSModelArtMed extends JModelAdmin
+class MAMSModelArtmed extends JModelAdmin
 {
 	protected function canDelete($record)
 	{
@@ -28,7 +28,7 @@ class MAMSModelArtMed extends JModelAdmin
 		return parent::canEditState($record);
 	}
 	
-	public function getTable($type = 'ArtMed', $prefix = 'MAMSTable', $config = array()) 
+	public function getTable($type = 'Artmed', $prefix = 'MAMSTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}

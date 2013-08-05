@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla table library
 jimport('joomla.database.table');
 
-class MAMSTableArtCat extends JTable
+class MAMSTableArtcat extends JTable
 {
 	/**
 	 * Constructor

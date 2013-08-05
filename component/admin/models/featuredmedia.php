@@ -4,7 +4,7 @@ defined('_JEXEC') or die;
 
 require_once dirname(__FILE__) . '/medias.php';
 
-class MAMSModelFeaturedMedia extends MAMSModelMedias
+class MAMSModelFeaturedmedia extends MAMSModelMedias
 {
 	public function __construct($config = array())
 	{

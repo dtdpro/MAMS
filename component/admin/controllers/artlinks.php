@@ -5,12 +5,12 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
 
-class MAMSControllerArtLinks extends JControllerAdmin
+class MAMSControllerArtlinks extends JControllerAdmin
 {
 
 	protected $text_prefix = "COM_MAMS_ARTLINK";
 	
-	public function getModel($name = 'ArtLink', $prefix = 'MAMSModel') 
+	public function getModel($name = 'Artlink', $prefix = 'MAMSModel') 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

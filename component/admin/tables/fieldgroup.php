@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla table library
 jimport('joomla.database.table');
 
-class MAMSTableFieldGroup extends JTable
+class MAMSTableFieldgroup extends JTable
 {
 	function __construct(&$db) 
 	{

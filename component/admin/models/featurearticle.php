@@ -6,9 +6,9 @@ jimport('joomla.application.component.modeladmin');
 
 require_once dirname(__FILE__).'/article.php';
 
-class MAMSModelFeatureArticle extends MAMSModelArticle
+class MAMSModelFeaturearticle extends MAMSModelArticle
 {
-	public function getTable($type = 'FeaturedArticle', $prefix = 'MAMSTable', $config = array())
+	public function getTable($type = 'Featuredarticle', $prefix = 'MAMSTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}

@@ -9,7 +9,7 @@ class MAMSControllerFeaturedMedia extends MAMSControllerMedias
 {
 	
 
-	public function getModel($name = 'FeatureMedia', $prefix = 'MAMSModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Featuremedia', $prefix = 'MAMSModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
 		return $model;

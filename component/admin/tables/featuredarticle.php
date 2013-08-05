@@ -3,7 +3,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-class MAMSTableFeaturedArticle extends JTable
+class MAMSTableFeaturedarticle extends JTable
 {
 	function __construct(&$db)
 	{

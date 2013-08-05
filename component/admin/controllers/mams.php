@@ -6,7 +6,7 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.controlleradmin');
 
 
-class MAMSControllerMAMS extends JControllerAdmin
+class MAMSControllerMams extends JControllerAdmin
 {
 
 

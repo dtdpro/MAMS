@@ -6,9 +6,9 @@ jimport('joomla.application.component.modeladmin');
 
 require_once dirname(__FILE__).'/media.php';
 
-class MAMSModelFeatureMedia extends MAMSModelMedia
+class MAMSModelFeaturemedia extends MAMSModelMedia
 {
-	public function getTable($type = 'FeaturedMedia', $prefix = 'MAMSTable', $config = array())
+	public function getTable($type = 'Featuredmedia', $prefix = 'MAMSTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}

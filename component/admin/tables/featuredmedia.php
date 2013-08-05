@@ -3,7 +3,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-class MAMSTableFeaturedMedia extends JTable
+class MAMSTableFeaturedmedia extends JTable
 {
 	function __construct(&$db)
 	{

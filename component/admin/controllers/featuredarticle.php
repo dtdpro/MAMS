@@ -5,11 +5,11 @@ defined('_JEXEC') or die;
 require_once dirname(__FILE__).'/articles.php';
 
 
-class MAMSControllerFeaturedArticle extends MAMSControllerArticles
+class MAMSControllerFeaturedarticle extends MAMSControllerArticles
 {
 	
 
-	public function getModel($name = 'FeatureArticle', $prefix = 'MAMSModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Featurearticle', $prefix = 'MAMSModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
 		return $model;

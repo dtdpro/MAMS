@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
 
-class MAMSModelArtAuths extends JModelList
+class MAMSModelArtauths extends JModelList
 {
 	
 	public function __construct($config = array())

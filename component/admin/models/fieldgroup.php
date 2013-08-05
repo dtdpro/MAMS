@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
-class MAMSModelFieldGroup extends JModelAdmin
+class MAMSModelFieldgroup extends JModelAdmin
 {
 	protected function canDelete($record)
 	{
@@ -33,7 +33,7 @@ class MAMSModelFieldGroup extends JModelAdmin
 		return parent::canEditState($record);
 	}
 	
-	public function getTable($type = 'FieldGroup', $prefix = 'MAMSTable', $config = array()) 
+	public function getTable($type = 'Fieldgroup', $prefix = 'MAMSTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}

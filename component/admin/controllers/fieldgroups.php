@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controlleradmin');
 
 
-class MAMSControllerFieldGroups extends JControllerAdmin
+class MAMSControllerFieldgroups extends JControllerAdmin
 {
 
 	protected $text_prefix = "COM_MAMS_FIELDGROUP";

@@ -4,7 +4,7 @@ defined('_JEXEC') or die;
 
 require_once dirname(__FILE__) . '/articles.php';
 
-class MAMSModelFeaturedArticle extends MAMSModelArticles
+class MAMSModelFeaturedarticle extends MAMSModelArticles
 {
 	public function __construct($config = array())
 	{
