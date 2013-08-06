@@ -38,6 +38,9 @@ class MAMSModelSecs extends JModelList
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 		
+		$type = $this->getUserStateFromRequest($this->context.'.filter.type', 'filter_type');
+		$this->setState('filter.type', $type);
+		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
 		$this->setState('params', $params);
@@ -65,6 +68,11 @@ class MAMSModelSecs extends JModelList
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
 			$query->where('s.access = '.(int) $access);
+		}
+		
+		// Filter by type.
+		if ($type = $this->getState('filter.type')) {
+			$query->where('s.sec_type = "'. $type.'"');
 		}
 		
 		// Filter by published state

@@ -54,10 +54,14 @@ class MAMSViewSecs extends JViewLegacy
 			JToolBarHelper::trash('secs.trash');
 		}
 		
+		$typesl[1] = JHTML::_('select.option',  'article','Article');
+		$typesl[2] = JHTML::_('select.option',  'author','Authors');
+		
 		JHtmlSidebar::setAction('index.php?option=com_mams&view=secs');
 		
 		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
 		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_ACCESS'),'filter_access',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')));
+		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_TYPE'),'filter_type',JHtml::_('select.options', $typesl, 'value', 'text', $this->state->get('filter.type')));
 	}
 	
 	protected function getSortFields()
