@@ -11,6 +11,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $extension	= $this->escape($this->state->get('filter.extension'));
+$db =& JFactory::getDBO();
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&view=medias'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -68,11 +69,14 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<th width="100">
 					<?php echo JText::_('JGRID_HEADING_ACCESS'); ?>
 				</th>
+				<th width="100">
+					<?php echo JText::_('COM_MAMS_MEDIA_ARTICLES'); ?>
+				</th>
 			</tr>
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -97,6 +101,13 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<td class="center"><?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true,'medias').'<br />'.$item->feataccess_level; ?></td>
 				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'medias.', true);?></td>
 				<td><?php echo $item->access_level; ?></td>
+				<td><?php 
+					//Links
+					$query = 'SELECT count(*) FROM #__mams_artmed WHERE published >= 1 && am_media ="'.$item->med_id.'"';
+					$db->setQuery( $query );
+					$num_al=$db->loadResult();
+					echo $num_al;
+				?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

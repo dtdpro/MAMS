@@ -403,7 +403,7 @@ class MAMSModelArticle extends JModelAdmin
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
 	
-		if (empty($table->am_id)) {
+		if (empty($table->art_id)) {
 			// Set the values
 				
 			// Set ordering to the last item if not set

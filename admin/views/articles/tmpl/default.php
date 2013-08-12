@@ -9,8 +9,8 @@ JHtml::_('behavior.multiselect');
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$saveOrder = ($listOrder == 'a.ordering' || $listOrder == 'a.art_published');
-$ordering = ($listOrder == 'a.ordering' || $listOrder == 'a.art_published');
+$saveOrder = ($listOrder == 'a.ordering');
+$ordering = ($listOrder == 'a.ordering');
 $published = $this->state->get('filter.published');
 $db =& JFactory::getDBO();
 ?>
