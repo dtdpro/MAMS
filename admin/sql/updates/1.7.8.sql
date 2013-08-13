@@ -1,0 +1,1 @@
+ALTER TABLE  `#__mams_authors` ADD  `auth_mirror` INT NOT NULL DEFAULT  '0' AFTER  `auth_modified` ;

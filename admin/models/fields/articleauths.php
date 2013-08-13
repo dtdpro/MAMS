@@ -26,6 +26,7 @@ class JFormFieldArticleAuths extends JFormField
 		// Build the query for the ordering list.
 		$query = 'SELECT auth_id AS value, auth_name AS text' .
 				' FROM #__mams_authors' .
+				' WHERE auth_mirror = 0' .
 				' ORDER BY auth_name';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';

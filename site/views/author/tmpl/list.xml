@@ -32,6 +32,15 @@
 				<option value="1">JSHOW</option>
 			</field>
 			<field name="readmore_text" type="text" description="COM_MAMS_FIELD_READMORE_DESC" label="COM_MAMS_FIELD_READMORE_LABEL" default="Read More" />
+			<field name="sep01" type="spacer" hr="true" />
+			<field name="show_pubed" type="radio" description="COM_MAMS_FIELD_SHOW_PUBED_DESC" label="COM_MAMS_FIELD_SHOW_PUBED_LABEL" default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_pubdate" type="radio" description="COM_MAMS_FIELD_SHOW_PUBDATE_DESC" label="COM_MAMS_FIELD_SHOW_PUBDATE_LABEL" default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 		</fieldset>
 	</fields>
 	

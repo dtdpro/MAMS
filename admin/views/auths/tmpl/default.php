@@ -74,6 +74,7 @@ $ordering = ($listOrder == 'a.ordering');
 				<td>
 					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=auth.edit&auth_id='.(int) $item->auth_id); ?>">
 					<?php echo $this->escape($item->auth_name); ?></a>
+					<?php if ($item->auth_mirror) echo 'Mirror: '.$item->auth_mirror; ?>
 					<p class="smallsub"><?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->auth_alias));?></p>
 				</td>
 				<td><?php echo $item->sec_name; ?></td>

@@ -5,9 +5,9 @@ defined('JPATH_BASE') or die;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldAuthors extends JFormField
+class JFormFieldAuthorMirror extends JFormField
 {
-	protected $type = 'Authors';
+	protected $type = 'AuthorMirror';
 
 	protected function getInput()
 	{
@@ -24,13 +24,13 @@ class JFormFieldAuthors extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 
 		// Build the query for the ordering list.
-		$query = 'SELECT CONCAT(auth_id,":",auth_alias) AS value, auth_name AS text' .
+		$query = 'SELECT auth_id AS value, auth_name AS text' .
 				' FROM #__mams_authors' .
 				' WHERE auth_mirror = 0' .
 				' ORDER BY auth_name';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
-		$html[] = '<option value="">'.JText::_('COM_MAMS_SELECT_AUTHOR').'</option>';
+		$html[] = '<option value="">Do not Mirror</option>';
 		$html[] = JHtml::_('select.options',$db->loadObjectList(),"value","text",$this->value);
 		$html[] = '</select>';		
 
