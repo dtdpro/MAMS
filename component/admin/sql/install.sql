@@ -133,10 +133,13 @@ CREATE TABLE IF NOT EXISTS `#__mams_authors` (
   `auth_image` varchar(255) NOT NULL,
   `auth_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `auth_modified` datetime NOT NULL,
+  `auth_mirror` int(11) NOT NULL,
   `published` int(11) NOT NULL,
   `access` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
   `metadata` text NOT NULL,
+  `metakey` text NOT NULL,
+  `metadesc` text NOT NULL,
   PRIMARY KEY (`auth_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 

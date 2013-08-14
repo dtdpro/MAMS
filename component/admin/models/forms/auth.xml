@@ -48,6 +48,13 @@
 			description="COM_MAMS_AUTH_FIELD_SEC_DESC"
 		/>
 		<field
+			name="auth_mirror"
+			type="AuthorMirror"
+			class="inputbox"
+			label="COM_MAMS_AUTH_FIELD_MIRROR_LABEL"
+			description="COM_MAMS_AUTH_FIELD_MIRROR_DESC"
+		/>
+		<field
 			name="auth_alias"
 			type="text"
 			label="COM_MAMS_AUTH_FIELD_ALIAS_LABEL"

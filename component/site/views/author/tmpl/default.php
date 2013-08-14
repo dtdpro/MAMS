@@ -56,9 +56,11 @@ if ($this->published) {
 			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$r->sec_id.":".$r->sec_alias).'" class="mams-author-seclink">'.$r->sec_name.'</a>';
 			
 			//Pub Date
-			echo ' published on <strong>';
-			echo date("F j, Y",strtotime($r->art_publish_up));
-			echo '</strong>';
+			if ($this->params->get('show_pubdate',1)) {
+				echo ' published on <strong>';
+				echo date("F j, Y",strtotime($r->art_publish_up));
+				echo '</strong>';
+			}
 			
 			//Cat Links
 			if ($r->cats) {

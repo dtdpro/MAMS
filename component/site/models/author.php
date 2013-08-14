@@ -44,6 +44,18 @@ class MAMSModelAuthor extends JModelLegacy
 			$query->order('a.ordering');
 			$db->setQuery($query);
 			$s->authors = $db->loadObjectList();
+			foreach ($s->authors as &$i) {
+				if ($i->auth_mirror != 0) {
+					$query = $db->getQuery(true);
+					$query->select('a.*');
+					$query->from('#__mams_authors AS a');
+					$query->where('a.auth_id = '.$i->auth_mirror);
+					$query->where('a.published >= 1');
+					$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+					$db->setQuery($query);
+					$i = $db->loadObject();
+				}
+			}
 		}
 		return $secs;
 	}
