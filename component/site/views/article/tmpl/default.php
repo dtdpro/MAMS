@@ -10,7 +10,7 @@ if ($this->article->fields) {
 	$curgroup = "";
 	$first=true;
 	foreach ($this->article->fields as $f) {
-		if ($f->field_type == "related" && !$this->params->get('show_related',1)) { break; }
+		if ($f->field_type == "related" && (!$this->params->get('show_related',1) || !$this->related)) { break; }
 		$fn = $f->field_name;
 		$gns = "show_".$f->group_name; 
 		if ($f->group_name != $curgroup && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
@@ -220,7 +220,7 @@ if ($this->article->fields) {
 				echo '</em>';
 			}
 			echo '</div>';
-		} else if ($f->field_type == "related" && $this->params->get('show_related',1)) {
+		} else if ($f->field_type == "related" && $this->params->get('show_related',1) && $this->related) {
 			$rlfirst = true;
 			echo '<div class="mams-article-related-links">';
 			foreach ($this->related as $r) {
