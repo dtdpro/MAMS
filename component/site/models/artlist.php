@@ -44,7 +44,7 @@ class MAMSModelArtList extends JModelList
 		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
 		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
-		$query->where('a.art_id IN ('.implode(",",$this->artids).')');
+		if (count($this->artids)) $query->where('a.art_id IN ('.implode(",",$this->artids).')');
 		if (count($this->secid)) $query->where('a.art_sec IN ('.implode(",",$this->secid).')');
 		$query->where('a.state >= 1');
 		$query->where('a.access IN ('.implode(",",$this->alvls).')');
@@ -60,7 +60,7 @@ class MAMSModelArtList extends JModelList
 		return $query;
 	}
 	
-	function getArticles($artids,$secid) {
+	function getArticles($artids=array(),$secid=array()) {
 		$this->artids=$artids;
 		$this->secid=$secid;
 		return $this->getItems();

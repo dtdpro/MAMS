@@ -29,6 +29,9 @@ class MAMSViewArtList extends JViewLegacy
 			case "author": 
 				$this->listAuthor();
 				break;
+			case "allsecs": 
+				$this->listAll();
+				break;
 			case "section": 
 			default:
 				$this->listSection();
@@ -74,6 +77,14 @@ class MAMSViewArtList extends JViewLegacy
 				$this->feedtitle = $this->params->get("page_title",$app->getMenu()->getActive()->title);
 			}
 		}
+	}
+	
+	protected function listAll() {
+		$app = JFactory::getApplication();
+		$model =& $this->getModel();
+		$this->articles=$model->getArticles();
+		$this->pagination = $this->get('Pagination');
+		$this->feedtitle = $this->params->get("page_title",$app->getMenu()->getActive()->title);
 	}
 	
 	protected function listAuthor() {
