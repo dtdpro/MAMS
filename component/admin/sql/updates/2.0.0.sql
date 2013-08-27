@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_article_fields` (
   `field_group` int(11) NOT NULL,
   `field_show_page` tinyint(1) NOT NULL DEFAULT '0',
   `field_show_list` tinyint(1) NOT NULL DEFAULT '0',
-  `field_show_title` tinyint(1) NOT NULL DEFAULT '0',
+  `field_show_module` tinyint(1) NOT NULL DEFAULT '0',
   `ordering` int(11) NOT NULL,
   `access` int(11) NOT NULL,
   `published` int(11) NOT NULL,

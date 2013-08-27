@@ -87,6 +87,7 @@ class MAMSModelField extends JModelAdmin
 			$form->setFieldAttribute('access', 'filter', 'unset');
 			
 			$form->removeField('field_show_list');
+			$form->removeField('field_show_module');
 		}
 	
 		// Check for errors encountered while preparing the form.
