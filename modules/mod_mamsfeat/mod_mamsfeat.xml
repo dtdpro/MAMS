@@ -52,6 +52,10 @@
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
+				<field name="show_allfields" type="radio" class="btn-group" description="MOD_MAMSFEAT_SHOW_ALLFIELDS_DESC" label="MOD_MAMSFEAT_SHOW_ALLFIELDS_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 				<field name="show_readmore" type="radio" class="btn-group" description="MOD_MAMSFEAT_SHOW_READMORE_DESC" label="MOD_MAMSFEAT_SHOW_READMORE_LABEL" default="0">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>

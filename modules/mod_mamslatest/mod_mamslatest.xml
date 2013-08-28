@@ -53,6 +53,10 @@
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
+				<field name="show_allfields" type="radio" class="btn-group" description="MOD_MAMSLATEST_SHOW_ALLFIELDS_DESC" label="MOD_MAMSLATEST_SHOW_ALLFIELDS_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
 			</fieldset>
 		</fields>

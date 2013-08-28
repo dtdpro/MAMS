@@ -114,8 +114,8 @@
 			name="field_show_module"
 			type="radio"
 			class="btn-group"
-			label="COM_MAMS_FIELD_FIELD_SHOWPAGE_LABEL"
-			description="COM_MAMS_FIELD_FIELD_SHOWPAGE_DESC"
+			label="COM_MAMS_FIELD_FIELD_SHOWMODULE_LABEL"
+			description="COM_MAMS_FIELD_FIELD_SHOWMODULE_DESC"
 			default="0">
 			<option	value="0">No</option>
 			<option	value="1">Yes</option>
@@ -128,6 +128,10 @@
 				<option	value="1">Yes</option>
 			</field>
 			<field name="show_title_desc" type="radio" class="btn-group" label="COM_MAMS_FIELD_FIELD_SHOWTITLEDESC_LABEL" description="COM_MAMS_FIELD_FIELD_SHOWTITLEDESC_DESC" default="0">
+				<option	value="0">No</option>
+				<option	value="1">Yes</option>
+			</field>
+			<field name="show_title_module" type="radio" class="btn-group" label="COM_MAMS_FIELD_FIELD_SHOWTITLEMODULE_LABEL" description="COM_MAMS_FIELD_FIELD_SHOWTITLEDMODULE_DESC" default="0">
 				<option	value="0">No</option>
 				<option	value="1">Yes</option>
 			</field>
