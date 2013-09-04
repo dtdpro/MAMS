@@ -57,6 +57,11 @@
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
+				<field name="show_readmore" type="radio" class="btn-group" description="MOD_MAMSLATEST_SHOW_READMORE_DESC" label="MOD_MAMSLATEST_SHOW_READMORE_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="text_readmore" type="text" default="Read More" label="MOD_MAMSLATEST_TEXT_READMORE_LABEL" description="MOD_MAMSLATEST_TEXT_READMORE_DESC" />
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
 			</fieldset>
 		</fields>
