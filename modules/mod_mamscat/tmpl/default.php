@@ -4,19 +4,20 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
-echo '<div id="mams-featmod">';
-echo '<ul class="mams-featmod-list">';
+echo '<div class="mams-featmod">';
 $firstart=true;
 foreach ($articles as $a) {
-	echo '<li class="mams-featmod-listitem';
+	echo '<div class="mams-featmod-article';
 	if ($firstart) { echo ' first-child'; $firstart=false; }
 	echo '">';
-	if ($params->get('show_thumb',0)) {
+	if ($a->art_thumb && $params->get('show_thumb',0)) {
 		echo '<div class="mams-featmod-thumb">';
 		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
 		echo '<img border="0" class="mams-featmod-artthumb" src="'.$a->art_thumb.'" /></a>';
 		echo '</div>';
 	}
+	if ($a->art_thumb && $params->get('show_thumb',0)) echo '<div class="mams-featmod-articleinfowt">';
+	else echo '<div class="mams-featmod-articleinfo">';
 	echo '<div class="mams-featmod-title">';
 	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
 	echo $a->art_title;
@@ -168,7 +169,7 @@ foreach ($articles as $a) {
 		echo $params->get('text_readmore',"Read More");
 		echo '</a></div>';
 	}
-	echo '</li>';
+	echo '</div>';
+	echo '</div>';
 }
-echo '</ul>';
 echo '</div>';
