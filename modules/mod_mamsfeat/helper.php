@@ -65,7 +65,7 @@ class modMAMSFeatHelper
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		
-		$query->select('*');
+		$query->select('*,f.params as field_params,g.params as group_params');
 		$query->from("#__mams_article_fields as f");
 		$query->select('g.group_title');
 		$query->join('LEFT', '#__mams_article_fieldgroups AS g ON g.group_id = f.field_group');
@@ -86,9 +86,13 @@ class modMAMSFeatHelper
 				case "links": $i->data = modMAMSFeatHelper::getFieldLinks($artid,$i->field_id,$alvls); break;
 			}
 			
-			$registry = new JRegistry;
-			$registry->loadString($i->params);
-			$i->params = $registry->toObject();
+			$registryf = new JRegistry;
+			$registryf->loadString($i->field_params);
+			$i->field_params = $registryf->toObject();
+			
+			$registryg = new JRegistry;
+			$registryg->loadString($i->group_params);
+			$i->group_params = $registryg->toObject();
 		}
 			
 		return $items;

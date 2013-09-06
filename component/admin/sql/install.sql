@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_article_fieldgroups` (
   `ordering` int(11) NOT NULL,
   `access` int(11) NOT NULL,
   `published` int(11) NOT NULL,
+  `params` text NOT NULL,
   PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 

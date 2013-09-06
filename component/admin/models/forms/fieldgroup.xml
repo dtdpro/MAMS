@@ -70,5 +70,17 @@
 			<option	value="1">Yes</option>
 		</field>
 	</fieldset>
+	<fields name="params">
+		<fieldset name="jbasic" label="COM_MAMS_FIELDSET_FIELDGROUP_OPTIONS_LABEL">
+			<field name="linktitlelist" type="radio" class="btn-group" label="COM_MAMS_FIELDGROUP_FIELD_LINKTITLELIST_LABEL" description="COM_MAMS_FIELDGROUP_FIELD_LINKTITLELIST_DESC" default="0">
+				<option	value="0">No</option>
+				<option	value="1">Yes</option>
+			</field>
+			<field name="linktitlemod" type="radio" class="btn-group" label="COM_MAMS_FIELDGROUP_FIELD_LINKTITLEMOD_LABEL" description="COM_MAMS_FIELDGROUP_FIELD_LINKTITLEMOD_DESC" default="0">
+				<option	value="0">No</option>
+				<option	value="1">Yes</option>
+			</field>
+		</fieldset>
+	</fields>
 </form>
 

@@ -72,8 +72,8 @@ class modMAMSCatHelper
 	protected function getArticleListFields($artid,$alvls) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
-	
-		$query->select('*');
+		
+		$query->select('*,f.params as field_params,g.params as group_params');
 		$query->from("#__mams_article_fields as f");
 		$query->select('g.group_title');
 		$query->join('LEFT', '#__mams_article_fieldgroups AS g ON g.group_id = f.field_group');
@@ -86,17 +86,21 @@ class modMAMSCatHelper
 		$query->order('f.ordering ASC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
-	
+		
 		foreach ($items as &$i) {
 			switch ($i->field_type) {
-				case "auths": $i->data = modMAMSCatHelper::getFieldAuthors($artid,$i->field_id,$alvls); break;
-				case "dloads": $i->data = modMAMSCatHelper::getFieldDownloads($artid,$i->field_id,$alvls); break;
-				case "links": $i->data = modMAMSCatHelper::getFieldLinks($artid,$i->field_id,$alvls); break;
+				case "auths": $i->data = modMAMSFeatHelper::getFieldAuthors($artid,$i->field_id,$alvls); break;
+				case "dloads": $i->data = modMAMSFeatHelper::getFieldDownloads($artid,$i->field_id,$alvls); break;
+				case "links": $i->data = modMAMSFeatHelper::getFieldLinks($artid,$i->field_id,$alvls); break;
 			}
-	
-			$registry = new JRegistry;
-			$registry->loadString($i->params);
-			$i->params = $registry->toObject();
+			
+			$registryf = new JRegistry;
+			$registryf->loadString($i->field_params);
+			$i->field_params = $registryf->toObject();
+			
+			$registryg = new JRegistry;
+			$registryg->loadString($i->group_params);
+			$i->group_params = $registryg->toObject();
 		}
 			
 		return $items;

@@ -84,23 +84,25 @@ foreach ($this->articles as $a) {
 									$curgroup = $f->group_name;
 									if ($f->group_show_title) {
 										echo '<div class="mams-artlist-'.$f->group_name.'-title">';
+										if ($f->group_params->linktitlelist) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'#'.$f->group_name.'">';
 										echo $f->group_title;
+										if ($f->group_params->linktitlelist) echo '</a>';
 										echo '</div>';
 									}
 								}
-								if ($f->params->show_title_desc) {
+								if ($f->field_params->show_title_desc) {
 									echo '<div class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'-title">';
 									echo $f->field_title;
 									echo '</div>';
 								}
 								echo '<div class="mams-artlist-'.$f->group_name.'-'.$f->field_name.'">';
-								if ($f->params->pretext) echo $f->params->pretext.' ';
+								if ($f->field_params->pretext) echo $f->field_params->pretext.' ';
 								switch ($f->field_type) {
 									case "textfield":
-										if ($f->params->linktext==1) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'#'.$f->field_name.'">';
-										if ($f->params->linktext==2) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'#'.$f->group_name.'">';
+										if ($f->field_params->linktext==1) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'#'.$f->field_name.'">';
+										if ($f->field_params->linktext==2) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'#'.$f->group_name.'">';
 										echo $a->art_fielddata->$fn;
-										if ($f->params->linktext) echo '</a>';
+										if ($f->field_params->linktext) echo '</a>';
 										break;
 									case "textbox":
 									case "editor":
@@ -142,7 +144,7 @@ foreach ($this->articles as $a) {
 										}
 										break;
 								}
-								if ($f->params->posttext) echo ' '.$f->params->posttext;
+								if ($f->field_params->posttext) echo ' '.$f->field_params->posttext;
 								echo '</div>';
 							}
 						}
