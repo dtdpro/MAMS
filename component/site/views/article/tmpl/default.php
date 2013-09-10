@@ -1,6 +1,18 @@
 <?php
 defined('_JEXEC') or die();
 $config=MAMSHelper::getConfig();
+$user=JFactory::getUser();
+
+$urlnc = $this->getReturnURL();
+if ($user->id) {
+	$rurl = JRoute::_('index.php?option=com_mams&view=artlist&secid='.$this->article->art_sec);
+	$msg = $config->noaccessmsg;
+}
+else {
+	$rurl = JRoute::_('index.php?option=com_users&view=login&return='.$urlnc);
+	$msg = $config->loginmsg;
+}
+
 //echo '<pre>';
 //print_r($this->article);
 //echo '</pre>';
@@ -59,8 +71,8 @@ if ($this->article->fields) {
 					$firstdl=true;
 					foreach ($dloads as $d) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-dload">';
-						echo '<a href="'.JRoute::_("components/com_mams/dl.php?dlid=".$d->dl_id).'" ';
-						echo 'target="_blank" ';
+						if (in_array($d->access,$user->getAuthorisedViewLevels())) echo '<a href="'.JRoute::_("components/com_mams/dl.php?dlid=".$d->dl_id).'" target="_blank" ';
+						else echo '<a href="'.JRoute::_($rurl).'" ';
 						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artdload mams-article-dllink';
 						if ($firstdl) { echo ' firstdload'; $firstdl=false; }
 						echo '">';
