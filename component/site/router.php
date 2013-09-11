@@ -25,13 +25,13 @@ function MAMSBuildRoute(&$query)
 		if (!empty($mi->query['artid']) && ((int)$mi->query['artid'] == (int)$query['artid'])) {
 			$foundart = $mi->id;
 		}
-		if (!empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'][0])) {
+		if (!empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
 			$foundsec = $mi->id;
 		}
 		if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid'][0])) {
 			$foundcat = $mi->id;
 		}
-		if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid'][0]) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'][0])) {
+		if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid'][0]) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
 			$foundcatsec = $mi->id;
 		}
 		if (!empty($mi->query['autid']) && ((int)$mi->query['autid'] == (int)$query['autid'])) {
