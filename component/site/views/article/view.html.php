@@ -22,7 +22,12 @@ class MAMSViewArticle extends JViewLegacy
 		
 		$model =& $this->getModel();
 		$art=$app->input->getInt('artid',0);
-		$this->article=$model->getArticle($art);
+		if (!$art) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			return false;
+		} else {
+			$this->article=$model->getArticle($art);
+		}
 		
 		if ($this->article) {
 			$this->params = $this->article->params;
