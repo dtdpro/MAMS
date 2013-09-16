@@ -174,4 +174,10 @@ foreach ($articles as $a) {
 	echo '</div>';
 	echo '</div>';
 }
+if ($params->get('show_viewall',0)) {
+	echo '<div class="mams-featmod-viewall">';
+	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&secid=".$params->get('secid')).'" class="mams-featmod-artlink read-more">';
+	echo $params->get('text_viewall',"Read More");
+	echo '</a></div>';
+}
 echo '</div>';
