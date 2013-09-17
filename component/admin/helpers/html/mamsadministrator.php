@@ -29,3 +29,4 @@ abstract class JHtmlMAMSAdministrator
 		return $html;
 	}
 }
+

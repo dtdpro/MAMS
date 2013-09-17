@@ -7,7 +7,7 @@ JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
-
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 $user	= JFactory::getUser();
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -158,7 +158,7 @@ $db =& JFactory::getDBO();
 					<div class="pull-left">
 						<?php
 							// Create dropdown items
-							JHtml::_('dropdown.edit', $item->sec_id, 'sec.');
+							JHtml::_('mamsdropdown.editsection', $item->sec_id);
 							JHtml::_('dropdown.divider');
 							if ($item->published) :
 								JHtml::_('dropdown.unpublish', 'cb' . $i, 'secs.');

@@ -7,6 +7,7 @@ JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -127,7 +128,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 					<div class="pull-left">
 						<?php
 							// Create dropdown items
-							JHtml::_('dropdown.edit', $item->cat_id, 'link.');
+							JHtml::_('mamsdropdown.editlink', $item->link_id);
 							JHtml::_('dropdown.divider');
 							if ($item->published) :
 								JHtml::_('dropdown.unpublish', 'cb' . $i, 'links.');

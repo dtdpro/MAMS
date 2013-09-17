@@ -7,8 +7,8 @@ JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
-
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+
 $app	= JFactory::getApplication();
 $user	= JFactory::getUser();
 $userId	= $user->get('id');
@@ -183,7 +183,7 @@ $sortFields = $this->getSortFields();
 						<?php
 							// Create dropdown items
 							if ($canEdit || $canEditOwn) :
-								JHtml::_('dropdown.edit', $item->art_id, 'article.');
+								JHtml::_('mamsdropdown.editarticle', $item->art_id);
 								JHtml::_('dropdown.divider');
 							endif;
 							

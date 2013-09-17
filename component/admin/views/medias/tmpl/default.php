@@ -131,7 +131,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 					<div class="pull-left">
 						<?php
 							// Create dropdown items
-							JHtml::_('dropdown.edit', $item->med_id, 'media.');
+							JHtml::_('mamsdropdown.editmedia', $item->med_id);
 							JHtml::_('dropdown.divider');
 							if ($item->published) :
 								JHtml::_('dropdown.unpublish', 'cb' . $i, 'medias.');
