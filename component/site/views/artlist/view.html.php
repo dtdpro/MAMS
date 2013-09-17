@@ -12,6 +12,7 @@ class MAMSViewArtList extends JViewLegacy
 	protected $params = null;
 	protected $pagination = null;
 	protected $state = null;
+	protected $error = false;
 	
 	public function display($tpl = null)
 	{
@@ -38,6 +39,8 @@ class MAMSViewArtList extends JViewLegacy
 				break;
 		}
 		
+		if ($this->error) return false;
+		
 		//RSS Feed Link
 		$link = '&format=feed&limitstart=';
 		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
@@ -53,8 +56,18 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listCategory() {
 		$model =& $this->getModel();
 		$sec=$this->getSecs();
+		if (!$sec) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
 		$cat=$this->getCats();
+		if (!$cat) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
 			$artids=$model->getCatArts($cat);
@@ -73,6 +86,11 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listSection() {
 		$model =& $this->getModel();
 		$sec=$this->getSecs();
+		if (!$sec) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
 			$artids=$model->getSecArts($sec); 
@@ -84,8 +102,18 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listAuthor() {
 		$model =& $this->getModel();
 		$sec=$this->getSecs();
+		if (!$sec) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
 		$aut=$this->getAuts();
+		if (!$aut) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
 		$this->autinfo=$model->getAutInfo($aut);
 		if ($this->autinfo) {
 			$artids=$model->getAuthArts($aut);

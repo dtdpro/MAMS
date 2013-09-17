@@ -12,6 +12,8 @@ class MAMSController extends JControllerLegacy
 	 */
 	function display()
 	{
+		$vName = $this->input->getCmd('view', 'artlist');
+		$this->input->set('view', $vName);
 		echo '<div id="system">';
 		parent::display();
 		echo '</div>';

@@ -46,6 +46,8 @@ class MAMSModelArticle extends JModelItem
 		$db->setQuery($query);
 		$item = $db->loadObject();
 		
+		if (!$item) return false;
+		
 		//Load up the Params
 		$registry = new JRegistry;
 		$registry->loadString($item->params);

@@ -13,11 +13,11 @@
 
 	<!-- Basic options. -->
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
-			<field name="show_pubed" type="radio" description="COM_MAMS_FIELD_SHOW_PUBED_DESC" label="COM_MAMS_FIELD_SHOW_PUBED_LABEL" default="1">
+			<field name="show_pubed" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBED_DESC" label="COM_MAMS_FIELD_SHOW_PUBED_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_pubdate" type="radio" description="COM_MAMS_FIELD_SHOW_PUBDATE_DESC" label="COM_MAMS_FIELD_SHOW_PUBDATE_LABEL" default="1">
+			<field name="show_pubdate" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBDATE_DESC" label="COM_MAMS_FIELD_SHOW_PUBDATE_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>

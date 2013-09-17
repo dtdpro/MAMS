@@ -11,33 +11,33 @@
 	
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
-			<field name="show_authlink" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHLINK_DESC" label="COM_MAMS_FIELD_SHOW_AUTHLINK_LABEL" default="1">
+			<field name="show_authlink" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHLINK_DESC" label="COM_MAMS_FIELD_SHOW_AUTHLINK_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_cred" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHCRED_DESC" label="COM_MAMS_FIELD_SHOW_AUTHCRED_LABEL" default="1">
+			<field name="show_cred" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHCRED_DESC" label="COM_MAMS_FIELD_SHOW_AUTHCRED_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_aimg" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHIMG_DESC" label="COM_MAMS_FIELD_SHOW_AUTHIMG_LABEL" default="1">
+			<field name="show_aimg" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHIMG_DESC" label="COM_MAMS_FIELD_SHOW_AUTHIMG_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_desc" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHDESC_DESC" label="COM_MAMS_FIELD_SHOW_AUTHDESC_LABEL" default="1">
+			<field name="show_desc" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHDESC_DESC" label="COM_MAMS_FIELD_SHOW_AUTHDESC_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_readmore" type="radio" description="COM_MAMS_FIELD_SHOW_READMORE_DESC" label="COM_MAMS_FIELD_SHOW_READMORE_LABEL" default="1">
+			<field name="show_readmore" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_READMORE_DESC" label="COM_MAMS_FIELD_SHOW_READMORE_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 			<field name="readmore_text" type="text" description="COM_MAMS_FIELD_READMORE_DESC" label="COM_MAMS_FIELD_READMORE_LABEL" default="Read More" />
 			<field name="sep01" type="spacer" hr="true" />
-			<field name="show_pubed" type="radio" description="COM_MAMS_FIELD_SHOW_PUBED_DESC" label="COM_MAMS_FIELD_SHOW_PUBED_LABEL" default="1">
+			<field name="show_pubed" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBED_DESC" label="COM_MAMS_FIELD_SHOW_PUBED_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_pubdate" type="radio" description="COM_MAMS_FIELD_SHOW_PUBDATE_DESC" label="COM_MAMS_FIELD_SHOW_PUBDATE_LABEL" default="1">
+			<field name="show_pubdate" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBDATE_DESC" label="COM_MAMS_FIELD_SHOW_PUBDATE_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>

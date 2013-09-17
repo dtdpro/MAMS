@@ -252,7 +252,7 @@ function MAMSParseRoute($segments)
 	// last segment has a number prepended we then check for article, cat list or auth list.
 	if (!$advanced) {
 		$sec_id = (int)$segments[0];
-
+		
 		list($id, $alias) = explode(':', $segments[$count-1], 2);
 
 		if ($id > 0) {
@@ -303,19 +303,19 @@ function MAMSParseRoute($segments)
 
 		return $vars;
 	}
-
+/*
 	// we get the section id from the menu item and search from there
 	$secid = $item->query['secid'];
 	$artid = $item->query['artid'];
 	
 	// first we check if it is a section
-	$query = 'SELECT sec_alias, sec_id FROM #__mams_secs WHERE sec_id = '.(int)$id;
+	$query = 'SELECT sec_alias, sec_id FROM #__mams_secs WHERE sec_id = '.(int)$secid;
 	$db->setQuery($query);
 	$section = $db->loadObject();
 
 	if (!$section) {
 		JError::raiseError(404, JText::_('COM_MAMS_ERROR_SECTION_NOT_FOUND'));
-		return $vars;
+		//return $vars;
 	}
 
 	$vars['secid'] = $secid;
@@ -327,7 +327,7 @@ function MAMSParseRoute($segments)
 		$segment = str_replace(':', '-',$segment);
 
 		if ($section->sec_alias == $segment) {
-			$vars['secid'] = $category->id;
+			$vars['secid'] = $section->sec_id;
 			$vars['view'] = 'artlist';
 			$vars['layout'] = 'section';
 			$found = 1;
@@ -350,6 +350,6 @@ function MAMSParseRoute($segments)
 
 		$found = 0;
 	}
-
+*/
 	return $vars;
 }
