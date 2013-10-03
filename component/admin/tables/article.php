@@ -98,17 +98,17 @@ class MAMSTableArticle extends JTable
 	{
 		$date	= JFactory::getDate();
 		$user	= JFactory::getUser();
-		if ($this->art_id) {
-			// Existing item
-			$this->art_modified		= $date->toSql();
-			$this->art_modified_by	= $user->get('id');
-		} else {
-			// New section. A article created on field can be set by the user,
+		if (!$this->art_id) {
+			// New article. A article created on field can be set by the user,
 			// so we don't touch either of these if they are set.
 			if (!intval($this->art_added)) {
 				$this->art_added = $date->toSql();
 			}
 		}
+		
+		// Set modification info, new is modified as well
+		$this->art_modified		= $date->toSql();
+		$this->art_modified_by	= $user->get('id');
 		if (empty($this->art_added_by)) {
 			$this->art_added_by	= $user->get('id');
 		}
