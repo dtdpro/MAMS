@@ -96,9 +96,9 @@ class MAMSModelArticle extends JModelItem
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		
-		$query->select('*');
+		$query->select('f.*');
 		$query->from("#__mams_article_fields as f");
-		$query->select('g.group_title');
+		$query->select('g.group_title,g.group_show_title,g.group_name');
 		$query->join('LEFT', '#__mams_article_fieldgroups AS g ON g.group_id = f.field_group');
 		$query->where('f.published >= 1');
 		$query->where('f.access IN ('.implode(",",$this->alvls).')');
