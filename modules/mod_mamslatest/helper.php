@@ -89,9 +89,9 @@ class modMAMSLatestHelper
 		
 		foreach ($items as &$i) {
 			switch ($i->field_type) {
-				case "auths": $i->data = modMAMSFeatHelper::getFieldAuthors($artid,$i->field_id,$alvls); break;
-				case "dloads": $i->data = modMAMSFeatHelper::getFieldDownloads($artid,$i->field_id,$alvls); break;
-				case "links": $i->data = modMAMSFeatHelper::getFieldLinks($artid,$i->field_id,$alvls); break;
+				case "auths": $i->data = modMAMSLatestHelper::getFieldAuthors($artid,$i->field_id,$alvls); break;
+				case "dloads": $i->data = modMAMSLatestHelper::getFieldDownloads($artid,$i->field_id,$alvls); break;
+				case "links": $i->data = modMAMSLatestHelper::getFieldLinks($artid,$i->field_id,$alvls); break;
 			}
 			
 			$registryf = new JRegistry;

@@ -89,9 +89,9 @@ class modMAMSCatHelper
 		
 		foreach ($items as &$i) {
 			switch ($i->field_type) {
-				case "auths": $i->data = modMAMSFeatHelper::getFieldAuthors($artid,$i->field_id,$alvls); break;
-				case "dloads": $i->data = modMAMSFeatHelper::getFieldDownloads($artid,$i->field_id,$alvls); break;
-				case "links": $i->data = modMAMSFeatHelper::getFieldLinks($artid,$i->field_id,$alvls); break;
+				case "auths": $i->data = modMAMSCatHelper::getFieldAuthors($artid,$i->field_id,$alvls); break;
+				case "dloads": $i->data = modMAMSCatHelper::getFieldDownloads($artid,$i->field_id,$alvls); break;
+				case "links": $i->data = modMAMSCatHelper::getFieldLinks($artid,$i->field_id,$alvls); break;
 			}
 			
 			$registryf = new JRegistry;
