@@ -33,7 +33,7 @@ class modMAMSCatHelper
 		$query->where('a.access IN ('.implode(",",$alvls).')');
 		$query->where('a.state >= 1');
 		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
-		$query->order('a.art_publish_up DESC, s.ordering ASC, a.ordering ASC');
+		$query->order($params->get('orderby1','a.art_publish_up DESC').', '.$params->get('orderby2','s.ordering ASC').', '.$params->get('orderby3','a.ordering ASC'));
 		$db->setQuery($query,0,$params->get('count',5));
 		$items = $db->loadObjectList();
 		

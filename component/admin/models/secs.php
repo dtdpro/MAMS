@@ -12,6 +12,7 @@ class MAMSModelSecs extends JModelList
 		
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
+				'sec_id', 's.sec_id',
 				'sec_added', 's.sec_added',
 				'sec_modified', 's.sec_modified',
 				'sec_title', 's.sec_title',
