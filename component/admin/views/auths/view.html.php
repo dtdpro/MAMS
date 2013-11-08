@@ -65,8 +65,8 @@ class MAMSViewAuths extends JViewLegacy
 		return array(
 				'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
 				'a.published' => JText::_('JSTATUS'),
-				'a.auth_added' => JText::_('COM_MAMS_AUTH_HEADING_ADDED'),
-				'a.auth_modified' => JText::_('COM_MAMS_AUTH_HEADING_MODIFIED'),
+				'a.auth_added' => JText::_('COM_MAMS_AUTH_ADDED'),
+				'a.auth_modified' => JText::_('COM_MAMS_AUTH_MODIFIED'),
 				'a.auth_fname' => JText::_('COM_MAMS_AUTH_HEADING_FNAME'),
 				'a.auth_lname' => JText::_('COM_MAMS_AUTH_HEADING_LNAME'),
 				'a.access' => JText::_('JGRID_HEADING_ACCESS'),

@@ -131,35 +131,33 @@ $db =& JFactory::getDBO();
 
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->auth_id); ?></td>
-				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'auths.', true);?></td>
+				<td class="center">
+					<div class="btn-group">
+						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'auths.', true);?>
+						<?php
+							// Create dropdown items
+							if ($item->published) :
+								JHtml::_('actionsdropdown.unpublish', 'cb' . $i, 'auths');
+							else :
+								JHtml::_('actionsdropdown.publish', 'cb' . $i, 'auths');
+							endif;
+							
+							JHtml::_('actionsdropdown.divider');
+							if ($trashed) :
+								JHtml::_('actionsdropdown.untrash', 'cb' . $i, 'auths');
+							else :
+								JHtml::_('actionsdropdown.trash', 'cb' . $i, 'auths');
+							endif;
+							// Render dropdown list
+							echo JHtml::_('actionsdropdown.render');
+						?>
+					</div>
+				</td>
 				<td class="nowrap has-context">
 					<div class="pull-left">
 						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=auth.edit&auth_id='.(int) $item->auth_id); ?>">
 						<?php echo $this->escape($item->auth_fname).(($item->auth_mi) ? " ".$this->escape($item->auth_mi) : "")." ".$this->escape($item->auth_lname).(($item->auth_titles) ? ", ".$this->escape($item->auth_titles) : ""); ?></a>
 						<div class="small">Section: <?php echo $item->sec_name;?></div>
-					</div>
-					<div class="pull-left">
-						<?php
-							// Create dropdown items
-							JHtml::_('mamsdropdown.editauthor', $item->auth_id);
-							JHtml::_('dropdown.divider');
-							if ($item->published) :
-								JHtml::_('dropdown.unpublish', 'cb' . $i, 'auths.');
-							else :
-								JHtml::_('dropdown.publish', 'cb' . $i, 'auths.');
-							endif;
-							
-							JHtml::_('dropdown.divider');
-
-							if ($trashed) :
-								JHtml::_('dropdown.untrash', 'cb' . $i, 'auths.');
-							else :
-								JHtml::_('dropdown.trash', 'cb' . $i, 'auths.');
-							endif;
-
-							// Render dropdown list
-							echo JHtml::_('dropdown.render');
-							?>
 					</div>
 				</td>
 				<td class="small"><?php echo $item->auth_added; ?></td>

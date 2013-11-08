@@ -115,35 +115,35 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td><?php echo JHtml::_('grid.id', $i, $item->dl_id); ?></td>
-				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'dloads.', true);?></td>
+				<td class="center">
+					<div class="btn-group">
+						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'dloads.', true);?>
+						<?php
+							// Create dropdown items
+							if ($item->published) :
+								JHtml::_('actionsdropdown.unpublish', 'cb' . $i, 'dloads');
+							else :
+								JHtml::_('actionsdropdown.publish', 'cb' . $i, 'dloads');
+							endif;
+							
+							JHtml::_('actionsdropdown.divider');
+
+							if ($trashed) :
+								JHtml::_('actionsdropdown.untrash', 'cb' . $i, 'dloads');
+							else :
+								JHtml::_('actionsdropdown.trash', 'cb' . $i, 'dloads');
+							endif;
+
+							// Render dropdown list
+							echo JHtml::_('actionsdropdown.render');
+						?>
+					</div>
+				</td>
 				<td class="nowrap has-context">
 					<div class="pull-left">
 						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=dload.edit&dl_id='.(int) $item->dl_id.'&extension='.$extension); ?>">
 						<?php echo $this->escape($item->dl_fname); ?></a>
 						<div class="small"><?php echo 'Download '.$this->escape($item->dl_lname).')';?></div>
-					</div>
-					<div class="pull-left">
-						<?php
-							// Create dropdown items
-							JHtml::_('mamsdropdown.editdload', $item->dl_id);
-							JHtml::_('dropdown.divider');
-							if ($item->published) :
-								JHtml::_('dropdown.unpublish', 'cb' . $i, 'dloads.');
-							else :
-								JHtml::_('dropdown.publish', 'cb' . $i, 'dloads.');
-							endif;
-							
-							JHtml::_('dropdown.divider');
-
-							if ($trashed) :
-								JHtml::_('dropdown.untrash', 'cb' . $i, 'dloads.');
-							else :
-								JHtml::_('dropdown.trash', 'cb' . $i, 'dloads.');
-							endif;
-
-							// Render dropdown list
-							echo JHtml::_('dropdown.render');
-							?>
 					</div>
 				</td>
 				<td class="small"><?php echo $item->dl_loc; ?></td>

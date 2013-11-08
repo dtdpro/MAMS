@@ -120,6 +120,33 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 					<div class="btn-group">
 						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'medias.', true); ?>
 						<?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true,"medias"); ?>
+						<?php
+							// Create dropdown items
+							if ($item->published) :
+								JHtml::_('actionsdropdown.unpublish', 'cb' . $i, 'medias');
+							else :
+								JHtml::_('actionsdropdown.publish', 'cb' . $i, 'medias');
+							endif;
+							
+							JHtml::_('actionsdropdown.divider');
+
+							if ($item->featured) :
+								JHtml::_('actionsdropdown.unfeatured', 'cb' . $i, 'medias');
+							else :
+								JHtml::_('actionsdropdown.featured', 'cb' . $i, 'medias');
+							endif;
+							
+							JHtml::_('actionsdropdown.divider');
+
+							if ($trashed) :
+								JHtml::_('actionsdropdown.untrash', 'cb' . $i, 'medias');
+							else :
+								JHtml::_('actionsdropdown.trash', 'cb' . $i, 'medias');
+							endif;
+
+							// Render dropdown list
+							echo JHtml::_('actionsdropdown.render');
+						?>
 					</div>
 				</td>
 				<td class="nowrap has-context">
@@ -127,37 +154,6 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=media.edit&med_id='.(int) $item->med_id.'&extension='.$extension); ?>">
 						<?php echo $this->escape($item->med_inttitle); ?></a>
 						<div class="small"><?php echo $this->escape($item->med_exttitle);?></div>
-					</div>
-					<div class="pull-left">
-						<?php
-							// Create dropdown items
-							JHtml::_('mamsdropdown.editmedia', $item->med_id);
-							JHtml::_('dropdown.divider');
-							if ($item->published) :
-								JHtml::_('dropdown.unpublish', 'cb' . $i, 'medias.');
-							else :
-								JHtml::_('dropdown.publish', 'cb' . $i, 'medias.');
-							endif;
-							
-							JHtml::_('dropdown.divider');
-
-							if ($item->featured) :
-								JHtml::_('dropdown.unfeatured', 'cb' . $i, 'medias.');
-							else :
-								JHtml::_('dropdown.featured', 'cb' . $i, 'medias.');
-							endif;
-							
-							JHtml::_('dropdown.divider');
-
-							if ($trashed) :
-								JHtml::_('dropdown.untrash', 'cb' . $i, 'medias.');
-							else :
-								JHtml::_('dropdown.trash', 'cb' . $i, 'medias.');
-							endif;
-
-							// Render dropdown list
-							echo JHtml::_('dropdown.render');
-							?>
 					</div>
 				</td>
 				<td class="small"><?php echo $item->med_file; ?></td>

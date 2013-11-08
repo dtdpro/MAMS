@@ -13,7 +13,7 @@
 			name="published"
 			type="list"
 			id="published"
-			class="inputbox"
+			class="chzn-color-state"
 			label="JSTATUS"
 			description="JFIELD_PUBLISHED_DESC"
 			size="1"
@@ -84,6 +84,7 @@
 			size="6"
 			class="inputbox"
 			required="false"
+			maxlength="5"
 			default=""
 		/>
 		<field

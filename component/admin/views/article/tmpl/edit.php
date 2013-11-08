@@ -18,13 +18,23 @@ $params = $this->form->getFieldsets('params');
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&layout=edit&art_id='.(int) $this->item->art_id); ?>" method="post" name="adminForm" id="mams-form" class="form-validate">
 	<div class="row-fluid">
-		<div class="span10 form-horizontal">
+		<div class="form-inline form-inline-header">
+			<div class="control-group ">
+				<div class="control-label"><?php echo $this->form->getLabel('art_title'); ?></div>
+				<div class="controls"><?php echo $this->form->getInput('art_title'); ?></div>
+			</div>
+		</div>
 		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_MAMS_ARTICLE_DETAILS')); ?>
-			<div class="control-group form-inline">
-				<?php echo $this->form->getLabel('art_title'); ?> <?php echo $this->form->getInput('art_title'); ?> <?php echo $this->form->getLabel('art_sec'); ?> <?php echo $this->form->getInput('art_sec'); ?>
+			
+		<div class="span10 form-horizontal">
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('art_sec'); ?></div>
+				<div class="controls"><?php echo $this->form->getInput('art_sec'); ?></div>
 			</div>
-			<?php echo $this->form->getInput('art_content'); ?>
+			<div class="control-group">
+				<?php echo $this->form->getInput('art_content'); ?>
+			</div>
 			<div class="row-fluid">
 				<div class="span6">
 					<div class="control-group">
@@ -37,6 +47,10 @@ $params = $this->form->getFieldsets('params');
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="span2">
+			<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+		</div>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_MAMS_ARTICLE_PUBLISHING')); ?>
 			<div class="row-fluid">
@@ -149,9 +163,6 @@ $params = $this->form->getFieldsets('params');
 		
 		?>
 		</div>
-		<!-- Begin Sidebar -->
-			<?php echo JLayoutHelper::render('joomla.edit.details', $this); ?>
-		<!-- End Sidebar -->
 
 		<input type="hidden" name="task" value="article.edit" />
 		<?php echo JHtml::_('form.token'); ?>

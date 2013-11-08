@@ -162,6 +162,38 @@ $sortFields = $this->getSortFields();
 					<div class="btn-group">
 						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange); ?>
 						<?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, $canFeature); ?>
+						<?php
+							// Create dropdown items
+							if ($canChange) :
+								if ($item->state) :
+									JHtml::_('actionsdropdown.unpublish', 'cb' . $i, 'articles');
+								else :
+									JHtml::_('actionsdropdown.publish', 'cb' . $i, 'articles');
+								endif;
+								
+								JHtml::_('actionsdropdown.divider');
+								
+								if ($canFeature) :
+									if ($item->featured) :
+										JHtml::_('actionsdropdown.unfeature', 'cb' . $i, 'articles');
+									else :
+										JHtml::_('actionsdropdown.feature', 'cb' . $i, 'articles');
+									endif;
+									
+									JHtml::_('actionsdropdown.divider');
+								endif;
+		
+								if ($trashed) :
+									JHtml::_('actionsdropdown.untrash', 'cb' . $i, 'articles');
+								else :
+									JHtml::_('actionsdropdown.trash', 'cb' . $i, 'articles');
+								endif;
+							endif;
+							// Render dropdown list
+							if ($canEdit || $canEditOwn || $canChange) :
+								echo JHtml::_('actionsdropdown.render');
+							endif;
+							?>
 					</div>
 				</td>
 				<td class="nowrap has-context">
@@ -179,45 +211,7 @@ $sortFields = $this->getSortFields();
 					
 						<div class="small">Section: <?php echo $item->sec_name;?></div>
 					</div>
-					<div class="pull-left">
-						<?php
-							// Create dropdown items
-							if ($canEdit || $canEditOwn) :
-								JHtml::_('mamsdropdown.editarticle', $item->art_id);
-								JHtml::_('dropdown.divider');
-							endif;
-							
-							if ($canChange) :
-								if ($item->state) :
-									JHtml::_('dropdown.unpublish', 'cb' . $i, 'articles.');
-								else :
-									JHtml::_('dropdown.publish', 'cb' . $i, 'articles.');
-								endif;
-								
-								JHtml::_('dropdown.divider');
-								
-								if ($canFeature) :
-									if ($item->featured) :
-										JHtml::_('dropdown.unfeatured', 'cb' . $i, 'articles.');
-									else :
-										JHtml::_('dropdown.featured', 'cb' . $i, 'articles.');
-									endif;
-									
-									JHtml::_('dropdown.divider');
-								endif;
-		
-								if ($trashed) :
-									JHtml::_('dropdown.untrash', 'cb' . $i, 'articles.');
-								else :
-									JHtml::_('dropdown.trash', 'cb' . $i, 'articles.');
-								endif;
-							endif;
-							// Render dropdown list
-							if ($canEdit || $canEditOwn || $canChange) :
-								echo JHtml::_('dropdown.render');
-							endif;
-							?>
-					</div>
+					
 				</td>
 				<td class="small"><?php echo $item->art_publish_up; ?> - <?php echo $item->art_publish_down; ?></td>
 				<td class="small"><?php 

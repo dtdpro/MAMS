@@ -15,6 +15,8 @@ class MAMSTableArticle extends JTable
 
 		$this->tagsHelper = new JHelperTags();
 		$this->tagsHelper->typeAlias = 'com_mams.article';
+		
+		JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'MAMSTableArticle', array('typeAlias' => 'com_mams.article'));
 	}
 	
 	protected function _getAssetName()
@@ -25,7 +27,7 @@ class MAMSTableArticle extends JTable
 	
 	protected function _getAssetTitle()
 	{
-		return $this->sec_name;
+		return $this->art_title;
 	}
 	
 	protected function _getAssetParentId($table = null, $id = null)

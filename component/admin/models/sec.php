@@ -8,6 +8,9 @@ jimport('joomla.application.component.modeladmin');
 
 class MAMSModelSec extends JModelAdmin
 {
+	
+	public $typeAlias = 'com_mams.sec';
+		
 	protected function canDelete($record)
 	{
 		if (!empty($record->sec_id))

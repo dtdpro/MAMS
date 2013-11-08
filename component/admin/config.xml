@@ -60,6 +60,13 @@
 		<field name="except_iplist" type="text" label="COM_MAMS_CONFIG_FIELD_EXCEPTIP_LABEL" description="COM_MAMS_CONFIG_FIELD_EXCEPTIP_DESC" size="70" class="inputbox" required="false" default="" />
 		<field name="except_userlist" type="text" label="COM_MAMS_CONFIG_FIELD_USERID_LABEL" description="COM_MAMS_CONFIG_FIELD_USERID_DESC" size="70" class="inputbox" required="false" default="" />
 	</fieldset>
+	<fieldset name="component">
+        <field name="save_history" type="radio" class="btn-group btn-group-yesno"  default="1" label="JGLOBAL_SAVE_HISTORY_OPTIONS_LABEL" description="JGLOBAL_SAVE_HISTORY_OPTIONS_DESC" >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+        </field>
+        <field name="history_limit" type="text" label="JGLOBAL_HISTORY_LIMIT_OPTIONS_LABEL" default="5" />
+	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
         	<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_mams" section="component" />
     </fieldset>

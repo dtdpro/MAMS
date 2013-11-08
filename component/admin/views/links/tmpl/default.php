@@ -112,7 +112,30 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td><?php echo JHtml::_('grid.id', $i, $item->link_id); ?></td>
-				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'links.', true);?></td>
+				<td class="center">
+					<div class="btn-group">
+						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'links.', true);?>
+						<?php
+							// Create dropdown items
+							if ($item->published) :
+								JHtml::_('actionsdropdown.unpublish', 'cb' . $i, 'links');
+							else :
+								JHtml::_('actionsdropdown.publish', 'cb' . $i, 'links');
+							endif;
+							
+							JHtml::_('actionsdropdown.divider');
+
+							if ($trashed) :
+								JHtml::_('actionsdropdown.untrash', 'cb' . $i, 'links');
+							else :
+								JHtml::_('actionsdropdown.trash', 'cb' . $i, 'links');
+							endif;
+
+							// Render dropdown list
+							echo JHtml::_('actionsdropdown.render');
+						?>
+					</div>
+				</td>
 				<td class="nowrap has-context">
 					<div class="pull-left">
 						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=link.edit&link_id='.(int) $item->link_id); ?>">
@@ -124,29 +147,6 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 								case "_top": echo "Current Page"; break;
 							}
 						?></div>
-					</div>
-					<div class="pull-left">
-						<?php
-							// Create dropdown items
-							JHtml::_('mamsdropdown.editlink', $item->link_id);
-							JHtml::_('dropdown.divider');
-							if ($item->published) :
-								JHtml::_('dropdown.unpublish', 'cb' . $i, 'links.');
-							else :
-								JHtml::_('dropdown.publish', 'cb' . $i, 'links.');
-							endif;
-							
-							JHtml::_('dropdown.divider');
-
-							if ($trashed) :
-								JHtml::_('dropdown.untrash', 'cb' . $i, 'links.');
-							else :
-								JHtml::_('dropdown.trash', 'cb' . $i, 'links.');
-							endif;
-
-							// Render dropdown list
-							echo JHtml::_('dropdown.render');
-							?>
 					</div>
 				</td>
 				<td class="small"><?php echo '<a href="'.$item->link_url.'" target="_blank">'.$item->link_url.'</a>'; ?></td>

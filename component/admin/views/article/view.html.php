@@ -66,6 +66,10 @@ class MAMSViewArticle extends JViewLegacy
 			if ($canDo->get('core.create')) {
 				JToolBarHelper::custom('article.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
+			if ($this->state->params->get('save_history', 0) && $canDo->get('core.edit'))
+			{
+				JToolbarHelper::versions('com_mams.article', $this->item->art_id);
+			}
 			JToolBarHelper::cancel('article.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}

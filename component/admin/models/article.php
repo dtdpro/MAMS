@@ -7,6 +7,9 @@ jimport('joomla.application.component.modeladmin');
 
 class MAMSModelArticle extends JModelAdmin
 {
+	
+	public $typeAlias = 'com_mams.article';
+	
 	protected function canDelete($record)
 	{
 		if (!empty($record->art_id))

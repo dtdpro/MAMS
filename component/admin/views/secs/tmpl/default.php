@@ -145,7 +145,30 @@ $db =& JFactory::getDBO();
 
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->sec_id); ?></td>
-				<td class="center"><?php echo JHtml::_('jgrid.published', $item->published, $i, 'secs.', true);?></td>
+				<td class="center">
+					<div class="btn-group">
+						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'secs.', true);?>
+						<?php
+							// Create dropdown items
+							if ($item->published) :
+								JHtml::_('actionsdropdown.unpublish', 'cb' . $i, 'secs');
+							else :
+								JHtml::_('actionsdropdown.publish', 'cb' . $i, 'secs');
+							endif;
+							
+							JHtml::_('actionsdropdown.divider');
+
+							if ($trashed) :
+								JHtml::_('actionsdropdown.untrash', 'cb' . $i, 'secs');
+							else :
+								JHtml::_('actionsdropdown.trash', 'cb' . $i, 'secs');
+							endif;
+
+							// Render dropdown list
+							echo JHtml::_('actionsdropdown.render');
+						?>
+					</div>
+				</td>
 				<td class="nowrap has-context">
 					<div class="pull-left">
 						<?php if ($canEdit) : ?>
@@ -154,29 +177,6 @@ $db =& JFactory::getDBO();
 						<?php else : ?>
 							<?php echo $this->escape($item->sec_name); ?>
 						<?php endif; ?>
-					</div>
-					<div class="pull-left">
-						<?php
-							// Create dropdown items
-							JHtml::_('mamsdropdown.editsection', $item->sec_id);
-							JHtml::_('dropdown.divider');
-							if ($item->published) :
-								JHtml::_('dropdown.unpublish', 'cb' . $i, 'secs.');
-							else :
-								JHtml::_('dropdown.publish', 'cb' . $i, 'secs.');
-							endif;
-							
-							JHtml::_('dropdown.divider');
-
-							if ($trashed) :
-								JHtml::_('dropdown.untrash', 'cb' . $i, 'secs.');
-							else :
-								JHtml::_('dropdown.trash', 'cb' . $i, 'secs.');
-							endif;
-
-							// Render dropdown list
-							echo JHtml::_('dropdown.render');
-							?>
 					</div>
 				</td>
 				<td class="small"><?php 
