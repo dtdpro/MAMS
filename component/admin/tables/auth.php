@@ -66,7 +66,7 @@ class MAMSTableAuth extends JTable
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());
-		if ($xid && $xid != intval($this->auth_id)) {
+		if ($xid && $xid != intval($this->auth_id) && !$this->auth_mirror) {
 			$this->setError(JText::_('COM_MAMS_ERR_TABLES_NAME'));
 			return false;
 		}
