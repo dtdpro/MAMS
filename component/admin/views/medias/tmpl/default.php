@@ -131,9 +131,9 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 							JHtml::_('actionsdropdown.divider');
 
 							if ($item->featured) :
-								JHtml::_('actionsdropdown.unfeatured', 'cb' . $i, 'medias');
+								JHtml::_('actionsdropdown.unfeature', 'cb' . $i, 'medias');
 							else :
-								JHtml::_('actionsdropdown.featured', 'cb' . $i, 'medias');
+								JHtml::_('actionsdropdown.feature', 'cb' . $i, 'medias');
 							endif;
 							
 							JHtml::_('actionsdropdown.divider');
