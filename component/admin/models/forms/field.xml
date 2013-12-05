@@ -61,6 +61,7 @@
 			<option	value="media">Meida</option>
 			<option	value="dloads">Downloads</option>
 			<option	value="links">Links</option>
+			<option	value="images">Image Gallery</option>
 		</field>
 		<field
 			name="field_name"

@@ -78,6 +78,7 @@ class MAMSModelArticle extends JModelItem
 		$item->dloads=$this->getFieldDownloads($item->art_id,7);
 		$item->media=$this->getFieldMedia($item->art_id,6);
 		$item->links=$this->getFieldLinks($item->art_id,8);
+		$item->images=$this->getFieldImages($item->art_id,10);
 		
 		//Additional Fields
 		if ($item->art_fielddata)
@@ -115,6 +116,7 @@ class MAMSModelArticle extends JModelItem
 				case "media": $i->data = $this->getFieldMedia($artid,$i->field_id); break;
 				case "dloads": $i->data = $this->getFieldDownloads($artid,$i->field_id); break;
 				case "links": $i->data = $this->getFieldLinks($artid,$i->field_id); break;
+				case "images": $i->data = $this->getFieldImages($artid,$i->field_id); break;
 			}
 			
 			$registry = new JRegistry;
@@ -186,6 +188,22 @@ class MAMSModelArticle extends JModelItem
 		$qa->where('al.al_field = '.$fid);
 		$qa->order('al.ordering ASC');
 		$db->setQuery($qa);
+		return $db->loadObjectList();
+	}
+	
+	protected function getFieldImages($artid, $fid) {		
+		$db =& JFactory::getDBO();
+		$qa=$db->getQuery(true);
+		$qa->select('i.*');
+		$qa->from('#__mams_artimg as ai');
+		$qa->join('RIGHT','#__mams_images AS i ON ai.ai_image = i.img_id');
+		$qa->where('ai.published >= 1');
+		$qa->where('i.published >= 1');
+		$qa->where('i.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('ai.ai_art = '.$artid);
+		$qa->where('ai.ai_field = '.$fid);
+		$qa->order('ai.ordering ASC');
+		$db->setQuery($qa); 
 		return $db->loadObjectList();
 	}
 	

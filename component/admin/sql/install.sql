@@ -69,6 +69,17 @@ CREATE TABLE IF NOT EXISTS `#__mams_articles` (
   KEY `asset_id` (`asset_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__mams_artimg` (
+  `ai_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ai_field` int(11) NOT NULL DEFAULT '10',
+  `ai_art` int(11) NOT NULL,
+  `ai_image` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  PRIMARY KEY (`ai_id`),
+  KEY `am_field` (`ai_field`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 CREATE TABLE IF NOT EXISTS `#__mams_article_fieldgroups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_name` varchar(20) NOT NULL,
@@ -170,6 +181,21 @@ CREATE TABLE IF NOT EXISTS `#__mams_dloads` (
   PRIMARY KEY (`dl_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__mams_images` (
+  `img_id` int(11) NOT NULL AUTO_INCREMENT,
+  `img_inttitle` varchar(255) NOT NULL,
+  `img_exttitle` varchar(255) NOT NULL,
+  `img_desc` text NOT NULL,
+  `img_thumb` varchar(255) NOT NULL,
+  `img_full` varchar(255) NOT NULL,
+  `img_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `img_modified` datetime NOT NULL,
+  `img_extension` varchar(100) NOT NULL DEFAULT 'com_mams',
+  `published` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
+  PRIMARY KEY (`img_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 CREATE TABLE IF NOT EXISTS `#__mams_links` (
   `link_id` int(11) NOT NULL AUTO_INCREMENT,
   `link_url` varchar(1024) NOT NULL,
@@ -259,11 +285,12 @@ INSERT INTO `#__mams_article_fieldgroups` (`group_id`, `group_name`, `group_titl
 INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `field_rssname`, `field_type`, `field_group`, `field_show_page`, `field_show_list`, `ordering`, `access`, `published`, `params`) VALUES
 (1, 'art-title', 'Article Title', 'title', 'title', 1, 1, 1, 1, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
 (2, 'art-desc', 'Article Description', 'description', 'desc', 1, 0, 1, 3, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(3, 'art-content', 'Article Body', 'body', 'body', 1, 1, 0, 7, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(3, 'art-content', 'Article Body', 'body', 'body', 1, 1, 0, 8, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
 (4, 'art-pubinfo', 'Article Publishing Information', '', 'pubinfo', 1, 1, 1, 2, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(5, 'art-auths', 'Article Authors', 'author', 'auths', 1, 1, 1, 6, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(5, 'art-auths', 'Article Authors', 'author', 'auths', 1, 1, 1, 7, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
 (6, 'art-media', 'Article Media', '', 'media', 1, 1, 0, 4, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(7, 'art-dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 5, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(8, 'art-links', 'Article Links', '', 'links', 1, 1, 0, 8, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(9, 'art-related', 'Related Items', '', 'related', 1, 1, 0, 9, 1, 1, '{"show_title_page":"1","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}');
+(7, 'art-dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 6, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(8, 'art-links', 'Article Links', '', 'links', 1, 1, 0, 9, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(9, 'art-related', 'Related Items', '', 'related', 1, 1, 0, 10, 1, 1, '{"show_title_page":"1","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}');,
+(10, 'art-images', 'Article Images', '', 'images', 1, 1, 0, 0, 5, 1, 1, '{"show_title_page":"0","show_title_desc":"0","show_title_module":"0","pretext":"","posttext":"","linktext":"0"}');
 

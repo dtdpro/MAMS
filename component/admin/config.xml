@@ -33,6 +33,14 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
+		<field name="show_imgtitle" type="radio" label="COM_MAMS_FIELD_SHOW_IMGTITLE_LABEL" description="COM_MAMS_FIELD_SHOW_IMGTITLE_DESC" class="btn-group" default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_imgdetails" type="radio" label="COM_MAMS_FIELD_SHOW_IMGDETAILS_LABEL" description="COM_MAMS_FIELD_SHOW_IMGDETAILS_DESC" class="btn-group" default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 	</fieldset>
 	<fieldset name="video" label="COM_MAMS_CONFIG_VIDEO_LABEL" description="COM_MAMS_CONFIG_VIDEO_DESC">
 		<field name="vid_w" type="text" label="COM_MAMS_CONFIG_FIELD_VIDW_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />

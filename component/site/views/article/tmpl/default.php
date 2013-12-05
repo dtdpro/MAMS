@@ -22,7 +22,7 @@ if ($this->article->fields) {
 	$curgroup = "";
 	$first=true;
 	foreach ($this->article->fields as $f) {
-		if ($f->field_type == "related" && (!$this->params->get('show_related',1) || !$this->related)) { break; }
+		if ($f->field_type == "related" && (!$this->params->get('show_related',1) || !$this->related)) { continue; }
 		$fn = $f->field_name;
 		$gns = "show_".$f->group_name; 
 		if ($f->group_name != $curgroup && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
@@ -78,6 +78,42 @@ if ($this->article->fields) {
 						echo '">';
 						echo 'Download '.$d->dl_lname;
 						echo '</a>';
+						echo '</div>';
+					}
+					break;
+				case "images":
+					if ($f->field_name == "art_images") $images = $this->article->images;
+					else $images = $f->data;
+					$firstimg=true;
+					foreach ($images as $i) {
+						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-image';
+						if ($firstimg) { echo ' firstimage'; $firstimg=false; }
+						echo '">';
+						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-image-img">';
+						if (in_array($i->access,$user->getAuthorisedViewLevels())) echo '<a href="'.$i->img_full.'" target="_blank" ';
+						else echo '<a href="'.JRoute::_($rurl).'" ';
+						echo 'data-lightbox="group:'.$f->group_name.'-'.$f->field_name.'-images" class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artimage mams-article-imglink';
+						echo '">';
+						echo '<img src="'.$i->img_thumb.'" class="mams-article-imgthumb">';
+						echo '</a></div>';
+						if ($this->params->get('show_imgtitle',1) || $this->params->get('show_imgdetails',1)) {
+							echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-image-info">';
+							if ($this->params->get('show_imgtitle',1)) {
+								echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-image-title">';
+								if (in_array($i->access,$user->getAuthorisedViewLevels())) echo '<a href="'.$i->img_full.'" target="_blank" ';
+								else echo '<a href="'.JRoute::_($rurl).'" ';
+								echo 'data-lightbox="group:'.$f->group_name.'-'.$f->field_name.'-links" class="mams-article-'.$f->group_name.'-'.$f->field_name.'-imglink';
+								echo '">';
+								echo $i->img_exttitle;
+								echo '</a></div>';
+							}
+							if ($this->params->get('show_imgdetails',1)) {
+								echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-image-details">';
+								echo $i->img_desc;
+								echo '</div>';
+							}
+							echo '</div>';
+						}
 						echo '</div>';
 					}
 					break;

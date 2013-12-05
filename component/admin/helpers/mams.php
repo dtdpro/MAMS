@@ -17,6 +17,7 @@ abstract class MAMSHelper
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_LINKS'),'index.php?option=com_mams&view=links',$submenu == 'links');
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_DLOADS'),'index.php?option=com_mams&view=dloads&extension=com_mams',$submenu == 'dloads');
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_MEDIAS'),'index.php?option=com_mams&view=medias&extension=com_mams',$submenu == 'medias');
+				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_IMAGES'),'index.php?option=com_mams&view=images&extension=com_mams',$submenu == 'images');
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_FEATMEDIAS'),'index.php?option=com_mams&view=featuredmedia',$submenu == 'featuredmedia');
 			}
 			if ($user->authorise("core.featured","com_mams")) {
@@ -60,6 +61,7 @@ abstract class MAMSHelper
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTCATS'),'index.php?option=com_mams&view=artcats',$submenu == 'artcats');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTAUTHS'),'index.php?option=com_mams&view=artauths',$submenu == 'artauths');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTMEDIAS'),'index.php?option=com_mams&view=artmeds',$submenu == 'artmeds');
+		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTIMAGES'),'index.php?option=com_mams&view=artimgs',$submenu == 'artimgs');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTDLOADS'),'index.php?option=com_mams&view=artdloads',$submenu == 'artdloads');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTLINKS'),'index.php?option=com_mams&view=artlinks',$submenu == 'artlinks');
 	}
