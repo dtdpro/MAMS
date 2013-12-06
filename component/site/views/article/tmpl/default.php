@@ -58,7 +58,8 @@ if ($this->article->fields) {
 					foreach ($auths as $d) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth mams-article-auth">';
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth-name mams-article-auth-name">';
-						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$d->auth_sec."&autid=".$d->auth_id.":".$d->auth_alias).'" class="mams-article-'.$f->group_name.'-'.$f->field_name.'-autlink">'.$d->auth_fname.(($d->auth_mi) ? " ".$d->auth_mi : "")." ".$d->auth_lname.(($d->auth_titles) ? ", ".$d->auth_titles : "").'</a>';
+						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$d->auth_sec."&autid=".$d->auth_id.":".$d->auth_alias).'" class="mams-article-'.$f->group_name.'-'.$f->field_name.'-autlink">';
+						echo $d->auth_fname.(($d->auth_mi) ? " ".$d->auth_mi : "")." ".$d->auth_lname.(($d->auth_titles) ? ", ".$d->auth_titles : "").'</a>';
 						echo '</div>';
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth-cred mams-article-auth-cred">';
 						if ($this->params->get('show_authcred',1)) echo $d->auth_credentials;

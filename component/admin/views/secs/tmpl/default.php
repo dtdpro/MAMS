@@ -183,6 +183,7 @@ $db =& JFactory::getDBO();
 					switch ($item->sec_type) {
 						case "author": echo "Author"; break; 
 						case "article": echo "Article"; break;
+						case "image": echo "Image"; break;
 					}
 				?></td>
 				<td class="small hidden-phone"><?php echo $item->sec_added; ?></td>
@@ -191,6 +192,7 @@ $db =& JFactory::getDBO();
 				<td class="small"><?php 
 					if ($item->sec_type == "article") $query = 'SELECT count(*) FROM #__mams_articles WHERE art_sec='.$item->sec_id;
 					if ($item->sec_type == "author") $query = 'SELECT count(*) FROM #__mams_authors WHERE auth_sec='.$item->sec_id;
+					if ($item->sec_type == "image") $query = 'SELECT count(*) FROM #__mams_images WHERE img_sec='.$item->sec_id;
 					$db->setQuery( $query );
 					$num=$db->loadResult();
 					echo $num;

@@ -5,6 +5,11 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
 echo '<div class="mams-featmod">';
+if ($params->get('show_image',0)) {
+	echo '<div class="mams-featmod-image">';
+	echo '<img src="'.$catinfo->cat_image.'" class="mams-featmod-image-img">';
+	echo '</div>';
+}
 $firstart=true;
 foreach ($articles as $a) {
 	echo '<div class="mams-featmod-article';

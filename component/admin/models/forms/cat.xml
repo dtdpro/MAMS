@@ -63,6 +63,12 @@
 			filter="safehtml"
 			buttons="false"
 		/>
+		<field
+			name="cat_image"
+			type="media"
+			label="COM_MAMS_CAT_FIELD_IMAGE_LABEL"
+			description="COM_MAMS_CAT_FIELD_IMAGE_DESC"
+		/>
 	</fieldset>
 </form>
 

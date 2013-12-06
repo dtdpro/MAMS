@@ -18,6 +18,7 @@ class MAMSModelImages extends JModelList
 				'img_id', 'i.img_id',
 				'published', 'i.published',
 				'access', 'i.access',
+				'ordering', 'i.ordering',
 			);
 		}
 		parent::__construct($config);
@@ -37,6 +38,9 @@ class MAMSModelImages extends JModelList
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 		
+		$secId = $this->getUserStateFromRequest($this->context.'.filter.sec', 'filter_sec', null, 'int');
+		$this->setState('filter.sec', $secId);
+		
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 		
@@ -45,7 +49,7 @@ class MAMSModelImages extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('i.img_inttitle', 'asc');
+		parent::populateState('i.ordering', 'asc');
 	}
 	
 	protected function getListQuery() 
@@ -63,6 +67,15 @@ class MAMSModelImages extends JModelList
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = i.access');
+		
+		// Join over the sections.
+		$query->select('s.sec_name');
+		$query->join('LEFT', '#__mams_secs AS s ON s.sec_id = i.img_sec');
+		
+		// Filter by section.
+		if ($sec = $this->getState('filter.sec')) {
+			$query->where('a.auth_sec = '.(int) $sec);
+		}
 		
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
@@ -95,6 +108,10 @@ class MAMSModelImages extends JModelList
 		
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
+		
+		if ($orderCol == 'i.ordering') {
+			$orderCol = 's.sec_name '.$orderDirn.', i.ordering';
+		}
 		
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 				

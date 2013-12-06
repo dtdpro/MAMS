@@ -9,5 +9,5 @@ require_once('components/com_mams/helpers/mams.php');
 require_once('components/com_mams/router.php');
 
 $articles	= modMAMSCatHelper::getFeatured($params);
-
+$catinfo = modMAMSCatHelper::getCatInfo($params);
 require JModuleHelper::getLayoutPath('mod_mamscat', $params->get('layout', 'default'));

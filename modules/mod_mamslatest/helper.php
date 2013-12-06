@@ -153,5 +153,18 @@ class modMAMSLatestHelper
 		$db->setQuery($qa);
 		return $db->loadObjectList();
 	}
+	
+	public function getSecInfo($params) {
+		$secid=$params->get('secid');
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+	
+		$query->select('*');
+		$query->from("#__mams_secs");
+		$query->where('sec_id = '.(int)$secid[0]);
+		$db->setQuery($query);
+		return $db->loadObject();
+	
+	}
 
 }

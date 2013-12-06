@@ -10,6 +10,13 @@
 			readonly="true"
 		/>
 		<field
+			name="img_sec"
+			type="ImageSecs"
+			class="inputbox"
+			label="COM_MAMS_IMAGE_FIELD_SEC_LABEL"
+			description="COM_MAMSIMAGE_FIELD_SEC_DESC"
+		/>
+		<field
 			name="img_extension"
 			type="hidden"
 		/>
@@ -37,6 +44,13 @@
 			description="JFIELD_ACCESS_DESC"
 			default="1"
 			filter="integer"/>
+		<field
+			name="ordering"
+			type="OrderImage"
+			class="inputbox"
+			label="JFIELD_ORDERING_LABEL"
+			description="JFIELD_ORDERING_DESC"
+		/>
 		<field
 			name="img_inttitle"
 			type="text"

@@ -69,6 +69,7 @@
 			default="article">
 			<option	value="article">Article</option>
 			<option	value="author">Author</option>
+			<option	value="image">Image</option>
 		</field>
 		<field
 			name="sec_desc"
@@ -80,6 +81,12 @@
 			class="inputbox"
 			filter="safehtml"
 			buttons="false"
+		/>
+		<field
+			name="sec_image"
+			type="media"
+			label="COM_MAMS_SEC_FIELD_IMAGE_LABEL"
+			description="COM_MAMS_SEC_FIELD_IMAGE_DESC"
 		/>
 		<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true"></field>
 	</fieldset>

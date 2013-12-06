@@ -56,11 +56,6 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listCategory() {
 		$model =& $this->getModel();
 		$sec=$this->getSecs();
-		if (!$sec) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
-			return false;
-		}
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
 		$cat=$this->getCats();
 		if (!$cat) {

@@ -160,6 +160,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_cats` (
   `cat_title` varchar(255) NOT NULL,
   `cat_alias` varchar(255) NOT NULL,
   `cat_desc` text NOT NULL,
+  `cat_image` VARCHAR( 255 ) NOT NULL,
   `cat_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `cat_modified` datetime NOT NULL,
   `published` int(11) NOT NULL,
@@ -183,6 +184,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_dloads` (
 
 CREATE TABLE IF NOT EXISTS `#__mams_images` (
   `img_id` int(11) NOT NULL AUTO_INCREMENT,
+  `img_sec` int(11) NOT NULL,
   `img_inttitle` varchar(255) NOT NULL,
   `img_exttitle` varchar(255) NOT NULL,
   `img_desc` text NOT NULL,
@@ -193,6 +195,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_images` (
   `img_extension` varchar(100) NOT NULL DEFAULT 'com_mams',
   `published` int(11) NOT NULL,
   `access` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
   PRIMARY KEY (`img_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -248,10 +251,11 @@ CREATE TABLE IF NOT EXISTS `#__mams_mediatrack` (
 
 CREATE TABLE IF NOT EXISTS `#__mams_secs` (
   `sec_id` int(11) NOT NULL AUTO_INCREMENT,
-  `sec_type` enum('author','article') NOT NULL DEFAULT 'article',
+  `sec_type` enum('author','article','image') NOT NULL DEFAULT 'article',
   `sec_name` varchar(255) NOT NULL,
   `sec_alias` varchar(255) NOT NULL,
   `sec_desc` text NOT NULL,
+  `sec_image` VARCHAR( 255 ) NOT NULL,
   `sec_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sec_modified` datetime NOT NULL,
   `published` int(11) NOT NULL,

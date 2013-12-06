@@ -9,5 +9,6 @@ require_once('components/com_mams/helpers/mams.php');
 require_once('components/com_mams/router.php');
 
 $articles	= modMAMSLatestHelper::getFeatured($params);
+$secinfo	= modMAMSLatestHelper::getSecInfo($params);
 
 require JModuleHelper::getLayoutPath('mod_mamslatest', $params->get('layout', 'default'));

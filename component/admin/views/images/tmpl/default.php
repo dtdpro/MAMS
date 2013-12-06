@@ -15,6 +15,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $archived	= $this->state->get('filter.published') == 2 ? true : false;
 $trashed	= $this->state->get('filter.published') == -2 ? true : false;
 $published = $this->state->get('filter.published');
+$saveOrder = ($listOrder == 'i.ordering');
+if ($saveOrder) {
+	$saveOrderingUrl = 'index.php?option=com_mams&task=images.saveOrderAjax&tmpl=component';
+	JHtml::_('sortablelist.sortable', 'MAMSImageList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+}
 $sortFields = $this->getSortFields();
 $db =& JFactory::getDBO();
 $extension	= $this->escape($this->state->get('filter.extension'));
@@ -77,9 +82,12 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 	
 	<div class="clearfix"> </div>
 	
-	<table class="adminlist table table-striped">
+	<table class="adminlist table table-striped" id="MAMSImageList">
 		<thead>
 			<tr>
+				<th width="1%" class="nowrap center hidden-phone">
+					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'i.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+				</th>
 				<th width="1%">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>	
@@ -89,6 +97,9 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_IMAGE_HEADING_NAME','i.img_inttitle', $listDirn, $listOrder); ?>
 				</th>		
+				<th width="20%">
+					<?php echo JText::_('COM_MAMS_IMAGE_SEC'); ?>
+				</th>
 				<th width="20%">
 					<?php echo JText::_('COM_MAMS_IMAGE_FULL'); ?>
 				</th>
@@ -111,7 +122,21 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
-			<tr class="row<?php echo $i % 2; ?>">
+			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->img_sec; ?>">
+				<td class="order nowrap center hidden-phone">
+					<?php 
+					$disableClassName = '';
+					$disabledLabel	  = '';
+					if (!$saveOrder) :
+						$disabledLabel    = JText::_('JORDERINGDISABLED');
+						$disableClassName = 'inactive tip-top';
+					endif; ?>
+					<span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
+						<i class="icon-menu"></i>
+					</span>
+					<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering;?>" class="width-20 text-area-order " />
+
+				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->img_id); ?></td>
 				<td class="center">
 					<div class="btn-group">
@@ -144,6 +169,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 						<div class="small"><?php  echo $item->img_exttitle; ?></div>
 					</div>
 				</td>
+				<td class="small"><?php echo $item->sec_name;?></td>
 				<td class="small"><?php echo $item->img_full; ?></td>
 				<td class="small"><?php echo $item->img_added; ?></td>
 				<td class="small"><?php echo $item->img_modified; ?></td>
@@ -153,6 +179,40 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+	<div class="modal hide fade" id="collapseModal">
+		<div class="modal-header">
+			<button type="button" role="presentation" class="close" data-dismiss="modal">x</button>
+			<h3><?php echo JText::_('COM_MAMS_IMAGE_BATCH_OPTIONS');?></h3>
+		</div>
+		<div class="modal-body">
+			<p><?php echo JText::_('COM_MAMS_IMAGE_BATCH_TIP'); ?></p>
+			<div class="control-group">
+				<div class="controls">
+					<?php echo JHtml::_('batch.access'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">		
+					<?php 
+						echo '<label id="batch-section-lbl" for="featsection_id" class="hasTip" title="' . JText::_('COM_MAMS_IMAGE_BATCH_SECTION_LABEL') . '::'. JText::_('COM_MAMS_IMAGE_BATCH_SECTION_LABEL_DESC') . '">';
+						echo JText::_('COM_MAMS_IMAGE_BATCH_SECTION_LABEL').'</label>';
+					?>
+					<select name="batch[featsection_id]" class="inputbox" id="featsection_id">
+						<option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
+						<?php echo JHtml::_('select.options', MAMSHelper::getSections("image"), 'value', 'text', "");?>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">	
+			<button class="btn" type="button" onclick="document.id('batch-access').value='';document.id('batch-feataccess').value='';document.id('featsection_id').value='';" data-dismiss="modal">
+				<?php echo JText::_('JCANCEL'); ?>
+			</button>
+			<button class="btn btn-primary" type="submit" onclick="Joomla.submitbutton('image.batch');">
+				<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
+			</button>
+		</div>
+	</div>
 	<div>
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="extension" value="<?php echo $extension;?>" />
