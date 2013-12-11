@@ -128,6 +128,13 @@ class MAMSModelArticle extends JModelAdmin
 			$item->art_fielddata = $registry->toArray();
 		}
 		
+		if (property_exists($item, 'params'))
+		{
+			$registry = new JRegistry;
+			$registry->loadString($item->params);
+			$item->params = $registry->toArray();
+		}
+		
 		// Convert the metadata field to an array.
 		$registry = new JRegistry;
 		$registry->loadString($item->metadata);
