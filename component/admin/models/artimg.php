@@ -88,6 +88,5 @@ class MAMSModelArtimg extends JModelAdmin
 		$condition = array();
 		$condition[] = 'ai_field = "'.$table->ai_field.'" && ai_art = '.(int) $table->ai_art;
 		return $condition;
-	}
-	
+	}	
 }
