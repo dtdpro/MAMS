@@ -35,6 +35,7 @@ if ($r->dl_id) {
 	switch ($r->dl_type) {
 		case 'mp3': JResponse::setHeader('Content-Type', 'audio/mpeg', true); break;
 		case 'pdf': JResponse::setHeader('Content-Type', 'application/pdf', true); break;
+		case 'zip': JResponse::setHeader('Content-Type', 'application/zip', true); break;
 	}
 	$filename = JFile::getName($r->dl_fname);
 	//JResponse::setHeader("Cache-Control","private",false);

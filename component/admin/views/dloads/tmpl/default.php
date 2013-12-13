@@ -143,7 +143,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 					<div class="pull-left">
 						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=dload.edit&dl_id='.(int) $item->dl_id.'&extension='.$extension); ?>">
 						<?php echo $this->escape($item->dl_fname); ?></a>
-						<div class="small"><?php echo 'Download '.$this->escape($item->dl_lname).')';?></div>
+						<div class="small"><?php echo 'Download '.$this->escape($item->dl_lname);?></div>
 					</div>
 				</td>
 				<td class="small"><?php echo $item->dl_loc; ?></td>
@@ -151,6 +151,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 					switch ($item->dl_type) {
 						case 'mp3': echo 'MP3'; break;
 						case 'pdf': echo 'PDF'; break;
+						case 'zip': echo 'ZIP'; break;
 					} 
 				
 				?></td>

@@ -11,6 +11,10 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="listview" class="btn-group" type="radio" description="COM_MAMS_FIELD_LISTVIEW_DESC" label="COM_MAMS_FIELD_LISTVIEW_LABEL" default="blog">
+				<option value="list">Blog List</option>
+				<option value="gal">Gallery</option>
+			</field>
 			<field name="items_page" type="text" description="COM_MAMS_FIELD_ITEMSPERPAGE_DESC" label="COM_MAMS_FIELD_ITEMSPERPAGE_LABEL" default="10" />
 			<field name="show_secimage" type="radio" label="COM_MAMS_FIELD_SHOW_SECIMAGE_LABEL" description="COM_MAMS_FIELD_SHOW_SECIMAGE_DESC" class="btn-group" default="0">
 				<option value="0">JHIDE</option>

@@ -76,6 +76,7 @@
 			default="pdf">
 			<option	value="pdf">PDF</option>
 			<option	value="mp3">MP3</option>
+			<option	value="zip">ZIP</option>
 		</field>
 
 	</fieldset>

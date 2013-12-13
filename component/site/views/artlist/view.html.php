@@ -49,7 +49,8 @@ class MAMSViewArtList extends JViewLegacy
 		$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 		
 		parent::display($tpl);
-		$this->setLayout('artlist');
+		if ($this->params->get("listview","blog") == "blog") $this->setLayout('artlist');
+		else $this->setLayout('artgal');
 		parent::display($tpl);
 	}
 	
