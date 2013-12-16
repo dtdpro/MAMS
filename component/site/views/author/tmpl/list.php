@@ -34,7 +34,7 @@ if ($this->autlist) {
 							//Read More
 							if ($this->params->get('show_readmore',1)) {
 								echo '<div class="mams-author-authreadmore">';
-								echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec.":".$f->sec_alias."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-author-authlink read-more">';
+								echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec.":".$f->sec_alias."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-author-authlink read-more uk-button">';
 								echo $this->params->get('readmore_text',"Read More");
 								echo '</a>';
 								echo '</div>';

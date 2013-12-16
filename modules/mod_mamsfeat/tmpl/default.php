@@ -167,7 +167,7 @@ foreach ($articles as $a) {
 	//Readmore
 	if ($params->get('show_readmore',0)) {
 		echo '<div class="mams-featmod-readmore">';
-		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'" class="mams-featmod-artlink read-more">';
+		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'" class="mams-featmod-artlink read-more uk-button">';
 		echo $params->get('text_readmore',"Read More");
 		echo '</a></div>';
 	}

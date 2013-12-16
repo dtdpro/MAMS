@@ -14,7 +14,7 @@ class MAMSController extends JControllerLegacy
 	{
 		$vName = $this->input->getCmd('view', 'artlist');
 		$this->input->set('view', $vName);
-		echo '<div id="system">';
+		echo '<div id="system" class="uk-article">';
 		parent::display();
 		echo '</div>';
 	}
