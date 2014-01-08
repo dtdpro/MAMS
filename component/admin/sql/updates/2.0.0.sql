@@ -40,7 +40,7 @@ INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `f
 INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`) VALUES
 ('MAMS Section', 'com_mams.sec', '{"special":{"dbtable":"#__mams_secs","key":"sec_id","type":"MAMS","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__core_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}', '', '{"common":[{"core_content_item_id":"sec_id","core_title":"sec_name","core_state":"published","core_alias":"sec_alias","core_created_time":"sec_added","core_modified_time":"auth_modified","core_body":"sec_desc", "core_access":"access", "core_params":"params", "core_metadata":"metadata", "core_ordering":"ordering", "asset_id":"asset_id"}]}', 'MAMSHelperRoute::getSectionRoute');
 
-CREATE TABLE IF NOT EXISTS `joomla311_mams_article_fieldgroups` (
+CREATE TABLE IF NOT EXISTS `#__mams_article_fieldgroups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_name` varchar(20) NOT NULL,
   `group_title` varchar(255) NOT NULL,
