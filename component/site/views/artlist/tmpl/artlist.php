@@ -1,11 +1,14 @@
 <?php
 defined('_JEXEC') or die();
 foreach ($this->articles as $a) {
+	$artlink = "index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias;
+	if ($a->cats) $artlink .= '&catid='.$a->cats[0]->cat_id;
+		
 	echo '<div class="mams-artlist-article">';
 	
 		//Title
 		echo '<div class="mams-artlist-arttitle">';
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'" class="mams-artlist-artlink">'.$a->art_title.'</a>';
+			echo '<a href="'.JRoute::_($artlink).'" class="mams-artlist-artlink">'.$a->art_title.'</a>';
 		echo '</div>';
 		
 		//Authors
@@ -156,7 +159,7 @@ foreach ($this->articles as $a) {
 				//Read More
 				if ($this->params->get('show_readmore',1)) {
 					echo '<div class="mams-artlist-artreadmore">';
-					echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.':'.$a->art_alias).'" class="mams-artlist-artlink read-more uk-button">';
+					echo '<a href="'.JRoute::_($artlink).'" class="mams-artlist-artlink read-more uk-button">';
 					echo $this->params->get('readmore_text',"Read More");
 					echo '</a>';
 					echo '</div>';

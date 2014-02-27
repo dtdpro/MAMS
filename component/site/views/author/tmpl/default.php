@@ -27,6 +27,8 @@ if ($this->published) {
 	echo '<div class="mams-author-related-header">Authored Items</div>';
 	echo '<div class="mams-author-related-links">';
 		foreach ($this->published as $r) {
+			$rartlink = "index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias;
+			if ($r->cats) $rartlink .= "&catid=".$r->cats[0]->cat_id;
 			echo '<div class="mams-author-related-link">';
 			//Thumb
 			if ($r->art_thumb) {
@@ -38,7 +40,7 @@ if ($this->published) {
 			}
 			echo '<div class="mams-author-related-details">';
 			echo '<div class="mams-author-related-title">';
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias).'" class="mams-author-artlink">';
+			echo '<a href="'.JRoute::_($rartlink).'" class="mams-author-artlink">';
 			echo $r->art_title.'</a>';
 			echo '</div>';
 			//Authors

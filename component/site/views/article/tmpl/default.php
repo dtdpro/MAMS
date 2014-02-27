@@ -279,6 +279,8 @@ if ($this->article->fields) {
 				echo '<div class="mams-article-related-link';
 				if ($rlfirst) { echo ' firstlink'; $rlfirst=false; }
 				echo '">';
+				$rartlink = "index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias;
+				if ($r->cats) $rartlink .= "&catid=".$r->cats[0]->cat_id;
 				//Thumb
 				if ($r->art_thumb) {
 					echo '<div class="mams-article-related-thumb">';
@@ -289,7 +291,7 @@ if ($this->article->fields) {
 				}
 				echo '<div class="mams-article-related-details">';
 				echo '<div class="mams-article-related-title">';
-				echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias).'" class="mams-article-related-artlink">';
+				echo '<a href="'.JRoute::_($rartlink).'" class="mams-article-related-artlink">';
 				echo $r->art_title.'</a>';
 				echo '</div>';
 				//Authors
