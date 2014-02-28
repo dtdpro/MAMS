@@ -177,6 +177,8 @@
 	        class="inputbox" size="45"
 	        labelclass="control-label"
 		/>
+		
+		<field name="cats" type="SelectCats" description="COM_MAMS_ARTICLE_FIELD_CAT_DESC" label="COM_MAMS_ARTICLE_FIELD_CAT_LABEL" required="false" multiple="true" class="inputbox span12 small" />
 				
 	</fieldset>
 	<fields name="metadata">

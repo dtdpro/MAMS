@@ -146,8 +146,47 @@ class MAMSModelArticle extends JModelAdmin
 			$item->tags = new JHelperTags;
 			$item->tags->getTagIds($item->art_id, 'com_mams.article');
 		}
+		
+		//Cats
+		if (!empty($item->art_id))
+		{
+			$item->cats = $this->getCats($item->art_id);
+		}
+		
 	
 		return $item;
+	}
+	
+	public function save($data)
+	{
+		$db	= $this->getDbo();
+		$table = $this->getTable();
+		$key = $table->getKeyName();
+		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
+		
+		if ((!empty($data['cats']) && $data['cats'][0] != ''))
+		{
+			$actable=$this->getTable("Artcat","MAMSTable");
+			$order=0;
+			if ($pk > 0) {
+				$query	= $db->getQuery(true);
+				$query->delete();
+				$query->from('#__mams_artcat');
+				$query->where('ac_art = '.$pk);
+				$db->setQuery((string)$query);
+				$db->query();
+			}
+			foreach ($data['cats'] as $cat) {
+				$actable->ac_id=0;
+				$actable->ac_cat=$cat;
+				$actable->ac_art=$pk;
+				$actable->published=1;
+				$actable->ordering=$order;
+				$actable->store();
+				$order++;
+			}
+		}
+		return parent::save($data);
 	}
 	
 	protected function loadFormData() 
@@ -417,6 +456,17 @@ class MAMSModelArticle extends JModelAdmin
 		$condition = array();
 		$condition[] = 'art_sec = '.$table->art_sec.' && art_publish_up = '.$table->art_publish_up;
 		return $condition;
+	}
+	
+	protected function getCats($art_id) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('a.ac_cat');
+		$query->from('#__mams_artcat as a');
+		$query->where('a.ac_art = '.$art_id);
+		$query->order('a.ordering');
+		$db->setQuery($query);
+		return $db->loadColumn();
 	}
 	
 }

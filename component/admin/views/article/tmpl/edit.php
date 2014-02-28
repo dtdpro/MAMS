@@ -50,6 +50,10 @@ $params = $this->form->getFieldsets('params');
 		</div>
 		<div class="span2">
 			<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('cats'); ?></div>
+				<div class="controls"><?php echo $this->form->getInput('cats'); ?></div>
+			</div>
 		</div>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_MAMS_ARTICLE_PUBLISHING')); ?>
