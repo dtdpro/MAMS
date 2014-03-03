@@ -32,6 +32,17 @@ class MAMSViewArticle extends JViewLegacy
 		if ($this->article) {
 			$this->params = $this->article->params;
 			
+			$authors = array();
+			if ($this->article->auts) {
+				foreach ($this->article->auts as $a) {
+					$authors[] = $a->auth_fname.(($a->auth_mi) ? " ".$a->auth_mi : "")." ".$a->auth_lname.(($a->auth_titles) ? ", ".$a->auth_titles : "");
+				}
+			}
+			
+			$this->document->setMetaData('title', $this->article->art_title);
+			
+			foreach ($authors as $a) { $this->document->setMetaData('author', $a); }
+			
 			//Set Metadata Info
 			if ($this->article->metadesc) {
 				$this->document->setDescription($this->article->metadesc);
@@ -49,15 +60,16 @@ class MAMSViewArticle extends JViewLegacy
 				$this->document->setMetadata('robots', $this->params->get('robots'));
 			}
 			
+			//citation meta tags; missing: citation_journal_title, citation_issn, citation_volume, citation_issue, citation_firstpage, citation_lastpage,  citation_publication_date
+			$this->document->setMetaData('citation_title', $this->article->art_title);
+			foreach ($authors as $a) { $this->document->setMetaData('citation_author', $a); }
+			$this->document->setMetaData('citation_online_date', $this->article->art_publish_up);
+			
 			$mdata = $this->article->metadata->toArray();
 			foreach ($mdata as $k => $v) {
 				if ($v)	$this->document->setMetadata($k, $v);
 			}
 			
-			if ($this->article->auts) {	
-				$a = $this->article->auts[0];
-				$this->document->setMetaData('author', $a->auth_fname.(($a->auth_mi) ? " ".$a->auth_mi : "")." ".$a->auth_lname.(($a->auth_titles) ? ", ".$a->auth_titles : ""));
-			}
 			
 			if (in_array($this->article->access,$user->getAuthorisedViewLevels())) {
 				$this->document->setTitle($this->article->art_title);

@@ -196,9 +196,21 @@
 			<option value="noindex, nofollow">JGLOBAL_NOINDEX_NOFOLLOW</option>
 			</field>
 			
-			<field name="rights" type="text"
-			label="JFIELD_META_RIGHTS_LABEL" description="JFIELD_META_RIGHTS_DESC"
-			required="false" filter="string" cols="30" rows="2" />
+			<field name="rights" type="text" label="JFIELD_META_RIGHTS_LABEL" description="JFIELD_META_RIGHTS_DESC" required="false" filter="string" cols="30" rows="2" />
+			
+			<field name="citation_journal_title" type="text" label="COM_MAMS_META_JOURNALTITLE_LABEL" description="COM_MAMS_META_JOURNALTITLE_DESC" required="false" filter="string" />
+			
+			<field name="citation_issn" type="text" label="COM_MAMS_META_ISSN_LABEL" description="COM_MAMS_META_ISSN_DESC" required="false" filter="string" />
+			
+			<field name="citation_volume" type="text" label="COM_MAMS_META_VOLUME_LABEL" description="COM_MAMS_META_VOLUME_DESC" required="false" filter="string" />
+			
+			<field name="citation_issue" type="text" label="COM_MAMS_META_ISSUE_LABEL" description="COM_MAMS_META_ISSUE_DESC" required="false" filter="string" />
+			
+			<field name="citation_firstpage" type="text" label="COM_MAMS_META_FPAGE_LABEL" description="COM_MAMS_META_FPAGE_DESC" required="false" filter="string" />
+			
+			<field name="citation_lastpage" type="text" label="COM_MAMS_META_LPAGE_LABEL" description="COM_MAMS_META_LPAGE_DESC" required="false" filter="string" />
+			
+			<field name="citation_publication_date" type="text" label="COM_MAMS_META_PUBDATE_LABEL" description="COM_MAMS_META_PUBDATE_DESC" required="false" filter="string" />
 		</fieldset>
 	</fields>
 	<fields name="params">
