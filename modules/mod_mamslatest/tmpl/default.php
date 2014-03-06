@@ -68,7 +68,7 @@ foreach ($articles as $a) {
 			}
 			$cats = Array();
 			foreach ($a->cats as $c) {
-				if ($params->get('link_pubinfo',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
+				if ($params->get('link_pubinfo',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>'; //&secid=".$a->sec_id.":".$a->sec_alias."
 				else $cats[]=$c->cat_title;
 			}
 			echo implode(", ",$cats);

@@ -75,10 +75,10 @@ class MAMSModelArticle extends JModelItem
 		//Get Article Drilldowns
 		$item->cats=$this->getArticleCats($item->art_id);
 		$item->auts=$this->getFieldAuthors($item->art_id,5);
-		$item->dloads=$this->getFieldDownloads($item->art_id,7);
-		$item->media=$this->getFieldMedia($item->art_id,6);
-		$item->links=$this->getFieldLinks($item->art_id,8);
-		$item->images=$this->getFieldImages($item->art_id,10);
+		//$item->art_dloads=$this->getFieldDownloads($item->art_id,7);
+		//$item->art_media=$this->getFieldMedia($item->art_id,6);
+		//$item->art_links=$this->getFieldLinks($item->art_id,8);
+		//$item->art_images=$this->getFieldImages($item->art_id,10);
 		
 		//Additional Fields
 		if ($item->art_fielddata)
@@ -106,6 +106,7 @@ class MAMSModelArticle extends JModelItem
 		$query->where('g.published >= 1');
 		$query->where('g.access IN ('.implode(",",$this->alvls).')');
 		$query->where('f.field_show_page = 1');
+		$query->where('f.field_type != "title"');
 		$query->order('f.ordering ASC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();

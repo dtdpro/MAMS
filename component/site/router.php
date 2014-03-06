@@ -20,30 +20,61 @@ function MAMSBuildRoute(&$query)
 	if (isset($query['view'])) {
 		$view = $query['view'];
 	}
-	
+	$fsi=array();
 	foreach ($items as $mi) {
 		if (!empty($mi->query['artid']) && ((int)$mi->query['artid'] == (int)$query['artid'])) {
-			$foundart = $mi->id;
+			$foundart = $mi->id; $fsi[]=$mi->id;
 		}
-		if (!empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'] || (int)$mi->query['secid'] == (int)$query['secid']) && empty($mi->query['catid'])) {
-			$foundsec = $mi->id;
+		
+		if (is_array($mi->query['secid'])) {
+			if (!empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid']) && empty($mi->query['catid'])) {
+				$foundsec = $mi->id;$fsi[]=$mi->id;
+			}
+		} else {
+			if (!empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid']) && empty($mi->query['catid'])) {
+				$foundsec = $mi->id;$fsi[]=$mi->id;
+			}
 		}
-		if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid'] || (int)$mi->query['catid'] == (int)$query['catid'])) {
-			$foundcat = $mi->id;
+		
+		if (is_array($mi->query['catid'])) {
+			if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && empty($mi->query['secid'])) {
+				$foundcat = $mi->id;$fsi[]=$mi->id;
+			}
+			if (is_array($mi->query['secid'])) {
+				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
+					$foundcatsec = $mi->id;$fsi[]=$mi->id;
+				}
+			} else {
+				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
+					$foundcatsec = $mi->id;$fsi[]=$mi->id;
+				}
+			}
+		} else {
+			if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && empty($mi->query['secid'])) {
+				$foundcat = $mi->id;$fsi[]=$mi->id;
+			}
+			if (is_array($mi->query['secid'])) {
+				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
+					$foundcatsec = $mi->id;$fsi[]=$mi->id;
+				}
+			} else {
+				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
+					$foundcatsec = $mi->id;$fsi[]=$mi->id;
+				}
+			}
 		}
-		if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid'][0] || (int)$mi->query['catid'][0] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'] || (int)$mi->query['secid'] == (int)$query['secid'])) {
-			$foundcatsec = $mi->id;
-		}
+		
 		if (!empty($mi->query['autid']) && ((int)$mi->query['autid'] == (int)$query['autid'])) {
-			$foundaut = $mi->id;
+			$foundaut = $mi->id;$fsi[]=$mi->id;
 		}
 	}
 	
 	$default = $query['Itemid'];
 	
 	if ($view == 'article') {
+		$query['found']=implode("-",$fsi);
 		if ($foundart) {
-			$query['Itemid'] = $foundart;
+			$query['Itemid'] = $foundart; 
 			unset ($query['artid']);
 			unset ($query['view']);
 			unset ($query['secid']);
@@ -130,17 +161,6 @@ function MAMSBuildRoute(&$query)
 			unset ($query['view']);
 			unset ($query['layout']);
 			if (isset($query['catid'])) {
-				if (strpos($query['secid'], ':') === false) {
-					$db = JFactory::getDbo();
-					$aquery = $db->setQuery($db->getQuery(true)
-							->select('sec_alias')
-							->from('#__mams_secs')
-							->where('sec_id='.(int)$query['secid'])
-					);
-					$alias = $db->loadResult();
-					$query['secid'] = $query['secid'].':'.$alias;
-				}
-				$segments[] = $query['secid'];
 				unset ($query['secid']);
 				if (strpos($query['catid'], ':') === false) {
 					$db = JFactory::getDbo();
@@ -302,7 +322,7 @@ function MAMSParseRoute($segments)
 	
 			if ($category && $category->cat_alias == $alias) {
 				$vars['view'] = 'artlist';
-				$vars['layout'] = 'category';
+				$vars['layout'] = 'catsec';
 				$vars['catid'] = $id;
 				$vars['secid'] = $sec_id;
 	

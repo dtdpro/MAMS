@@ -27,11 +27,17 @@ class MAMSViewArtList extends JViewLegacy
 			case "category": 
 				$this->listCategory();
 				break;
+			case "catsec": 
+				$this->listCatSec();
+				break;
 			case "author": 
 				$this->listAuthor();
 				break;
 			case "allsecs": 
 				$this->listAll();
+				break;
+			case "secbycat": 
+				$this->listSecbyCat();
 				break;
 			case "section": 
 			default:
@@ -49,12 +55,35 @@ class MAMSViewArtList extends JViewLegacy
 		$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 		
 		parent::display($tpl);
-		if ($this->params->get("listview","blog") == "blog") $this->setLayout('artlist');
-		else $this->setLayout('artgal');
-		parent::display($tpl);
+		if ($layout != "secbycat") {
+			if ($this->params->get("listview","blog") == "blog") $this->setLayout('artlist');
+			else $this->setLayout('artgal');
+			parent::display($tpl);
+		}
 	}
 	
-	protected function listCategory() {
+	protected function listSecByCat() {
+		$model =& $this->getModel();
+		$sec=$this->getSecs();
+		if (!$sec) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
+		$this->secinfo=$model->getSecInfo($sec);
+		$this->cats = $model->getSecCats($sec);
+		if ($this->secinfo && $this->cats) {
+			foreach ($this->cats as &$c) {
+				$cat = array();
+				$cat[] = $c->cat_id;
+				$artids=$model->getCatArts($cat);
+				$c->artids = $artids;
+				$c->articles=$model->getArticles($artids,$sec,false);
+			}
+		}
+	}
+	
+	protected function listCatSec() {
 		$model =& $this->getModel();
 		$sec=$this->getSecs();
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
@@ -68,6 +97,22 @@ class MAMSViewArtList extends JViewLegacy
 		if ($this->catinfo) {
 			$artids=$model->getCatArts($cat);
 			$this->articles=$model->getArticles($artids,$sec);
+			$this->pagination = $this->get('Pagination');
+		}
+	}
+	
+	protected function listCategory() {
+		$model =& $this->getModel();
+		$cat=$this->getCats();
+		if (!$cat) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
+		$this->catinfo=$model->getCatInfo($cat);
+		if ($this->catinfo) {
+			$artids=$model->getCatArts($cat);
+			$this->articles=$model->getArticles($artids);
 			$this->pagination = $this->get('Pagination');
 		}
 	}

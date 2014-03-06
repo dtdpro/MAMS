@@ -17,6 +17,11 @@ else {
 //print_r($this->article);
 //echo '</pre>';
 
+//Title
+echo '<h2 class="title">';
+echo $this->article->art_title;
+echo '</h2>';
+
 //Fields Renderer
 if ($this->article->fields) {
 	$curgroup = "";
@@ -37,6 +42,7 @@ if ($this->article->fields) {
 				echo '</div>';
 			}
 		}
+		
 		echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'">';
 		echo '<a name="'.$f->group_name.'-'.$f->field_name.'"></a>';
 		if ($f->params->show_title_page && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
@@ -44,7 +50,7 @@ if ($this->article->fields) {
 			echo $f->field_title;
 			echo '</div>';
 		}
-		if ($f->field_type != "title" && $f->field_type != "body" && $f->field_type != "pubinfo" && $f->field_type != "related" && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
+		if ($f->field_type != "body" && $f->field_type != "pubinfo" && $f->field_type != "related" && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
 			
 			switch ($f->field_type) {
 				case "textfield":
@@ -53,8 +59,7 @@ if ($this->article->fields) {
 					echo $this->article->art_fielddata->$fn;
 					break;
 				case "auths":
-					if ($f->field_name == "art_auths") $auths = $this->article->auts;
-					else $auths = $f->data;
+					$auths = $f->data;
 					foreach ($auths as $d) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth mams-article-auth">';
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth-name mams-article-auth-name">';
@@ -67,8 +72,7 @@ if ($this->article->fields) {
 					}
 					break;
 				case "dloads":
-					if ($f->field_name == "art_dloads") $dloads = $this->article->dloads;
-					else $dloads = $f->data;
+					$dloads = $f->data;
 					$firstdl=true;
 					foreach ($dloads as $d) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-dload">';
@@ -83,8 +87,7 @@ if ($this->article->fields) {
 					}
 					break;
 				case "images":
-					if ($f->field_name == "art_images") $images = $this->article->images;
-					else $images = $f->data;
+					$images = $f->data;
 					$firstimg=true;
 					foreach ($images as $i) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-image';
@@ -119,8 +122,7 @@ if ($this->article->fields) {
 					}
 					break;
 				case "links":
-					if ($f->field_name == "art_links") $links = $this->article->links;
-					else $links = $f->data;
+					$links = $f->data;
 					$firstlink=true;
 					foreach ($links as $d) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-link mams-article-link">';
@@ -135,8 +137,7 @@ if ($this->article->fields) {
 					}
 					break;
 				case "media":
-					if ($f->field_name == "art_media") $media = $this->article->media;
-					else $media = $f->data;
+					$media = $f->data;
 					echo '<div align="center">'; //Center the player, enoyingly needed
 					echo '<div class="mams-article-mediawrap"';
 					if ($config->player_fixed) echo ' style="width: '.(int)$config->vid_w.'px;"';
@@ -233,11 +234,6 @@ if ($this->article->fields) {
 					echo '</div>';
 					break;
 			} 
-		} else if ($f->field_type == "title") {
-			//Title
-			echo '<h2 class="title">';
-			echo $this->article->art_title;
-			echo '</h2>';
 		} else if ($f->field_type == "body") {
 			//Body
 			echo '<div class="mams-article-content">';
@@ -266,7 +262,8 @@ if ($this->article->fields) {
 				}
 				$cats = Array();
 				foreach ($this->article->cats as $c) {
-					$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$this->article->sec_id.":".$this->article->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>';
+					if (!$this->params->get('restrictcat',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>'; 
+					else $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=catsec&secid=".$this->article->sec_id.":".$this->article->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>'; 
 				}
 				echo implode(", ",$cats);
 				echo '</em>';
@@ -318,7 +315,7 @@ if ($this->article->fields) {
 					echo ' in <em>';
 					$cats = Array();
 					foreach ($r->cats as $c) {
-						$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$r->sec_id.":".$r->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-related-catlink">'.$c->cat_title.'</a>';
+						$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-related-catlink">'.$c->cat_title.'</a>'; //&secid=".$r->sec_id.":".$r->sec_alias."
 					}
 					echo implode(", ",$cats);
 					echo '</em>';

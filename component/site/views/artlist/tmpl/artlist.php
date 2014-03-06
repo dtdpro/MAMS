@@ -1,10 +1,13 @@
 <?php
 defined('_JEXEC') or die();
+$first=true;
 foreach ($this->articles as $a) {
 	$artlink = "index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias;
 	if ($a->cats) $artlink .= '&catid='.$a->cats[0]->cat_id;
 		
-	echo '<div class="mams-artlist-article">';
+	echo '<div class="mams-artlist-article';
+	if ($first) { echo ' mams-artlist-article-first'; $first=false; }
+	echo '">';
 	
 		//Title
 		echo '<div class="mams-artlist-arttitle">';
@@ -59,7 +62,8 @@ foreach ($this->articles as $a) {
 							}
 							$cats = Array();
 							foreach ($a->cats as $c) {
-								$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
+								if (!$this->params->get('restrictcat',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>'; 
+								else $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=catsec&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>'; 
 							}
 							echo implode(", ",$cats);
 							echo '</em>';
@@ -172,15 +176,15 @@ foreach ($this->articles as $a) {
 	
 	echo '</div>';
 	echo '<div class="mams-artlist-seperator"></div>';
-	//echo '<pre>'; print_r($a); echo '</pre>';
-	//echo '<div class="mams-artlist-seperator"></div>';
 
 }
-echo '<div class="mams-artlist-pagination">';
-echo '<div class="mams-artlist-pagination-links">';
-echo $this->pagination->getPagesLinks();
-echo '</div>';
-echo '<div class="mams-artlist-pagination-pages">';
-echo $this->pagination->getPagesCounter().'<br />'.$this->pagination->getResultsCounter();
-echo '</div>';
-echo '</div>';
+if ($this->pagination) {
+	echo '<div class="mams-artlist-pagination">';
+	echo '<div class="mams-artlist-pagination-links">';
+	echo $this->pagination->getPagesLinks();
+	echo '</div>';
+	echo '<div class="mams-artlist-pagination-pages">';
+	echo $this->pagination->getPagesCounter().'<br />'.$this->pagination->getResultsCounter();
+	echo '</div>';
+	echo '</div>';
+}

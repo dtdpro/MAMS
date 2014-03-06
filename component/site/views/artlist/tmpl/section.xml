@@ -58,6 +58,10 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field name="restrictcat" type="radio" label="COM_MAMS_FIELD_RESTRICTCAT_LABEL" description="COM_MAMS_FIELD_RESTRICTCAT_DESC" class="btn-group" default="0">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
 			<field name="orderby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
 				<option value="pubasc">COM_MAMS_ORDER_PUBASC</option>
 				<option value="pubdsc">COM_MAMS_ORDER_PUBDSC</option>

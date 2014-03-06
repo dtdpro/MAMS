@@ -60,13 +60,13 @@ class MAMSModelArtList extends JModelList
 		return $query;
 	}
 	
-	function getArticles($artids=array(),$secid=array()) {
+	function getArticles($artids=array(),$secid=array(),$paginate = true) {
 		$this->artids=$artids;
 		$this->secid=$secid;
-		return $this->getItems();
+		return $this->getItems($paginate);
 	}
 	
-	function getItems() {
+	function getItems($paginate = true) {
 		
 		$db =& JFactory::getDBO();
 		
@@ -74,7 +74,8 @@ class MAMSModelArtList extends JModelList
 		$limitstart = $this->getState('list.start');
 		$limit = $this->getState('list.limit');
 		
-		$db->setQuery($query, $limitstart, $limit);
+		if ($paginate) $db->setQuery($query, $limitstart, $limit);
+		else $db->setQuery($query);
 		$items = $db->loadObjectList();
 				
 		//Get Authors, Cats, Fields
@@ -247,6 +248,33 @@ class MAMSModelArtList extends JModelList
 		$query->where('ac.published >= 1');
 		$db->setQuery($query);
 		$items = $db->loadColumn();
+		return $items;
+	}
+	
+	function getSecCats($sec) {
+		
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+		
+		$artids = $this->getSecArts($sec);
+		
+		$query->select('ac.ac_cat');
+		$query->from('#__mams_artcat AS ac');
+		$query->where('ac.ac_art IN ( '.implode(",",$artids).')');
+		$query->where('ac.published >= 1');
+		$db->setQuery($query);
+		$catids = $db->loadColumn();
+
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from("#__mams_cats");
+		$query->where('cat_id IN ('.implode(",",$catids).')');
+		$query->where('access IN ('.implode(",",$this->alvls).')');
+		$query->order("cat_title ASC");
+		$db->setQuery($query);
+		$items=$db->loadObjectList();
+
 		return $items;
 	}
 	
