@@ -24,6 +24,12 @@ class MAMSViewArtList extends JViewLegacy
 		$this->state = $this->get('State');
 		
 		switch($layout) {
+			case "catlist": 
+				$this->listCats();
+				break;
+			case "seclist": 
+				$this->listSecs();
+				break;
 			case "category": 
 				$this->listCategory();
 				break;
@@ -55,11 +61,21 @@ class MAMSViewArtList extends JViewLegacy
 		$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 		
 		parent::display($tpl);
-		if ($layout != "secbycat") {
+		if ($layout != "secbycat" && $layout != "catlist" && $layout != "seclist") {
 			if ($this->params->get("listview","blog") == "blog") $this->setLayout('artlist');
 			else $this->setLayout('artgal');
 			parent::display($tpl);
 		}
+	}
+	
+	protected function listSecs() {
+		$model =& $this->getModel();
+		$this->seclist = $model->getSecs($this->params->get("show_count",0));
+	}
+	
+	protected function listCats() {
+		$model =& $this->getModel();
+		$this->catlist = $model->getCats($this->params->get("show_count",0));
 	}
 	
 	protected function listSecByCat() {
@@ -73,6 +89,7 @@ class MAMSViewArtList extends JViewLegacy
 		$this->secinfo=$model->getSecInfo($sec);
 		$this->cats = $model->getSecCats($sec);
 		if ($this->secinfo && $this->cats) {
+			if (count($this->secinfo) == 1) $this->document->setTitle($this->secinfo[0]->sec_name);
 			foreach ($this->cats as &$c) {
 				$cat = array();
 				$cat[] = $c->cat_id;
@@ -95,6 +112,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
+			if (count($this->catinfo) == 1) $this->document->setTitle($this->catinfo[0]->cat_title);
 			$artids=$model->getCatArts($cat);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
@@ -111,6 +129,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
+			if (count($this->catinfo) == 1) $this->document->setTitle($this->catinfo[0]->cat_title);
 			$artids=$model->getCatArts($cat);
 			$this->articles=$model->getArticles($artids);
 			$this->pagination = $this->get('Pagination');
@@ -134,6 +153,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
+			if (count($this->secinfo) == 1) $this->document->setTitle($this->secinfo[0]->sec_name);
 			$artids=$model->getSecArts($sec); 
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');

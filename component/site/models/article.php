@@ -75,10 +75,6 @@ class MAMSModelArticle extends JModelItem
 		//Get Article Drilldowns
 		$item->cats=$this->getArticleCats($item->art_id);
 		$item->auts=$this->getFieldAuthors($item->art_id,5);
-		//$item->art_dloads=$this->getFieldDownloads($item->art_id,7);
-		//$item->art_media=$this->getFieldMedia($item->art_id,6);
-		//$item->art_links=$this->getFieldLinks($item->art_id,8);
-		//$item->art_images=$this->getFieldImages($item->art_id,10);
 		
 		//Additional Fields
 		if ($item->art_fielddata)

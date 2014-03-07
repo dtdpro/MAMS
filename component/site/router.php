@@ -8,9 +8,12 @@ function MAMSBuildRoute(&$query)
 	$items = Array();
 	$default = 0;
 	$foundart = 0;
+	$foundartlist = 0;
 	$foundsec = 0;
+	$foundseclist = 0;
 	$foundcat = 0;
 	$foundcatsec = 0;
+	$foundcatlist = 0;
 	$foundaut = 0;
 	$segments = array();
 	$app = JFactory::getApplication();
@@ -20,59 +23,63 @@ function MAMSBuildRoute(&$query)
 	if (isset($query['view'])) {
 		$view = $query['view'];
 	}
-	$fsi=array();
-	foreach ($items as $mi) {
-		if (!empty($mi->query['artid']) && ((int)$mi->query['artid'] == (int)$query['artid'])) {
-			$foundart = $mi->id; $fsi[]=$mi->id;
-		}
-		
-		if (is_array($mi->query['secid'])) {
-			if (!empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid']) && empty($mi->query['catid'])) {
-				$foundsec = $mi->id;$fsi[]=$mi->id;
+	
+	if (!is_array($query['catid']) && !is_array($query['secid'])){
+		foreach ($items as $mi) {
+			if (!empty($mi->query['artid']) && ((int)$mi->query['artid'] == (int)$query['artid'])) {
+				$foundart = $mi->id; 
 			}
-		} else {
-			if (!empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid']) && empty($mi->query['catid'])) {
-				$foundsec = $mi->id;$fsi[]=$mi->id;
-			}
-		}
-		
-		if (is_array($mi->query['catid'])) {
-			if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && empty($mi->query['secid'])) {
-				$foundcat = $mi->id;$fsi[]=$mi->id;
-			}
+			
 			if (is_array($mi->query['secid'])) {
-				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
-					$foundcatsec = $mi->id;$fsi[]=$mi->id;
+				if (!empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid']) && empty($mi->query['catid'])) {
+					$foundsec = $mi->id;
 				}
 			} else {
-				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
-					$foundcatsec = $mi->id;$fsi[]=$mi->id;
+				if (!empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid']) && empty($mi->query['catid'])) {
+					$foundsec = $mi->id;
 				}
 			}
-		} else {
-			if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && empty($mi->query['secid'])) {
-				$foundcat = $mi->id;$fsi[]=$mi->id;
-			}
-			if (is_array($mi->query['secid'])) {
-				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
-					$foundcatsec = $mi->id;$fsi[]=$mi->id;
+			
+			if (is_array($mi->query['catid'])) {
+				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && empty($mi->query['secid'])) {
+					$foundcat = $mi->id;
+				}
+				if (is_array($mi->query['secid'])) {
+					if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
+						$foundcatsec = $mi->id;
+					}
+				} else {
+					if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
+						$foundcatsec = $mi->id;
+					}
 				}
 			} else {
-				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
-					$foundcatsec = $mi->id;$fsi[]=$mi->id;
+				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && empty($mi->query['secid'])) {
+					$foundcat = $mi->id;
+				}
+				if (is_array($mi->query['secid'])) {
+					if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
+						$foundcatsec = $mi->id;
+					}
+				} else {
+					if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
+						$foundcatsec = $mi->id;
+					}
 				}
 			}
-		}
-		
-		if (!empty($mi->query['autid']) && ((int)$mi->query['autid'] == (int)$query['autid'])) {
-			$foundaut = $mi->id;$fsi[]=$mi->id;
+			
+			if (!empty($mi->query['autid']) && ((int)$mi->query['autid'] == (int)$query['autid'])) {
+				$foundaut = $mi->id;
+			}
+			
+			if ($mi->query['layout'] == 'catlist' && $query['layout'] == 'category') { $foundcatlist = $mi->id; }
+			if ($mi->query['layout'] == 'seclist' && $query['layout'] == 'section') { $foundseclist = $mi->id; }
+			if ($mi->query['layout'] == 'allsecs' && $query['view'] == 'article' && !$mi->home) { $foundartlist = $mi->id; }
 		}
 	}
-	
 	$default = $query['Itemid'];
 	
 	if ($view == 'article') {
-		$query['found']=implode("-",$fsi);
 		if ($foundart) {
 			$query['Itemid'] = $foundart; 
 			unset ($query['artid']);
@@ -133,6 +140,24 @@ function MAMSBuildRoute(&$query)
 			$segments[] = $query['artid'];
 			unset ($query['artid']);
 			
+		} else if ($foundartlist) {
+			$query['Itemid'] = $foundartlist;
+			unset ($query['view']);
+			unset ($query['secid']);
+			unset ($query['catid']);
+			if (strpos($query['artid'], ':') === false) {
+				$db = JFactory::getDbo();
+				$aquery = $db->setQuery($db->getQuery(true)
+					->select('art_alias')
+					->from('#__mams_articles')
+					->where('art_id='.(int)$query['artid'])
+				);
+				$alias = $db->loadResult();
+				$query['artid'] = $query['artid'].':'.$alias;
+			}
+			$segments[] = $query['artid'];
+			unset ($query['artid']);
+			
 		} else {
 			$query['Itemid'] = $default;
 		}
@@ -160,6 +185,7 @@ function MAMSBuildRoute(&$query)
 			$query['Itemid'] = $foundsec;
 			unset ($query['view']);
 			unset ($query['layout']);
+			if (is_array($query['catid'])) $query['catid'] = $query['catid'][0];
 			if (isset($query['catid'])) {
 				unset ($query['secid']);
 				if (strpos($query['catid'], ':') === false) {
@@ -178,6 +204,40 @@ function MAMSBuildRoute(&$query)
 				unset ($query['secid']);
 				unset ($query['catid']);
 			}
+		} elseif ($foundcatlist) {
+			$query['Itemid'] = $foundcatlist;
+			unset ($query['view']);
+			unset ($query['layout']);
+			if (is_array($query['catid'])) $query['catid'] = $query['catid'][0];
+			if (strpos($query['catid'], ':') === false) {
+				$db = JFactory::getDbo();
+				$aquery = $db->setQuery($db->getQuery(true)
+						->select('cat_alias')
+						->from('#__mams_cats')
+						->where('cat_id='.(int)$query['catid'])
+				);
+				$alias = $db->loadResult();
+				$query['catid'] = $query['catid'].':'.$alias;
+			}
+			$segments[] = $query['catid'];
+			unset ($query['catid']);
+		} elseif ($foundseclist) {
+			$query['Itemid'] = $foundseclist;
+			unset ($query['view']);
+			unset ($query['layout']);
+			if (is_array($query['secid'])) $query['secid'] = $query['secid'][0];
+			if (strpos($query['secid'], ':') === false) {
+				$db = JFactory::getDbo();
+				$aquery = $db->setQuery($db->getQuery(true)
+						->select('sec_alias')
+						->from('#__mams_secs')
+						->where('sec_id='.(int)$query['secid'])
+				);
+				$alias = $db->loadResult();
+				$query['secid'] = $query['secid'].':'.$alias;
+			}
+			$segments[] = $query['secid'];
+			unset ($query['secid']);
 		} else {
 			$query['Itemid'] = $default;
 		}

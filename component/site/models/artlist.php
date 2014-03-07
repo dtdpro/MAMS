@@ -221,8 +221,6 @@ class MAMSModelArtList extends JModelList
 		return $total;
 	}
 
-	
-	
 	function getSecArts($sec) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -338,5 +336,70 @@ class MAMSModelArtList extends JModelList
 		return $info;
 	}
 	
+	function getCats($artcount = false) {
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+		$query->select('c.*');
+		$query->from('#__mams_cats AS c');
+		$query->where('c.published >= 1');
+		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		switch ($this->params->get("orderby","titasc")) {
+			case "titasc": $query->order('cat_title ASC'); break;
+			case "titdsc": $query->order('cat_title DESC'); break;
+			default: $query->order('cat_title ASC'); break;
+		}
+		$db->setQuery($query);
+		$items = $db->loadObjectList();
+		
+		if ($artcount) {
+			foreach ($items as &$i) {
+				$query = $db->getQuery(true);
+				$query->select('ac.ac_art');
+				$query->from('#__mams_artcat AS ac');
+				$query->where('ac.ac_cat = '.$i->cat_id);
+				$query->where('ac.published >= 1');
+				$db->setQuery($query);
+				$arts = $db->loadColumn();
+				$i->numarts = count($arts);
+			}
+		}
+		
+		return $items;
+	}
+
+
+	function getSecs($artcount = false) {
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+		$query->select('c.*');
+		$query->from('#__mams_secs AS c');
+		$query->where('c.published >= 1');
+		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		switch ($this->params->get("orderby","titasc")) {
+			case "titasc": $query->order('sec_name ASC'); break;
+			case "titdsc": $query->order('sec_name DESC'); break;
+			default: $query->order('sec_name ASC'); break;
+		}
+		$db->setQuery($query);
+		$items = $db->loadObjectList();
+	
+		if ($artcount) {
+			foreach ($items as &$i) {
+				$query = $db->getQuery(true);
+				$query->select('art_id');
+				$query->from('#__mams_articles');
+				$query->where('art_sec = '.$i->sec_id);
+				$query->where('state >= 1');
+				$query->where('access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+				$db->setQuery($query);
+				$arts = $db->loadColumn();
+				$i->numarts = count($arts);
+			}
+		}
+	
+		return $items;
+	}
 
 }
