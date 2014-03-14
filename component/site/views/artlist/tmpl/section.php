@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 $app = JFactory::getApplication();
 if (count($this->secinfo) == 1) {
-	echo '<h2 class="title">';
+	echo '<h2 class="title uk-article-title">';
 	echo $this->secinfo[0]->sec_name;
 	echo '</h2>';
 	if ($this->params->get("show_secimage",0)) {
@@ -11,7 +11,7 @@ if (count($this->secinfo) == 1) {
 	}
 	echo '<div class="mams-artlist-secdesc">'.$this->secinfo[0]->sec_desc.'</div>';
 } else {
-	echo '<h2 class="title">';
+	echo '<h2 class="title uk-article-title">';
 	echo $this->params->get("page_title",$app->getMenu()->getActive()->title);
 	echo '</h2>';
 }

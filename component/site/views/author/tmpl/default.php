@@ -2,7 +2,7 @@
 defined('_JEXEC') or die();
 $cfg = MAMSHelper::getConfig();
 //Title
-echo '<h2 class="title">';
+echo '<h2 class="title uk-article-title">';
 echo $this->author->auth_fname.(($this->author->auth_mi) ? " ".$this->author->auth_mi : "")." ".$this->author->auth_lname.(($this->author->auth_titles) ? ", ".$this->author->auth_titles : ""); 
 echo '</h2>';
 echo '<div class="mams-author-credentials">';

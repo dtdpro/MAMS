@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die();
-echo '<h2 class="title">';
+echo '<h2 class="title uk-article-title">';
 echo $this->params->get("page_title",'Authors'); 
 echo '</h2>';
 

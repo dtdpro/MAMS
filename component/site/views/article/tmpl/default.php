@@ -18,7 +18,7 @@ else {
 //echo '</pre>';
 
 //Title
-echo '<h2 class="title">';
+echo '<h2 class="title uk-article-title">';
 echo $this->article->art_title;
 echo '</h2>';
 
