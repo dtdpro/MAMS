@@ -1,7 +1,7 @@
 <?php
 /**
  * MAMS entry point file for MAMS Component
- * (C) 2013 DtD Productions
+ * (C) 2013-2014 DtD Productions
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');

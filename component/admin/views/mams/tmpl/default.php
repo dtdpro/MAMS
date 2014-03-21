@@ -7,5 +7,5 @@ if (!empty( $this->sidebar)) : ?>
 <?php else : ?>
 	<div id="j-main-container">
 <?php endif;
-echo '<div align="center"><img src="../media/com_mams/images/mams-icon.png"></div>'; ?>
+echo '<div align="center"><img src="../media/com_mams/images/mams.png"></div>'; ?>
 </div>

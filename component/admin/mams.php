@@ -9,7 +9,11 @@ return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 
 require_once JPATH_COMPONENT.'/helpers/mams.php';
 
+
+
 $controller = JControllerLegacy::getInstance('mams');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();
 
+$doc = &JFactory::getDocument();
+$doc->addStyleSheet('../media/com_mams/fonts/mams.css');

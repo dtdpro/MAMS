@@ -42,7 +42,7 @@
 			<folder>vidplyr</folder>
 			<folder>scripts</folder>
 			<folder>images</folder>
-			<folder>templates</folder>
+			<folder>fonts</folder>
     </media>
 	<languages folder="site">
 		<language tag="en-GB">language/en-GB.com_mams.ini</language>
