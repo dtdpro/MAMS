@@ -158,7 +158,7 @@ class MAMSTableArticle extends JTable
 		
 
 		// Check the publish down date is not earlier than publish up.
-		if ($this->art_publish_down != "0000-00-00" && $this->art_publish_down < $this->art_publish_up)
+		if ($this->art_publish_down && $this->art_publish_down != "0000-00-00" && $this->art_publish_down < $this->art_publish_up)
 		{
 			$this->setError(JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
 			return false;
