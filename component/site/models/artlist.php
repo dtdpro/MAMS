@@ -375,6 +375,7 @@ class MAMSModelArtList extends JModelList
 		$user = JFactory::getUser();
 		$query->select('c.*');
 		$query->from('#__mams_secs AS c');
+		$query->where('c.sec_type="article"');
 		$query->where('c.published >= 1');
 		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		switch ($this->params->get("orderby","titasc")) {
