@@ -15,7 +15,7 @@
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
 			<field name="listview" class="btn-group" type="radio" description="COM_MAMS_FIELD_LISTVIEW_DESC" label="COM_MAMS_FIELD_LISTVIEW_LABEL" default="blog">
-				<option value="list">Blog List</option>
+				<option value="blog">Blog List</option>
 				<option value="gal">Gallery</option>
 			</field>
 			<field name="show_bio" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_BIO_DESC" label="COM_MAMS_FIELD_SHOW_BIO_LABEL" default="0">
