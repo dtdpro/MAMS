@@ -154,7 +154,7 @@ if ($this->article->fields) {
 						if ($media[0]->med_autoplay) echo ' autoplay="autoplay"';
 						echo '></video>';
 						echo '<script type="text/javascript">';
-						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."');";
+						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."',{enablePluginSmoothing: true});";
 						echo '</script>';
 						if (count($media) > 1) {
 							?>
