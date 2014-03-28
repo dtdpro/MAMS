@@ -19,7 +19,7 @@ if ($items) {
 		echo '<link rel="postroll" href="'.JURI::base( true ).'/components/com_mams/postroll.php?medid='.$items[0]->med_id.'" />';
 		echo '</video>';
 		echo '<script type="text/javascript">';
-		echo "var fmplayer = new MediaElementPlayer('#mams-featmedia-mediaelement',{features: ['playpause','current','progress','duration','volume','fullscreen','googleanalytics'";
+		echo "var fmplayer = new MediaElementPlayer('#mams-featmedia-mediaelement',{enablePluginSmoothing: true, features: ['playpause','current','progress','duration','volume','fullscreen','googleanalytics'";
 		if ($params->get("show_postroll",0)) echo ",'postroll'";
 		echo "]});"; 
 		echo '</script>';
