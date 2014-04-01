@@ -286,15 +286,16 @@ INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `f
 INSERT INTO `#__mams_article_fieldgroups` (`group_id`, `group_name`, `group_title`, `group_show_title`, `ordering`, `access`, `published`) VALUES
 (1, 'article', 'Main', 0, 1, 1, 1);
 
-INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `field_rssname`, `field_type`, `field_group`, `field_show_page`, `field_show_list`, `ordering`, `access`, `published`, `params`) VALUES
-(1, 'art-title', 'Article Title', 'title', 'title', 1, 1, 1, 1, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(2, 'art-desc', 'Article Description', 'description', 'desc', 1, 0, 1, 3, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(3, 'art-content', 'Article Body', 'body', 'body', 1, 1, 0, 8, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(4, 'art-pubinfo', 'Article Publishing Information', '', 'pubinfo', 1, 1, 1, 2, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(5, 'art-auths', 'Article Authors', 'author', 'auths', 1, 1, 1, 7, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(6, 'art-media', 'Article Media', '', 'media', 1, 1, 0, 4, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(7, 'art-dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 6, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(8, 'art-links', 'Article Links', '', 'links', 1, 1, 0, 9, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(9, 'art-related', 'Related Items', '', 'related', 1, 1, 0, 10, 1, 1, '{"show_title_page":"1","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}');,
-(10, 'art-images', 'Article Images', '', 'images', 1, 1, 0, 0, 5, 1, 1, '{"show_title_page":"0","show_title_desc":"0","show_title_module":"0","pretext":"","posttext":"","linktext":"0"}');
+INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `field_rssname`, `field_type`, `field_group`, `field_show_page`, `field_show_list`, `field_show_module`, `ordering`, `access`, `published`, `params`) VALUES
+(1, 'art-title', 'Article Title', 'title', 'title', 1, 1, 1, 0, 1, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(2, 'art-desc', 'Article Description', 'description', 'desc', 1, 0, 1, 0, 4, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(3, 'art-content', 'Article Body', 'body', 'body', 1, 1, 0, 0, 9, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(4, 'art-pubinfo', 'Article Publishing Information', '', 'pubinfo', 1, 1, 1, 0, 3, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(5, 'art-auths', 'Article Authors', 'author', 'auths', 1, 1, 1, 0, 8, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(6, 'art-media', 'Article Media', '', 'media', 1, 1, 0, 0, 5, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(7, 'art-dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 0, 7, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(8, 'art-links', 'Article Links', '', 'links', 1, 1, 0, 0, 10, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(9, 'art-related', 'Related Items', '', 'related', 1, 1, 0, 0, 11, 1, 1, '{"show_title_page":"1","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(10, 'art-images', 'Article Images', '', 'images', 1, 1, 0, 0, 6, 1, 1, '{"show_title_page":"0","show_title_desc":"0","show_title_module":"0","pretext":"","posttext":"","linktext":"0"}');
+
 
