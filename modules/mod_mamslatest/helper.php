@@ -27,6 +27,7 @@ class modMAMSLatestHelper
 		$query->from('#__mams_articles as a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
+		if ($params->get('restrict_feat',0)) $query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$query->where('a.state >= 1');
 		$query->where('a.art_sec IN ('.implode(",",$secs).')');
 		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }

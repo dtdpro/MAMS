@@ -31,6 +31,7 @@ class modMAMSCatHelper
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id IN ('.implode(",",$artids).')');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
+		if ($params->get('restrict_feat',0)) $query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$query->where('a.state >= 1');
 		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
 		$query->order($params->get('orderby1','a.art_publish_up DESC').', '.$params->get('orderby2','s.ordering ASC').', '.$params->get('orderby3','a.ordering ASC'));

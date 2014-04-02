@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>2.3.0</version>
+	<version>2.4.0</version>
 	<description>MOD_MAMSLATEST_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamslatest">mod_mamslatest.php</filename>
@@ -24,6 +24,10 @@
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
 				<field name="secid" type="Secs" description="MOD_MAMSLATEST_SECTION_DESC" label="MOD_MAMSLATEST_SECTION_LABEL" required="true"  multiple="true" mamssec="article" />
+				<field name="restrict_feat" type="radio" label="MOD_MAMSLATEST_RESTRICT_FEAT_LABEL" description="MOD_MAMSLATEST_RESTRICT_FEAT_DESC" class="btn-group" default="0">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 				<field name="show_image" type="radio" label="MOD_MAMSLATEST_SHOW_IMAGE_LABEL" description="MOD_MAMSLATEST_SHOW_IMAGE_DESC" class="btn-group" default="0">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
