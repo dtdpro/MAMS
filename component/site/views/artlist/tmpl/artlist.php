@@ -163,7 +163,7 @@ foreach ($this->articles as $a) {
 				//Read More
 				if ($this->params->get('show_readmore',1)) {
 					echo '<div class="mams-artlist-artreadmore">';
-					echo '<a href="'.JRoute::_($artlink).'" class="mams-artlist-artlink read-more uk-button">';
+					echo '<a href="'.JRoute::_($artlink).'" class="mams-artlist-artlink read-more uk-button btn btn-default">';
 					echo $this->params->get('readmore_text',"Read More");
 					echo '</a>';
 					echo '</div>';

@@ -106,6 +106,9 @@ $db =& JFactory::getDBO();
 					<?php echo JHtml::_('grid.sort','JGRID_HEADING_ACCESS','a.access', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%">
+					<?php echo JText::_('COM_MAMS_CAT_HEADING_NUMITEMS'); ?>
+				</th>
+				<th width="1%">
 					<?php echo JText::_('COM_MAMS_AUTH_HEADING_ID'); ?>
 				</th>
 			</tr>
@@ -163,6 +166,12 @@ $db =& JFactory::getDBO();
 				<td class="small"><?php echo $item->auth_added; ?></td>
 				<td class="small"><?php echo $item->auth_modified; ?></td>
 				<td class="small"><?php echo $item->access_level; ?></td>
+				<td class="small"><?php 
+					$query = 'SELECT count(*) FROM #__mams_artauth WHERE aa_auth='.$item->auth_id;
+					$db->setQuery( $query );
+					$num=$db->loadResult();
+					echo $num;
+				?></td>
 				<td><?php echo $item->auth_id; ?></td>
 			</tr>
 		<?php endforeach; ?>

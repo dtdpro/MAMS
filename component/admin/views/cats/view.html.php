@@ -61,8 +61,8 @@ class MAMSViewCats extends JViewLegacy
 				'c.published' => JText::_('JSTATUS'),
 				'c.cat_title' => JText::_('COM_MAMS_SEC_HEADING_NAME'),
 				'c.access' => JText::_('JGRID_HEADING_ACCESS'),
-				'c.cat_added' => JText::_('COM_MAMS_SEC_ADDED'),
 				'c.cat_id' => JText::_('JGRID_HEADING_ID'),
+				'c.cat_added' => JText::_('COM_MAMS_SEC_ADDED'),
 				'c.cat_modified' => JText::_('COM_MAMS_SEC_MODIFIED')
 		);
 	}

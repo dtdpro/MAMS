@@ -78,7 +78,7 @@ if ($this->article->fields) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-dload">';
 						if (in_array($d->access,$user->getAuthorisedViewLevels())) echo '<a href="'.JRoute::_("components/com_mams/dl.php?dlid=".$d->dl_id).'" target="_blank" ';
 						else echo '<a href="'.JRoute::_($rurl).'" ';
-						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artdload mams-article-dllink uk-button';
+						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artdload mams-article-dllink uk-button btn btn-default';
 						if ($firstdl) { echo ' firstdload'; $firstdl=false; }
 						echo '">';
 						echo 'Download '.$d->dl_lname;

@@ -60,8 +60,8 @@ class MAMSViewDloads extends JViewLegacy
 				'd.published' => JText::_('JSTATUS'),
 				'd.dl_fname' => JText::_('COM_MAMS_DLOAD_HEADING_NAME'),
 				'd.access' => JText::_('JGRID_HEADING_ACCESS'),
-				'd.dl_added' => JText::_('COM_MAMS_DLOAD_ADDED'),
 				'd.dl_id' => JText::_('JGRID_HEADING_ID'),
+				'd.dl_added' => JText::_('COM_MAMS_DLOAD_ADDED'),
 				'd.dl_modified' => JText::_('COM_MAMS_DLOAD_MODIFIED')
 		);
 	}

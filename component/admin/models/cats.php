@@ -15,6 +15,9 @@ class MAMSModelCats extends JModelList
 				'cat_added', 'c.cat_added',
 				'cat_modified', 'c.cat_modified',
 				'cat_title', 'c.cat_title',
+				'cat_id','c.cat_id',
+				'access','c.access',
+				'published','c.published'
 			);
 		}
 		parent::__construct($config);
