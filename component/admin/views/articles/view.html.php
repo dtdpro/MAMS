@@ -59,9 +59,11 @@ class MAMSViewArticles extends JViewLegacy
 			JToolBarHelper::trash('articles.trash');
 		}
 		if ($user->authorise('core.edit')) {
+			//Batch Button
 			JHtml::_('bootstrap.modal', 'collapseModal');
 			$title = JText::_('JTOOLBAR_BATCH');
-			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\"><i class=\"icon-checkbox-partial\" title=\"$title\"></i>$title</button>";
+			$layout = new JLayoutFile('joomla.toolbar.batch');
+			$dhtml = $layout->render(array('title' => $title));
 			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
 		if ($canDo->get('core.admin'))
