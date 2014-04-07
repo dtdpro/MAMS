@@ -35,6 +35,7 @@ class MAMSViewCats extends JViewLegacy
 	protected function addToolBar() 
 	{
 		$state	= $this->get('State');
+		$bar = JToolBar::getInstance('toolbar');
 		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_CATS'), 'mams');
 		JToolBarHelper::addNew('cat.add', 'JTOOLBAR_NEW');
 		JToolBarHelper::editList('cat.edit', 'JTOOLBAR_EDIT');
@@ -42,12 +43,25 @@ class MAMSViewCats extends JViewLegacy
 		JToolBarHelper::custom('cats.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::custom('cats.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
 		JToolBarHelper::divider();
+		JToolBarHelper::custom('cats.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
+		JToolBarHelper::custom('cats.unfeatured', 'remove.png', 'remove_f2.png', 'COM_MAMS_TOOLBAR_DEFEATURE', true);
+		JToolBarHelper::divider();
 		if ($state->get('filter.state') == -2) {
 			JToolBarHelper::deleteList('', 'cats.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		} else  {
 			JToolBarHelper::trash('cats.trash');
 		}
+		
+		//Batch Button
+		JHtml::_('bootstrap.modal', 'collapseModal');
+		$title = JText::_('JTOOLBAR_BATCH');
+		
+		// Instantiate a new JLayoutFile instance and render the batch button
+		$layout = new JLayoutFile('joomla.toolbar.batch');
+		
+		$dhtml = $layout->render(array('title' => $title));
+		$bar->appendButton('Custom', $dhtml, 'batch');
 		
 		JHtmlSidebar::setAction('index.php?option=com_mams&view=cats');
 		

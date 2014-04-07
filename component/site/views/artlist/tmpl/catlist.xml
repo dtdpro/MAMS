@@ -6,6 +6,14 @@
 	<!-- Add fields to the request variables for the layout. -->
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="only_feat" type="radio" label="COM_MAMS_FIELD_ONLY_FEAT_LABEL" description="COM_MAMS_FIELD_ONLY_FEAT_DESC" class="btn-group" default="0">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+			</field>
+			<field name="restrict_feat" type="radio" label="COM_MAMS_FIELD_RESTRICT_FEAT_LABEL" description="COM_MAMS_FIELD_RESTRICT_FEAT_DESC" class="btn-group" default="0">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+			</field>
 			<field name="show_count" type="radio" label="COM_MAMS_FIELD_SHOW_COUNT_LABEL" description="COM_MAMS_FIELD_SHOW_COUNT_DESC" class="btn-group" default="0">
 				<option value="0">No</option>
 				<option value="1">Yes</option>

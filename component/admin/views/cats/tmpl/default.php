@@ -94,6 +94,9 @@ $db =& JFactory::getDBO();
 					<?php echo JHtml::_('grid.sort','COM_MAMS_CAT_MODIFIED','c.cat_modified', $listDirn, $listOrder); ?>
 				</th>	
 				<th width="5%">
+					<?php echo JText::_('COM_MAMS_CAT_HEADING_FEATACCESS'); ?>
+				</th>
+				<th width="5%">
 					<?php echo JHtml::_('grid.sort','JGRID_HEADING_ACCESS','c.access', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%">
@@ -114,12 +117,21 @@ $db =& JFactory::getDBO();
 				<td class="center">
 					<div class="btn-group">
 						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'cats.', true);?>
+						<?php echo JHtml::_('mamsadministrator.featured', $item->cat_featured, $i, true, "cats"); ?>
 						<?php
 							// Create dropdown items
 							if ($item->published) :
 								JHtml::_('actionsdropdown.unpublish', 'cb' . $i, 'cats');
 							else :
 								JHtml::_('actionsdropdown.publish', 'cb' . $i, 'cats');
+							endif;
+							
+							JHtml::_('actionsdropdown.divider');
+							
+							if ($item->cat_featured) :
+								JHtml::_('actionsdropdown.unfeature', 'cb' . $i, 'cats');
+							else :
+								JHtml::_('actionsdropdown.feature', 'cb' . $i, 'cats');
 							endif;
 							
 							JHtml::_('actionsdropdown.divider');
@@ -143,6 +155,7 @@ $db =& JFactory::getDBO();
 				</td>
 				<td class="small"><?php echo $item->cat_added; ?></td>
 				<td class="small"><?php echo $item->cat_modified; ?></td>
+				<td class="small"><?php echo $item->feataccess_level; ?></td>
 				<td class="small"><?php echo $item->access_level; ?></td>
 				<td class="small"><?php 
 					$query = 'SELECT count(*) FROM #__mams_artcat WHERE ac_cat='.$item->cat_id;
@@ -155,6 +168,37 @@ $db =& JFactory::getDBO();
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+	<div class="modal hide fade" id="collapseModal">
+		<div class="modal-header">
+			<button type="button" role="presentation" class="close" data-dismiss="modal">x</button>
+			<h3><?php echo JText::_('COM_MAMS_CAT_BATCH_OPTIONS');?></h3>
+		</div>
+		<div class="modal-body modal-batch">
+			<p><?php echo JText::_('COM_MAMS_CAT_BATCH_TIP'); ?></p>
+			<div class="control-group">
+				<div class="controls">
+					<?php echo JHtml::_('batch.access'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<?php 
+						echo '<label id="batch-feataccess-lbl" for="batch-feataccess" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL_DESC') . '">';
+						echo JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL').'</label>';
+						echo JHtml::_('access.assetgrouplist','batch[featassetgroup_id]', '','class="inputbox"',array('title' => JText::_('JLIB_HTML_BATCH_NOCHANGE'),'id' => 'batch-feataccess')); 
+					?>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">	
+			<button class="btn" type="button" onclick="document.id('batch-access').value='';document.id('batch-feataccess').value='';document.id('featsection_id').value='';" data-dismiss="modal">
+				<?php echo JText::_('JCANCEL'); ?>
+			</button>
+			<button class="btn btn-primary" type="submit" onclick="Joomla.submitbutton('cat.batch');">
+				<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
+			</button>
+		</div>
+	</div>
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />

@@ -60,6 +60,8 @@ class MAMSModelCats extends JModelList
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = c.access');
+		$query->select('af.title AS feataccess_level');
+		$query->join('LEFT', '#__viewlevels AS af ON af.id = c.cat_feataccess');
 		
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {

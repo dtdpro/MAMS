@@ -349,6 +349,12 @@ class MAMSModelArtList extends JModelList
 			case "titdsc": $query->order('cat_title DESC'); break;
 			default: $query->order('cat_title ASC'); break;
 		}
+		if ($this->params->get('only_feat',0)) {
+			$query->where('c.cat_featured = 1');
+			$query->where('c.cat_feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		} elseif ($this->params->get('restrict_feat',0)) {
+			$query->where('c.cat_feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		}
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 		
