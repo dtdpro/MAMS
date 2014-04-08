@@ -177,6 +177,7 @@ $db =& JFactory::getDBO();
 						<?php else : ?>
 							<?php echo $this->escape($item->sec_name); ?>
 						<?php endif; ?>
+						<div class="small">Alias: <?php echo $item->sec_alias; ?></div>
 					</div>
 				</td>
 				<td class="small"><?php 

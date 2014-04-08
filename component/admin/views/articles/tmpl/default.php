@@ -97,13 +97,13 @@ $sortFields = $this->getSortFields();
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_TITLE','a.art_title', $listDirn, $listOrder); ?>
 				</th>		
+				<th width="15%">
+					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_SEC'); ?>
+				</th>
 				<th width="13%">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISH_ON','a.art_publish_up', $listDirn, $listOrder); ?> - 
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISH_DOWN','a.art_publish_down', $listDirn, $listOrder); ?>
 				</th>	
-				<th width="10%">
-					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_TAGS'); ?>
-				</th>
 				<th width="10%" class="hidden-phone">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_ADDED','a.art_added', $listDirn, $listOrder); ?>
 				</th>		
@@ -111,10 +111,8 @@ $sortFields = $this->getSortFields();
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_MODIFIED','a.art_modified', $listDirn, $listOrder); ?>
 				</th>	
 				<th width="5%">
-					<?php echo JText::_('JFEATURED'); ?>
-				</th>
-				<th width="5%">
-					<?php echo JHtml::_('grid.sort','JGRID_HEADING_ACCESS','a.access', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort','JGRID_HEADING_ACCESS','a.access', $listDirn, $listOrder); ?><br />
+					<?php echo JText::_('COM_MAMS_ARTICLE_HEADING_FEATACCESS'); ?>
 				</th>
 				<th width="1%">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_HITS','a.art_hits', $listDirn, $listOrder); ?>
@@ -162,6 +160,7 @@ $sortFields = $this->getSortFields();
 					<div class="btn-group">
 						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange); ?>
 						<?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, $canFeature); ?>
+						<?php echo JHtml::_('mamsadministrator.drilldowns',$i, $canEditDrilldowns); ?>
 						<?php
 							// Create dropdown items
 							if ($canChange) :
@@ -206,24 +205,18 @@ $sortFields = $this->getSortFields();
 							<a href="<?php echo JRoute::_('index.php?option=com_mams&task=article.edit&art_id=' . $item->art_id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
 							<?php echo $this->escape($item->art_title); ?></a>
 						<?php else : ?>
-							<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->art_title); ?></span>
+							<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->art_alias)); ?>"><?php echo $this->escape($item->art_title); ?></span>
 						<?php endif; ?>
 					
-						<div class="small">Section: <?php echo $item->sec_name;?></div>
+						<div class="small">Alias: <?php echo $item->art_alias; ?></div>
 					</div>
 					
 				</td>
+				<td class="small"><?php echo $item->sec_name; ?></td>
 				<td class="small"><?php echo $item->art_publish_up; ?> - <?php echo $item->art_publish_down; ?></td>
-				<td class="small"><?php 
-					if ($canEditDrilldowns) :
-						echo '<button class="btn btn-small" type="button" onclick="return listItemTask(\'cb'.$i.'\',\'articles.drilldowns\')">Drill Downs';
-						echo '</button>';
-					endif;
-				?></td>
 				<td class="small hidden-phone"><?php echo $item->art_added.'<br />'.$item->adder; ?></td>
 				<td class="small hidden-phone"><?php echo $item->art_modified.'<br />'.$item->modifier; ?></td>
-				<td class="small"><?php echo $item->feataccess_level; ?></td>
-				<td class="small"><?php echo $item->access_level; ?></td>
+				<td class="small"><?php echo $item->access_level.'<br />'.$item->feataccess_level; ?></td>
 				<td class="small"><?php echo $item->art_hits; ?></td>
 				<td><?php echo $item->art_id; ?></td>
 				

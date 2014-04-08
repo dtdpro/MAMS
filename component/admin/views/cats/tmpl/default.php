@@ -151,6 +151,7 @@ $db =& JFactory::getDBO();
 					<div class="pull-left">
 						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=cat.edit&cat_id='.(int) $item->cat_id); ?>">
 						<?php echo $this->escape($item->cat_title); ?></a>
+						<div class="small">Alias: <?php echo $item->cat_alias; ?></div>
 					</div>
 				</td>
 				<td class="small"><?php echo $item->cat_added; ?></td>
