@@ -14,7 +14,7 @@ class MAMSViewArticles extends JViewLegacy
 	
 	function display($tpl = null) 
 	{
-		$this->state		= $this->get('State');
+		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		

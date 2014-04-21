@@ -131,8 +131,10 @@ class MAMSViewArtList extends JViewLegacy
 		if ($this->catinfo) {
 			if (count($this->catinfo) == 1) $this->document->setTitle($this->catinfo[0]->cat_title);
 			$artids=$model->getCatArts($cat);
-			$this->articles=$model->getArticles($artids);
-			$this->pagination = $this->get('Pagination');
+			if (count($artids) > 0) {
+				$this->articles=$model->getArticles($artids);
+				$this->pagination = $this->get('Pagination');
+			}
 		}
 	}
 	
