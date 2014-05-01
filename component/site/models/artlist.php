@@ -48,6 +48,7 @@ class MAMSModelArtList extends JModelList
 		if (count($this->secid)) $query->where('a.art_sec IN ('.implode(",",$this->secid).')');
 		$query->where('a.state >= 1');
 		$query->where('a.access IN ('.implode(",",$this->alvls).')');
+		if ($this->params->get('restrict_feat',0)) $query->where('a.feataccess IN ('.implode(",",$this->alvls).')');
 		if (!in_array($cfg->ovgroup,$this->alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
 		switch ($this->params->get("orderby","pubdsc")) {
 			case "titasc": $query->order('a.art_title ASC'); break;

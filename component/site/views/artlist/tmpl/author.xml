@@ -18,6 +18,10 @@
 				<option value="blog">Blog List</option>
 				<option value="gal">Gallery</option>
 			</field>
+			<field name="restrict_feat" type="radio" label="COM_MAMS_FIELD_ONLY_FEAT_LABEL" description="COM_MAMS_FIELD_ONLY_FEAT_DESC" class="btn-group" default="0">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
 			<field name="show_bio" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_BIO_DESC" label="COM_MAMS_FIELD_SHOW_BIO_LABEL" default="0">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>

@@ -15,6 +15,10 @@
 				<option value="blog">Blog List</option>
 				<option value="gal">Gallery</option>
 			</field>
+			<field name="restrict_feat" type="radio" label="COM_MAMS_FIELD_ONLY_FEAT_LABEL" description="COM_MAMS_FIELD_ONLY_FEAT_DESC" class="btn-group" default="0">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
 			<field name="items_page" type="text" description="COM_MAMS_FIELD_ITEMSPERPAGE_DESC" label="COM_MAMS_FIELD_ITEMSPERPAGE_LABEL" default="10" />
 			<field name="show_catimage" type="radio" label="COM_MAMS_FIELD_SHOW_CATIMAGE_LABEL" description="COM_MAMS_FIELD_SHOW_CATIMAGE_DESC" class="btn-group" default="0">
 				<option value="0">JHIDE</option>
