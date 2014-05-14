@@ -345,7 +345,7 @@ class MAMSModelArtList extends JModelList
 		$query->from('#__mams_cats AS c');
 		$query->where('c.published >= 1');
 		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		switch ($this->params->get("orderby","titasc")) {
+		switch ($this->params->get("orderlistby","titasc")) {
 			case "titasc": $query->order('cat_title ASC'); break;
 			case "titdsc": $query->order('cat_title DESC'); break;
 			default: $query->order('cat_title ASC'); break;
@@ -385,7 +385,7 @@ class MAMSModelArtList extends JModelList
 		$query->where('c.sec_type="article"');
 		$query->where('c.published >= 1');
 		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		switch ($this->params->get("orderby","titasc")) {
+		switch ($this->params->get("orderlistby","titasc")) {
 			case "titasc": $query->order('sec_name ASC'); break;
 			case "titdsc": $query->order('sec_name DESC'); break;
 			default: $query->order('sec_name ASC'); break;
