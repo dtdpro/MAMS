@@ -179,6 +179,7 @@
 		/>
 		
 		<field name="cats" type="SelectCats" description="COM_MAMS_ARTICLE_FIELD_CAT_DESC" label="COM_MAMS_ARTICLE_FIELD_CAT_LABEL" required="false" multiple="true" class="inputbox span12 small" />
+		<field name="authors" type="SelectAuthors" description="COM_MAMS_ARTICLE_FIELD_AUTHOR_DESC" label="COM_MAMS_ARTICLE_FIELD_AUTHOR_LABEL" required="false" multiple="true" class="inputbox span12 small" />
 				
 	</fieldset>
 	<fields name="metadata">

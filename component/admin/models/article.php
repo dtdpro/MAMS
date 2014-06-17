@@ -143,14 +143,15 @@ class MAMSModelArticle extends JModelAdmin
 		//Tags
 		if (!empty($item->art_id))
 		{
+			//Tags
 			$item->tags = new JHelperTags;
 			$item->tags->getTagIds($item->art_id, 'com_mams.article');
-		}
-		
-		//Cats
-		if (!empty($item->art_id))
-		{
+				
+			//Cats
 			$item->cats = $this->getCats($item->art_id);
+
+			//Authors
+			$item->authors = $this->getAuthors($item->art_id);
 		}
 		
 	
@@ -240,6 +241,7 @@ class MAMSModelArticle extends JModelAdmin
 		}
 		$this->setState($this->getName() . '.new', $isNew);
 		
+		//Cats
 		if ((!empty($data['cats']) && $data['cats'][0] != ''))
 		{
 			$actable=$this->getTable("Artcat","MAMSTable");
@@ -257,6 +259,28 @@ class MAMSModelArticle extends JModelAdmin
 				$actable->published=1;
 				$actable->ordering=$order;
 				$actable->store();
+				$order++;
+			}
+		}
+		
+		//Authors
+		if ((!empty($data['authors']) && $data['authors'][0] != ''))
+		{
+			$aatable=$this->getTable("Artauth","MAMSTable");
+			$order=0;
+			$query	= $db->getQuery(true);
+			$query->delete();
+			$query->from('#__mams_artauth');
+			$query->where('aa_art = '.$table->art_id);
+			$db->setQuery((string)$query);
+			$db->query();
+			foreach ($data['authors'] as $auth) {
+				$aatable->aa_id=0;
+				$aatable->aa_auth=$auth;
+				$aatable->aa_art=$table->art_id;
+				$aatable->published=1;
+				$aatable->ordering=$order;
+				$aatable->store();
 				$order++;
 			}
 		}
@@ -539,6 +563,17 @@ class MAMSModelArticle extends JModelAdmin
 		$query->select('a.ac_cat');
 		$query->from('#__mams_artcat as a');
 		$query->where('a.ac_art = '.$art_id);
+		$query->order('a.ordering');
+		$db->setQuery($query);
+		return $db->loadColumn();
+	}
+	
+	protected function getAuthors($art_id) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('a.aa_auth');
+		$query->from('#__mams_artauth as a');
+		$query->where('a.aa_art = '.$art_id);
 		$query->order('a.ordering');
 		$db->setQuery($query);
 		return $db->loadColumn();
