@@ -109,6 +109,13 @@ class MAMSModelStats extends JModelList
 			$q->where('s.mt_type = "'.$filter_type.'"');
 		}
 		
+		if ($filter_type == 'media') {
+			$q->select('m.med_inttitle as item_title');
+			$q->select('"Media Played" as sec_title');
+			$q->join('LEFT', '#__mams_media as m ON s.mt_item = m.med_id');
+			$q->where('s.mt_type = "'.$filter_type.'"');
+		}
+		
 		
 		
 		$q->select('u.name as users_name, u.email as users_email, u.username as users_username');

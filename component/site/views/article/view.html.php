@@ -73,7 +73,7 @@ class MAMSViewArticle extends JViewLegacy
 			
 			if (in_array($this->article->access,$user->getAuthorisedViewLevels())) {
 				$this->document->setTitle($this->article->art_title);
-				MAMSHelper::trackViewed($art,'article');
+				$this->article->track_id = MAMSHelper::trackViewed($art,'article');
 				if ($this->params->get('show_related',1)) {
 					$this->related=$model->getRelated($art,$this->article->cats,$this->article->auts,$this->article->sec_id);
 				}

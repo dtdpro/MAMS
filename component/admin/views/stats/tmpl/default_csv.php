@@ -28,6 +28,7 @@ foreach ($items as $row)
 		case "autlist": $contents .= "Author Article List"; break;
 		case "authors": $contents .= "Authors List"; break;
 		case "dload": $contents .= "Download"; break;	
+		case "media": $contents .= "Media"; break;	
 	}
 	$contents .=  '",';
 	$contents .=  '"'.$row->mt_time.'",'; 

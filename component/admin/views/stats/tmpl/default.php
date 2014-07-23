@@ -79,6 +79,7 @@ JHtml::_('formbehavior.chosen', 'select');
 					case "autlist": echo "Author Article List"; break;
 					case "authors": echo "Authors List"; break;
 					case "dload": echo "Download"; break;	
+					case "media": echo "Media"; break;	
 				}
 			
 			?></td>

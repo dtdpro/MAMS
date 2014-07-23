@@ -154,7 +154,9 @@ if ($this->article->fields) {
 						if ($media[0]->med_autoplay) echo ' autoplay="autoplay"';
 						echo '></video>';
 						echo '<script type="text/javascript">';
-						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."',{enablePluginSmoothing: true});";
+						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."',{features: ['playpause','current','progress','duration','volume','fullscreen','mamsanalytics'";
+						if ($config->gapro) echo ",'mamsgoogleanalytics'";
+						echo "], enablePluginSmoothing: true, trackId: ".$this->article->track_id.", videoId: ".$media[0]->med_id.", videoExtTitle: '".addslashes($media[0]->med_exttitle)."', videoIntTitle: '".addslashes($media[0]->med_inttitle)."'});";
 						echo '</script>';
 						if (count($media) > 1) {
 							?>
@@ -167,7 +169,12 @@ if ($this->article->fields) {
 									}); <?php 
 									foreach ($media as $m) {
 										echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".pause();fmplayer_".str_replace("-","_",$f->field_name).".setSrc('http://".$config->vid5_url.'/'.$m->med_file."');fmplayer_".str_replace("-","_",$f->field_name).".play();";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".pause();";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".setSrc('http://".$config->vid5_url.'/'.$m->med_file."');";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".play();";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoId = ".$m->med_id.";";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoExtTitle = ".addslashes($m->med_exttitle).";";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoIntTitle = ".addslashes($m->med_inttitle).";";
 										echo '}); ';
 									}?>
 								});
@@ -187,8 +194,12 @@ if ($this->article->fields) {
 						if (!$config->player_fixed) echo 'style="width: 100%;" ';
 						echo 'src="'.JURI::base( true ).'/'.$media[0]->med_file.'" type="audio/mp3" controls="controls"></audio>';
 						echo '<script type="text/javascript">';
-						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."');";
+						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."',{features: ['playpause','current','progress','duration','volume','mamsanalytics'";
+						if ($config->gapro) echo ",'mamsgoogleanalytics'";
+						echo "], trackId: ".$this->article->track_id.", videoId: ".$media[0]->med_id.", videoExtTitle: '".addslashes($media[0]->med_exttitle)."', videoIntTitle: '".addslashes($media[0]->med_inttitle)."'});";
 						echo '</script>';
+						
+						
 						if (count($media) > 1) {
 							?>
 								<script type="text/javascript">

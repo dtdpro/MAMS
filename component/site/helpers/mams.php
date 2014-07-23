@@ -20,7 +20,7 @@ class MAMSHelper {
 		$q->columns(array($db->quoteName('mt_item'),$db->quoteName('mt_type'),$db->quoteName('mt_user'),$db->quoteName('mt_session'),$db->quoteName('mt_ipaddr')));
 		$q->values('"'.$item.'","'.$type.'","'.$userid.'","'.$sessionid.'","'.$_SERVER['REMOTE_ADDR'].'"');
 		$db->setQuery($q); 
-		if ($db->query()) return 1;
+		if ($db->query()) return $db->insertid();
 		else return 0;
 	}
 	

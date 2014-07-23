@@ -24,6 +24,8 @@ $doc = &JFactory::getDocument();
 //jQuery
 JHtml::_('jquery.framework');
 $doc->addScript('media/com_mams/mediaelementjs/mediaelement-and-player.js');
+$doc->addScript('media/com_mams/scripts/mams.js');
+$doc->addScriptDeclaration("var mamsuri = '".JURI::base( true )."';");
 if (JFactory::getApplication()->input->get('format') != "feed") {
 	$doc->addStyleSheet('media/com_mams/mediaelementjs/mediaelementplayer.css');
 	if ($cfg->compcss) $doc->addStyleSheet('components/com_mams/mams.css');
