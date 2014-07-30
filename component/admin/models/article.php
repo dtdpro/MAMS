@@ -575,6 +575,7 @@ class MAMSModelArticle extends JModelAdmin
 		$query->select('a.aa_auth');
 		$query->from('#__mams_artauth as a');
 		$query->where('a.aa_art = '.$art_id);
+		$query->where('a.aa_field = 5');
 		$query->order('a.ordering');
 		$db->setQuery($query);
 		return $db->loadColumn();
