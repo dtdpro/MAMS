@@ -272,6 +272,7 @@ class MAMSModelArticle extends JModelAdmin
 			$query->delete();
 			$query->from('#__mams_artauth');
 			$query->where('aa_art = '.$table->art_id);
+			$query->where('aa_field = 5');
 			$db->setQuery((string)$query);
 			$db->query();
 			foreach ($data['authors'] as $auth) {
