@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="finder" method="upgrade">
+	<name>plg_finder_mams</name>
+	<author>DTD Productions</author>
+	<creationDate>May 2013</creationDate>
+	<copyright>(C) 2014 DtD Productions (C) 2005 - 2014 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
+	<authorEmail>info@dtdpro.com</authorEmail>
+	<authorUrl>www.dtdpro.com</authorUrl>
+	<version>1.0.0</version>
+	<description>PLG_FINDER_MAMS_XML_DESCRIPTION</description>
+	<files>
+		<file plugin="mams">mams.php</file>
+    	<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_finder_mams.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_finder_mams.sys.ini</language>
+	</languages>
+</extension>

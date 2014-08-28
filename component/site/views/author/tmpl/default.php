@@ -1,5 +1,8 @@
 <?php
 defined('_JEXEC') or die();
+if ($this->params->get('divwrapper',1)) {
+	echo '<div id="system" class="'.$this->params->get('wrapperclass','uk-article').'">';
+}
 $cfg = MAMSHelper::getConfig();
 //Title
 echo '<h2 class="title uk-article-title">';
@@ -86,4 +89,4 @@ if ($this->published) {
 echo '<div class="mams-author-modified">';
 echo 'Last modified: '.date("F j, Y",strtotime($this->author->auth_modified));
 echo '</div>';
-
+if ($this->params->get('divwrapper',1)) { echo '</div>'; }

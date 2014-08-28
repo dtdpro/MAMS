@@ -1,5 +1,8 @@
 <?php
 defined('_JEXEC') or die();
+if ($this->params->get('divwrapper',1)) {
+	echo '<div id="system" class="'.$this->params->get('wrapperclass','uk-article').'">';
+}
 $first=true;
 $app = JFactory::getApplication();
 if (count($this->secinfo) == 1) {
@@ -53,3 +56,4 @@ foreach ($this->cats as $c) {
 	echo '</div></div>';
 }
 echo '</div>';
+if ($this->params->get('divwrapper',1)) { echo '</div>'; }

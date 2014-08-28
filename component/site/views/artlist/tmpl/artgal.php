@@ -1,5 +1,6 @@
 <?php
 defined('_JEXEC') or die();
+
 echo '<div class="mams-artgal">';
 foreach ($this->articles as $a) {
 	echo '<div class="mams-artgal-article">';

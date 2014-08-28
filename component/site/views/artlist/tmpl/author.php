@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die();
-
+if ($this->params->get('divwrapper',1)) {
+	echo '<div id="system" class="'.$this->params->get('wrapperclass','uk-article').'">';
+}
 $app = JFactory::getApplication();
 if (count($this->autinfo) == 1) {
 	echo '<h2 class="title uk-article-title">';
@@ -16,3 +18,5 @@ if (count($this->autinfo) == 1) {
 	echo $this->params->get("page_title",$app->getMenu()->getActive()->title);
 	echo '</h2>';
 }
+if ($this->params->get('divwrapper',1)) { echo '</div>'; }
+

@@ -1,5 +1,8 @@
 <?php
 defined('_JEXEC') or die();
+if ($this->params->get('divwrapper',1)) {
+	echo '<div id="system" class="'.$this->params->get('wrapperclass','uk-article').'">';
+}
 $config=MAMSHelper::getConfig();
 $user=JFactory::getUser();
 
@@ -346,3 +349,4 @@ if ($this->article->fields) {
 echo '<div class="mams-article-modified">';
 echo 'Last modified: '.date("F j, Y",strtotime($this->article->art_modified));
 echo '</div>';
+if ($this->params->get('divwrapper',1)) { echo '</div>'; }
