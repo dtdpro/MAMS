@@ -11,7 +11,7 @@ abstract class MAMSHelper
 			JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_MAMS'), 'index.php?option=com_mams', $submenu == 'mams');
 			JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTICLES'),'index.php?option=com_mams&view=articles',$submenu == 'articles');
 			JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_SECS'),'index.php?option=com_mams&view=secs',$submenu == 'secs');
-			if ($user->authorise("core.drilldowns","com_mams")) {
+			if ($user->authorise("core.edit.drilldowns","com_mams")) {
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_CATS'),'index.php?option=com_mams&view=cats',$submenu == 'cats');
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_AUTHS'),'index.php?option=com_mams&view=auths',$submenu == 'auths');
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_LINKS'),'index.php?option=com_mams&view=links',$submenu == 'links');
@@ -20,7 +20,7 @@ abstract class MAMSHelper
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_IMAGES'),'index.php?option=com_mams&view=images&extension=com_mams',$submenu == 'images');
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_FEATMEDIAS'),'index.php?option=com_mams&view=featuredmedia',$submenu == 'featuredmedia');
 			}
-			if ($user->authorise("core.featured","com_mams")) {
+			if ($user->authorise("core.edit.featured","com_mams")) {
 				JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_FEATARTS'),'index.php?option=com_mams&view=featuredarticle',$submenu == 'featuredarticle');
 			}
 			if ($user->authorise("core.admin","com_mams")) {
