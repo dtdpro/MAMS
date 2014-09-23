@@ -237,18 +237,6 @@ CREATE TABLE IF NOT EXISTS `#__mams_mediafeat` (
   PRIMARY KEY (`mf_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__mams_mediatrack` (
-  `mt_id` int(11) NOT NULL AUTO_INCREMENT,
-  `mt_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `mt_user` int(11) NOT NULL,
-  `mt_session` varchar(255) NOT NULL,
-  `mt_item` int(11) NOT NULL,
-  `mt_seconds` int(11) NOT NULL,
-  `mt_percentage` int(11) NOT NULL,
-  `mt_ipaddr` varchar(15) NOT NULL,
-  PRIMARY KEY (`mt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `#__mams_secs` (
   `sec_id` int(11) NOT NULL AUTO_INCREMENT,
   `sec_type` enum('author','article','image') NOT NULL DEFAULT 'article',
@@ -271,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_track` (
   `mt_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `mt_user` int(11) NOT NULL,
   `mt_item` int(11) NOT NULL,
-  `mt_type` enum('author','article','authors','dload') NOT NULL,
+  `mt_type` varchar(50) NOT NULL,
   `mt_session` varchar(60) NOT NULL,
   `mt_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `mt_ipaddr` varchar(15) NOT NULL,
