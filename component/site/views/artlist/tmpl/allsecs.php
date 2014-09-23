@@ -7,4 +7,3 @@ $app = JFactory::getApplication();
 echo '<h2 class="title uk-article-title">';
 echo $this->params->get("page_title",$app->getMenu()->getActive()->title);
 echo '</h2>';
-if ($this->params->get('divwrapper',1)) { echo '</div>'; }

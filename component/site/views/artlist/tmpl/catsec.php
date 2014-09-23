@@ -17,4 +17,3 @@ if (count($this->catinfo) == 1) {
 	echo $this->params->get("page_title",$app->getMenu()->getActive()->title);
 	echo '</h2>';
 }
-if ($this->params->get('divwrapper',1)) { echo '</div>'; }

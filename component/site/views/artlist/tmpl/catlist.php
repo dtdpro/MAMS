@@ -27,4 +27,3 @@ foreach ($this->catlist as $c) {
 	$count = $count + 1;
 }
 echo '</div></div></div>';
-if ($this->params->get('divwrapper',1)) { echo '</div>'; }

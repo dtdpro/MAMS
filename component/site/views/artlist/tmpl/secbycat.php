@@ -56,4 +56,3 @@ foreach ($this->cats as $c) {
 	echo '</div></div>';
 }
 echo '</div>';
-if ($this->params->get('divwrapper',1)) { echo '</div>'; }

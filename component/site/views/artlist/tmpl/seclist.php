@@ -27,4 +27,3 @@ foreach ($this->seclist as $s) {
 	$count = $count + 1;
 }
 echo '</div></div></div>';
-if ($this->params->get('divwrapper',1)) { echo '</div>'; }

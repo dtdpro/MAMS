@@ -66,6 +66,8 @@ class MAMSViewArtList extends JViewLegacy
 			else $this->setLayout('artgal');
 			parent::display($tpl);
 		}
+
+		if ($this->params->get('divwrapper',1)) { echo '</div>'; }
 	}
 	
 	protected function listSecs() {
