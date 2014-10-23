@@ -242,16 +242,16 @@ class MAMSModelArticle extends JModelAdmin
 		$this->setState($this->getName() . '.new', $isNew);
 		
 		//Cats
+		$query	= $db->getQuery(true);
+		$query->delete();
+		$query->from('#__mams_artcat');
+		$query->where('ac_art = '.$table->art_id);
+		$db->setQuery((string)$query);
+		$db->query();
 		if ((!empty($data['cats']) && $data['cats'][0] != ''))
 		{
 			$actable=$this->getTable("Artcat","MAMSTable");
 			$order=0;
-			$query	= $db->getQuery(true);
-			$query->delete();
-			$query->from('#__mams_artcat');
-			$query->where('ac_art = '.$table->art_id);
-			$db->setQuery((string)$query);
-			$db->query();
 			foreach ($data['cats'] as $cat) {
 				$actable->ac_id=0;
 				$actable->ac_cat=$cat;
@@ -264,17 +264,17 @@ class MAMSModelArticle extends JModelAdmin
 		}
 		
 		//Authors
+		$query	= $db->getQuery(true);
+		$query->delete();
+		$query->from('#__mams_artauth');
+		$query->where('aa_art = '.$table->art_id);
+		$query->where('aa_field = 5');
+		$db->setQuery((string)$query);
+		$db->query();
 		if ((!empty($data['authors']) && $data['authors'][0] != ''))
 		{
 			$aatable=$this->getTable("Artauth","MAMSTable");
 			$order=0;
-			$query	= $db->getQuery(true);
-			$query->delete();
-			$query->from('#__mams_artauth');
-			$query->where('aa_art = '.$table->art_id);
-			$query->where('aa_field = 5');
-			$db->setQuery((string)$query);
-			$db->query();
 			foreach ($data['authors'] as $auth) {
 				$aatable->aa_id=0;
 				$aatable->aa_auth=$auth;
