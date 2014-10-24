@@ -179,4 +179,9 @@ foreach ($articles as $a) {
 	echo '</div>';
 	echo '</div>';
 }
+if ($params->get('show_viewall',0)) {
+	echo '<div class="mams-featmod-viewall uk-text-center">';
+	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$catinfo->cat_id.":".$catinfo->cat_alias).'" class="uk-button">'.$params->get('text_viewall',"View All").'</a>';
+	echo '</div>';
+}
 echo '</div>';
