@@ -93,7 +93,7 @@ class MAMSModelAuths extends JModelList
 				$query->where('a.auth_id = '.(int) substr($search, 3));
 			} else {
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
-				$query->where('(a.auth_name LIKE '.$search.' OR a.auth_alias LIKE '.$search.')');
+				$query->where('(a.auth_name LIKE '.$search.' OR a.auth_alias LIKE '.$search.' OR a.auth_lname LIKE '.$search.' OR a.auth_fname LIKE '.$search.')');
 			}
 		}
 		
