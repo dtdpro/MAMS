@@ -176,8 +176,8 @@ if ($this->article->fields) {
 									    echo "fmplayer_".str_replace("-","_",$f->field_name).".setSrc('http://".$config->vid5_url.'/'.$m->med_file."');";
 									    echo "fmplayer_".str_replace("-","_",$f->field_name).".play();";
 									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoId = ".$m->med_id.";";
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoExtTitle = ".addslashes($m->med_exttitle).";";
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoIntTitle = ".addslashes($m->med_inttitle).";";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoExtTitle = '".addslashes($m->med_exttitle)."';";
+									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoIntTitle = '".addslashes($m->med_inttitle)."';";
 										echo '}); ';
 									}?>
 								});
