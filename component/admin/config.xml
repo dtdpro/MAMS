@@ -57,6 +57,42 @@
 			<option value="titdsc">COM_MAMS_ORDER_TITDSC</option>
 		</field>
 	</fieldset>
+    <fieldset name="authpages" label="COM_MAMS_CONFIG_AUTHORS_LABEL" description="COM_MAMS_CONFIG_AUTHORS_DESC">
+        <field name="show_authlink" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHLINK_DESC" label="COM_MAMS_FIELD_SHOW_AUTHLINK_LABEL" default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="show_cred" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHCRED_DESC" label="COM_MAMS_FIELD_SHOW_AUTHCRED_LABEL" default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="show_aimg" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHIMG_DESC" label="COM_MAMS_FIELD_SHOW_AUTHIMG_LABEL" default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="show_desc" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHDESC_DESC" label="COM_MAMS_FIELD_SHOW_AUTHDESC_LABEL" default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="show_readmore" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_READMORE_DESC" label="COM_MAMS_FIELD_SHOW_READMORE_LABEL" default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="readmore_text" type="text" description="COM_MAMS_FIELD_READMORE_DESC" label="COM_MAMS_FIELD_READMORE_LABEL" default="Read More" />
+        <field name="sep01" type="spacer" hr="true" />
+        <field name="show_pubed" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBED_DESC" label="COM_MAMS_FIELD_SHOW_PUBED_LABEL" default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="show_pubed_thumb" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBED_THUMB_DESC" label="COM_MAMS_FIELD_SHOW_PUBED_THUMB_LABEL" default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="show_pubdate" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBDATE_DESC" label="COM_MAMS_FIELD_SHOW_PUBDATE_LABEL" default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+    </fieldset>
 	<fieldset name="video" label="COM_MAMS_CONFIG_VIDEO_LABEL" description="COM_MAMS_CONFIG_VIDEO_DESC">
 		<field name="vid_w" type="text" label="COM_MAMS_CONFIG_FIELD_VIDW_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />
 		<field name="vid_h" type="text" label="COM_MAMS_CONFIG_FIELD_VIDH_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDH_DESC" size="5" class="inputbox" required="false" integer="true" default="432" />
