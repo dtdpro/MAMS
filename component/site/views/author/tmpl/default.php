@@ -34,7 +34,7 @@ if ($this->published) {
 			if ($r->cats) $rartlink .= "&catid=".$r->cats[0]->cat_id;
 			echo '<div class="mams-author-related-link">';
 			//Thumb
-			if ($r->art_thumb) {
+			if ($r->art_thumb && $this->params->get('show_pubed_thumb',1)) {
 				echo '<div class="mams-author-related-thumb">';
 				echo '<img class="mams-author-related-artthumb"';
 				echo ' src="'.$r->art_thumb.'" ';

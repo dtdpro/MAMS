@@ -17,6 +17,10 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+            <field name="show_pubed_thumb" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBED_THUMB_DESC" label="COM_MAMS_FIELD_SHOW_PUBED_THUMB_LABEL" default="1">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
 			<field name="show_pubdate" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBDATE_DESC" label="COM_MAMS_FIELD_SHOW_PUBDATE_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>

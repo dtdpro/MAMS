@@ -5,7 +5,7 @@ jimport( 'joomla.application.component.model' );
 
 class MAMSModelAuthor extends JModelLegacy
 {
-	function getAuthor($autid) {
+    function getAuthor($autid) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
@@ -25,6 +25,9 @@ class MAMSModelAuthor extends JModelLegacy
 		$db =& JFactory::getDBO();
 		$qsec = $db->getQuery(true);
 		$user = JFactory::getUser();
+
+        $app = JFactory::getApplication('site');
+        $this->params = $app->getParams();
 		
 		$qsec->select('sec_id, sec_name, sec_alias');
 		$qsec->from('#__mams_secs');
@@ -41,7 +44,29 @@ class MAMSModelAuthor extends JModelLegacy
 			$query->where('a.auth_sec = '.$s->sec_id);
 			$query->where('a.published >= 1');
 			$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-			$query->order('a.ordering');
+            switch ($this->params->get("orderby_authlist","orderasc")) {
+                case "orderasc":
+                    $query->order('a.ordering ASC');
+                    break;
+                case "orderdesc":
+                    $query->order('a.ordering DESC');
+                    break;
+                case "fnameasc":
+                    $query->order('a.auth_fname ASC');
+                    break;
+                case "fnamedesc":
+                    $query->order('a.auth_fname DESC');
+                    break;
+                case "lnameasc":
+                    $query->order('a.auth_lname ASC');
+                    break;
+                case "lnamedesc":
+                    $query->order('a.auth_lname DESC');
+                    break;
+                default:
+                    $query->order('a.ordering ASC');
+                    break;
+            }
 			$db->setQuery($query);
 			$s->authors = $db->loadObjectList();
 			foreach ($s->authors as &$i) {

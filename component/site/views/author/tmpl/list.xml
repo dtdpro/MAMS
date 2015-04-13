@@ -11,6 +11,14 @@
 	
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+            <field name="orderby_authlist" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
+                <option value="orderasc">Order, Ascending</option>
+                <option value="orderdesc">Order, Descending</option>
+                <option value="fnameasc">First Name, Ascending</option>
+                <option value="fnamedesc">First Name, Descending</option>
+                <option value="lnameasc">Last Name, Ascending</option>
+                <option value="lnamedesc">Last Name, Descending</option>
+            </field>
 			<field name="show_authlink" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHLINK_DESC" label="COM_MAMS_FIELD_SHOW_AUTHLINK_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -37,6 +45,10 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+            <field name="show_pubed_thumb" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBED_THUMB_DESC" label="COM_MAMS_FIELD_SHOW_PUBED_THUMB_LABEL" default="1">
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
 			<field name="show_pubdate" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBDATE_DESC" label="COM_MAMS_FIELD_SHOW_PUBDATE_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
