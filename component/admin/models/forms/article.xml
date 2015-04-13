@@ -74,6 +74,7 @@
 			description="COM_MAMS_ARTICLE_FIELD_PUBLISH_UP_DESC"
 			format="%Y-%m-%d"
 			required="false"
+            filter="NONE"
 		/>
 		<field
 			name="art_publish_down" 
@@ -82,6 +83,7 @@
 			description="COM_MAMS_ARTICLE_FIELD_PUBLISH_DOWN_DESC"
 			format="%Y-%m-%d"
 			required="false"
+            filter="NONE"
 		/>
 		<field
 			name="art_alias"
