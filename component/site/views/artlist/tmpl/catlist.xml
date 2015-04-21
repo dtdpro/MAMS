@@ -22,6 +22,8 @@
 			<field name="orderlistby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
 				<option value="titasc">COM_MAMS_ORDER_TITASC</option>
 				<option value="titdsc">COM_MAMS_ORDER_TITDSC</option>
+                <option value="orderasc">COM_MAMS_ORDER_ORDERINGASC</option>
+                <option value="orderdsc">COM_MAMS_ORDER_ORDERINGDSC</option>
 			</field>
 		</fieldset>
 	</fields>

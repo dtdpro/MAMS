@@ -45,7 +45,7 @@ class MAMSTableAuth extends JTable
 			return false;
 		}
 		
-		$this->auth_name = $this->auth_fname.(($this->auth_mi) ? " ".$this->auth_mi : "")." ".$this->auth_lname.(($this->auth_titles) ? ", ".$this->auth_titles : "");
+		$this->auth_name = trim($this->auth_fname.(($this->auth_mi) ? " ".$this->auth_mi : "")." ".$this->auth_lname.(($this->auth_titles) ? ", ".$this->auth_titles : ""));
 		
 		// Attempt to store the user data.	
 		$this->tagsHelper->preStoreProcess($this);

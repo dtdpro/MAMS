@@ -1,0 +1,1 @@
+ALTER TABLE `#__mams_cats` ADD `ordering` INT NOT NULL DEFAULT '1' AFTER `access`;

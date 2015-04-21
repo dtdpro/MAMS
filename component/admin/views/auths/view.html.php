@@ -39,6 +39,7 @@ class MAMSViewAuths extends JViewLegacy
 	protected function addToolBar() 
 	{
 		$state	= $this->get('State');
+        $bar = JToolBar::getInstance('toolbar');
 		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_AUTHS'), 'mams');
 		JToolBarHelper::addNew('auth.add', 'JTOOLBAR_NEW');
 		JToolBarHelper::editList('auth.edit', 'JTOOLBAR_EDIT');
@@ -52,6 +53,12 @@ class MAMSViewAuths extends JViewLegacy
 		} else  {
 			JToolBarHelper::trash('auths.trash');
 		}
+        //Batch Button
+        JHtml::_('bootstrap.modal', 'collapseModal');
+        $title = JText::_('JTOOLBAR_BATCH');
+        $layout = new JLayoutFile('joomla.toolbar.batch');
+        $dhtml = $layout->render(array('title' => $title));
+        $bar->appendButton('Custom', $dhtml, 'batch');
 		
 		JHtmlSidebar::setAction('index.php?option=com_mams&view=auths');
 		

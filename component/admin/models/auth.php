@@ -122,5 +122,82 @@ class MAMSModelAuth extends JModelAdmin
 		$condition[] = 'auth_sec = '.(int) $table->auth_sec;
 		return $condition;
 	}
+
+    public function batch($commands, $pks, $contexts)
+    {
+        // Sanitize user ids.
+        $pks = array_unique($pks);
+        JArrayHelper::toInteger($pks);
+
+        // Remove any values of zero.
+        if (array_search(0, $pks, true))
+        {
+            unset($pks[array_search(0, $pks, true)]);
+        }
+
+        if (empty($pks))
+        {
+            $this->setError(JText::_('JGLOBAL_NO_ITEM_SELECTED'));
+            return false;
+        }
+
+        $done = false;
+
+        if (!empty($commands['assetgroup_id']))
+        {
+            if (!$this->batchAccess($commands['assetgroup_id'], $pks, $contexts))
+            {
+                return false;
+            }
+
+            $done = true;
+        }
+
+        if ($commands['featsection_id'] != 0)
+        {
+            if (!$this->batchSection($commands['featsection_id'], $pks, $contexts))
+            {
+                return false;
+            }
+
+            $done = true;
+        }
+
+        if (!$done)
+        {
+            $this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+            return false;
+        }
+
+        // Clear the cache
+        $this->cleanCache();
+
+        return true;
+    }
+
+     protected function batchSection($value, $pks, $contexts)
+    {
+        // Set the variables
+        $user = JFactory::getUser();
+        $table = $this->getTable();
+
+        foreach ($pks as $pk) {
+            if ($user->authorise('core.edit', $contexts[$pk]))	{
+                $table->reset();
+                $table->load($pk);
+                $table->auth_sec = (int) $value;
+
+                if (!$table->store()) { $this->setError($table->getError()); return false; }
+            } else {
+                $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+                return false;
+            }
+        }
+
+        // Clean the cache
+        $this->cleanCache();
+
+        return true;
+    }
 	
 }

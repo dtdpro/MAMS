@@ -10,7 +10,7 @@ $params = $this->form->getFieldsets('params');
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'sec.cancel' || document.formvalidator.isValid(document.id('mams-form'))) {
+		if (task == 'cat.cancel' || document.formvalidator.isValid(document.id('mams-form'))) {
 			Joomla.submitform(task, document.getElementById('mams-form'));
 		}
 	}

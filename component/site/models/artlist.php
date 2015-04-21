@@ -270,7 +270,13 @@ class MAMSModelArtList extends JModelList
 		$query->from("#__mams_cats");
 		$query->where('cat_id IN ('.implode(",",$catids).')');
 		$query->where('access IN ('.implode(",",$this->alvls).')');
-		$query->order("cat_title ASC");
+        switch ($this->params->get("cat_orderby","titasc")) {
+            case "titasc": $query->order('cat_title ASC'); break;
+            case "titdsc": $query->order('cat_title DESC'); break;
+            case "orderasc": $query->order('ordering ASC'); break;
+            case "orderdsc": $query->order('ordering ASC'); break;
+            default: $query->order('cat_title ASC'); break;
+        }
 		$db->setQuery($query);
 		$items=$db->loadObjectList();
 
@@ -348,6 +354,8 @@ class MAMSModelArtList extends JModelList
 		switch ($this->params->get("orderlistby","titasc")) {
 			case "titasc": $query->order('cat_title ASC'); break;
 			case "titdsc": $query->order('cat_title DESC'); break;
+            case "orderasc": $query->order('ordering ASC'); break;
+            case "orderdsc": $query->order('ordering ASC'); break;
 			default: $query->order('cat_title ASC'); break;
 		}
 		if ($this->params->get('only_feat',0)) {

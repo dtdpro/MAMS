@@ -1,4 +1,4 @@
-<?php
+    <?php
 defined('_JEXEC') or die();
 if ($this->params->get('divwrapper',1)) {
 	echo '<div id="system" class="'.$this->params->get('wrapperclass','uk-article').'">';
@@ -32,8 +32,10 @@ if ($this->article->fields) {
 	foreach ($this->article->fields as $f) {
 		if ($f->field_type == "related" && (!$this->params->get('show_related',1) || !$this->related)) { continue; }
 		$fn = $f->field_name;
-		$gns = "show_".$f->group_name; 
-		if ($f->group_name != $curgroup && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
+		$gns = "show_".$f->group_name;
+
+        // Start Group and/or end previous group
+        if ($f->group_name != $curgroup && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
 			if (!$first) { echo '<div style="clear:both"></div>'; echo '</div>';  }
 			else { $first=false; }
 			echo '<div class="mams-article-'.$f->group_name.'">';
@@ -45,22 +47,98 @@ if ($this->article->fields) {
 				echo '</div>';
 			}
 		}
-		
-		echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'">';
-		echo '<a name="'.$f->group_name.'-'.$f->field_name.'"></a>';
-		if ($f->params->show_title_page && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
-			echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-title">';
-			echo $f->field_title;
-			echo '</div>';
-		}
-		if ($f->field_type != "body" && $f->field_type != "pubinfo" && $f->field_type != "related" && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
-			
+
+        $has_content = false;
+        switch ($f->field_type) {
+            case "body":
+                if ($this->article->art_content) {
+                   $has_content = true;
+                }
+                break;
+            case "textfield":
+            case "textbox":
+            case "editor":
+                if ($this->article->art_fielddata->$fn) {
+                    $has_content = true;
+                }
+                break;
+            case 'pubinfo':
+                if ($this->params->get('show_pubinfo', 1)) {
+                    $has_content = true;
+                }
+                break;
+            case "auths":
+            case "dloads":
+            case "images":
+            case "links":
+            case "media":
+                if ($f->data) {
+                    $has_content = true;
+                }
+                break;
+            case 'related':
+                if ($this->params->get('show_related',1) && $this->related) {
+                    $has_content = true;
+                }
+                break;
+        }
+
+        // Group set to show or named article
+        if (($this->article->art_fielddata->$gns == "1" || $f->group_name == "article") && $has_content) {
+
+            // Start Field
+            echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'">';
+            echo '<a name="'.$f->group_name.'-'.$f->field_name.'"></a>';
+            if ($f->params->show_title_page && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
+                echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-title">';
+                echo $f->field_title;
+                echo '</div>';
+            }
+
 			switch ($f->field_type) {
-				case "textfield":
-				case "textbox":
-				case "editor":
-					echo $this->article->art_fielddata->$fn;
-					break;
+                case "body":
+                    echo '<div class="mams-article-content">';
+                    echo $this->article->art_content;
+                    echo '</div>';
+                    break;
+                case "textfield":
+                case "textbox":
+                case "editor":
+                    echo $this->article->art_fielddata->$fn;
+                    break;
+                case 'pubinfo':
+                    if ($this->params->get('show_pubinfo', 1)) {
+                        //Pub Info
+                        echo '<div class="mams-article-pubinfo">';
+
+                        //Section Link
+                        echo '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=" . $this->article->sec_id . ":" . $this->article->sec_alias) . '" class="mams-article-seclink">' . $this->article->sec_name . '</a>';
+
+                        //Pub Date
+                        if ($this->params->get('show_pubdate', 1)) {
+                            echo ' published on <strong>';
+                            echo date("F j, Y", strtotime($this->article->art_publish_up));
+                            echo '</strong>';
+                        }
+
+                        //Cat Links
+                        if ($this->article->cats) {
+                            if ($this->params->get('show_pubdate', 1)) {
+                                echo ' in <em>';
+                            } else {
+                                echo ' - <em>';
+                            }
+                            $cats = Array();
+                            foreach ($this->article->cats as $c) {
+                                if (!$this->params->get('restrictcat', 0)) $cats[] = '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=" . $c->cat_id . ":" . $c->cat_alias) . '" class="mams-article-catlink">' . $c->cat_title . '</a>';
+                                else $cats[] = '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=catsec&secid=" . $this->article->sec_id . ":" . $this->article->sec_alias . "&catid=" . $c->cat_id . ":" . $c->cat_alias) . '" class="mams-article-catlink">' . $c->cat_title . '</a>';
+                            }
+                            echo implode(", ", $cats);
+                            echo '</em>';
+                        }
+                        echo '</div>';
+                    }
+                    break;
 				case "auths":
 					$auths = $f->data;
 					foreach ($auths as $d) {
@@ -247,101 +325,72 @@ if ($this->article->fields) {
 					echo '<div style="clear:both"></div>';
 					echo '</div>';
 					break;
-			} 
-		} else if ($f->field_type == "body") {
-			//Body
-			echo '<div class="mams-article-content">';
-			echo $this->article->art_content;
-			echo '</div>';
-		} else if ($f->field_type == "pubinfo" && $this->params->get('show_pubinfo',1)) {
-			//Pub Info
-			echo '<div class="mams-article-pubinfo">';
+                case 'related':
+                    if ($this->params->get('show_related',1) && $this->related) {
+                        $rlfirst = true;
+                        echo '<div class="mams-article-related-links">';
+                        foreach ($this->related as $r) {
+                            echo '<div class="mams-article-related-link';
+                            if ($rlfirst) { echo ' firstlink'; $rlfirst=false; }
+                            echo '">';
+                            $rartlink = "index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias;
+                            if ($r->cats) $rartlink .= "&catid=".$r->cats[0]->cat_id;
+                            //Thumb
+                            if ($r->art_thumb) {
+                                echo '<div class="mams-article-related-thumb">';
+                                echo '<img class="mams-article-related-artthumb"';
+                                echo ' src="'.$r->art_thumb.'" ';
+                                echo ' />';
+                                echo '</div>';
+                            }
+                            echo '<div class="mams-article-related-details">';
+                            echo '<div class="mams-article-related-title">';
+                            echo '<a href="'.JRoute::_($rartlink).'" class="mams-article-related-artlink">';
+                            echo $r->art_title.'</a>';
+                            echo '</div>';
+                            //Authors
+                            if ($r->auts) {
+                                echo '<div class="mams-article-related-artaut">';
+                                $auts = Array();
+                                foreach ($r->auts as $f) {
+                                    $auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-article-related-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
+                                }
+                                echo implode(", ",$auts);
+                                echo '</div>';
+                            }
+                            echo '<div class="mams-article-related-pubinfo">';
+                            //Section Link
+                            echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$r->sec_id.":".$r->sec_alias).'" class="mams-article-related-seclink">'.$r->sec_name.'</a>';
 
-			//Section Link
-			echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$this->article->sec_id.":".$this->article->sec_alias).'" class="mams-article-seclink">'.$this->article->sec_name.'</a>';
-				
-			//Pub Date
-			if ($this->params->get('show_pubdate',1)) {
-				echo ' published on <strong>';
-				echo date("F j, Y",strtotime($this->article->art_publish_up));
-				echo '</strong>';
+                            //Pub Date
+                            echo ' published on <strong>';
+                            echo date("F j, Y",strtotime($r->art_publish_up));
+                            echo '</strong>';
+
+                            //Cat Links
+                            if ($r->cats) {
+                                echo ' in <em>';
+                                $cats = Array();
+                                foreach ($r->cats as $c) {
+                                    $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-related-catlink">'.$c->cat_title.'</a>'; //&secid=".$r->sec_id.":".$r->sec_alias."
+                                }
+                                echo implode(", ",$cats);
+                                echo '</em>';
+                            }
+                            echo '</div>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                        echo '</div>';
+                    }
+                    break;
 			}
-				
-			//Cat Links
-			if ($this->article->cats) {
-				if ($this->params->get('show_pubdate',1)) {
-					echo ' in <em>';
-				} else {
-					echo ' - <em>';
-				}
-				$cats = Array();
-				foreach ($this->article->cats as $c) {
-					if (!$this->params->get('restrictcat',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>'; 
-					else $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=catsec&secid=".$this->article->sec_id.":".$this->article->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-catlink">'.$c->cat_title.'</a>'; 
-				}
-				echo implode(", ",$cats);
-				echo '</em>';
-			}
-			echo '</div>';
-		} else if ($f->field_type == "related" && $this->params->get('show_related',1) && $this->related) {
-			$rlfirst = true;
-			echo '<div class="mams-article-related-links">';
-			foreach ($this->related as $r) {
-				echo '<div class="mams-article-related-link';
-				if ($rlfirst) { echo ' firstlink'; $rlfirst=false; }
-				echo '">';
-				$rartlink = "index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias;
-				if ($r->cats) $rartlink .= "&catid=".$r->cats[0]->cat_id;
-				//Thumb
-				if ($r->art_thumb) {
-					echo '<div class="mams-article-related-thumb">';
-					echo '<img class="mams-article-related-artthumb"';
-					echo ' src="'.$r->art_thumb.'" ';
-					echo ' />';
-					echo '</div>';
-				}
-				echo '<div class="mams-article-related-details">';
-				echo '<div class="mams-article-related-title">';
-				echo '<a href="'.JRoute::_($rartlink).'" class="mams-article-related-artlink">';
-				echo $r->art_title.'</a>';
-				echo '</div>';
-				//Authors
-				if ($r->auts) {
-					echo '<div class="mams-article-related-artaut">';
-					$auts = Array();
-					foreach ($r->auts as $f) {
-						$auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-article-related-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
-					}
-					echo implode(", ",$auts);
-					echo '</div>';
-				}
-				echo '<div class="mams-article-related-pubinfo">';
-				//Section Link
-				echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$r->sec_id.":".$r->sec_alias).'" class="mams-article-related-seclink">'.$r->sec_name.'</a>';
-					
-				//Pub Date
-				echo ' published on <strong>';
-				echo date("F j, Y",strtotime($r->art_publish_up));
-				echo '</strong>';
-					
-				//Cat Links
-				if ($r->cats) {
-					echo ' in <em>';
-					$cats = Array();
-					foreach ($r->cats as $c) {
-						$cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-related-catlink">'.$c->cat_title.'</a>'; //&secid=".$r->sec_id.":".$r->sec_alias."
-					}
-					echo implode(", ",$cats);
-					echo '</em>';
-				}
-				echo '</div>';
-				echo '</div>';
-				echo '</div>';
-			}
-			echo '</div>';
-		}
-		echo '</div>';
+
+            // End Field
+            echo '</div>';
+        }
 	}
+    // End last group
 	if (!$first) { echo '<div style="clear:both"></div>'; echo '</div>'; }
 }
 

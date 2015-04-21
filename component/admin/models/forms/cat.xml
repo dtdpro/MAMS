@@ -33,6 +33,13 @@
 			description="JFIELD_ACCESS_DESC"
 			default="1"
 			filter="integer"/>
+        <field
+                name="ordering"
+                type="OrderCat"
+                class="inputbox"
+                label="JFIELD_ORDERING_LABEL"
+                description="JFIELD_ORDERING_DESC"
+                />
 		<field
 			name="cat_title"
 			type="text"
@@ -69,7 +76,7 @@
 			label="COM_MAMS_CAT_FIELD_IMAGE_LABEL"
 			description="COM_MAMS_CAT_FIELD_IMAGE_DESC"
 		/>
-		<field name="cat_featured" type="radio" label="COM_MAMS_CAT_FIELD_FEAT_LABEL" description="COM_MAMS_CAT_FIELD_FEAT_DESC" class="btn-group" default="1">
+		<field name="cat_featured" type="radio" label="COM_MAMS_CAT_FIELD_FEAT_LABEL" description="COM_MAMS_CAT_FIELD_FEAT_DESC" class="btn-group" default="0">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>

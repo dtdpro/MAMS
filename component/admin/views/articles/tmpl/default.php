@@ -195,7 +195,7 @@ $sortFields = $this->getSortFields();
 							?>
 					</div>
 				</td>
-				<td class="nowrap has-context">
+				<td class="has-context">
 					<div class="pull-left">
 					
 						<?php if ($item->checked_out) : ?>
