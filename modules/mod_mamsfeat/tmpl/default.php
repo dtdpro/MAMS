@@ -56,12 +56,12 @@ foreach ($articles as $a) {
 		//Cat Links
 		if ($a->cats && $params->get('show_pubcat',1)) {
 			echo '<span class="mams-featmod-cat">';
-			if ($params->get('show_pubdate',1)) {
-				echo ' in <em>';
-			} else {
-				echo ' - <em>';
-			}
-			$cats = Array();
+            if ($params->get('show_pubdate',1)) {
+                echo ' in <em>';
+            } elseif ($params->get('show_pubsec',1)) {
+                echo ' - <em>';
+            }
+            $cats = Array();
 			foreach ($a->cats as $c) {
 				if ($params->get('link_pubinfo',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>'; //&secid=".$a->sec_id.":".$a->sec_alias."
 				else $cats[]=$c->cat_title;
