@@ -437,9 +437,19 @@ class MAMSModelArticle extends JModelAdmin
 			{
 				return false;
 			}
-	
+
 			$done = true;
 		}
+
+        if ($commands['batch-startdate'] != '')
+        {
+            if (!$this->batchStartDate($commands['batch-startdate'], $pks, $contexts))
+            {
+                return false;
+            }
+
+            $done = true;
+        }
 	
 		if (!$done)
 		{
@@ -452,6 +462,33 @@ class MAMSModelArticle extends JModelAdmin
 	
 		return true;
 	}
+
+    protected function batchStartDate($value, $pks, $contexts)
+    {
+        // Set the variables
+        $user = JFactory::getUser();
+        $table = $this->getTable();
+
+        foreach ($pks as $pk) {
+            if ($user->authorise('core.edit', $contexts[$pk])) {
+                $table->reset();
+                $table->load($pk);
+                $table->art_publish_up = $value;
+
+                if (!$table->check()) { $this->setError($table->getError()); return false; }
+
+                if (!$table->store()) { $this->setError($table->getError()); return false; }
+            } else {
+                $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+                return false;
+            }
+        }
+
+        // Clean the cache
+        $this->cleanCache();
+
+        return true;
+    }
 	
 	protected function batchFeatAccess($value, $pks, $contexts)
 	{

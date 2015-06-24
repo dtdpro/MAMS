@@ -32,14 +32,14 @@ foreach ($this->articles as $a) {
 			//Further Article Details
 			echo '<div class="mams-artlist-artdetails">';
 				//Thumb
-				if ($a->art_thumb) {
+				if ($a->art_thumb && $this->params->get('show_thumb',1)) {
 					echo '<div class="mams-artlist-artimg"><img class="mams-artlist-artthumb"';
 					echo ' src="'.$a->art_thumb.'" ';
 					echo ' /></div>';
 				}
 				//Article Pub info and description
 				echo '<div class="mams-artlist-artinfo';
-				if ($a->art_thumb) echo 'wt';
+				if ($a->art_thumb && $this->params->get('show_thumb',1)) echo 'wt';
 				echo '">';
 					if ($this->params->get('show_pubinfo',1)) {
 						echo '<div class="mams-artlist-pubinfo">';
