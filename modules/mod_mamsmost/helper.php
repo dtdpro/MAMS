@@ -6,7 +6,7 @@ defined('_JEXEC') or die;
 
 class modMAMSMostHelper
 {
-	static function getFeatured($params)
+	static function getArticles($params)
 	{
 		$db		= JFactory::getDbo();
 		$user = JFactory::getUser();
@@ -15,7 +15,9 @@ class modMAMSMostHelper
 		$alvls = Array();
 		$alvls = $user->getAuthorisedViewLevels();
 		$alvls = array_merge($alvls,$cfg->reggroup);
-		
+
+        if (!$params->get('show_featured',1)) $featured = modMAMSMostHelper::getFeatured();
+
 		$query	= $db->getQuery(true);
 
 		$query->select('a.*,s.*,count(*) as arthits');
@@ -28,6 +30,7 @@ class modMAMSMostHelper
         $query->where('a.art_publish_up >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_old',90).' day)');
         $query->where('t.mt_type = "article"');
         $query->where('t.mt_time >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_read',30).' day)');
+        if (!$params->get('show_featured',1)) $query->where("a.art_id NOT IN (".implode(',',$featured).')');
         $query->group('t.mt_item');
         $query->order('arthits DESC');
         $db->setQuery($query,0,$params->get('count',5));
@@ -101,6 +104,15 @@ class modMAMSMostHelper
 			
 		return $items;
 	}
+
+    protected function getFeatured() {
+        $db =& JFactory::getDBO();
+        $query=$db->getQuery(true);
+        $query->select('af_art');
+        $query->from('#__mams_artfeat as f');
+        $db->setQuery($query);
+        return $db->loadColumn();
+    }
 	
 	protected function getFieldAuthors($artid, $fid, $alvls) {
 		$db =& JFactory::getDBO();
