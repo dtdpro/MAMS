@@ -9,6 +9,7 @@ class MAMSViewArticles extends JViewLegacy
 {
 	
 	protected $items;
+    protected $cats;
 	protected $pagination;
 	protected $state;
 	
@@ -16,6 +17,7 @@ class MAMSViewArticles extends JViewLegacy
 	{
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
+        $this->cats = $this->get('Cats');
 		$this->pagination = $this->get('Pagination');
 		
 		// Set the submenu
@@ -75,7 +77,9 @@ class MAMSViewArticles extends JViewLegacy
 		
 		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
 		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_ACCESS'),'filter_access',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')));
+        JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_FEATACCESS'),'filter_feataccess',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.feataccess')));
 		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_SEC'),'filter_sec',JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', $this->state->get('filter.sec')));
+        JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_CAT'),'filter_cat',JHtml::_('select.options', MAMSHelper::getCats(), 'value', 'text', $this->state->get('filter.cat')));
 		
 	}
 	

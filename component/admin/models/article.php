@@ -441,6 +441,16 @@ class MAMSModelArticle extends JModelAdmin
 			$done = true;
 		}
 
+        if ($commands['batch-rmvcat'] != 0)
+        {
+            if (!$this->batchRemoveCat($commands['batch-rmvcat'], $pks, $contexts))
+            {
+                return false;
+            }
+
+            $done = true;
+        }
+
         if ($commands['batch-startdate'] != '')
         {
             if (!$this->batchStartDate($commands['batch-startdate'], $pks, $contexts))
@@ -577,6 +587,30 @@ class MAMSModelArticle extends JModelAdmin
 	
 		return true;
 	}
+
+    protected function batchRemoveCat($value, $pks, $contexts)
+    {
+        // Set the variables
+        $user = JFactory::getUser();
+
+        if ($user->authorise('core.edit', $contexts[$pk]))	{
+            $db = JFactory::getDbo();
+            $query = $db->getQuery(true);
+            $query->delete('#__mams_artcat');
+            $query->where('ac_art IN ('.implode(",",$pks).')');
+            $query->where('ac_cat = '.(int)$value);
+            $db->setQuery($query);
+            $db->execute();
+        } else {
+            $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+            return false;
+        }
+
+        // Clean the cache
+        $this->cleanCache();
+
+        return true;
+    }
 
 	protected function prepareTable(&$table)
 	{

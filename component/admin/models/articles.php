@@ -38,8 +38,14 @@ class MAMSModelArticles extends JModelList
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 
+        $feataccessId = $this->getUserStateFromRequest($this->context.'.filter.feataccess', 'filter_feataccess', null, 'int');
+        $this->setState('filter.feataccess', $feataccessId);
+
 		$secId = $this->getUserStateFromRequest($this->context.'.filter.sec', 'filter_sec', null, 'int');
 		$this->setState('filter.sec', $secId);
+
+        $catId = $this->getUserStateFromRequest($this->context.'.filter.cat', 'filter_cat', null, 'int');
+        $this->setState('filter.cat', $catId);
 		
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -55,9 +61,58 @@ class MAMSModelArticles extends JModelList
 		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.state');
 		$id .= ':' . $this->getState('filter.sec');
+        $id .= ':' . $this->getState('filter.cat');
 	
 		return parent::getStoreId($id);
 	}
+
+    public function getCats() {
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $query->select('*')->from('#__mams_cats');
+        $db->setQuery($query);
+        $cats = $db->loadObjectList();
+        $catsbyid=array();
+        foreach ($cats as $c) {
+            $catsbyid[$c->cat_id] = $c->cat_title;
+        }
+        return $catsbyid;
+    }
+
+    public function getItems()
+    {
+        // Get a storage key.
+        $store = $this->getStoreId();
+        // Try to load the data from internal storage.
+        if (isset($this->cache[$store]))
+        {
+            return $this->cache[$store];
+        }
+        // Load the list items.
+        $query = $this->_getListQuery();
+        try
+        {
+            $items = $this->_getList($query, $this->getStart(), $this->getState('list.limit'));
+        }
+        catch (RuntimeException $e)
+        {
+            $this->setError($e->getMessage());
+            return false;
+        }
+
+        foreach ($items as &$item) {
+            $query = $this->_db->getQuery(true);
+            $query->select('ac_cat');
+            $query->from('#__mams_artcat');
+            $query->where('ac_art = '.$item->art_id);
+            $this->_db->setQuery($query);
+            $item->cats = $this->_db->loadColumn();
+        }
+
+        // Add the items to the internal cache.
+        $this->cache[$store] = $items;
+        return $this->cache[$store];
+    }
 	
 	protected function getListQuery() 
 	{
@@ -97,11 +152,26 @@ class MAMSModelArticles extends JModelList
 		if ($sec = $this->getState('filter.sec')) {
 			$query->where('a.art_sec = '.(int) $sec);
 		}
+
+        // Filter by a category
+        if ($catId = $this->getState('filter.cat'))
+        {
+            $query->where($db->quoteName('ac.ac_cat') . ' = ' . (int) $catId)
+                ->join(
+                    'LEFT', $db->quoteName('#__mams_artcat', 'ac')
+                    . ' ON ' . $db->quoteName('ac.ac_art') . ' = ' . $db->quoteName('a.art_id')
+                );
+        }
 				
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
 			$query->where('a.access = '.(int) $access);
 		}
+
+        // Filter by featured access level.
+        if ($feataccess = $this->getState('filter.feataccess')) {
+            $query->where('a.feataccess = '.(int) $feataccess);
+        }
 		
 		// Filter by published state
 		$published = $this->getState('filter.state');

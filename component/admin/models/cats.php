@@ -16,6 +16,7 @@ class MAMSModelCats extends JModelList
 				'cat_modified', 'c.cat_modified',
 				'cat_title', 'c.cat_title',
 				'cat_id','c.cat_id',
+                'cat_items','c.cat_items',
 				'access','c.access',
 				'published','c.published',
                 'ordering', 'c.ordering',
@@ -63,6 +64,7 @@ class MAMSModelCats extends JModelList
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = c.access');
 		$query->select('af.title AS feataccess_level');
 		$query->join('LEFT', '#__viewlevels AS af ON af.id = c.cat_feataccess');
+        $query->select('(SELECT COUNT(*) FROM #__mams_artcat AS ac WHERE ac.ac_cat = c.cat_id GROUP BY c.cat_id) as cat_items');
 		
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {

@@ -109,7 +109,7 @@ if ($saveOrder) {
 					<?php echo JHtml::_('grid.sort','JGRID_HEADING_ACCESS','c.access', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%">
-					<?php echo JText::_('COM_MAMS_CAT_HEADING_NUMITEMS'); ?>
+					<?php echo JHtml::_('grid.sort','COM_MAMS_CAT_HEADING_NUMITEMS','cat_items', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_CAT_HEADING_ID','c.cat_id', $listDirn, $listOrder); ?>
@@ -118,7 +118,7 @@ if ($saveOrder) {
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="mamscat">
@@ -180,12 +180,7 @@ if ($saveOrder) {
 				<td class="small"><?php echo $item->cat_modified; ?></td>
 				<td class="small"><?php echo $item->feataccess_level; ?></td>
 				<td class="small"><?php echo $item->access_level; ?></td>
-				<td class="small"><?php 
-					$query = 'SELECT count(*) FROM #__mams_artcat WHERE ac_cat='.$item->cat_id;
-					$db->setQuery( $query );
-					$num=$db->loadResult();
-					echo $num;
-				?></td>
+				<td class="small"><?php if ($item->cat_items) echo $item->cat_items; else echo 0; ?></td>
 				<td><?php echo $item->cat_id; ?></td>
 			</tr>
 		<?php endforeach; ?>

@@ -97,7 +97,7 @@ $sortFields = $this->getSortFields();
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_TITLE','a.art_title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="13%">
+				<th width="10%">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISH_ON','a.art_publish_up', $listDirn, $listOrder); ?> - 
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_PUBLISH_DOWN','a.art_publish_down', $listDirn, $listOrder); ?>
 				</th>	
@@ -205,12 +205,23 @@ $sortFields = $this->getSortFields();
 							<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->art_alias)); ?>"><?php echo $this->escape($item->art_title); ?></span>
 						<?php endif; ?>
 
-                        <div class="small"><strong>Section:</strong> <?php echo $item->sec_name; ?></div>
+                        <div class="small">
+                            <strong>Section:</strong> <?php echo $item->sec_name; ?>
+                            <?php if (count($item->cats)) : ?>
+                            <strong>Category:</strong> <?php
+                                $itemcats = array();
+                                foreach ($item->cats as $c) {
+                                    $itemcats[] = $this->cats[$c];
+                                }
+                                echo implode(", ",$itemcats);
+                                endif;
+                            ?>
+                        </div>
 						<div class="small"><strong>Alias:</strong> <?php echo $item->art_alias; ?></div>
 					</div>
 					
 				</td>
-				<td class="small"><?php echo $item->art_publish_up; ?> - <?php echo $item->art_publish_down; ?></td>
+				<td class="small"><strong>Start:</strong> <?php echo $item->art_publish_up; ?><br /><strong>End:</strong> <?php echo $item->art_publish_down; ?></td>
 				<td class="small hidden-phone"><?php echo $item->art_added.'<br />'.$item->adder; ?></td>
 				<td class="small hidden-phone"><?php echo $item->art_modified.'<br />'.$item->modifier; ?></td>
 				<td class="small"><?php echo $item->access_level.'<br />'.$item->feataccess_level; ?></td>
@@ -279,6 +290,18 @@ $sortFields = $this->getSortFields();
                         ?>
                         <?php echo JHtml::_('calendar',null,'batch[batch-startdate]','batch-startdate','%Y-%m-%d'); ?>
 
+                    </div>
+                </div>
+                <div class="control-group span6">
+                    <div class="controls">
+                        <?php
+                        echo '<label id="batch-section-lbl" for="batch-addcat" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_RMVCAT_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_RMVCAT_DESC') . '">';
+                        echo JText::_('COM_MAMS_ARTICLE_BATCH_RMVCAT_LABEL').'</label>';
+                        ?>
+                        <select name="batch[batch-rmvcat]" class="inputbox" id="batch-rmvcat">
+                            <option value="*"><?php echo JText::_('COM_MAMS_SELECT_CAT');?></option>
+                            <?php echo JHtml::_('select.options', MAMSHelper::getCats(), 'value', 'text', "");?>
+                        </select>
                     </div>
                 </div>
             </div>

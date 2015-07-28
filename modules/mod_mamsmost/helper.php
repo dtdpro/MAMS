@@ -30,7 +30,7 @@ class modMAMSMostHelper
         $query->where('a.art_publish_up >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_old',90).' day)');
         $query->where('t.mt_type = "article"');
         $query->where('t.mt_time >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_read',30).' day)');
-        if (!$params->get('show_featured',1)) $query->where("a.art_id NOT IN (".implode(',',$featured).')');
+        if (!$params->get('show_featured',1) && count($featured)) $query->where("a.art_id NOT IN (".implode(',',$featured).')');
         $query->group('t.mt_item');
         $query->order('arthits DESC');
         $db->setQuery($query,0,$params->get('count',5));
