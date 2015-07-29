@@ -23,6 +23,8 @@ class modMAMSCatHelper
 		$qcat->where('ac.published >= 1');
 		$db->setQuery($qcat);
 		$artids = $db->loadColumn(0);
+
+        if (!count($artids)) return false;
 		
 		$query	= $db->getQuery(true);
 
