@@ -157,7 +157,129 @@ class MAMSModelArticle extends JModelAdmin
 	
 		return $item;
 	}
-	
+
+	public function delete(&$pks)
+	{
+		$db	= $this->getDbo();
+		$dispatcher = JEventDispatcher::getInstance();
+		$pks = (array) $pks;
+		$table = $this->getTable();
+
+		// Include the plugins for the delete events.
+		JPluginHelper::importPlugin($this->events_map['delete']);
+
+		// Iterate the items to delete each one.
+		foreach ($pks as $i => $pk)
+		{
+			if ($table->load($pk))
+			{
+				if ($this->canDelete($table))
+				{
+					$context = $this->option . '.' . $this->name;
+
+					// Trigger the before delete event.
+					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
+
+					//Cats
+					$query	= $db->getQuery(true);
+					$query->delete();
+					$query->from('#__mams_artcat');
+					$query->where('ac_art = '.$table->art_id);
+					$db->setQuery((string)$query);
+					$db->execute();
+
+					//Authors
+					$query	= $db->getQuery(true);
+					$query->delete();
+					$query->from('#__mams_artauth');
+					$query->where('aa_art = '.$table->art_id);
+					$db->setQuery((string)$query);
+					$db->execute();
+
+                    //Medias
+                    $query	= $db->getQuery(true);
+                    $query->delete();
+                    $query->from('#__mams_artmed');
+                    $query->where('am_art = '.$table->art_id);
+                    $db->setQuery((string)$query);
+                    $db->execute();
+
+                    //Downloads
+                    $query	= $db->getQuery(true);
+                    $query->delete();
+                    $query->from('#__mams_artdl');
+                    $query->where('ad_art = '.$table->art_id);
+                    $db->setQuery((string)$query);
+                    $db->execute();
+
+                    //Images
+                    $query	= $db->getQuery(true);
+                    $query->delete();
+                    $query->from('#__mams_artimg');
+                    $query->where('ai_art = '.$table->art_id);
+                    $db->setQuery((string)$query);
+                    $db->execute();
+
+                    //Links
+                    $query	= $db->getQuery(true);
+                    $query->delete();
+                    $query->from('#__mams_artlinks');
+                    $query->where('al_art = '.$table->art_id);
+                    $db->setQuery((string)$query);
+                    $db->execute();
+
+					if (in_array(false, $result, true))
+					{
+						$this->setError($table->getError());
+
+						return false;
+					}
+
+					if (!$table->delete($pk))
+					{
+						$this->setError($table->getError());
+
+						return false;
+					}
+
+					// Trigger the after event.
+					$dispatcher->trigger($this->event_after_delete, array($context, $table));
+				}
+				else
+				{
+					// Prune items that you can't change.
+					unset($pks[$i]);
+					$error = $this->getError();
+
+					if ($error)
+					{
+						JLog::add($error, JLog::WARNING, 'jerror');
+
+						return false;
+					}
+					else
+					{
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+
+						return false;
+					}
+				}
+			}
+			else
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+		}
+
+		// Clear the component's cache
+		$this->cleanCache();
+
+		return true;
+	}
+
+
 	public function save($data)
 	{
 		$db	= $this->getDbo();
