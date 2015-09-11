@@ -51,6 +51,7 @@ class MAMSModelArticle extends JModelAdmin
 	
 	public function getForm($data = array(), $loadData = true) 
 	{
+        $cfg = MAMSHelper::getConfig();
 		// Get the form.
 		$form = $this->loadForm('com_mams.article', 'article', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -79,8 +80,7 @@ class MAMSModelArticle extends JModelAdmin
 		
 		// Check for existing article.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_mams.article.' . (int) $id))	|| ($id == 0 && !$user->authorise('core.edit.state', 'com_mams'))
-		)
+		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_mams.article.' . (int) $id))	|| ($id == 0 && !$user->authorise('core.edit.state', 'com_mams')))
 		{
 			// Disable fields for display.
 			$form->setFieldAttribute('ordering', 'disabled', 'true');
@@ -95,6 +95,14 @@ class MAMSModelArticle extends JModelAdmin
 			$form->setFieldAttribute('publish_down', 'filter', 'unset');
 			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
+
+        if (!$cfg->edit_auths) {
+            $form->removefield('auths');
+        }
+
+        if (!$cfg->edit_cats) {
+            $form->removefield('cats');
+        }
 		
 		return $form;
 	}
@@ -153,7 +161,10 @@ class MAMSModelArticle extends JModelAdmin
 			//Authors
 			$item->authors = $this->getAuthors($item->art_id);
 		}
-		
+
+		if ($item->art_publish_down == "0000-00-00") {
+			$item->art_publish_down = JFactory::getDbo()->getNullDate();
+		}
 	
 		return $item;
 	}
@@ -285,6 +296,7 @@ class MAMSModelArticle extends JModelAdmin
 		$db	= $this->getDbo();
 		$dispatcher = JEventDispatcher::getInstance();
 		$table = $this->getTable();
+		$cfg = MAMSHelper::getConfig();
 		
 		if ((!empty($data['tags']) && $data['tags'][0] != ''))
 		{
@@ -362,51 +374,53 @@ class MAMSModelArticle extends JModelAdmin
 			$this->setState($this->getName() . '.id', $table->$pkName);
 		}
 		$this->setState($this->getName() . '.new', $isNew);
-		
-		//Cats
-		$query	= $db->getQuery(true);
-		$query->delete();
-		$query->from('#__mams_artcat');
-		$query->where('ac_art = '.$table->art_id);
-		$db->setQuery((string)$query);
-		$db->query();
-		if ((!empty($data['cats']) && $data['cats'][0] != ''))
-		{
-			$actable=$this->getTable("Artcat","MAMSTable");
-			$order=0;
-			foreach ($data['cats'] as $cat) {
-				$actable->ac_id=0;
-				$actable->ac_cat=$cat;
-				$actable->ac_art=$table->art_id;
-				$actable->published=1;
-				$actable->ordering=$order;
-				$actable->store();
-				$order++;
-			}
-		}
-		
-		//Authors
-		$query	= $db->getQuery(true);
-		$query->delete();
-		$query->from('#__mams_artauth');
-		$query->where('aa_art = '.$table->art_id);
-		$query->where('aa_field = 5');
-		$db->setQuery((string)$query);
-		$db->query();
-		if ((!empty($data['authors']) && $data['authors'][0] != ''))
-		{
-			$aatable=$this->getTable("Artauth","MAMSTable");
-			$order=0;
-			foreach ($data['authors'] as $auth) {
-				$aatable->aa_id=0;
-				$aatable->aa_auth=$auth;
-				$aatable->aa_art=$table->art_id;
-				$aatable->published=1;
-				$aatable->ordering=$order;
-				$aatable->store();
-				$order++;
-			}
-		}
+
+        //Cats
+        if ($cfg->edit_cats) {
+            $query = $db->getQuery(true);
+            $query->delete();
+            $query->from('#__mams_artcat');
+            $query->where('ac_art = ' . $table->art_id);
+            $db->setQuery((string)$query);
+            $db->query();
+            if ((!empty($data['cats']) && $data['cats'][0] != '')) {
+                $actable = $this->getTable("Artcat", "MAMSTable");
+                $order = 0;
+                foreach ($data['cats'] as $cat) {
+                    $actable->ac_id = 0;
+                    $actable->ac_cat = $cat;
+                    $actable->ac_art = $table->art_id;
+                    $actable->published = 1;
+                    $actable->ordering = $order;
+                    $actable->store();
+                    $order++;
+                }
+            }
+        }
+
+        //Authors
+        if ($cfg->edit_auths) {
+            $query = $db->getQuery(true);
+            $query->delete();
+            $query->from('#__mams_artauth');
+            $query->where('aa_art = ' . $table->art_id);
+            $query->where('aa_field = 5');
+            $db->setQuery((string)$query);
+            $db->query();
+            if ((!empty($data['authors']) && $data['authors'][0] != '')) {
+                $aatable = $this->getTable("Artauth", "MAMSTable");
+                $order = 0;
+                foreach ($data['authors'] as $auth) {
+                    $aatable->aa_id = 0;
+                    $aatable->aa_auth = $auth;
+                    $aatable->aa_art = $table->art_id;
+                    $aatable->published = 1;
+                    $aatable->ordering = $order;
+                    $aatable->store();
+                    $order++;
+                }
+            }
+        }
 		
 		return true;
 	}
@@ -736,6 +750,16 @@ class MAMSModelArticle extends JModelAdmin
 
 	protected function prepareTable(&$table)
 	{
+		if ($table->state == 1 && (int) $table->publish_up == 0)
+		{
+			$table->art_publish_up = JFactory::getDate()->toSql();
+		}
+
+		if ($table->state == 1 && intval($table->publish_down) == 0)
+		{
+			$table->art_publish_down = '0000-00-00';
+		}
+
 		if (empty($table->art_id)) {
 			$table->reorder('art_sec = "'.$table->art_sec.'" && art_publish_up = "'.$table->art_publish_up.'"');
 		}

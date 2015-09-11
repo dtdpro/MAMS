@@ -21,6 +21,7 @@ class MAMSViewArticle extends JViewLegacy
 		$model = $this->getModel();
 		$this->addfields = $model->getAdditionalForms($this->item);
 		$this->canDo	= MAMSHelper::getArticleActions($this->state->get('filter.sec'));
+		$this->cfg = MAMSHelper::getConfig();
 		
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 

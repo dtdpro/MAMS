@@ -92,6 +92,7 @@ abstract class MAMSHelper
 		$db->setQuery(
 			'SELECT cat_id AS value, cat_title AS text' .
 			' FROM #__mams_cats ' .
+			' WHERE published >= 0 ' .
 			' ORDER BY cat_title'
 		);
 		$options = $db->loadObjectList();
@@ -103,6 +104,27 @@ abstract class MAMSHelper
 		return null;
 		}
 		
+		return $options;
+	}
+
+	static function getAuths()
+	{
+		$db = JFactory::getDbo();
+		$db->setQuery(
+			'SELECT auth_id AS value, auth_name AS text' .
+			' FROM #__mams_authors ' .
+			' WHERE published >= 0 ' .
+			' ORDER BY auth_lname'
+		);
+		$options = $db->loadObjectList();
+
+		// Check for a database error.
+		if ($db->getErrorNum())
+		{
+			JError::raiseNotice(500, $db->getErrorMsg());
+			return null;
+		}
+
 		return $options;
 	}
 	

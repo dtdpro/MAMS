@@ -80,6 +80,7 @@ class MAMSViewArticles extends JViewLegacy
         JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_FEATACCESS'),'filter_feataccess',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.feataccess')));
 		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_SEC'),'filter_sec',JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', $this->state->get('filter.sec')));
         JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_CAT'),'filter_cat',JHtml::_('select.options', MAMSHelper::getCats(), 'value', 'text', $this->state->get('filter.cat')));
+		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_AUTHOR'),'filter_auth',JHtml::_('select.options', MAMSHelper::getAuths(), 'value', 'text', $this->state->get('filter.auth')));
 		
 	}
 	

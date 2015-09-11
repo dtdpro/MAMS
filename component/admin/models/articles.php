@@ -46,6 +46,9 @@ class MAMSModelArticles extends JModelList
 
         $catId = $this->getUserStateFromRequest($this->context.'.filter.cat', 'filter_cat', null, 'int');
         $this->setState('filter.cat', $catId);
+
+        $authId = $this->getUserStateFromRequest($this->context.'.filter.auth', 'filter_auth', null, 'int');
+        $this->setState('filter.auth', $authId);
 		
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -140,11 +143,11 @@ class MAMSModelArticles extends JModelList
 		$query->select('f.af_id as featured');
 		$query->join('LEFT', '#__mams_artfeat AS f ON f.af_art = a.art_id');
 		
-		// Join over the users for the author who added.
+		// Join over the users for the user who added.
 		$query->select('ua.name AS adder')
 		->join('LEFT', '#__users AS ua ON ua.id = a.art_added_by');
 		
-		// Join over the users for the author who modified.
+		// Join over the users for the user who modified.
 		$query->select('um.name AS modifier')
 		->join('LEFT', '#__users AS um ON um.id = a.art_modified_by');
 				
@@ -162,6 +165,16 @@ class MAMSModelArticles extends JModelList
                     . ' ON ' . $db->quoteName('ac.ac_art') . ' = ' . $db->quoteName('a.art_id')
                 );
         }
+
+		// Filter by a author
+		if ($catId = $this->getState('filter.auth'))
+		{
+			$query->where($db->quoteName('aa.aa_auth') . ' = ' . (int) $catId)
+				->join(
+					'LEFT', $db->quoteName('#__mams_artauth', 'aa')
+					. ' ON ' . $db->quoteName('aa.aa_art') . ' = ' . $db->quoteName('a.art_id')
+				);
+		}
 				
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
