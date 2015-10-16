@@ -750,16 +750,6 @@ class MAMSModelArticle extends JModelAdmin
 
 	protected function prepareTable(&$table)
 	{
-		if ($table->state == 1 && (int) $table->publish_up == 0)
-		{
-			$table->art_publish_up = JFactory::getDate()->toSql();
-		}
-
-		if ($table->state == 1 && intval($table->publish_down) == 0)
-		{
-			$table->art_publish_down = '0000-00-00';
-		}
-
 		if (empty($table->art_id)) {
 			$table->reorder('art_sec = "'.$table->art_sec.'" && art_publish_up = "'.$table->art_publish_up.'"');
 		}
