@@ -20,6 +20,10 @@ class MAMSModelSecs extends JModelList
 				'ordering', 's.ordering',
 				'published', 's.published',
 				'access', 's.access',
+				'lft', 'a.lft',
+				'rgt', 'a.rgt',
+				'level', 'a.level',
+				'path', 'a.path',
 			);
 		}
 		parent::__construct($config);
@@ -47,7 +51,7 @@ class MAMSModelSecs extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('s.sec_name', 'asc');
+		parent::populateState('s.lft', 'asc');
 	}
 	
 	protected function getListQuery() 
@@ -65,7 +69,7 @@ class MAMSModelSecs extends JModelList
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = s.access');
-		
+
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
 			$query->where('s.access = '.(int) $access);
@@ -94,15 +98,18 @@ class MAMSModelSecs extends JModelList
 				$query->where('(s.sec_name LIKE '.$search.' OR s.sec_alias LIKE '.$search.')');
 			}
 		}
-		
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
-		
-		if ($orderCol == 's.ordering') {
-			$orderCol = 's.sec_type '.$orderDirn.', s.ordering';
+
+		// Add the list ordering clause
+		$listOrdering = $this->getState('list.ordering', 's.lft');
+		$listDirn = $db->escape($this->getState('list.direction', 'ASC'));
+		if ($listOrdering == 's.access')
+		{
+			$query->order('s.access ' . $listDirn . ', s.lft ' . $listDirn);
 		}
-		
-		$query->order($db->escape($orderCol.' '.$orderDirn));
+		else
+		{
+			$query->order($db->escape($listOrdering) . ' ' . $listDirn);
+		}
 				
 		return $query;
 	}

@@ -5,9 +5,9 @@ defined('JPATH_BASE') or die;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldAuthorSecs extends JFormFieldList
+class JFormFieldSecParent extends JFormFieldList
 {
-	protected $type = 'AuthorSecs';
+	protected $type = 'SecParent';
 
 	protected function getOptions()
 	{
@@ -46,7 +46,7 @@ class JFormFieldAuthorSecs extends JFormFieldList
 				$row = $db->loadObject();
 			}
 		}
-		$query->where('a.published IN (0,1)')->where('a.sec_type = "author"')
+		$query->where('a.published IN (0,1)')
 			->group('a.sec_id, a.sec_name, a.level, a.lft, a.rgt, a.parent_id')
 			->order('a.lft ASC');
 		// Get the options.
@@ -83,6 +83,14 @@ class JFormFieldAuthorSecs extends JFormFieldList
 		}
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
+
+		// Add in root Option
+		$root_opt = new stdClass();
+		$root_opt->value=0;
+		$root_opt->text="None";
+		$options = array_merge(array($root_opt), $options);
+
 		return $options;
 	}
+
 }

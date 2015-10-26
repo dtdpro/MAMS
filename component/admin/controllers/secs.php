@@ -18,28 +18,42 @@ class MAMSControllerSecs extends JControllerAdmin
 		return $model;
 	}
 	
-	public function saveOrderAjax()
+	public function saveorder()
 	{
-		// Get the input
-		$pks = $this->input->post->get('cid', array(), 'array');
-		$order = $this->input->post->get('order', array(), 'array');
-	
-		// Sanitize the input
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
-	
-		// Get the model
-		$model = $this->getModel();
-	
-		// Save the ordering
-		$return = $model->saveorder($pks, $order);
-	
-		if ($return)
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		// Get the arrays from the Request
+		$order = $this->input->post->get('order', null, 'array');
+		$originalOrder = explode(',', $this->input->getString('original_order_values'));
+		// Make sure something has changed
+		if (!($order === $originalOrder))
 		{
-			echo "1";
+			parent::saveorder();
 		}
-	
-		// Close the application
-		JFactory::getApplication()->close();
+		else
+		{
+			// Nothing to reorder
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+			return true;
+		}
+	}
+
+	public function rebuild()
+	{
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		$extension = $this->input->get('extension');
+		$this->setRedirect(JRoute::_('index.php?option=com_mams&view=secs', false));
+		$model = $this->getModel();
+		if ($model->rebuild())
+		{
+			// Rebuild succeeded.
+			$this->setMessage(JText::_('COM_CATEGORIES_REBUILD_SUCCESS'));
+			return true;
+		}
+		else
+		{
+			// Rebuild failed.
+			$this->setMessage(JText::_('COM_CATEGORIES_REBUILD_FAILURE'));
+			return false;
+		}
 	}
 }

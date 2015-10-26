@@ -6,6 +6,7 @@ jimport( 'joomla.application.component.view');
 class MAMSViewArtList extends JViewLegacy
 {
 	protected $artlist = Array();
+	protected $children = Array();
 	protected $secinfo = null;
 	protected $autinfo = null;
 	protected $catinfo = null;
@@ -158,7 +159,8 @@ class MAMSViewArtList extends JViewLegacy
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
 			if (count($this->secinfo) == 1) $this->document->setTitle($this->secinfo[0]->sec_name);
-			$artids=$model->getSecArts($sec); 
+			$artids=$model->getSecArts($sec);
+			$this->children=$model->getSecChildren($sec);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
 		}

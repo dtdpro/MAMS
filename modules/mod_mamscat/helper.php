@@ -15,6 +15,13 @@ class modMAMSCatHelper
 		$alvls = Array();
 		$alvls = $user->getAuthorisedViewLevels();
 		$alvls = array_merge($alvls,$cfg->reggroup);
+
+		$orderby1 = $params->get('orderby1','s.lft ASC');
+		if ($orderby1 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby1 = str_replace('.ordering','.lft',$orderby1);
+		$orderby2 = $params->get('orderby2','s.lft ASC');
+		if ($orderby2 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby2 = str_replace('.ordering','.lft',$orderby2);
+		$orderby3 = $params->get('orderby3','s.lft ASC');
+		if ($orderby3 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby3 = str_replace('.ordering','.lft',$orderby3);
 		
 		$qcat = $db->getQuery(true);
 		$qcat->select('ac.ac_art');
@@ -36,7 +43,7 @@ class modMAMSCatHelper
 		if ($params->get('restrict_feat',0)) $query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$query->where('a.state >= 1');
 		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
-		$query->order($params->get('orderby1','a.art_publish_up DESC').', '.$params->get('orderby2','s.ordering ASC').', '.$params->get('orderby3','a.ordering ASC'));
+		$query->order($orderby1.', '.$orderby2.', '.$orderby3);
 		$db->setQuery($query,0,$params->get('count',5));
 		$items = $db->loadObjectList();
 		

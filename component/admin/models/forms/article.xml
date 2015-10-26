@@ -179,6 +179,17 @@
 	        class="inputbox" size="45"
 	        labelclass="control-label"
 		/>
+		<field
+				name="art_excluded"
+				type="radio"
+				class="btn-group"
+				label="COM_MAMS_ARTICLE_FIELD_EXCLUDED_LABEL"
+				description="COM_MAMS_ARTICLE_FIELD_EXCLUDED_DESC"
+				default="0"
+				filter="integer">
+			<option	value="1">Yes</option>
+			<option	value="0">No</option>
+		</field>
 		
 		<field name="cats" type="SelectCats" description="COM_MAMS_ARTICLE_FIELD_CAT_DESC" label="COM_MAMS_ARTICLE_FIELD_CAT_LABEL" required="false" multiple="true" class="inputbox span12 small" />
 		<field name="authors" type="SelectAuthors" description="COM_MAMS_ARTICLE_FIELD_AUTHOR_DESC" label="COM_MAMS_ARTICLE_FIELD_AUTHOR_LABEL" required="false" multiple="true" class="inputbox span12 small" />

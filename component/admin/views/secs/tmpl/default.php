@@ -14,11 +14,12 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $archived	= $this->state->get('filter.published') == 2 ? true : false;
 $trashed	= $this->state->get('filter.published') == -2 ? true : false;
-$saveOrder = ($listOrder == 's.ordering');
+$ordering  = ($listOrder == 's.lft');
+$saveOrder = ($listOrder == 's.lft' && strtolower($listDirn) == 'asc');
 $published = $this->state->get('filter.published');
 if ($saveOrder) {
 	$saveOrderingUrl = 'index.php?option=com_mams&task=secs.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'MAMSSecList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	JHtml::_('sortablelist.sortable', 'MAMSSecList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
 }
 $sortFields = $this->getSortFields();
 $db =& JFactory::getDBO();
@@ -85,7 +86,7 @@ $db =& JFactory::getDBO();
 		<thead>
 			<tr>
 				<th width="1%" class="nowrap center hidden-phone">
-					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 's.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 's.lft', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 				</th>	
 				<th width="1%">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
@@ -95,7 +96,7 @@ $db =& JFactory::getDBO();
 				</th>		
 				<th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_SEC_HEADING_NAME','s.sec_name', $listDirn, $listOrder); ?>
-				</th>		
+				</th>
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_SEC_HEADING_TYPE','s.sec_type', $listDirn, $listOrder); ?>
 				</th>		
@@ -120,11 +121,38 @@ $db =& JFactory::getDBO();
 		</thead>
 		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
-		<?php foreach($this->items as $i => $item): 
+		<?php foreach($this->items as $i => $item):
+			$orderkey   = array_search($item->sec_id, $this->ordering[$item->parent_id]);
 			$canEdit = $user->authorise('core.edit','com_mams.sec.' . $item->sec_id);
 			$canChange = $user->authorise('core.edit.state','com_mams.sec.' . $item->sec_id);
+
+			//Get the parents of item for sorting
+			if ($item->level > 1)
+			{
+				$parentsStr = "";
+				$_currentParentId = $item->parent_id;
+				$parentsStr = " " . $_currentParentId;
+				for ($i2 = 0; $i2 < $item->level; $i2++)
+				{
+					foreach ($this->ordering as $k => $v)
+					{
+						$v = implode("-", $v);
+						$v = "-" . $v . "-";
+						if (strpos($v, "-" . $_currentParentId . "-") !== false)
+						{
+							$parentsStr .= " " . $k;
+							$_currentParentId = $k;
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				$parentsStr = "";
+			}
 			?>
-			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->sec_type; ?>">
+			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->sec_type.'-'.$item->parent_id; ?>" parents="<?php echo $parentsStr ?>" level="<?php echo $item->level ?>">
 				<td class="order nowrap center hidden-phone">
 					<?php if ($canChange) :
 						$disableClassName = '';
@@ -141,7 +169,9 @@ $db =& JFactory::getDBO();
 						<i class="icon-menu"></i>
 						</span>
 					<?php endif; ?>
-					<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering;?>" class="width-20 text-area-order " />
+					<?php if ($canChange && $saveOrder) : ?>
+						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $orderkey + 1; ?>" />
+					<?php endif; ?>
 
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->sec_id); ?></td>
@@ -171,6 +201,7 @@ $db =& JFactory::getDBO();
 				</td>
 				<td class="nowrap has-context">
 					<div class="pull-left">
+						<?php echo str_repeat('<span class="gi">&mdash;</span>', $item->level - 1) ?>
 						<?php if ($canEdit) : ?>
 							<a href="<?php echo JRoute::_('index.php?option=com_mams&task=sec.edit&sec_id='.(int) $item->sec_id); ?>">
 							<?php echo $this->escape($item->sec_name); ?></a>

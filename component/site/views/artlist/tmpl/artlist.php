@@ -1,19 +1,21 @@
 <?php
 defined('_JEXEC') or die();
 $first=true;
+
 foreach ($this->articles as $a) {
-	$artlink = "index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias;
+	if ($a->content_type == "article") $artlink = "index.php?option=com_mams&view=article&secid=".$a->art_sec.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias;
+	if ($a->content_type == "section") $artlink = "index.php?option=com_mams&view=artlist&layout=section&secid=".$a->art_id.":".$a->art_alias;
 	if ($a->cats) $artlink .= '&catid='.$a->cats[0]->cat_id;
-		
+
 	echo '<div class="mams-artlist-article';
 	if ($first) { echo ' mams-artlist-article-first'; $first=false; }
 	echo '">';
-	
+
 		//Title
 		echo '<div class="mams-artlist-arttitle">';
 			echo '<a href="'.JRoute::_($artlink).'" class="mams-artlist-artlink">'.$a->art_title.'</a>';
 		echo '</div>';
-		
+
 		//Authors
 		if ($a->auts) {
 			echo '<div class="mams-artlist-artaut">';
@@ -24,11 +26,11 @@ foreach ($this->articles as $a) {
 				echo implode(", ",$auts);
 			echo '</div>';
 		}
-		
+
 		echo '<div class="mams-artlist-arttpdrm">';
-		
-			
-			
+
+
+
 			//Further Article Details
 			echo '<div class="mams-artlist-artdetails">';
 				//Thumb
@@ -45,14 +47,14 @@ foreach ($this->articles as $a) {
 						echo '<div class="mams-artlist-pubinfo">';
 						//Section Link
 						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$a->sec_id.":".$a->sec_alias).'" class="mams-artlist-seclink">'.$a->sec_name.'</a>';
-						
+
 						//Pub Date
 						if ($this->params->get('show_pubdate',1)) {
 							echo ' published on <strong>';
 							echo date("F j, Y",strtotime($a->art_publish_up));
 							echo '</strong>';
 						}
-						
+
 						//Cat Links
 						if ($a->cats) {
 							if ($this->params->get('show_pubdate',1)) {
@@ -62,20 +64,20 @@ foreach ($this->articles as $a) {
 							}
 							$cats = Array();
 							foreach ($a->cats as $c) {
-								if (!$this->params->get('restrictcat',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>'; 
-								else $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=catsec&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>'; 
+								if (!$this->params->get('restrictcat',0)) $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
+								else $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=catsec&secid=".$a->sec_id.":".$a->sec_alias."&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-artlist-catlink">'.$c->cat_title.'</a>';
 							}
 							echo implode(", ",$cats);
 							echo '</em>';
 						}
 						echo '</div>';
 					}
-				
+
 					//Desc
 					echo '<div class="mams-artlist-artdesc">';
 						echo $a->art_desc;
 					echo '</div>';
-					
+
 					//Additional Fields
 					if ($a->fields) {
 						echo '<div class="mams-artlist-artfields">';
@@ -159,7 +161,7 @@ foreach ($this->articles as $a) {
 						echo '</div>';
 					}
 				echo '</div>';
-				
+
 				//Read More
 				if ($this->params->get('show_readmore',1)) {
 					echo '<div class="mams-artlist-artreadmore">';
@@ -169,11 +171,11 @@ foreach ($this->articles as $a) {
 					echo '</div>';
 				}
 			echo '</div>';
-			
-			
-			
+
+
+
 		echo '</div>';
-	
+
 	echo '</div>';
 	echo '<div class="mams-artlist-seperator"></div>';
 

@@ -20,9 +20,9 @@ class JFormFieldSecs extends JFormField
 		$attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
 		$attr .= $this->element['multiple'] ? ' multiple ' : '';
-		
+
 		$mamssec = $this->element['mamssec'] ? $this->element['mamssec'] : "article";
-		
+
 		// Initialize JavaScript field attributes.
 		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 
@@ -36,7 +36,7 @@ class JFormFieldSecs extends JFormField
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
 		$html[] = '<option value="">'.JText::_('COM_MAMS_SELECT_SEC').'</option>';
 		$html[] = JHtml::_('select.options',$db->loadObjectList(),"value","text",$this->value);
-		$html[] = '</select>';		
+		$html[] = '</select>';
 
 		return implode($html);
 	}

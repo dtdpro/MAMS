@@ -13,7 +13,7 @@ if (count($this->secinfo) == 1) {
 		echo '<div class="mams-artlist-secimage"><img src="'.$this->secinfo[0]->sec_image.'" class="mams-artlist-secimage-img"></div>';
 	}
 	echo '<div class="mams-secbycat-header">';
-	if ($this->secinfo[0]->sec_desc) echo '<div class="mams-secbycat-header-secdesc">'.$this->secinfo[0]->sec_desc.'</div>';
+	if ($this->secinfo[0]->sec_desc) echo '<div class="mams-secbycat-header-secdesc">'.$this->secinfo[0]->sec_content.'</div>';
 	echo '<div class="mams-secbycat-header-catlist">';
 	foreach ($this->cats as $c) {
 		if ($i==1) $i=0; else $i=1;

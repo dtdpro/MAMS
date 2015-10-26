@@ -10,6 +10,7 @@ class MAMSViewArticles extends JViewLegacy
 	
 	protected $items;
     protected $cats;
+	protected $authors;
 	protected $pagination;
 	protected $state;
 	
@@ -18,6 +19,7 @@ class MAMSViewArticles extends JViewLegacy
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
         $this->cats = $this->get('Cats');
+		$this->authors = $this->get('AUthors');
 		$this->pagination = $this->get('Pagination');
 		
 		// Set the submenu

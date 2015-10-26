@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>2.4.1</version>
+	<version>2.5.0</version>
 	<description>MOD_MAMSLATEST_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamslatest">mod_mamslatest.php</filename>
@@ -86,18 +86,18 @@
 					<option value="a.art_title DESC">MOD_MAMSLATEST_ORDER_TITDSC</option>
 					<option value="a.ordering ASC">MOD_MAMSLATEST_ORDER_ARTORDERINGASC</option>
 					<option value="a.ordering DESC">MOD_MAMSLATEST_ORDER_ARTORDERINGDSC</option>
-					<option value="s.ordering ASC">MOD_MAMSLATEST_ORDER_SECORDERINGASC</option>
-					<option value="s.ordering DESC">MOD_MAMSLATEST_ORDER_SECORDERINGDSC</option>
+					<option value="s.lft ASC">MOD_MAMSLATEST_ORDER_SECORDERINGASC</option>
+					<option value="s.lft DESC">MOD_MAMSLATEST_ORDER_SECORDERINGDSC</option>
 				</field>
-				<field name="orderby2" type="list" description="MOD_MAMSLATEST_FIELD_ORDERBY2_DESC" label="MOD_MAMSLATEST_FIELD_ORDERBY2_LABEL" default="s.ordering ASC">
+				<field name="orderby2" type="list" description="MOD_MAMSLATEST_FIELD_ORDERBY2_DESC" label="MOD_MAMSLATEST_FIELD_ORDERBY2_LABEL" default="s.lft ASC">
 					<option value="a.art_publish_up ASC">MOD_MAMSLATEST_ORDER_PUBASC</option>
 					<option value="a.art_publish_up DESC">MOD_MAMSLATEST_ORDER_PUBDSC</option>
 					<option value="a.art_title ASC">MOD_MAMSLATEST_ORDER_TITASC</option>
 					<option value="a.art_title DESC">MOD_MAMSLATEST_ORDER_TITDSC</option>
 					<option value="a.ordering ASC">MOD_MAMSLATEST_ORDER_ARTORDERINGASC</option>
 					<option value="a.ordering DESC">MOD_MAMSLATEST_ORDER_ARTORDERINGDSC</option>
-					<option value="s.ordering ASC">MOD_MAMSLATEST_ORDER_SECORDERINGASC</option>
-					<option value="s.ordering DESC">MOD_MAMSLATEST_ORDER_SECORDERINGDSC</option>
+					<option value="s.lft ASC">MOD_MAMSLATEST_ORDER_SECORDERINGASC</option>
+					<option value="s.lft DESC">MOD_MAMSLATEST_ORDER_SECORDERINGDSC</option>
 				</field>
 				<field name="orderby3" type="list" description="MOD_MAMSLATEST_FIELD_ORDERBY3_DESC" label="MOD_MAMSLATEST_FIELD_ORDERBY3_LABEL" default="a.ordering ASC">
 					<option value="a.art_publish_up ASC">MOD_MAMSLATEST_ORDER_PUBASC</option>
@@ -106,8 +106,8 @@
 					<option value="a.art_title DESC">MOD_MAMSLATEST_ORDER_TITDSC</option>
 					<option value="a.ordering ASC">MOD_MAMSLATEST_ORDER_ARTORDERINGASC</option>
 					<option value="a.ordering DESC">MOD_MAMSLATEST_ORDER_ARTORDERINGDSC</option>
-					<option value="s.ordering ASC">MOD_MAMSLATEST_ORDER_SECORDERINGASC</option>
-					<option value="s.ordering DESC">MOD_MAMSLATEST_ORDER_SECORDERINGDSC</option>
+					<option value="s.lft ASC">MOD_MAMSLATEST_ORDER_SECORDERINGASC</option>
+					<option value="s.lft DESC">MOD_MAMSLATEST_ORDER_SECORDERINGDSC</option>
 				</field>
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
 			</fieldset>

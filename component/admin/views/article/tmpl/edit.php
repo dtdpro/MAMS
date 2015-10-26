@@ -87,6 +87,10 @@ $params = $this->form->getFieldsets('params');
 						<div class="control-label"><?php echo $this->form->getLabel('art_added'); ?></div>
 						<div class="controls"><?php echo $this->form->getInput('art_added'); ?></div>
 					</div>
+					<div class="control-group">
+						<div class="control-label"><?php echo $this->form->getLabel('art_excluded'); ?></div>
+						<div class="controls"><?php echo $this->form->getInput('art_excluded'); ?></div>
+					</div>
 				</div>
 				
 				<div class="span6 form-horizontal">

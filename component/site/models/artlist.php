@@ -39,24 +39,45 @@ class MAMSModelArtList extends JModelList
 	{
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
+        $query1 = $db->getQuery(true);
+		$query2 = $db->getQuery(true);
 		$cfg = MAMSHelper::getConfig();
-		
-		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
-		$query->from('#__mams_articles AS a');
-		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
-		if (count($this->artids)) $query->where('a.art_id IN ('.implode(",",$this->artids).')');
-		if (count($this->secid)) $query->where('a.art_sec IN ('.implode(",",$this->secid).')');
-		$query->where('a.state >= 1');
-		$query->where('a.access IN ('.implode(",",$this->alvls).')');
-		if ($this->params->get('restrict_feat',0)) $query->where('a.feataccess IN ('.implode(",",$this->alvls).')');
-		if (!in_array($cfg->ovgroup,$this->alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
-		switch ($this->params->get("orderby","pubdsc")) {
-			case "titasc": $query->order('a.art_title ASC'); break;
-			case "titdsc": $query->order('a.art_title DESC'); break;
-			case "pubasc": $query->order('a.art_publish_up ASC, s.ordering ASC, a.ordering ASC'); break;
-			case "pubdsc": $query->order('a.art_publish_up DESC, s.ordering ASC, a.ordering ASC'); break;
-			default: $query->order('a.art_publish_up DESC, s.ordering ASC, a.ordering ASC'); break;
-		}
+
+        //Set Order
+        switch ($this->params->get("orderby","pubdsc")) {
+            case "titasc": $order = 'art_title ASC'; break;
+            case "titdsc": $order = 'art_title DESC'; break;
+            case "pubasc": $order = 'art_publish_up ASC, lft ASC, ordering ASC'; break;
+            case "pubdsc": $order = 'art_publish_up DESC, lft ASC, ordering ASC'; break;
+            default: $order = 'art_publish_up DESC, lft ASC, ordering ASC'; break;
+        }
+
+		// Query Articles
+        $query1->select('a.art_id as art_id, a.art_sec as art_sec, a.art_title as art_title, a.art_alias as art_alias, a.art_desc as art_desc, a.art_thumb as art_thumb, a.art_fielddata as art_fielddata, a.art_publish_up as art_publish_up, a.params, a.ordering as ordering, "article" as content_type, sec.sec_name, sec.sec_alias, sec.lft as lft ');
+		$query1->from('#__mams_articles AS a');
+		$query1->join('RIGHT','#__mams_secs AS sec ON sec.sec_id = a.art_sec');
+		if (count($this->artids)) $query1->where('a.art_id IN ('.implode(",",$this->artids).')');
+		if (count($this->secid)) $query1->where('a.art_sec IN ('.implode(",",$this->secid).')');
+		$query1->where('a.state >= 1');
+		$query1->where('a.access IN ('.implode(",",$this->alvls).')');
+		if ($this->params->get('restrict_feat',0)) $query1->where('a.feataccess IN ('.implode(",",$this->alvls).')');
+		if (!in_array($cfg->ovgroup,$this->alvls)) { $query1->where('a.art_publish_up <= NOW()'); $query1->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+
+		// Query Section Children if looking at secs
+        if (count($this->secid)) {
+			$query2->select('s.sec_id as art_id, s.sec_id as art_sec, s.sec_name as art_title, s.sec_alias as art_alias, s.sec_desc as art_desc, s.sec_thumb as art_thumb, "" as art_fielddata, date(s.sec_added) as art_publish_up, "" as params, s.lft as ordering, "section" as content_type, sec.sec_name, sec.sec_alias, sec.lft as lft');
+			$query2->from('#__mams_secs AS s');
+			$query2->join('RIGHT','#__mams_secs AS sec ON sec.sec_id = s.parent_id');
+			$query2->where('s.parent_id IN ('.implode(",",$this->secid).')');
+			$query2->where('s.published >= 1');
+			$query2->where('s.access IN ('.implode(",",$this->alvls).')');
+
+			$query->select('l.*')->from('('.$query1->union($query2).') as l')->order($order);
+
+		} else {
+            $query=$query1;
+            $query->order($order);
+        }
 		
 		return $query;
 	}
@@ -81,28 +102,29 @@ class MAMSModelArtList extends JModelList
 				
 		//Get Authors, Cats, Fields
 		foreach ($items as &$i) {
-			$i->auts=$this->getFieldAuthors($i->art_id,"5");
-			
-			$qc=$db->getQuery(true);
-			$qc->select('c.cat_id,c.cat_title,c.cat_alias');
-			$qc->from('#__mams_artcat as ac');
-			$qc->join('RIGHT','#__mams_cats AS c ON ac.ac_cat = c.cat_id');
-			$qc->where('ac.published >= 1');
-			$qc->where('c.published >= 1');
-			$qc->where('c.access IN ('.implode(",",$this->alvls).')');
-			$qc->where('ac.ac_art = '.$i->art_id);
-			$qc->order('ac.ordering ASC');
-			$db->setQuery($qc);
-			$i->cats=$db->loadObjectList();
-			
-			if ($i->art_fielddata)
-			{
-				$registry = new JRegistry;
-				$registry->loadString($i->art_fielddata);
-				$i->art_fielddata = $registry->toObject();
+			if ($i->content_type == 'article') {
+				$i->auts = $this->getFieldAuthors($i->art_id, "5");
+
+				$qc = $db->getQuery(true);
+				$qc->select('c.cat_id,c.cat_title,c.cat_alias');
+				$qc->from('#__mams_artcat as ac');
+				$qc->join('RIGHT', '#__mams_cats AS c ON ac.ac_cat = c.cat_id');
+				$qc->where('ac.published >= 1');
+				$qc->where('c.published >= 1');
+				$qc->where('c.access IN (' . implode(",", $this->alvls) . ')');
+				$qc->where('ac.ac_art = ' . $i->art_id);
+				$qc->order('ac.ordering ASC');
+				$db->setQuery($qc);
+				$i->cats = $db->loadObjectList();
+
+				if ($i->art_fielddata) {
+					$registry = new JRegistry;
+					$registry->loadString($i->art_fielddata);
+					$i->art_fielddata = $registry->toObject();
+				}
+
+				$i->fields = $this->getArticleListFields($i->art_id);
 			}
-			
-			$i->fields = $this->getArticleListFields($i->art_id);
 		}
 		
 		return $items;
@@ -415,6 +437,22 @@ class MAMSModelArtList extends JModelList
 			}
 		}
 	
+		return $items;
+	}
+
+	function getSecChildren($sec) {
+		$db =& JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+		$query->select('c.*');
+		$query->from('#__mams_secs AS c');
+		$query->where('c.sec_type="article"');
+		$query->where('parent_id IN ('.implode(',',$sec).')');
+		$query->where('c.published >= 1');
+		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		$query->order('c.lft ASC');
+		$db->setQuery($query);
+		$items = $db->loadObjectList();
 		return $items;
 	}
 

@@ -16,6 +16,12 @@ class MAMSViewSecs extends JViewLegacy
 		$this->state		= $this->get('State');
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
+
+		// Preprocess the list of items to find ordering divisions.
+		foreach ($this->items as &$item)
+		{
+			$this->ordering[$item->parent_id][] = $item->sec_id;
+		}
 		
 		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
 		
@@ -53,7 +59,11 @@ class MAMSViewSecs extends JViewLegacy
 		} else if ($canDo->get('core.edit.state')) {
 			JToolBarHelper::trash('secs.trash');
 		}
-		
+		if ($canDo->get('core.admin'))
+		{
+			JToolbarHelper::custom('secs.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
+		}
+
 		$typesl[1] = JHTML::_('select.option',  'article','Article');
 		$typesl[2] = JHTML::_('select.option',  'author','Authors');
 		
@@ -67,7 +77,7 @@ class MAMSViewSecs extends JViewLegacy
 	protected function getSortFields()
 	{
 		return array(
-				's.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+				's.lft' => JText::_('JGRID_HEADING_ORDERING'),
 				's.published' => JText::_('JSTATUS'),
 				's.sec_id' => JText::_('JGRID_HEADING_ID'),
 				's.sec_type' => JText::_('COM_MAMS_SEC_HEADING_TYPE'),

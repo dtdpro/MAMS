@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.1.1</version>
+	<version>1.2.0</version>
 	<description>MOD_MAMSMOST_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamsmost">mod_mamsmost.php</filename>
@@ -41,6 +41,10 @@
                     <option value="0">JHIDE</option>
                     <option value="1">JSHOW</option>
                 </field>
+				<field name="show_excluded" type="radio" class="btn-group" description="MOD_MAMSMOST_SHOW_EXCLUDED_DESC" label="MOD_MAMSMOST_SHOW_EXCLUDED_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 				<field name="show_thumb" type="radio" class="btn-group" description="MOD_MAMSMOST_SHOW_THUMB_DESC" label="MOD_MAMSMOST_SHOW_THUMB_LABEL" default="0">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>

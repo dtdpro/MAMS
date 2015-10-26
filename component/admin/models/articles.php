@@ -82,6 +82,19 @@ class MAMSModelArticles extends JModelList
         return $catsbyid;
     }
 
+    public function getAuthors() {
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $query->select('*')->from('#__mams_authors');
+        $db->setQuery($query);
+        $auths = $db->loadObjectList();
+        $authsbyid=array();
+        foreach ($auths as $a) {
+            $authsbyid[$a->auth_id] = $a->auth_fname.(($a->auth_mi) ? " ".$a->auth_mi : "")." ".$a->auth_lname.(($a->auth_titles) ? ", ".$a->auth_titles : "");
+        }
+        return $authsbyid;
+    }
+
     public function getItems()
     {
         // Get a storage key.
@@ -104,12 +117,22 @@ class MAMSModelArticles extends JModelList
         }
 
         foreach ($items as &$item) {
+
+			// Categories
             $query = $this->_db->getQuery(true);
             $query->select('ac_cat');
             $query->from('#__mams_artcat');
             $query->where('ac_art = '.$item->art_id);
             $this->_db->setQuery($query);
             $item->cats = $this->_db->loadColumn();
+
+            // Authors
+            $query = $this->_db->getQuery(true);
+            $query->select('aa_auth');
+            $query->from('#__mams_artauth');
+            $query->where('aa_art = '.$item->art_id);
+            $this->_db->setQuery($query);
+            $item->authors = $this->_db->loadColumn();
         }
 
         // Add the items to the internal cache.
@@ -209,9 +232,9 @@ class MAMSModelArticles extends JModelList
 		$orderDirn	= $this->state->get('list.direction');
 		
 		if ($orderCol == 'a.ordering') {
-			$query->order($db->escape('a.art_publish_up '.$orderDirn.', s.ordering '.$orderDirn.', a.ordering '.$orderDirn));
+			$query->order($db->escape('a.art_publish_up '.$orderDirn.', s.lft '.$orderDirn.', a.ordering '.$orderDirn));
 		} else if ($orderCol == 'a.art_publish_up') {
-			$query->order($db->escape('a.art_publish_up '.$orderDirn.', s.ordering ASC, a.ordering ASC'));
+			$query->order($db->escape('a.art_publish_up '.$orderDirn.', s.lft ASC, a.ordering ASC'));
 		} else{
 			$query->order($db->escape($orderCol.' '.$orderDirn));
 		}

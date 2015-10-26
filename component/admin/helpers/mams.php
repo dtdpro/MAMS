@@ -70,12 +70,11 @@ abstract class MAMSHelper
 	{
 		$db = JFactory::getDbo();
 		$db->setQuery(
-			'SELECT sec_id AS value, sec_name AS text' .
+			'SELECT sec_id AS value, sec_name AS text, level' .
 			' FROM #__mams_secs WHERE sec_type = "'.$type.'" ' .
 			' ORDER BY sec_name'
 		);
 		$options = $db->loadObjectList();
-		
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{

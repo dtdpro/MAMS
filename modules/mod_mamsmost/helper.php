@@ -24,6 +24,7 @@ class modMAMSMostHelper
         $query->from('#__mams_track AS t');
 		$query->join('LEFT','#__mams_articles AS a ON t.mt_item = a.art_id');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
+		if (!$params->get('show_excluded',0)) $query->where('a.art_excluded = 0');
 		$query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$query->where('a.state >= 1');
 		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
