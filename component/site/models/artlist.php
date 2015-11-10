@@ -53,7 +53,7 @@ class MAMSModelArtList extends JModelList
         }
 
 		// Query Articles
-        $query1->select('a.art_id as art_id, a.art_sec as art_sec, a.art_title as art_title, a.art_alias as art_alias, a.art_desc as art_desc, a.art_thumb as art_thumb, a.art_fielddata as art_fielddata, a.art_publish_up as art_publish_up, a.params, a.ordering as ordering, "article" as content_type, sec.sec_name, sec.sec_alias, sec.lft as lft ');
+        $query1->select('a.art_id as art_id, a.art_sec as art_sec, a.art_title as art_title, a.art_alias as art_alias, a.art_desc as art_desc, a.art_thumb as art_thumb, a.art_fielddata as art_fielddata, a.art_publish_up as art_publish_up, a.params, a.ordering as ordering, "article" as content_type, sec.sec_id, sec.sec_name, sec.sec_alias, sec.lft as lft ');
 		$query1->from('#__mams_articles AS a');
 		$query1->join('RIGHT','#__mams_secs AS sec ON sec.sec_id = a.art_sec');
 		if (count($this->artids)) $query1->where('a.art_id IN ('.implode(",",$this->artids).')');
@@ -65,7 +65,7 @@ class MAMSModelArtList extends JModelList
 
 		// Query Section Children if looking at secs
         if (count($this->secid)) {
-			$query2->select('s.sec_id as art_id, s.sec_id as art_sec, s.sec_name as art_title, s.sec_alias as art_alias, s.sec_desc as art_desc, s.sec_thumb as art_thumb, "" as art_fielddata, date(s.sec_added) as art_publish_up, "" as params, s.lft as ordering, "section" as content_type, sec.sec_name, sec.sec_alias, sec.lft as lft');
+			$query2->select('s.sec_id as art_id, s.sec_id as art_sec, s.sec_name as art_title, s.sec_alias as art_alias, s.sec_desc as art_desc, s.sec_thumb as art_thumb, "" as art_fielddata, date(s.sec_added) as art_publish_up, "" as params, s.lft as ordering, "section" as content_type, sec.sec_id, sec.sec_name, sec.sec_alias, sec.lft as lft');
 			$query2->from('#__mams_secs AS s');
 			$query2->join('RIGHT','#__mams_secs AS sec ON sec.sec_id = s.parent_id');
 			$query2->where('s.parent_id IN ('.implode(",",$this->secid).')');
