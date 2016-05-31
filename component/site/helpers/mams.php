@@ -3,13 +3,13 @@ defined('_JEXEC') or die('Restricted access');
 
 class MAMSHelper {
 
-	function getConfig() {
+	public static function getConfig() {
 		$menuConfig = JComponentHelper::getParams('com_mams'); 
 		$mamscfg = $menuConfig->toObject();
 		return $mamscfg;
 	}
-	
-	function trackViewed($item, $type) {
+
+	public static function trackViewed($item, $type) {
 		$db =& JFactory::getDBO();
 		$sewn = JFactory::getSession();
 		$sessionid = $sewn->getId();

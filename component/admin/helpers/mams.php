@@ -147,7 +147,7 @@ abstract class MAMSHelper
 		return $options;
 	}
 
-	function getConfig() {
+	public static function getConfig() {
 		$menuConfig = JComponentHelper::getParams('com_mams');
 		$mamscfg = $menuConfig->toObject();
 		return $mamscfg;

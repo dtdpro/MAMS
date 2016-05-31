@@ -10,11 +10,11 @@ class MAMSController extends JControllerLegacy
 	 *
 	 * @access	public
 	 */
-	function display()
+	function display($cachable = false, $urlparams = false)
 	{
 		$vName = $this->input->getCmd('view', 'artlist');
 		$this->input->set('view', $vName);
-		parent::display();
+		parent::display($cachable,$urlparams);
 	}
 
 }
