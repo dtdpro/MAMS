@@ -11,37 +11,46 @@ class modMAMSMostHelper
 		$db		= JFactory::getDbo();
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
-		
+
 		$alvls = Array();
 		$alvls = $user->getAuthorisedViewLevels();
 		$alvls = array_merge($alvls,$cfg->reggroup);
 
-        if (!$params->get('show_featured',1)) $featured = modMAMSMostHelper::getFeatured();
+		if (!$params->get('show_featured',1)) $featured = modMAMSMostHelper::getFeatured();
 
 		$query	= $db->getQuery(true);
 
-		$query->select('a.*,s.*,count(*) as arthits');
-        $query->from('#__mams_track AS t');
-		$query->join('LEFT','#__mams_articles AS a ON t.mt_item = a.art_id');
+		$query->select('t.mt_item,count(*) as arthits');
+		$query->from('#__mams_track AS t');
+		$query->where('t.mt_type = "article"');
+		$query->where('t.mt_time >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_read',30).' day)');
+		$query->group('t.mt_item');
+		$query->order('arthits DESC');
+		$db->setQuery($query);
+		$artids = $db->loadColumn();
+
+
+		$query	= $db->getQuery(true);
+
+		$query->select('a.*,s.*');
+		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		if (!$params->get('show_excluded',0)) $query->where('a.art_excluded = 0');
 		$query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$query->where('a.state >= 1');
 		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
-        $query->where('a.art_publish_up >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_old',90).' day)');
-        $query->where('t.mt_type = "article"');
-        $query->where('t.mt_time >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_read',30).' day)');
-        if (!$params->get('show_featured',1) && count($featured)) $query->where("a.art_id NOT IN (".implode(',',$featured).')');
-        $query->group('t.mt_item');
-        $query->order('arthits DESC');
-        $db->setQuery($query,0,$params->get('count',5));
-        $items = $db->loadObjectList();
-								
+		$query->where('a.art_publish_up >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_old',90).' day)');
+		$query->where('a.art_id IN('.implode(",",$artids).')');
+		if (!$params->get('show_featured',1) && count($featured)) $query->where("a.art_id NOT IN (".implode(',',$featured).')');
+		$query->order('FIELD(art_id,'.implode(",",$artids).')');
+		$db->setQuery($query,0,$params->get('count',5));
+		$items = $db->loadObjectList();
+
 		foreach ($items as &$i) {
-			
+
 			//Authors
 			$i->auts = modMAMSMostHelper::getFieldAuthors($i->art_id,"5",$alvls);
-			
+
 			//Categories
 			$qc=$db->getQuery(true);
 			$qc->select('c.cat_id,c.cat_title,c.cat_alias');
@@ -54,7 +63,7 @@ class modMAMSMostHelper
 			$qc->order('ac.ordering ASC');
 			$db->setQuery($qc);
 			$i->cats=$db->loadObjectList();
-			
+
 			if ($i->art_fielddata)
 			{
 				$registry = new JRegistry;
@@ -65,14 +74,14 @@ class modMAMSMostHelper
 				$i->fields = modMAMSMostHelper::getArticleListFields($i->art_id,$alvls);
 			}
 		}
-		
+
 		return $items;
 	}
-	
+
 	protected function getArticleListFields($artid,$alvls) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
-		
+
 		$query->select('*,f.params as field_params,g.params as group_params');
 		$query->from("#__mams_article_fields as f");
 		$query->select('g.group_title');
@@ -86,35 +95,35 @@ class modMAMSMostHelper
 		$query->order('f.ordering ASC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
-		
+
 		foreach ($items as &$i) {
 			switch ($i->field_type) {
 				case "auths": $i->data = modMAMSMostHelper::getFieldAuthors($artid,$i->field_id,$alvls); break;
 				case "dloads": $i->data = modMAMSMostHelper::getFieldDownloads($artid,$i->field_id,$alvls); break;
 				case "links": $i->data = modMAMSMostHelper::getFieldLinks($artid,$i->field_id,$alvls); break;
 			}
-			
+
 			$registryf = new JRegistry;
 			$registryf->loadString($i->field_params);
 			$i->field_params = $registryf->toObject();
-			
+
 			$registryg = new JRegistry;
 			$registryg->loadString($i->group_params);
 			$i->group_params = $registryg->toObject();
 		}
-			
+
 		return $items;
 	}
 
-    protected function getFeatured() {
-        $db =& JFactory::getDBO();
-        $query=$db->getQuery(true);
-        $query->select('af_art');
-        $query->from('#__mams_artfeat as f');
-        $db->setQuery($query);
-        return $db->loadColumn();
-    }
-	
+	protected function getFeatured() {
+		$db =& JFactory::getDBO();
+		$query=$db->getQuery(true);
+		$query->select('af_art');
+		$query->from('#__mams_artfeat as f');
+		$db->setQuery($query);
+		return $db->loadColumn();
+	}
+
 	protected function getFieldAuthors($artid, $fid, $alvls) {
 		$db =& JFactory::getDBO();
 		$qa=$db->getQuery(true);
@@ -130,7 +139,7 @@ class modMAMSMostHelper
 		$db->setQuery($qa);
 		return $db->loadObjectList();
 	}
-	
+
 	protected function getFieldDownloads($artid, $fid, $alvls) {
 		$db =& JFactory::getDBO();
 		$qa=$db->getQuery(true);
@@ -146,7 +155,7 @@ class modMAMSMostHelper
 		$db->setQuery($qa);
 		return $db->loadObjectList();
 	}
-	
+
 	protected function getFieldLinks($artid, $fid, $alvls) {
 		$db =& JFactory::getDBO();
 		$qa=$db->getQuery(true);
