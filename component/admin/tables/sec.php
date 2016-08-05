@@ -28,7 +28,7 @@ class MAMSTableSec extends JTable
 		return $this->sec_name;
 	}
 	
-	protected function _getAssetParentId($table = null, $id = null)
+	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
 		$assetId = null;
 	

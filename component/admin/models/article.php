@@ -826,7 +826,7 @@ class MAMSModelArticle extends JModelAdmin
 		return true;
 	}
 
-	protected function prepareTable(&$table)
+	protected function prepareTable($table)
 	{
 		if (empty($table->art_id)) {
 			$table->reorder('art_sec = "'.$table->art_sec.'" && art_publish_up = "'.$table->art_publish_up.'"');
