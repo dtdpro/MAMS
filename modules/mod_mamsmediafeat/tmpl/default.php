@@ -15,7 +15,10 @@ if ($items) {
 		echo '">';
 		echo '<video width="'.(int)$params->get('player_w','512').'" height="'.(int)$params->get('player_h','288').'" ';
 		if (!$params->get("player_fixed",0)) echo 'style="width: 100%; height: 100%;" ';
-		echo 'id="mams-featmedia-mediaelement" src="http://'.$config->vid5_url.'/'.$items[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$items[0]->med_still.'">';
+		echo 'id="mams-featmedia-mediaelement" src="';
+		if ($config->vid_https) echo 'https://';
+		else echo 'http://';
+		echo $config->vid5_url.'/'.$items[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$items[0]->med_still.'">';
 		echo '<link rel="postroll" href="'.JURI::base( true ).'/components/com_mams/postroll.php?medid='.$items[0]->med_id.'" />';
 		echo '</video>';
 		echo '<script type="text/javascript">';
