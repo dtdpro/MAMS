@@ -105,6 +105,10 @@
 		<field name="vid_w" type="text" label="COM_MAMS_CONFIG_FIELD_VIDW_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />
 		<field name="vid_h" type="text" label="COM_MAMS_CONFIG_FIELD_VIDH_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDH_DESC" size="5" class="inputbox" required="false" integer="true" default="432" />
 		<field name="vid5_url" type="text" label="COM_MAMS_CONFIG_FIELD_VID5URL_LABEL" description="COM_MAMS_CONFIG_FIELD_VID5URL_DESC" size="120" class="inputbox" required="false" default="files.mycdn.com" />
+		<field name="vid_https" type="radio" label="COM_MAMS_CONFIG_FIELD_VIDHTTPS_LABEL" description="COM_MAMS_CONFIG_FIELD_VIDHTTPS_DESC" default="0" class="btn-group">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="playlist_h" type="text" label="COM_MAMS_CONFIG_FIELD_PLAYLISTH_LABEL" description="COM_MAMS_CONFIG_FIELD_PLAYLISTH_DESC" size="5" class="inputbox" required="false" integer="true" default="200" />
 		<field name="player_fixed" type="radio" description="COM_MAMS_CONFIG_FIELD_PLAYER_FIXED_DESC" label="COM_MAMS_CONFIG_FIELD_PLAYER_FIXED_LABEL" default="0" class="btn-group">
 			<option value="1">Fixed</option>
