@@ -61,7 +61,10 @@ class  plgContentMVid extends JPlugin
 				$output .=  '">';
 				$output .=  '<video width="'.(int)$mamscfg->vid_w.'" height="'.(int)$mamscfg->vid_h.'" ';
 				if (!$mamscfg->player_fixed) $output .=  'style="width: 100%; height: 100%;" ';
-				$output .=  'id="mams-plugin-mediaelement'.$media->med_id.'" src="http://'.$mamscfg->vid5_url.'/'.$media->med_file.'" type="video/mp4" controls="controls" poster="'.$media->med_still.'"></video>';
+				$output .=  'id="mams-plugin-mediaelement'.$media->med_id.'" src="';
+				if ($mamscfg->vid_https) $output .=  'https://';
+				else $output .=  'http://';
+				$output .=  $mamscfg->vid5_url.'/'.$media->med_file.'" type="video/mp4" controls="controls" poster="'.$media->med_still.'"></video>';
 				$output .=  '<script type="text/javascript">';
 				$output .=  "var fmplayer = new MediaElementPlayer('#mams-plugin-mediaelement".$media->med_id."');";
 				$output .=  '</script>';
