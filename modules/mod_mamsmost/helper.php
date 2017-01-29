@@ -18,6 +18,21 @@ class modMAMSMostHelper
 
 		if (!$params->get('show_featured',1)) $featured = modMAMSMostHelper::getFeatured();
 
+		if (count($params->get('exclude_cats',array()))) {
+			$excluded_cats = array();
+			foreach ($params->get('exclude_cats') as $ec) {
+				$excluded_cats[] = (int)$ec;
+			}
+			$qea=$db->getQuery(true);
+			$qea->select('ac_art');
+			$qea->from('#__mams_artcat');
+			$qea->where('ac_cat IN ('.implode(",",$excluded_cats).')');
+			$db->setQuery($qea);
+			$exclude_articles = $db->loadColumn();
+		} else {
+			$exclude_articles = array();
+		}
+
 		$query	= $db->getQuery(true);
 
 		$query->select('t.mt_item,count(*) as arthits');
@@ -42,6 +57,7 @@ class modMAMSMostHelper
 		$query->where('a.art_publish_up >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_old',90).' day)');
 		$query->where('a.art_id IN('.implode(",",$artids).')');
 		if (!$params->get('show_featured',1) && count($featured)) $query->where("a.art_id NOT IN (".implode(',',$featured).')');
+		if (count($exclude_articles)) $query->where("a.art_id NOT IN (".implode(',',$exclude_articles).')');
 		$query->order('FIELD(art_id,'.implode(",",$artids).')');
 		$db->setQuery($query,0,$params->get('count',5));
 		$items = $db->loadObjectList();
