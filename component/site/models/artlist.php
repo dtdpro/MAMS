@@ -382,12 +382,19 @@ class MAMSModelArtList extends JModelList
 		}
 		if ($this->params->get('only_feat',0)) {
 			$query->where('c.cat_featured = 1');
-			$query->where('c.cat_feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		} elseif ($this->params->get('restrict_feat',0)) {
-			$query->where('c.cat_feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		}
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
+
+		// Remove categories not in Access Level List when enabled
+		if ($this->params->get('only_feat',0) || $this->params->get('restrict_feat',0)) {
+			foreach ($items as $k => $i) {
+				$alintersect = array_intersect(explode(",",$i->cat_feataccess),$user->getAuthorisedViewLevels());
+				if (!count($alintersect)) {
+					unset($items[$k]);
+				}
+			}
+		}
 		
 		if ($artcount) {
 			foreach ($items as &$i) {

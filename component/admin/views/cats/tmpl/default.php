@@ -201,12 +201,21 @@ if ($saveOrder) {
 			<div class="control-group">
 				<div class="controls">
 					<?php 
-						echo '<label id="batch-feataccess-lbl" for="batch-feataccess" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL_DESC') . '">';
-						echo JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL').'</label>';
-						echo JHtml::_('access.assetgrouplist','batch[featassetgroup_id]', '','class="inputbox"',array('title' => JText::_('JLIB_HTML_BATCH_NOCHANGE'),'id' => 'batch-feataccess')); 
+						echo '<label id="batch-addfeataccess-lbl" for="batch-addfeataccess" class="hasTip" title="' . JText::_('COM_MAMS_CAT_BATCH_ADDFEATACCESS_LABEL') . '::'. JText::_('COM_MAMS_CAT_BATCH_ADDFEATACCESS_LABEL_DESC') . '">';
+						echo JText::_('COM_MAMS_CAT_BATCH_ADDFEATACCESS_LABEL').'</label>';
+						echo JHtml::_('access.assetgrouplist','batch[addfeatassetgroup_id]', '','class="inputbox"',array('title' => JText::_('JLIB_HTML_BATCH_NOCHANGE'),'id' => 'batch-addfeataccess'));
 					?>
 				</div>
 			</div>
+            <div class="control-group">
+                <div class="controls">
+					<?php
+					echo '<label id="batch-rmvfeataccess-lbl" for="batch-rmvfeataccess" class="hasTip" title="' . JText::_('COM_MAMS_CAT_BATCH_RMVFEATACCESS_LABEL') . '::'. JText::_('COM_MAMS_CAT_BATCH_RMVFEATACCESS_LABEL_DESC') . '">';
+					echo JText::_('COM_MAMS_CAT_BATCH_RMVFEATACCESS_LABEL').'</label>';
+					echo JHtml::_('access.assetgrouplist','batch[rmvfeatassetgroup_id]', '','class="inputbox"',array('title' => JText::_('JLIB_HTML_BATCH_NOCHANGE'),'id' => 'batch-rmvfeataccess'));
+					?>
+                </div>
+            </div>
 		</div>
 		<div class="modal-footer">	
 			<button class="btn" type="button" onclick="document.id('batch-access').value='';document.id('batch-feataccess').value='';document.id('featsection_id').value='';" data-dismiss="modal">

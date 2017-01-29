@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_cats` (
   `cat_desc` text NOT NULL,
   `cat_image` varchar(255) NOT NULL,
   `cat_featured` tinyint(1) NOT NULL DEFAULT '0',
-  `cat_feataccess` int(11) NOT NULL DEFAULT '1',
+  `cat_feataccess` text NOT NULL,
   `cat_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `cat_modified` datetime NOT NULL,
   `published` int(11) NOT NULL,

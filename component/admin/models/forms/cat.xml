@@ -82,13 +82,13 @@
 		</field>
 		<field
 			name="cat_feataccess"
-			type="accesslevel"
+			type="AccessLevelMulti"
 			id="cat_feataccess"
 			class="inputbox"
 			label="COM_MAMS_CAT_FIELD_FEATACCESS_LABEL"
 			description="COM_MAMS_CAT_FIELD_FEATACCESS_DESC"
 			default="1"
-			filter="integer"
+			multiple="true"
 		/>
 	</fieldset>
 </form>

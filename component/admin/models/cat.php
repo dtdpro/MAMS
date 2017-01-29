@@ -116,13 +116,23 @@ class MAMSModelCat extends JModelAdmin
 			$done = true;
 		}
 	
-		if (!empty($commands['featassetgroup_id']))
+		if (!empty($commands['addfeatassetgroup_id']))
 		{
-			if (!$this->batchFeatAccess($commands['featassetgroup_id'], $pks, $contexts))
+			if (!$this->batchAddFeatAccess($commands['addfeatassetgroup_id'], $pks, $contexts))
 			{
 				return false;
 			}
 	
+			$done = true;
+		}
+
+		if (!empty($commands['rmvfeatassetgroup_id']))
+		{
+			if (!$this->batchRmvFeatAccess($commands['rmvfeatassetgroup_id'], $pks, $contexts))
+			{
+				return false;
+			}
+
 			$done = true;
 		}
 	
@@ -138,7 +148,7 @@ class MAMSModelCat extends JModelAdmin
 		return true;
 	}
 	
-	protected function batchFeatAccess($value, $pks, $contexts)
+	protected function batchAddFeatAccess($value, $pks, $contexts)
 	{
 		// Set the variables
 		$user = JFactory::getUser();
@@ -148,7 +158,11 @@ class MAMSModelCat extends JModelAdmin
 			if ($user->authorise('core.edit', $contexts[$pk])) {
 				$table->reset();
 				$table->load($pk);
-				$table->cat_feataccess = (int) $value;
+				$curlevels = explode(",",$table->cat_feataccess);
+
+				if (!in_array($value,$curlevels)) $curlevels[]=$value;
+
+				$table->cat_feataccess = implode(",",$curlevels);
 	
 				if (!$table->check()) { $this->setError($table->getError()); return false; }
 	
@@ -164,7 +178,174 @@ class MAMSModelCat extends JModelAdmin
 	
 		return true;
 	}
-	
+
+	protected function batchRmvFeatAccess($value, $pks, $contexts)
+	{
+		// Set the variables
+		$user = JFactory::getUser();
+		$table = $this->getTable();
+
+		foreach ($pks as $pk) {
+			if ($user->authorise('core.edit', $contexts[$pk])) {
+				$table->reset();
+				$table->load($pk);
+				$curlevels = explode(",",$table->cat_feataccess);
+
+				if(($key = array_search($value, $curlevels)) !== false) {
+					unset($curlevels[$key]);
+				}
+
+				$table->cat_feataccess = implode(",",$curlevels);
+
+				if (!$table->check()) { $this->setError($table->getError()); return false; }
+
+				if (!$table->store()) { $this->setError($table->getError()); return false; }
+			} else {
+				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				return false;
+			}
+		}
+
+		// Clean the cache
+		$this->cleanCache();
+
+		return true;
+	}
+
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  JObject|boolean  Object on success, false on failure.
+	 *
+	 * @since   12.2
+	 */
+	public function getItem($pk = null)
+	{
+
+		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
+		$table = $this->getTable();
+		if ($pk > 0)
+		{
+			// Attempt to load the row.
+			$return = $table->load($pk);
+			// Check for a table object error.
+			if ($return === false && $table->getError())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+		}
+		// Convert to the JObject before adding other data.
+		$properties = $table->getProperties(1);
+		$item = JArrayHelper::toObject($properties, 'JObject');
+		if (property_exists($item, 'params'))
+		{
+			$registry = new Registry;
+			$registry->loadString($item->params);
+			$item->params = $registry->toArray();
+		}
+
+		if ($pk > 0) {
+			$item->cat_feataccess = explode(",",$item->cat_feataccess);
+		} else {
+			$item->cat_feataccess=array();
+		}
+		return $item;
+	}
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  boolean  True on success, False on error.
+	 *
+	 * @since   12.2
+	 */
+	public function save($data)
+	{
+		// Initialise variables;
+		$dispatcher = JDispatcher::getInstance();
+		$table = $this->getTable();
+		$key = $table->getKeyName();
+		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
+		$isNew = true;
+
+		// Include the content plugins for the on save events.
+		JPluginHelper::importPlugin('content');
+
+		// Allow an exception to be thrown.
+		try
+		{
+			// Load the row if saving an existing record.
+			if ($pk > 0)
+			{
+				$table->load($pk);
+				$isNew = false;
+			}
+
+			//Set Featured access level list as comma separated string
+			if (!empty($data['cat_feataccess'])) {
+				$data['cat_feataccess'] = implode(",",$data['cat_feataccess']);
+			}
+
+			// Bind the data.
+			if (!$table->bind($data))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Prepare the row for saving
+			$this->prepareTable($table);
+
+			// Check the data.
+			if (!$table->check())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Trigger the onContentBeforeSave event.
+			$result = $dispatcher->trigger($this->event_before_save, array($this->option . '.' . $this->name, &$table, $isNew));
+			if (in_array(false, $result, true))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Store the data.
+			if (!$table->store())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Clean the cache.
+			$this->cleanCache();
+
+			// Trigger the onContentAfterSave event.
+			$dispatcher->trigger($this->event_after_save, array($this->option . '.' . $this->name, &$table, $isNew));
+		}
+		catch (Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
+		$pkName = $table->getKeyName();
+
+		if (isset($table->$pkName))
+		{
+			$this->setState($this->getName() . '.id', $table->$pkName);
+		}
+		$this->setState($this->getName() . '.new', $isNew);
+
+		return true;
+	}
 	
 	
 }

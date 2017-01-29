@@ -62,8 +62,6 @@ class MAMSModelCats extends JModelList
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = c.access');
-		$query->select('af.title AS feataccess_level');
-		$query->join('LEFT', '#__viewlevels AS af ON af.id = c.cat_feataccess');
         $query->select('(SELECT COUNT(*) FROM #__mams_artcat AS ac WHERE ac.ac_cat = c.cat_id GROUP BY c.cat_id) as cat_items');
 		
 		// Filter by access level.
@@ -96,5 +94,64 @@ class MAMSModelCats extends JModelList
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 				
 		return $query;
+	}
+
+	/**
+	 * Method to get an array of data items.
+	 *
+	 * @return  mixed  An array of data items on success, false on failure.
+	 *
+	 * @since   12.2
+	 */
+	public function getItems()
+	{
+		// Get a storage key.
+		$store = $this->getStoreId();
+		// Try to load the data from internal storage.
+		if (isset($this->cache[$store]))
+		{
+			return $this->cache[$store];
+		}
+		try
+		{
+			// Load the list items and add the items to the internal cache.
+			$this->cache[$store] = $this->_getList($this->_getListQuery(), $this->getStart(), $this->getState('list.limit'));
+		}
+		catch (RuntimeException $e)
+		{
+			$this->setError($e->getMessage());
+			return false;
+		}
+
+		// Get Access levels
+		$allist = $this->getAccessLevelList();
+
+		// Create a string of the access levels available
+		foreach ($this->cache[$store] as &$i) {
+			$alevels = explode(",",$i->cat_feataccess);
+			$leveltext = array();
+			foreach ($alevels as $a) {
+				$leveltext[] = $allist[$a];
+			}
+			$i->feataccess_level = implode(", ",$leveltext);
+		}
+
+		return $this->cache[$store];
+	}
+
+	public function getAccessLevelList()
+	{
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from('#__viewlevels');
+		$db->setQuery($query);
+		$alevels = $db->loadObjectList();
+
+		$allist = array();
+		foreach ($alevels as $a) {
+			$allist[$a->id] = $a->title;
+		}
+		return $allist;
 	}
 }
