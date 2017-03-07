@@ -30,7 +30,7 @@ class MAMSModelSec extends JModelAdmin
 		$user = JFactory::getUser();
 		if (!empty($record->sec_id))
 		{
-			return $user->authorise('core.edit.state', 'com_content.article.' . (int) $record->sec_id);
+			return $user->authorise('core.edit.state', 'com_mams.sec.' . (int) $record->sec_id);
 		} else { 
 			return parent::canEditState("com_mams");
 		}
@@ -188,7 +188,7 @@ class MAMSModelSec extends JModelAdmin
 			return false;
 		}
 
-		// Rebuild the path for the category:
+		// Rebuild the path for the section:
 		if (!$table->rebuildPath($table->sec_id))
 		{
 			$this->setError($table->getError());

@@ -4,10 +4,11 @@ defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
+JFormHelper::loadFieldClass('list');
 
-class JFormFieldSecParent extends JFormFieldList
+class JFormFieldCatParent extends JFormFieldList
 {
-	protected $type = 'SecParent';
+	protected $type = 'CatParent';
 
 	protected function getOptions()
 	{
@@ -28,27 +29,27 @@ class JFormFieldSecParent extends JFormFieldList
 		}
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('a.sec_id AS value, a.sec_name AS text, a.level')
-			->from('#__mams_secs AS a')
-			->join('LEFT', $db->quoteName('#__mams_secs') . ' AS b ON a.lft > b.lft AND a.rgt < b.rgt');
+		            ->select('a.cat_id AS value, a.cat_title AS text, a.level')
+		            ->from('#__mams_cats AS a')
+		            ->join('LEFT', $db->quoteName('#__mams_cats') . ' AS b ON a.lft > b.lft AND a.rgt < b.rgt');
 		if ($this->element['parent'])
 		{
 			// Prevent parenting to children of this item.
 			if ($id = $this->form->getValue('id'))
 			{
-				$query->join('LEFT', $db->quoteName('#__mams_secs') . ' AS p ON p.sec_id = ' . (int) $id)
-					->where('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
+				$query->join('LEFT', $db->quoteName('#__mams_cats') . ' AS p ON p.cat_id = ' . (int) $id)
+				      ->where('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 				$rowQuery = $db->getQuery(true);
-				$rowQuery->select('a.sec_id AS value, a.sec_name AS text, a.level, a.parent_id')
-					->from('#__mams_secs AS a')
-					->where('a.sec_id = ' . (int) $id);
+				$rowQuery->select('a.cat_id AS value, a.cat_title AS text, a.level, a.parent_id')
+				         ->from('#__mams_cats AS a')
+				         ->where('a.cat_id = ' . (int) $id);
 				$db->setQuery($rowQuery);
 				$row = $db->loadObject();
 			}
 		}
 		$query->where('a.published IN (0,1)')
-			->group('a.sec_id, a.sec_name, a.level, a.lft, a.rgt, a.parent_id')
-			->order('a.lft ASC');
+		      ->group('a.cat_id, a.cat_title, a.level, a.lft, a.rgt, a.parent_id')
+		      ->order('a.lft ASC');
 		// Get the options.
 		$db->setQuery($query);
 		try

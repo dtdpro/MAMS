@@ -3,7 +3,11 @@ defined('_JEXEC') or die();
 $first = true;
 
 foreach ($this->articles as $a) {
-    if ($a->content_type == "article") $artlink = "index.php?option=com_mams&view=article&secid=" . $a->art_sec . ":" . $a->sec_alias . "&artid=" . $a->art_id . ":" . $a->art_alias;
+    if ($a->content_type == "article") {
+    	$artlink = "index.php?option=com_mams&view=article";
+    	if ($this->params->get('article_seclock', 1)) $artlink .= "&secid=" . $a->art_sec . ":" . $a->sec_alias;
+    	$artlink .= "&artid=" . $a->art_id . ":" . $a->art_alias;
+    }
     if ($a->content_type == "section") $artlink = "index.php?option=com_mams&view=artlist&layout=section&secid=" . $a->art_id . ":" . $a->art_alias;
     if ($a->cats) $artlink .= '&catid=' . $a->cats[0]->cat_id;
 

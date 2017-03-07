@@ -19,7 +19,10 @@ class MAMSModelCats extends JModelList
                 'cat_items','c.cat_items',
 				'access','c.access',
 				'published','c.published',
-                'ordering', 'c.ordering',
+				'lft', 'c.lft',
+				'rgt', 'c.rgt',
+				'level', 'c.level',
+				'path', 'c.path',
 			);
 		}
 		parent::__construct($config);
@@ -44,7 +47,7 @@ class MAMSModelCats extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('c.cat_title', 'asc');
+		parent::populateState('c.lft', 'asc');
 	}
 	
 	protected function getListQuery() 
@@ -87,11 +90,18 @@ class MAMSModelCats extends JModelList
 				$query->where('(c.cat_title LIKE '.$search.' OR c.cat_alias LIKE '.$search.')');
 			}
 		}
-		
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
-		
-		$query->order($db->escape($orderCol.' '.$orderDirn));
+
+		// Add the list ordering clause
+		$listOrdering = $this->getState('list.ordering', 'c.lft');
+		$listDirn = $db->escape($this->getState('list.direction', 'ASC'));
+		if ($listOrdering == 'c.access')
+		{
+			$query->order('c.access ' . $listDirn . ', c.lft ' . $listDirn);
+		}
+		else
+		{
+			$query->order($db->escape($listOrdering) . ' ' . $listDirn);
+		}
 				
 		return $query;
 	}

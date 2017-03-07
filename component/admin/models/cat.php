@@ -24,6 +24,12 @@ class MAMSModelCat extends JModelAdmin
 	protected function canEditState($record)
 	{
 		$user = JFactory::getUser();
+		if (!empty($record->cat_id))
+		{
+			return $user->authorise('core.edit.state', 'com_mams.cat.' . (int) $record->cat_id);
+		} else {
+			return parent::canEditState("com_mams");
+		}
 	
 		return parent::canEditState($record);
 	}
@@ -323,6 +329,21 @@ class MAMSModelCat extends JModelAdmin
 				return false;
 			}
 
+			// Rebuild the path for the section:
+			if (!$table->rebuildPath($table->cat_id))
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+
+			if (!$table->rebuild())
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+
 			// Clean the cache.
 			$this->cleanCache();
 
@@ -346,6 +367,34 @@ class MAMSModelCat extends JModelAdmin
 
 		return true;
 	}
-	
+
+	public function rebuild()
+	{
+		// Get an instance of the table object.
+		$table = $this->getTable();
+
+		if (!$table->rebuild())
+		{
+			$this->setError($table->getError());
+
+			return false;
+		}
+
+		return true;
+	}
+
+	public function saveorder($idArray = null, $lft_array = null)
+	{
+		// Get an instance of the table object.
+		$table = $this->getTable();
+		if (!$table->saveorder($idArray, $lft_array))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
+		// Clear the cache
+		$this->cleanCache();
+		return true;
+	}
 	
 }

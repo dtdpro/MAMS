@@ -11,6 +11,11 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="article_seclock" type="radio" label="COM_MAMS_FIELD_SECLOCK_LABEL" description="COM_MAMS_FIELD_SECLOCK_DESC" class="btn-group" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
 			<field name="listview" class="btn-group" type="radio" description="COM_MAMS_FIELD_LISTVIEW_DESC" label="COM_MAMS_FIELD_LISTVIEW_LABEL" default="blog">
 				<option value="blog">Blog List</option>
 				<option value="gal">Gallery</option>

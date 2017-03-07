@@ -11,6 +11,24 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="article_seclock" type="radio" label="COM_MAMS_FIELD_SECLOCK_LABEL" description="COM_MAMS_FIELD_SECLOCK_DESC" class="btn-group" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="only_featcat" type="radio" label="COM_MAMS_FIELD_ONLY_FEATCAT_LABEL" description="COM_MAMS_FIELD_ONLY_FEATCAT_DESC" class="btn-group" default="0">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="restrict_featcat" type="radio" label="COM_MAMS_FIELD_RESTRICT_FEATCAT_LABEL" description="COM_MAMS_FIELD_RESTRICT_FEATCAT_DESC" class="btn-group" default="0">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="show_count" type="radio" label="COM_MAMS_FIELD_SHOW_COUNT_LABEL" description="COM_MAMS_FIELD_SHOW_COUNT_DESC" class="btn-group" default="0">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="list_cols" type="text" label="COM_MAMS_FIELD_LISTCOLS_LABEL" description="COM_MAMS_FIELD_LISTCOLS_DESC" class="inputbox" default="1" />
 			<field name="listview" class="btn-group" type="radio" description="COM_MAMS_FIELD_LISTVIEW_DESC" label="COM_MAMS_FIELD_LISTVIEW_LABEL" default="blog">
 				<option value="blog">Blog List</option>
 				<option value="gal">Gallery</option>

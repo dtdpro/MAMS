@@ -20,10 +20,10 @@ class MAMSModelSecs extends JModelList
 				'ordering', 's.ordering',
 				'published', 's.published',
 				'access', 's.access',
-				'lft', 'a.lft',
-				'rgt', 'a.rgt',
-				'level', 'a.level',
-				'path', 'a.path',
+				'lft', 's.lft',
+				'rgt', 's.rgt',
+				'level', 's.level',
+				'path', 's.path',
 			);
 		}
 		parent::__construct($config);

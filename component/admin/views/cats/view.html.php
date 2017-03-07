@@ -16,6 +16,12 @@ class MAMSViewCats extends JViewLegacy
 		$this->state		= $this->get('State');
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
+
+		// Preprocess the list of items to find ordering divisions.
+		foreach ($this->items as &$item)
+		{
+			$this->ordering[$item->parent_id][] = $item->cat_id;
+		}
 		
 		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
 		
@@ -52,6 +58,7 @@ class MAMSViewCats extends JViewLegacy
 		} else  {
 			JToolBarHelper::trash('cats.trash');
 		}
+		JToolbarHelper::custom('cats.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
 		
 		//Batch Button
 		JHtml::_('bootstrap.modal', 'collapseModal');
@@ -78,7 +85,8 @@ class MAMSViewCats extends JViewLegacy
 				'c.cat_id' => JText::_('JGRID_HEADING_ID'),
 				'c.cat_added' => JText::_('COM_MAMS_SEC_ADDED'),
 				'c.cat_modified' => JText::_('COM_MAMS_SEC_MODIFIED'),
-                'cat_items' => JText::_('COM_MAMS_CAT_HEADING_NUMITEMS')
+                'cat_items' => JText::_('COM_MAMS_CAT_HEADING_NUMITEMS'),
+				'c.lft' => JText::_('JGRID_HEADING_ORDERING')
 		);
 	}
 }

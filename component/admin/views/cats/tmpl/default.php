@@ -15,7 +15,8 @@ $archived	= $this->state->get('filter.published') == 2 ? true : false;
 $trashed	= $this->state->get('filter.published') == -2 ? true : false;
 $published = $this->state->get('filter.published');
 $sortFields = $this->getSortFields();
-$saveOrder = ($listOrder == 'c.ordering');
+$ordering  = ($listOrder == 'c.lft');
+$saveOrder = ($listOrder == 'c.lft' && strtolower($listDirn) == 'asc');
 $db =& JFactory::getDBO();
 if ($saveOrder) {
     $saveOrderingUrl = 'index.php?option=com_mams&task=cats.saveOrderAjax&tmpl=component';
@@ -85,7 +86,7 @@ if ($saveOrder) {
 		<thead>
 			<tr>
                 <th width="1%" class="nowrap center hidden-phone">
-                    <?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'c.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'c.lft', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
                 </th>
                 <th width="1%">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
@@ -120,10 +121,39 @@ if ($saveOrder) {
 		</thead>
 		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
-		<?php foreach($this->items as $i => $item): ?>
-			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="mamscat">
+		<?php foreach($this->items as $i => $item):
+			$orderkey   = array_search($item->cat_id, $this->ordering[$item->parent_id]);
+
+            //Get the parents of item for sorting
+			if ($item->level > 1)
+			{
+				$parentsStr = "";
+				$_currentParentId = $item->parent_id;
+				$parentsStr = " " . $_currentParentId;
+				for ($i2 = 0; $i2 < $item->level; $i2++)
+				{
+					foreach ($this->ordering as $k => $v)
+					{
+						$v = implode("-", $v);
+						$v = "-" . $v . "-";
+						if (strpos($v, "-" . $_currentParentId . "-") !== false)
+						{
+							$parentsStr .= " " . $k;
+							$_currentParentId = $k;
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				$parentsStr = "";
+			}
+
+			?>
+            <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php $item->parent_id; ?>" parents="<?php echo $parentsStr ?>" level="<?php echo $item->level ?>">
                 <td class="order nowrap center hidden-phone">
-                    <?php
+		            <?php
                     $disableClassName = '';
                     $disabledLabel	  = '';
                     if (!$saveOrder) :
@@ -133,7 +163,10 @@ if ($saveOrder) {
                     <span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
                         <i class="icon-menu"></i>
                     </span>
-                    <input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering;?>" class="width-20 text-area-order " />
+		            <?php if ($saveOrder) : ?>
+                        <input type="text" style="display:none" name="order[]" size="5" value="<?php echo $orderkey + 1; ?>" />
+		            <?php endif; ?>
+
                 </td>
                 <td><?php echo JHtml::_('grid.id', $i, $item->cat_id); ?></td>
 				<td class="center">
@@ -171,6 +204,7 @@ if ($saveOrder) {
 				</td>
 				<td class="nowrap has-context">
 					<div class="pull-left">
+						<?php echo str_repeat('<span class="gi">&mdash;</span>', $item->level - 1) ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=cat.edit&cat_id='.(int) $item->cat_id); ?>">
 						<?php echo $this->escape($item->cat_title); ?></a>
 						<div class="small">Alias: <?php echo $item->cat_alias; ?></div>

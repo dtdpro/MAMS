@@ -131,6 +131,7 @@ class MAMSViewArtList extends JViewLegacy
 			return false;
 		}
 		$this->catinfo=$model->getCatInfo($cat);
+		$this->childcatlist = $model->getCats($this->params->get("show_count",0),$cat);
 		if ($this->catinfo) {
 			if (count($this->catinfo) == 1) $this->document->setTitle($this->catinfo[0]->cat_title);
 			$artids=$model->getCatArts($cat);

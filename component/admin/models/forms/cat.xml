@@ -9,6 +9,7 @@
 			description ="JGLOBAL_FIELD_ID_DESC"
 			readonly="true"
 		/>
+		<field name="parent_id" type="CatParent" class="inputbox" label="COM_MAMS_CAT_FIELD_PARENT_LABEL" description="COM_MAMS_CAT_FIELD_PARENT_DESC" required="false" />
 		<field
 			name="published"
 			type="list"
@@ -33,13 +34,27 @@
 			description="JFIELD_ACCESS_DESC"
 			default="1"
 			filter="integer"/>
-        <field
-                name="ordering"
-                type="OrderCat"
-                class="inputbox"
-                label="JFIELD_ORDERING_LABEL"
-                description="JFIELD_ORDERING_DESC"
-                />
+		<field
+				name="lft"
+				type="hidden"
+				filter="unset"/>
+
+		<field
+				name="rgt"
+				type="hidden"
+				filter="unset"/>
+
+		<field
+				name="level"
+				type="hidden"
+				filter="unset"/>
+
+		<field
+				name="path"
+				type="hidden"
+				class="readonly"
+				size="40"
+				readonly="true"/>
 		<field
 			name="cat_title"
 			type="text"

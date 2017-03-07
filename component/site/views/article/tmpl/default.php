@@ -336,7 +336,9 @@ if ($this->article->fields) {
                             echo '<div class="mams-article-related-link';
                             if ($rlfirst) { echo ' firstlink'; $rlfirst=false; }
                             echo '">';
-                            $rartlink = "index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias;
+                            $rartlink = "index.php?option=com_mams&view=article";
+	                        if ($this->params->get('article_seclock', 1))  $rartlink .= "&secid=".$r->sec_id.":".$r->sec_alias;
+                            $rartlink .= "&artid=".$r->art_id.":".$r->art_alias;
                             if ($r->cats) $rartlink .= "&catid=".$r->cats[0]->cat_id;
                             //Thumb
                             if ($r->art_thumb) {

@@ -365,12 +365,17 @@ class MAMSModelArtList extends JModelList
 		return $info;
 	}
 	
-	function getCats($artcount = false) {
+	function getCats($artcount = false, $parent=0) {
 		$db =& JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$query->select('c.*');
 		$query->from('#__mams_cats AS c');
+		if (is_array($parent)) {
+			$query->where( 'c.parent_id IN (' . implode(",",$parent).')' );
+		} else {
+			$query->where( 'c.parent_id = ' . (int) $parent );
+		}
 		$query->where('c.published >= 1');
 		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		switch ($this->params->get("ordercatlistby","titasc")) {
@@ -380,14 +385,14 @@ class MAMSModelArtList extends JModelList
             case "orderdsc": $query->order('ordering ASC'); break;
 			default: $query->order('cat_title ASC'); break;
 		}
-		if ($this->params->get('only_feat',0)) {
+		if ($this->params->get('only_featcat',0)) {
 			$query->where('c.cat_featured = 1');
 		}
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 
 		// Remove categories not in Access Level List when enabled
-		if ($this->params->get('only_feat',0) || $this->params->get('restrict_feat',0)) {
+		if ($this->params->get('only_featcat',0) || $this->params->get('restrict_featcat',0)) {
 			foreach ($items as $k => $i) {
 				$alintersect = array_intersect(explode(",",$i->cat_feataccess),$user->getAuthorisedViewLevels());
 				if (!count($alintersect)) {
