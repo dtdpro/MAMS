@@ -115,7 +115,7 @@ class plgSearchMAMS extends JPlugin
 
 
 			$query->clear();
-			$query->select('a.art_title AS title, a.metadesc as metadesc, a.metakey as metakey, a.art_publish_up AS created, '
+			$query->select('a.art_title AS title, a.metadesc as metadesc, a.metakey as metakey, a.art_publish_up AS created, a.art_id, a.params, '
 						.'a.art_desc AS text, c.sec_name AS section, '
 						.'CASE WHEN CHAR_LENGTH(a.art_alias) THEN CONCAT_WS(":", a.art_id, a.art_alias) ELSE a.art_id END as slug, '
 						.'CASE WHEN CHAR_LENGTH(c.sec_alias) THEN CONCAT_WS(":", c.sec_id, c.sec_alias) ELSE c.sec_id END as catslug, '
@@ -135,7 +135,34 @@ class plgSearchMAMS extends JPlugin
 			{
 				foreach($list as $key => $item)
 				{
-					$list[$key]->href = JRoute::_("index.php?option=com_mams&view=article&secid=".$item->catslug."&artid=".$item->slug);
+					//Load up the Params
+					$registry = new JRegistry;
+					$registry->loadString($item->params);
+					$item->params = $registry;
+
+					//Merge Params
+					$params = $app->getParams('com_mams');
+					$item->params = $params->merge($item->params);
+
+					//Categories
+					$qc=$db->getQuery(true);
+					$qc->select('c.cat_id,c.cat_title,c.cat_alias');
+					$qc->from('#__mams_artcat as ac');
+					$qc->join('RIGHT','#__mams_cats AS c ON ac.ac_cat = c.cat_id');
+					$qc->where('ac.published >= 1');
+					$qc->where('c.published >= 1');
+					$qc->where('c.access IN ('.$groups.')');
+					$qc->where('ac.ac_art = '.$item->art_id);
+					$qc->order('ac.ordering ASC');
+					$db->setQuery($qc);
+					$cats=$db->loadObjectList();
+					$cat = $cats[0];
+
+					$link = "index.php?option=com_mams&view=article&artid=".$item->slug;
+					if ($item->params->get('article_seclock',1)) $link .= "&secid=".$item->catslug;
+					if ($item->params->get('article_catlock',1)) $link .= "&catid=".$cat->cat_id;
+
+					$list[$key]->href = JRoute::_($link);
 				}
 			}
 			$rows[] = $list;

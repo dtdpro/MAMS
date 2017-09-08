@@ -157,7 +157,8 @@ CREATE TABLE IF NOT EXISTS `#__mams_authors` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_cats` (
-  `cat_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cat_id` int(11) NOT NULL,
+  `parent_id` int(11) NOT NULL DEFAULT '0',
   `cat_title` varchar(255) NOT NULL,
   `cat_alias` varchar(255) NOT NULL,
   `cat_desc` text NOT NULL,
@@ -168,7 +169,10 @@ CREATE TABLE IF NOT EXISTS `#__mams_cats` (
   `cat_modified` datetime NOT NULL,
   `published` int(11) NOT NULL,
   `access` int(11) NOT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '1',
+  `level` int(11) NOT NULL,
+  `lft` int(11) NOT NULL,
+  `rgt` int(11) NOT NULL,
+  `path` varchar(255) NOT NULL
   PRIMARY KEY (`cat_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 

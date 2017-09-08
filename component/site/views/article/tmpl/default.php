@@ -21,9 +21,11 @@ else {
 //echo '</pre>';
 
 //Title
-echo '<h2 class="title uk-article-title">';
-echo $this->article->art_title;
-echo '</h2>';
+if ($this->params->get("show_page_heading",1)) {
+	echo '<h2 class="title uk-article-title">';
+	echo $this->article->art_title;
+	echo '</h2>';
+}
 
 //Fields Renderer
 if ($this->article->fields) {
@@ -141,8 +143,12 @@ if ($this->article->fields) {
                     break;
 				case "auths":
 					$auths = $f->data;
+					$authbyrow=$this->params->get('auth_byrow',2);
+					$authspan = "span".(12/$authbyrow);
+					$authcount=0;
+					echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-authrow mams-article-authrow row-fluid">';
 					foreach ($auths as $d) {
-						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth mams-article-auth">';
+						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth mams-article-auth '.$authspan.'">';
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth-name mams-article-auth-name">';
 						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$d->auth_sec."&autid=".$d->auth_id.":".$d->auth_alias).'" class="mams-article-'.$f->group_name.'-'.$f->field_name.'-autlink">';
 						echo $d->auth_fname.(($d->auth_mi) ? " ".$d->auth_mi : "")." ".$d->auth_lname.(($d->auth_titles) ? ", ".$d->auth_titles : "").'</a>';
@@ -150,7 +156,14 @@ if ($this->article->fields) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth-cred mams-article-auth-cred">';
 						if ($this->params->get('show_authcred',1)) echo $d->auth_credentials;
 						echo '</div></div>';
+						$authcount++;
+						if ($authcount == $authbyrow) {
+							echo '</div>';
+							echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-authrow mams-article-authrow row-fluid">';
+							$authcount=0;
+						}
 					}
+					echo '</div>';
 					break;
 				case "dloads":
 					$dloads = $f->data;
@@ -337,9 +350,9 @@ if ($this->article->fields) {
                             if ($rlfirst) { echo ' firstlink'; $rlfirst=false; }
                             echo '">';
                             $rartlink = "index.php?option=com_mams&view=article";
-	                        if ($this->params->get('article_seclock', 1))  $rartlink .= "&secid=".$r->sec_id.":".$r->sec_alias;
+	                        if ($r->params->get('article_seclock', 1))  $rartlink .= "&secid=".$r->sec_id.":".$r->sec_alias;
                             $rartlink .= "&artid=".$r->art_id.":".$r->art_alias;
-                            if ($r->cats) $rartlink .= "&catid=".$r->cats[0]->cat_id;
+                            if ($r->cats && $r->params->get('article_catlock', 1)) $rartlink .= "&catid=".$r->cats[0]->cat_id;
                             //Thumb
                             if ($r->art_thumb) {
                                 echo '<div class="mams-article-related-thumb">';

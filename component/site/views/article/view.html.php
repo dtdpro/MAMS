@@ -79,6 +79,12 @@ class MAMSViewArticle extends JViewLegacy
 				}
 				//run plugins
 				$results = $dispatcher->trigger('onMAMSPrepare', array(&$this->article->art_content));
+
+				JPluginHelper::importPlugin('content');
+				$page_content = (object) array("text" => $this->article->art_content);
+				$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$page_content, &$this->article->params, 0));
+				$this->article->art_content = $page_content->text;
+
 				parent::display($tpl);
 			} else {
 				$urlnc = $this->getReturnURL();

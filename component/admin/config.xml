@@ -30,6 +30,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="article_catlock" type="radio" label="COM_MAMS_FIELD_CATLOCK_LABEL" description="COM_MAMS_FIELD_CATLOCK_DESC" class="btn-group" default="1">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="show_pubinfo" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBINFO_DESC" label="COM_MAMS_FIELD_SHOW_PUBINFO_LABEL" default="1">	
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
@@ -70,6 +74,13 @@
 		</field>
 	</fieldset>
     <fieldset name="authpages" label="COM_MAMS_CONFIG_AUTHORS_LABEL" description="COM_MAMS_CONFIG_AUTHORS_DESC">
+		<field name="auth_byrow" class="btn-group" type="radio" description="COM_MAMS_FIELD_AUTH_BYROW_DESC" label="COM_MAMS_FIELD_AUTH_BYROW_LABEL" default="2">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="6">6</option>
+		</field>
         <field name="show_authlink" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_AUTHLINK_DESC" label="COM_MAMS_FIELD_SHOW_AUTHLINK_LABEL" default="1">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>

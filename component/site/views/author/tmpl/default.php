@@ -5,9 +5,11 @@ if ($this->params->get('divwrapper',1)) {
 }
 $cfg = MAMSHelper::getConfig();
 //Title
-echo '<h2 class="title uk-article-title">';
-echo $this->author->auth_fname.(($this->author->auth_mi) ? " ".$this->author->auth_mi : "")." ".$this->author->auth_lname.(($this->author->auth_titles) ? ", ".$this->author->auth_titles : ""); 
-echo '</h2>';
+if ($this->params->get("show_page_heading",1)) {
+	echo '<h2 class="title uk-article-title">';
+	echo $this->author->auth_fname . ( ( $this->author->auth_mi ) ? " " . $this->author->auth_mi : "" ) . " " . $this->author->auth_lname . ( ( $this->author->auth_titles ) ? ", " . $this->author->auth_titles : "" );
+	echo '</h2>';
+}
 echo '<div class="mams-author-credentials">';
 //Image
 if ($this->author->auth_image) {

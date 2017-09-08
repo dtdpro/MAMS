@@ -44,51 +44,63 @@ class modMAMSMostHelper
 		$db->setQuery($query);
 		$artids = $db->loadColumn();
 
+		if ($artids) {
+			$query = $db->getQuery( true );
 
-		$query	= $db->getQuery(true);
-
-		$query->select('a.*,s.*');
-		$query->from('#__mams_articles AS a');
-		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
-		if (!$params->get('show_excluded',0)) $query->where('a.art_excluded = 0');
-		$query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
-		$query->where('a.state >= 1');
-		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
-		$query->where('a.art_publish_up >= DATE_SUB(NOW(), INTERVAL '.$params->get('num_days_old',90).' day)');
-		$query->where('a.art_id IN('.implode(",",$artids).')');
-		if (!$params->get('show_featured',1) && count($featured)) $query->where("a.art_id NOT IN (".implode(',',$featured).')');
-		if (count($exclude_articles)) $query->where("a.art_id NOT IN (".implode(',',$exclude_articles).')');
-		$query->order('FIELD(art_id,'.implode(",",$artids).')');
-		$db->setQuery($query,0,$params->get('count',5));
-		$items = $db->loadObjectList();
-
-		foreach ($items as &$i) {
-
-			//Authors
-			$i->auts = modMAMSMostHelper::getFieldAuthors($i->art_id,"5",$alvls);
-
-			//Categories
-			$qc=$db->getQuery(true);
-			$qc->select('c.cat_id,c.cat_title,c.cat_alias');
-			$qc->from('#__mams_artcat as ac');
-			$qc->join('RIGHT','#__mams_cats AS c ON ac.ac_cat = c.cat_id');
-			$qc->where('ac.published >= 1');
-			$qc->where('c.published >= 1');
-			$qc->where('c.access IN ('.implode(",",$alvls).')');
-			$qc->where('ac.ac_art = '.$i->art_id);
-			$qc->order('ac.ordering ASC');
-			$db->setQuery($qc);
-			$i->cats=$db->loadObjectList();
-
-			if ($i->art_fielddata)
-			{
-				$registry = new JRegistry;
-				$registry->loadString($i->art_fielddata);
-				$i->art_fielddata = $registry->toObject();
+			$query->select( 'a.*,s.*' );
+			$query->from( '#__mams_articles AS a' );
+			$query->join( 'RIGHT', '#__mams_secs AS s ON s.sec_id = a.art_sec' );
+			if ( ! $params->get( 'show_excluded', 0 ) ) {
+				$query->where( 'a.art_excluded = 0' );
 			}
-			if ($params->get('show_allfields',0)) {
-				$i->fields = modMAMSMostHelper::getArticleListFields($i->art_id,$alvls);
+			$query->where( 'a.feataccess IN (' . implode( ",", $user->getAuthorisedViewLevels() ) . ')' );
+			$query->where( 'a.state >= 1' );
+			if ( ! in_array( $cfg->ovgroup, $alvls ) ) {
+				$query->where( 'a.art_publish_up <= NOW()' );
+				$query->where( '(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")' );
 			}
+			$query->where( 'a.art_publish_up >= DATE_SUB(NOW(), INTERVAL ' . $params->get( 'num_days_old',
+					90 ) . ' day)' );
+			$query->where( 'a.art_id IN(' . implode( ",", $artids ) . ')' );
+			if ( ! $params->get( 'show_featured', 1 ) && count( $featured ) ) {
+				$query->where( "a.art_id NOT IN (" . implode( ',', $featured ) . ')' );
+			}
+			if ( count( $exclude_articles ) ) {
+				$query->where( "a.art_id NOT IN (" . implode( ',', $exclude_articles ) . ')' );
+			}
+			$query->order( 'FIELD(art_id,' . implode( ",", $artids ) . ')' );
+			$db->setQuery( $query, 0, $params->get( 'count', 5 ) );
+			$items = $db->loadObjectList();
+
+			foreach ( $items as &$i ) {
+
+				//Authors
+				$i->auts = modMAMSMostHelper::getFieldAuthors( $i->art_id, "5", $alvls );
+
+				//Categories
+				$qc = $db->getQuery( true );
+				$qc->select( 'c.cat_id,c.cat_title,c.cat_alias' );
+				$qc->from( '#__mams_artcat as ac' );
+				$qc->join( 'RIGHT', '#__mams_cats AS c ON ac.ac_cat = c.cat_id' );
+				$qc->where( 'ac.published >= 1' );
+				$qc->where( 'c.published >= 1' );
+				$qc->where( 'c.access IN (' . implode( ",", $alvls ) . ')' );
+				$qc->where( 'ac.ac_art = ' . $i->art_id );
+				$qc->order( 'ac.ordering ASC' );
+				$db->setQuery( $qc );
+				$i->cats = $db->loadObjectList();
+
+				if ( $i->art_fielddata ) {
+					$registry = new JRegistry;
+					$registry->loadString( $i->art_fielddata );
+					$i->art_fielddata = $registry->toObject();
+				}
+				if ( $params->get( 'show_allfields', 0 ) ) {
+					$i->fields = modMAMSMostHelper::getArticleListFields( $i->art_id, $alvls );
+				}
+			}
+		} else {
+			$items=array();
 		}
 
 		return $items;

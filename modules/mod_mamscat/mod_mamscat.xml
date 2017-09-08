@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>2.6.0</version>
+	<version>2.6.2</version>
 	<description>MOD_MAMSCAT_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamscat">mod_mamscat.php</filename>
@@ -24,6 +24,14 @@
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
 				<field name="catid" type="Cats" description="MOD_MAMSCAT_CAT_DESC" label="MOD_MAMSCAT_CAT_LABEL" required="true" />
+				<field name="article_seclock" type="radio" label="MOD_MAMSCAT_FIELD_SECLOCK_LABEL" description="MOD_MAMSCAT_FIELD_SECLOCK_DESC" class="btn-group" default="1">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="article_catlock" type="radio" label="MOD_MAMSCAT_FIELD_CATLOCK_LABEL" description="MOD_MAMSCAT_FIELD_CATLOCK_DESC" class="btn-group" default="1">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 				<field name="restrict_feat" type="radio" label="MOD_MAMSCAT_RESTRICT_FEAT_LABEL" description="MOD_MAMSCAT_RESTRICT_FEAT_DESC" class="btn-group" default="0">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
@@ -31,6 +39,10 @@
 				<field name="show_image" type="radio" label="MOD_MAMSCAT_SHOW_IMAGE_LABEL" description="MOD_MAMSCAT_SHOW_IMAGE_DESC" class="btn-group" default="0">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
+				</field>
+				<field name="link_image" type="radio" label="MOD_MAMSCAT_LINK_IMAGE_LABEL" description="MOD_MAMSCAT_LINK_IMAGE_DESC" class="btn-group" default="0">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
 				</field>
 				<field name="count" type="text" default="5" label="MOD_MAMSCAT_COUNT_LABEL" description="MOD_MAMSCAT_COUNT_DESC" />
 				<field name="show_thumb" type="radio" class="btn-group" description="MOD_MAMSCAT_SHOW_THUMB_DESC" label="MOD_MAMSCAT_SHOW_THUMB_LABEL" default="0">

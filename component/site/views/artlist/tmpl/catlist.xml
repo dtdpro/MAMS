@@ -6,11 +6,6 @@
 	<!-- Add fields to the request variables for the layout. -->
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
-            <field name="article_seclock" type="radio" label="COM_MAMS_FIELD_SECLOCK_LABEL" description="COM_MAMS_FIELD_SECLOCK_DESC" class="btn-group" default="">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-            </field>
 			<field name="only_featcat" type="radio" label="COM_MAMS_FIELD_ONLY_FEATCAT_LABEL" description="COM_MAMS_FIELD_ONLY_FEATCAT_DESC" class="btn-group" default="0">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
@@ -32,9 +27,23 @@
 			</field>
         </fieldset>
         <fieldset name="articlelist" label="COM_MAMS_FIELDSET_LIST_OPTIONS_LABEL">
+            <field name="article_seclock" type="radio" label="COM_MAMS_FIELD_SECLOCK_LABEL" description="COM_MAMS_FIELD_SECLOCK_DESC" class="btn-group" default="">
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </field>
+            <field name="article_catlock" type="radio" label="COM_MAMS_FIELD_CATLOCK_LABEL" description="COM_MAMS_FIELD_CATLOCK_DESC" class="btn-group" default="">
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </field>
             <field name="show_thumb" type="radio" label="COM_MAMS_FIELD_SHOW_THUMB_LABEL" description="COM_MAMS_FIELD_SHOW_THUMB_DESC" class="btn-group" default="1">
                 <option value="0">JHIDE</option>
                 <option value="1">JSHOW</option>
+            </field>
+            <field name="link_thumb" type="radio" label="COM_MAMS_FIELD_LINK_THUMB_LABEL" description="COM_MAMS_FIELD_LINK_THUMB_DESC" class="btn-group" default="1">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
             </field>
             <field name="show_readmore" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_READMORE_DESC" label="COM_MAMS_FIELD_SHOW_READMORE_LABEL" default="1">
                 <option value="0">JHIDE</option>

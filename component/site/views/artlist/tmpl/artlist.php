@@ -3,13 +3,23 @@ defined('_JEXEC') or die();
 $first = true;
 
 foreach ($this->articles as $a) {
+	//Load up the Params
+	$registry = new JRegistry;
+	$registry->loadString($a->params);
+	$a->params = $registry;
+
+	// Merge menu item params with item params, item params take precedence
+	$params = $this->params;
+	$params->merge($a->params);
+	$a->params = $params;
+
     if ($a->content_type == "article") {
     	$artlink = "index.php?option=com_mams&view=article";
-    	if ($this->params->get('article_seclock', 1)) $artlink .= "&secid=" . $a->art_sec . ":" . $a->sec_alias;
+    	if ($a->params->get('article_seclock', 1)) $artlink .= "&secid=" . $a->art_sec . ":" . $a->sec_alias;
     	$artlink .= "&artid=" . $a->art_id . ":" . $a->art_alias;
+	    if ($a->cats && $a->params->get('article_catlock', 1)) $artlink .= '&catid=' . $a->cats[0]->cat_id;
     }
     if ($a->content_type == "section") $artlink = "index.php?option=com_mams&view=artlist&layout=section&secid=" . $a->art_id . ":" . $a->art_alias;
-    if ($a->cats) $artlink .= '&catid=' . $a->cats[0]->cat_id;
 
     echo '<div class="mams-artlist-article';
     if ($first) {
@@ -39,11 +49,14 @@ foreach ($this->articles as $a) {
 
     //Further Article Details
     echo '<div class="mams-artlist-artdetails">';
+
     //Thumb
     if ($a->art_thumb && $this->params->get('show_thumb', 1)) {
-        echo '<div class="mams-artlist-artimg"><img class="mams-artlist-artthumb"';
-        echo ' src="' . $a->art_thumb . '" ';
-        echo ' /></div>';
+        echo '<div class="mams-artlist-artimg">';
+        if ($this->params->get('link_thumb', 1)) echo '<a href="' . JRoute::_($artlink) . '" class="mams-artlist-thumblink">';
+        echo '<img class="mams-artlist-artthumb" src="' . $a->art_thumb . '" />';
+	    if ($this->params->get('link_thumb', 1)) echo '</a>';
+        echo '</div>';
     }
     //Article Pub info and description
     echo '<div class="mams-artlist-artinfo';

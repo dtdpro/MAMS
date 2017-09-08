@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.4.0</version>
+	<version>1.4.1</version>
 	<description>MOD_MAMSMOST_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamsmost">mod_mamsmost.php</filename>
@@ -24,7 +24,6 @@
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
                 <field name="count" type="text" default="5" label="MOD_MAMSMOST_COUNT_LABEL" description="MOD_MAMSMOST_COUNT_DESC" />
-                <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
                 <field name="num_days_read" type="radio" class="btn-group" description="MOD_MAMSMOST_NUM_DAYS_READ_DESC" label="MOD_MAMSMOST_NUM_DAYS_READ_LABEL" default="30">
                     <option value="30">30</option>
                     <option value="60">60</option>
@@ -38,6 +37,14 @@
                     <option value="360">360</option>
                 </field>
 				<field name="exclude_cats" type="Cats" description="MOD_MAMSMOST_EXCLUDEDCATS_DESC" label="MOD_MAMSMOST_EXCLUDEDCATS_LABEL" required="false" multiple="true" />
+				<field name="article_seclock" type="radio" label="MOD_MAMSMOST_FIELD_SECLOCK_LABEL" description="MOD_MAMSMOST_FIELD_SECLOCK_DESC" class="btn-group" default="1">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="article_catlock" type="radio" label="MOD_MAMSMOST_FIELD_CATLOCK_LABEL" description="MOD_MAMSMOST_FIELD_CATLOCK_DESC" class="btn-group" default="1">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
                 <field name="show_featured" type="radio" class="btn-group" description="MOD_MAMSMOST_SHOW_FEATURED_DESC" label="MOD_MAMSMOST_SHOW_FEATURED_LABEL" default="1">
                     <option value="0">JHIDE</option>
                     <option value="1">JSHOW</option>
@@ -88,6 +95,7 @@
 					<option value="1">JSHOW</option>
 				</field>
 				<field name="url_prefix" type="text" default="" label="MOD_MAMSMOST_TEXT_URLPREFIX_LABEL" description="MOD_MAMSMOST_TEXT_URLPREFIX_DESC" />
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
 			</fieldset>
 		</fields>
 	</config>

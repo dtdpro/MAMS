@@ -15,6 +15,11 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
+			<field name="article_catlock" type="radio" label="COM_MAMS_FIELD_CATLOCK_LABEL" description="COM_MAMS_FIELD_CATLOCK_DESC" class="btn-group" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
 			<field name="show_pubinfo" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBINFO_DESC" label="COM_MAMS_FIELD_SHOW_PUBINFO_LABEL" default="">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>

@@ -220,6 +220,7 @@ class MAMSModelArticle extends JModelItem
 	}
 	
 	function getRelated($art,$cats,$auts,$secid) {
+		$app = JFactory::getApplication('site');
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
 		$relatedids = Array();
@@ -247,6 +248,17 @@ class MAMSModelArticle extends JModelItem
 			
 			//Get Authors & Cats
 			foreach ($items as &$i) {
+
+				//Load up the Params
+				$registry = new JRegistry;
+				$registry->loadString($i->params);
+				$i->params = $registry;
+
+				// Merge menu item params with item params, item params take precedence
+				$params = $app->getParams();
+				$params->merge($i->params);
+				$i->params = $params;
+
 				$i->auts=$this->getFieldAuthors($i->art_id,5);
 				$i->cats=$this->getArticleCats($i->art_id);
 			}

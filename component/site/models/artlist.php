@@ -91,6 +91,7 @@ class MAMSModelArtList extends JModelList
 	function getItems($paginate = true) {
 		
 		$db =& JFactory::getDBO();
+		$app = JFactory::getApplication('site');
 		
 		$query = $this->getListQuery();
 		$limitstart = $this->getState('list.start');
@@ -103,8 +104,10 @@ class MAMSModelArtList extends JModelList
 		//Get Authors, Cats, Fields
 		foreach ($items as &$i) {
 			if ($i->content_type == 'article') {
+				// Get Authors
 				$i->auts = $this->getFieldAuthors($i->art_id, "5");
 
+				// Get Categories
 				$qc = $db->getQuery(true);
 				$qc->select('c.cat_id,c.cat_title,c.cat_alias');
 				$qc->from('#__mams_artcat as ac');
@@ -117,10 +120,11 @@ class MAMSModelArtList extends JModelList
 				$db->setQuery($qc);
 				$i->cats = $db->loadObjectList();
 
+				// Get extra fields
 				if ($i->art_fielddata) {
-					$registry = new JRegistry;
-					$registry->loadString($i->art_fielddata);
-					$i->art_fielddata = $registry->toObject();
+					$field_registry = new JRegistry;
+					$field_registry->loadString($i->art_fielddata);
+					$i->art_fielddata = $field_registry->toObject();
 				}
 
 				$i->fields = $this->getArticleListFields($i->art_id);

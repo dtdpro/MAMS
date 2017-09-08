@@ -19,6 +19,11 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
+			<field name="article_catlock" type="radio" label="COM_MAMS_FIELD_CATLOCK_LABEL" description="COM_MAMS_FIELD_CATLOCK_DESC" class="btn-group" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
 			<field name="listview" class="btn-group" type="radio" description="COM_MAMS_FIELD_LISTVIEW_DESC" label="COM_MAMS_FIELD_LISTVIEW_LABEL" default="blog">
 				<option value="blog">Blog List</option>
 				<option value="gal">Gallery</option>
@@ -36,6 +41,10 @@
                 <option value="0">JHIDE</option>
                 <option value="1">JSHOW</option>
             </field>
+			<field name="link_thumb" type="radio" label="COM_MAMS_FIELD_LINK_THUMB_LABEL" description="COM_MAMS_FIELD_LINK_THUMB_DESC" class="btn-group" default="1">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
 			<field name="show_readmore" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_READMORE_DESC" label="COM_MAMS_FIELD_SHOW_READMORE_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>

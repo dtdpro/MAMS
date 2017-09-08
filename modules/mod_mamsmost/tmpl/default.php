@@ -7,19 +7,24 @@ JHtml::_('behavior.keepalive');
 echo '<div class="mams-featmod">';
 $firstart=true;
 foreach ($articles as $a) {
+	$artlink = "index.php?option=com_mams&view=article";
+	if ($params->get('article_seclock', 1)) $artlink .= "&secid=" . $a->art_sec . ":" . $a->sec_alias;
+	$artlink .= "&artid=" . $a->art_id . ":" . $a->art_alias;
+	if ($a->cats && $params->get('article_catlock', 1)) $artlink .= '&catid=' . $a->cats[0]->cat_id;
+
 	echo '<div class="mams-featmod-article';
 	if ($firstart) { echo ' first-child'; $firstart=false; }
 	echo '">';
 	if ($a->art_thumb && $params->get('show_thumb',0)) {
 		echo '<div class="mams-featmod-thumb">';
-		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
+		echo '<a href="'.JRoute::_($artlink).'">';
 		echo '<img border="0" class="mams-featmod-artthumb" src="'.$a->art_thumb.'" /></a>';
 		echo '</div>';
 	}
 	if ($a->art_thumb && $params->get('show_thumb',0)) echo '<div class="mams-featmod-articleinfowt">';
 	else echo '<div class="mams-featmod-articleinfo">';
 	echo '<div class="mams-featmod-title">';
-	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'">';
+	echo '<a href="'.JRoute::_($artlink).'">';
 	echo $a->art_title;
 	echo '</a></div>';
 	if ($a->auts && $params->get('show_author',1)) {
@@ -167,7 +172,7 @@ foreach ($articles as $a) {
 	//Readmore
 	if ($params->get('show_readmore',0)) {
 		echo '<div class="mams-featmod-readmore">';
-		echo '<a href="'.JRoute::_("index.php?option=com_mams&view=article&secid=".$a->sec_id.":".$a->sec_alias."&artid=".$a->art_id.":".$a->art_alias).'" class="mams-featmod-artlink read-more uk-button">';
+		echo '<a href="'.JRoute::_($artlink).'" class="mams-featmod-artlink read-more uk-button">';
 		echo $params->get('text_readmore',"Read More");
 		echo '</a></div>';
 	}
