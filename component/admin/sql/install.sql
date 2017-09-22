@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_cats` (
   `level` int(11) NOT NULL,
   `lft` int(11) NOT NULL,
   `rgt` int(11) NOT NULL,
-  `path` varchar(255) NOT NULL
+  `path` varchar(255) NOT NULL,
   PRIMARY KEY (`cat_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
