@@ -6,6 +6,10 @@
 		<field name="ovgroup" type="accesslevel" id="ovaccess" class="inputbox" label="COM_MAMS_CONFIG_FIELD_OVGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_OVGROUP_DESC" default="3"  />
 		<field name="loginmsg" type="text" label="COM_MAMS_CONFIG_FIELD_LOGINMSG_LABEL" description="COM_MAMS_CONFIG_FIELD_LOGINMSG_DESC" size="70" class="inputbox" required="false" default="Login required" />
 		<field name="noaccessmsg" type="text" label="COM_MAMS_CONFIG_FIELD_NOACCESSMSG_LABEL" description="COM_MAMS_CONFIG_FIELD_NOACCESSMSG_DESC" size="70" class="inputbox" required="false" default="Access level not met" />
+		<field name="related_sec" type="radio" label="COM_MAMS_CONFIG_FIELD_RELATEDSEC_LABEL" description="COM_MAMS_CONFIG_FIELD_RELATEDSEC_DESC" default="0" class="btn-group">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="num_related" type="text" label="COM_MAMS_CONFIG_FIELD_NUMRELATED_LABEL" description="COM_MAMS_CONFIG_FIELD_NUMRELATED_DESC" size="10" class="inputbox" required="false" default="10" />
 		<field name="edit_auths" type="radio" label="COM_MAMS_CONFIG_FIELD_EDITAUTH_LABEL" description="COM_MAMS_CONFIG_FIELD_EDITAUTH_DESC" default="1" class="btn-group">
 			<option value="0">No</option>

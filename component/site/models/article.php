@@ -237,7 +237,7 @@ class MAMSModelArticle extends JModelItem
 			$query->from('#__mams_articles AS a');
 			$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 			$query->where('a.art_id IN ('.implode(",",$relatedids).')');
-			$query->where('a.art_sec = '.$secid);
+			if ($cfg->related_sec) $query->where('a.art_sec = '.$secid);
 			$query->where('a.state >= 1');
 			$query->where('a.access IN ('.implode(",",$this->alvls).')');
 			if (!in_array($cfg->ovgroup,$this->alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
