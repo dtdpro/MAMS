@@ -155,6 +155,11 @@ class MAMSTableArticle extends JTable
 		if (trim(str_replace('-','',$this->art_alias)) == '') {
 			$this->art_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
+
+		// populate metadesc if empty
+		if (empty($this->metadesc)) {
+			$this->metadesc = strip_tags($this->art_desc);
+		}
 		
 
 		// Check the publish down date is not earlier than publish up.
