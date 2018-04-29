@@ -49,6 +49,10 @@ class MAMSModelArtList extends JModelList
             case "titdsc": $order = 'art_title DESC'; break;
             case "pubasc": $order = 'art_publish_up ASC, lft ASC, ordering ASC'; break;
             case "pubdsc": $order = 'art_publish_up DESC, lft ASC, ordering ASC'; break;
+	        case "pubasctitasc": $order = 'art_publish_up ASC, art_title ASC'; break;
+	        case "pubasctitdsc": $order = 'art_publish_up ASC, art_title DESC';  break;
+	        case "pubdsctitasc": $order = 'art_publish_up DESC, art_title ASC';  break;
+	        case "pubdsctitdsc": $order = 'art_publish_up DESC, art_title DESC';  break;
             default: $order = 'art_publish_up DESC, lft ASC, ordering ASC'; break;
         }
 

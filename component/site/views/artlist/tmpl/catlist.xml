@@ -27,6 +27,16 @@
 			</field>
         </fieldset>
         <fieldset name="articlelist" label="COM_MAMS_FIELDSET_LIST_OPTIONS_LABEL">
+            <field name="orderby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
+                <option value="pubasc">COM_MAMS_ORDER_PUBASC</option>
+                <option value="pubdsc">COM_MAMS_ORDER_PUBDSC</option>
+                <option value="titasc">COM_MAMS_ORDER_TITASC</option>
+                <option value="titdsc">COM_MAMS_ORDER_TITDSC</option>
+                <option value="pubasctitasc">COM_MAMS_ORDER_PUBASCTITASC</option>
+                <option value="pubasctitdsc">COM_MAMS_ORDER_PUBASCTITDSC</option>
+                <option value="pubdsctitasc">COM_MAMS_ORDER_PUBDSCTITASC</option>
+                <option value="pubdsctitdsc">COM_MAMS_ORDER_PUBDSCTITDSC</option>
+            </field>
             <field name="article_seclock" type="radio" label="COM_MAMS_FIELD_SECLOCK_LABEL" description="COM_MAMS_FIELD_SECLOCK_DESC" class="btn-group" default="">
                 <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="0">No</option>
@@ -86,12 +96,6 @@
             <field name="restrictcat" type="radio" label="COM_MAMS_FIELD_RESTRICTCAT_LABEL" description="COM_MAMS_FIELD_RESTRICTCAT_DESC" class="btn-group" default="0">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
-            </field>
-            <field name="orderby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
-                <option value="pubasc">COM_MAMS_ORDER_PUBASC</option>
-                <option value="pubdsc">COM_MAMS_ORDER_PUBDSC</option>
-                <option value="titasc">COM_MAMS_ORDER_TITASC</option>
-                <option value="titdsc">COM_MAMS_ORDER_TITDSC</option>
             </field>
 		</fieldset>
 	</fields>
