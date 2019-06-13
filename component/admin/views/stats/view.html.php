@@ -24,7 +24,7 @@ class MAMSViewStats extends JViewLegacy
 		
 		//Tool Bar
 		JToolBarHelper::title(   JText::_( 'MAMS Stats' ), 'mams' );
-		$tbar =& JToolBar::getInstance('toolbar');
+		$tbar = JToolBar::getInstance('toolbar');
 		$tbar->appendButton('Link','archive','Export CSV','index.php?option=com_mams&view=stats&format=csv');
 		
 		//Sidebar Filters

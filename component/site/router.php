@@ -6,7 +6,6 @@ jimport('joomla.application.categories');
 function MAMSBuildRoute(&$query)
 {
 	$items = Array();
-	$default = 0;
 	$foundart = 0;
 	$foundartlist = 0;
 	$foundsec = 0;
@@ -20,64 +19,93 @@ function MAMSBuildRoute(&$query)
 	$menu	= $app->getMenu();
 	$items	= $menu->getItems('component', 'com_mams');
 	
-	if (isset($query['view'])) {
-		$view = $query['view'];
-	}
+	if (isset($query['view'])) $view = $query['view']; else $view = "";
+	if (isset($query['layout'])) $layout = $query['layout']; else $layout = "";
+	if (isset($query['secid'])) $secid = $query['secid']; else $secid = 0;
+	if (isset($query['catid'])) $catid = $query['catid']; else $catid = 0;
+	if (isset($query['Itemid'])) $default = $query['Itemid']; else $default = 0;
 	
-	if (!is_array($query['catid']) && !is_array($query['secid'])){
+	if (!is_array($catid) && !is_array($secid)){
 		foreach ($items as $mi) {
-			if (!empty($mi->query['artid']) && ((int)$mi->query['artid'] == (int)$query['artid'])) {
-				$foundart = $mi->id; 
-			}
-			
-			if (is_array($mi->query['secid'])) {
-				if (!empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid']) && empty($mi->query['catid'])) {
-					$foundsec = $mi->id;
-				}
-			} else {
-				if (!empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid']) && empty($mi->query['catid'])) {
-					$foundsec = $mi->id;
+
+			// Article
+			if (isset($mi->query['artid'])) {
+				if (isset($query['artid'])) $artid = $query['artid']; else $artid = 0;
+				if ( ! empty( $mi->query['artid'] ) && ( (int) $mi->query['artid'] == (int) $artid ) ) {
+					$foundart = $mi->id;
 				}
 			}
 			
-			if (is_array($mi->query['catid'])) {
-				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && empty($mi->query['secid'])) {
-					$foundcat = $mi->id;
-				}
-				if (is_array($mi->query['secid'])) {
-					if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
-						$foundcatsec = $mi->id;
+			// Section
+			if (isset($mi->query['secid'])) {
+				if ( is_array( $mi->query['secid'] ) ) {
+					if ( ! empty( $mi->query['secid'] ) && ( (int) $mi->query['secid'][0] == (int) $secid ) && empty( $mi->query['catid'] ) ) {
+						$foundsec = $mi->id;
 					}
 				} else {
-					if (!empty($mi->query['catid']) && ((int)$mi->query['catid'][0] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
-						$foundcatsec = $mi->id;
+					if ( ! empty( $mi->query['secid'] ) && ( (int) $mi->query['secid'] == (int) $secid ) && empty( $mi->query['catid'] ) ) {
+						$foundsec = $mi->id;
 					}
 				}
-			} else {
-				if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && empty($mi->query['secid'])) {
-					$foundcat = $mi->id;
-				}
-				if (is_array($mi->query['secid'])) {
-					if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'][0] == (int)$query['secid'])) {
-						$foundcatsec = $mi->id;
+			}
+
+			// Category and Section Category
+			if (isset($mi->query['catid'])) {
+				if ( is_array( $mi->query['catid'] ) ) {
+					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'][0] == (int) $catid ) && empty( $mi->query['secid'] ) ) {
+						$foundcat = $mi->id;
+					}
+
+					if (isset($mi->query['secid'])) {
+						if ( is_array( $mi->query['secid'] ) ) {
+							if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'][0] == (int) $catid ) && ! empty( $mi->query['secid'] ) && ( (int) $mi->query['secid'][0] == (int) $secid ) ) {
+								$foundcatsec = $mi->id;
+							}
+						} else {
+							if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'][0] == (int) $catid ) && ! empty( $mi->query['secid'] ) && ( (int) $mi->query['secid'] == (int) $secid ) ) {
+								$foundcatsec = $mi->id;
+							}
+						}
 					}
 				} else {
-					if (!empty($mi->query['catid']) && ((int)$mi->query['catid'] == (int)$query['catid']) && !empty($mi->query['secid']) && ((int)$mi->query['secid'] == (int)$query['secid'])) {
-						$foundcatsec = $mi->id;
+					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'] == (int) $catid ) && empty( $mi->query['secid'] ) ) {
+						$foundcat = $mi->id;
+					}
+					if (isset($mi->query['secid'])) {
+						if ( is_array( $mi->query['secid'] ) ) {
+							if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'] == (int) $catid ) && ! empty( $mi->query['secid'] ) && ( (int) $mi->query['secid'][0] == (int) $secid ) ) {
+								$foundcatsec = $mi->id;
+							}
+						} else {
+							if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'] == (int) $catid ) && ! empty( $mi->query['secid'] ) && ( (int) $mi->query['secid'] == (int) $secid ) ) {
+								$foundcatsec = $mi->id;
+							}
+						}
 					}
 				}
 			}
-			
-			if (!empty($mi->query['autid']) && ((int)$mi->query['autid'] == (int)$query['autid'])) {
-				$foundaut = $mi->id;
+
+			// Author Page
+			if (isset($mi->query['autid'])) {
+				if (isset($query['autid']))  $autid = $query['autid']; else $autid = 0;
+				if ( ! empty( $mi->query['autid'] ) && ( (int) $mi->query['autid'] == (int) $autid ) ) {
+					$foundaut = $mi->id;
+				}
 			}
-			
-			if ($mi->query['layout'] == 'catlist' && $query['layout'] == 'category') { $foundcatlist = $mi->id; }
-			if ($mi->query['layout'] == 'seclist' && $query['layout'] == 'section') { $foundseclist = $mi->id; }
-			if ($mi->query['layout'] == 'allsecs' && $query['view'] == 'article' && !$mi->home) { $foundartlist = $mi->id; }
+
+			if (isset($mi->query['layout'])) {
+				if ( $mi->query['layout'] == 'catlist' && $layout == 'category' ) {
+					$foundcatlist = $mi->id;
+				}
+				if ( $mi->query['layout'] == 'seclist' && $layout == 'section' ) {
+					$foundseclist = $mi->id;
+				}
+				if ( $mi->query['layout'] == 'allsecs' && $view == 'article' && ! $mi->home ) {
+					$foundartlist = $mi->id;
+				}
+			}
 		}
 	}
-	$default = $query['Itemid'];
 	
 	if ($view == 'article') {
 		if ($foundart) {
@@ -185,8 +213,8 @@ function MAMSBuildRoute(&$query)
 			$query['Itemid'] = $foundsec;
 			unset ($query['view']);
 			unset ($query['layout']);
-			if (is_array($query['catid'])) $query['catid'] = $query['catid'][0];
 			if (isset($query['catid'])) {
+				if (is_array($query['catid'])) $query['catid'] = $query['catid'][0];
 				unset ($query['secid']);
 				if (strpos($query['catid'], ':') === false) {
 					$db = JFactory::getDbo();
@@ -422,53 +450,6 @@ function MAMSParseRoute($segments)
 
 		return $vars;
 	}
-/*
-	// we get the section id from the menu item and search from there
-	$secid = $item->query['secid'];
-	$artid = $item->query['artid'];
-	
-	// first we check if it is a section
-	$query = 'SELECT sec_alias, sec_id FROM #__mams_secs WHERE sec_id = '.(int)$secid;
-	$db->setQuery($query);
-	$section = $db->loadObject();
 
-	if (!$section) {
-		JError::raiseError(404, JText::_('COM_MAMS_ERROR_SECTION_NOT_FOUND'));
-		//return $vars;
-	}
-
-	$vars['secid'] = $secid;
-	$vars['artid'] = $artid;
-	$found = 0;
-
-	foreach($segments as $segment)
-	{
-		$segment = str_replace(':', '-',$segment);
-
-		if ($section->sec_alias == $segment) {
-			$vars['secid'] = $section->sec_id;
-			$vars['view'] = 'artlist';
-			$vars['layout'] = 'section';
-			$found = 1;
-		}
-		
-		if ($found == 0) {
-			if ($advanced) {
-				$db = JFactory::getDBO();
-				$query = 'SELECT art_id FROM #__mams_articles WHERE art_sec = '.$vars['secid'].' AND art_alias = '.$db->Quote($segment);
-				$db->setQuery($query);
-				$cid = $db->loadResult();
-			} else {
-				$cid = $segment;
-			}
-
-			$vars['artid'] = $cid;
-
-			$vars['view'] = 'article';
-		}
-
-		$found = 0;
-	}
-*/
 	return $vars;
 }

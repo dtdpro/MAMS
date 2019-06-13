@@ -17,7 +17,7 @@ if ($saveOrder) {
 	JHtml::_('sortablelist.sortable', 'MAMSFeaturedArticleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 $sortFields = $this->getSortFields();
-$db =& JFactory::getDBO();
+
 ?>
 <script type="text/javascript">
 	Joomla.orderTable = function()

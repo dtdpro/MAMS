@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_authors` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__mams_cats` (
-  `cat_id` int(11) NOT NULL,
+  `cat_id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `cat_title` varchar(255) NOT NULL,
   `cat_alias` varchar(255) NOT NULL,

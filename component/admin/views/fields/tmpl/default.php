@@ -19,7 +19,7 @@ if ($saveOrder) {
 	JHtml::_('sortablelist.sortable', 'MAMSFieldList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 
-$db =& JFactory::getDBO();
+
 ?>
 <script type="text/javascript">
 	Joomla.orderTable = function()
@@ -38,7 +38,7 @@ $db =& JFactory::getDBO();
 		Joomla.tableOrdering(order, dirn, '');
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_mams&view=fieldgroups'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mams&view=fields'); ?>" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="span2">
 	<?php echo $this->sidebar; ?>
@@ -110,7 +110,7 @@ $db =& JFactory::getDBO();
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->field_id); ?></td>
 				<td class="center"><?php 
-					if ($item->field_id >= 100) echo JHtml::_('jgrid.published', $item->published, $i, 'fields.', true);
+					if ($item->field_id >= 10) echo JHtml::_('jgrid.published', $item->published, $i, 'fields.', true);
 					else echo '<a class="btn btn-micro disabled jgrid"  title="Protected extension"><i class="icon-lock"></i></a>';
 				?></td>
 				<td><?php 

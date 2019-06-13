@@ -17,7 +17,7 @@ $published = $this->state->get('filter.published');
 $sortFields = $this->getSortFields();
 $ordering  = ($listOrder == 'c.lft');
 $saveOrder = ($listOrder == 'c.lft' && strtolower($listDirn) == 'asc');
-$db =& JFactory::getDBO();
+
 if ($saveOrder) {
     $saveOrderingUrl = 'index.php?option=com_mams&task=cats.saveOrderAjax&tmpl=component';
     JHtml::_('sortablelist.sortable', 'MAMSCatList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);

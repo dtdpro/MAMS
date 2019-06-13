@@ -27,7 +27,7 @@ class MAMSModelArtList extends JModelList
 		
 		// Load the parameters. Merge Global and Menu Item params into new object
 		$this->params = $app->getParams();
-		$this->setState('params', $params);
+		$this->setState('params', $this->params);
 		
 		// pagination
 		$this->setState('list.start', $app->input->get('limitstart', 0, 'uint'));
@@ -37,7 +37,7 @@ class MAMSModelArtList extends JModelList
 	
 	function getListQuery()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         $query1 = $db->getQuery(true);
 		$query2 = $db->getQuery(true);
@@ -94,7 +94,7 @@ class MAMSModelArtList extends JModelList
 	
 	function getItems($paginate = true) {
 		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$app = JFactory::getApplication('site');
 		
 		$query = $this->getListQuery();
@@ -139,7 +139,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	protected function getArticleListFields($artid) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		
 		$query->select('*,f.params as field_params,g.params as group_params');
@@ -176,7 +176,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	protected function getFieldAuthors($artid, $fid) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
 		$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
 		$qa->from('#__mams_artauth as aa');
@@ -192,7 +192,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	protected function getFieldDownloads($artid, $fid) {		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
 		$qa->select('d.*');
 		$qa->from('#__mams_artdl as ad');
@@ -208,7 +208,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	protected function getFieldLinks($artid, $fid) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
 		$qa->select('l.*');
 		$qa->from('#__mams_artlinks as al');
@@ -253,7 +253,7 @@ class MAMSModelArtList extends JModelList
 	}
 
 	function getSecArts($sec) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		
 		$query->select('a.art_id');
@@ -267,7 +267,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getCatArts($cat) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -282,7 +282,7 @@ class MAMSModelArtList extends JModelList
 	
 	function getSecCats($sec) {
 		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -314,7 +314,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getAuthArts($aut) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -329,7 +329,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getSecInfo($sec) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -344,7 +344,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getCatInfo($cat) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -359,7 +359,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getAutInfo($aut) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -374,7 +374,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getCats($artcount = false, $parent=0) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$query->select('c.*');
@@ -427,7 +427,7 @@ class MAMSModelArtList extends JModelList
 
 
 	function getSecs($artcount = false) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$query->select('c.*');
@@ -461,7 +461,7 @@ class MAMSModelArtList extends JModelList
 	}
 
 	function getSecChildren($sec) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$query->select('c.*');

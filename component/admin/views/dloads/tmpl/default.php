@@ -15,7 +15,7 @@ $archived	= $this->state->get('filter.published') == 2 ? true : false;
 $trashed	= $this->state->get('filter.published') == -2 ? true : false;
 $published = $this->state->get('filter.published');
 $sortFields = $this->getSortFields();
-$db =& JFactory::getDBO();
+
 $extension	= $this->escape($this->state->get('filter.extension'));
 ?>
 <script type="text/javascript">
@@ -103,6 +103,9 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort','JGRID_HEADING_ACCESS','d.access', $listDirn, $listOrder); ?>
 				</th>
+                <!--<th width="5%">
+					Hits
+                </th>-->
 				<th width="1%">
 					<?php echo JHtml::_('grid.sort','COM_MAMS_DLOAD_HEADING_ID','d.dl_id', $listDirn, $listOrder); ?>
 				</th>
@@ -110,7 +113,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 		<tbody>
 		<?php foreach($this->items as $i => $item): ?>
 			<tr class="row<?php echo $i % 2; ?>">
@@ -158,6 +161,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 				<td class="small"><?php echo $item->dl_added; ?></td>
 				<td class="small"><?php echo $item->dl_modified; ?></td>
 				<td class="small"><?php echo $item->access_level; ?></td>
+                <!--<td><?php /*echo $item->dl_hits;*/ ?></td>-->
 				<td><?php echo $item->dl_id; ?></td>
 			</tr>
 		<?php endforeach; ?>

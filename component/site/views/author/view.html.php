@@ -33,13 +33,13 @@ class MAMSViewAuthor extends JViewLegacy
 	
 	protected function showAuthor($aut) {
 		$cfg = MAMSHelper::getConfig();
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$this->author=$model->getAuthor($aut);
 		if ($this->author) {
 			MAMSHelper::trackViewed($aut,'author');
 			$this->document->setTitle($this->author->auth_name);
 			if ($this->params->get('show_pubed',1)) { 
-				 $this->published=$model->getPublished($aut);
+				 $this->published=$model->getPublished($aut,$this->params);
 				 //$this->courses=$model->getAuthCourses($aut);
 			}
 			return true;
@@ -50,7 +50,7 @@ class MAMSViewAuthor extends JViewLegacy
 	
 	protected function listAuthors() {
 		MAMSHelper::trackViewed(0,'authors');
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$this->autlist = $model->getAuthorList($this->getSecs()); 
 		return true;
 	}

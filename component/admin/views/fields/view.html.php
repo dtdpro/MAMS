@@ -34,7 +34,7 @@ class MAMSViewFields extends JViewLegacy
 	protected function addToolBar() 
 	{
 		$state	= $this->get('State');
-		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_SECS'), 'mams');
+		JToolBarHelper::title(JText::_('COM_MAMS_MANAGER_FIELDS'), 'mams');
 		JToolBarHelper::addNew('field.add', 'JTOOLBAR_NEW');
 		JToolBarHelper::editList('field.edit', 'JTOOLBAR_EDIT');
 		JToolBarHelper::divider();

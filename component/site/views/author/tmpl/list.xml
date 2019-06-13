@@ -61,6 +61,11 @@
                 <option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field name="pubed_by_feataccess" type="radio" label="COM_MAMS_FIELD_PUBEDBYFEATACCESS_LABEL" description="COM_MAMS_FIELD_PUBEDBYFEATACCESS_DESC" class="btn-group" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
 		</fieldset>
 	</fields>
 	

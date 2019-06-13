@@ -55,6 +55,11 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
+			<field name="show_artlist_desc" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_ARTLIST_DESC_DESC" label="COM_MAMS_FIELD_SHOW_ARTLIST_DESC_LABEL" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 			<field name="show_readmore" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_READMORE_DESC" label="COM_MAMS_FIELD_SHOW_READMORE_LABEL" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -79,6 +84,11 @@
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
+			</field>
+			<field name="related_by_feataccess" type="radio" label="COM_MAMS_FIELD_RELATEDBYFEATACCESS_LABEL" description="COM_MAMS_FIELD_RELATEDBYFEATACCESS_DESC" class="btn-group">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">No</option>
+				<option value="1">Yes</option>
 			</field>
 			<field name="show_authcred" type="radio" label="COM_MAMS_FIELD_SHOW_AUTHCRED_LABEL" description="COM_MAMS_FIELD_SHOW_AUTHCRED_DESC" class="btn-group" default="">
 				<option value="">JGLOBAL_USE_GLOBAL</option>

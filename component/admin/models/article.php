@@ -46,8 +46,11 @@ class MAMSModelArticle extends JModelAdmin
 	
 	public function getTable($type = 'Article', $prefix = 'MAMSTable', $config = array()) 
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		$table = JTable::getInstance($type, $prefix, $config);
+		$table->setColumnAlias('published','state');
+		return $table;
 	}
+
 	
 	public function getForm($data = array(), $loadData = true) 
 	{
@@ -446,6 +449,7 @@ class MAMSModelArticle extends JModelAdmin
 		$query->select('*');
 		$query->from("#__mams_article_fieldgroups");
 		$query->where("group_id > 1");
+		$query->where("published >= 0");
 		$query->order("ordering asc");
 		$db->setQuery($query);
 		$groups = $db->loadObjectList();
@@ -454,6 +458,7 @@ class MAMSModelArticle extends JModelAdmin
 			$query->select('*');
 			$query->from("#__mams_article_fields");
 			$query->where("field_group = ".$g->group_id);
+			$query->where("published >= 0");
 			$query->order("ordering asc");
 			$db->setQuery($query);
 			$g->fields = $db->loadObjectList();

@@ -65,8 +65,8 @@ abstract class MAMSHelper
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTDLOADS'),'index.php?option=com_mams&view=artdloads',$submenu == 'artdloads');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTLINKS'),'index.php?option=com_mams&view=artlinks',$submenu == 'artlinks');
 	}
-	
-	static function getSections($type = "article")
+
+	public static function getSections($type = "article")
 	{
 		$db = JFactory::getDbo();
 		$db->setQuery(
@@ -84,8 +84,8 @@ abstract class MAMSHelper
 		
 		return $options;
 	}
-	
-	static function getCats()
+
+	public static function getCats()
 	{
 		$db = JFactory::getDbo();
 		$db->setQuery(
@@ -106,7 +106,7 @@ abstract class MAMSHelper
 		return $options;
 	}
 
-	static function getAuths()
+	public static function getAuths()
 	{
 		$db = JFactory::getDbo();
 		$db->setQuery(
@@ -126,8 +126,8 @@ abstract class MAMSHelper
 
 		return $options;
 	}
-	
-	static function getFields($type = "auths")
+
+	public static function getFields($type = "auths")
 	{
 		$db = JFactory::getDbo();
 		$db->setQuery(
@@ -209,8 +209,8 @@ abstract class MAMSHelper
 	
 		return $result;
 	}
-	
-	public function getAuthorisedSecs($action)
+
+	public static function getAuthorisedSecs($action)
 	{
 		// Brute force method: get all published category rows for the component and check each one
 		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling

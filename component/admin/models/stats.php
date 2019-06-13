@@ -33,9 +33,11 @@ class MAMSModelStats extends JModelList
 		$this->setState('filter_type', $filter_type);
 		
 		//ContinuEd Link
-		if ($cfg->continued) {
-			$filter_group = $this->getUserStateFromRequest( $this->context.'.filter.group','filter_group', "" );
-			$this->setState('filter.group', $filter_group);
+		if (isset($cfg->continued)) {
+			if ( $cfg->continued ) {
+				$filter_group = $this->getUserStateFromRequest( $this->context . '.filter.group', 'filter_group', "" );
+				$this->setState( 'filter.group', $filter_group );
+			}
 		}
 		
 		
@@ -131,14 +133,16 @@ class MAMSModelStats extends JModelList
 			$userlist = explode(",",$cfg->except_userlist);
 			$q->where('s.mt_user NOT IN ("'.implode('","',$userlist).'")');
 		}
-		
-		if ($cfg->continued) {
-			$q->select("ceug.ug_name AS UserGroup");
-			$q->join('LEFT', '#__ce_usergroup as ceg ON s.mt_user = ceg.userg_user');
-			$q->join('LEFT', '#__ce_ugroups as ceug ON ceg.userg_group = ceug.ug_id');
-			// Filter by section.
-			if ($ugroup = $this->getState('filter.group')) {
-				$q->where('ceg.userg_group = '.(int) $ugroup);
+
+		if (isset($cfg->continued)) {
+			if ($cfg->continued) {
+				$q->select("ceug.ug_name AS UserGroup");
+				$q->join('LEFT', '#__ce_usergroup as ceg ON s.mt_user = ceg.userg_user');
+				$q->join('LEFT', '#__ce_ugroups as ceug ON ceg.userg_group = ceug.ug_id');
+				// Filter by section.
+				if ($ugroup = $this->getState('filter.group')) {
+					$q->where('ceg.userg_group = '.(int) $ugroup);
+				}
 			}
 		}
 		

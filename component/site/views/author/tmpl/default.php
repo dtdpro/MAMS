@@ -25,7 +25,7 @@ echo '</div>';
 
 
 
-//Related Items
+//Authored Items
 if ($this->published) {
 	echo '<div class="mams-author-related">';
 	//Aricles
@@ -34,18 +34,19 @@ if ($this->published) {
 		foreach ($this->published as $r) {
 			$rartlink = "index.php?option=com_mams&view=article&secid=".$r->sec_id.":".$r->sec_alias."&artid=".$r->art_id.":".$r->art_alias;
 			if ($r->cats) $rartlink .= "&catid=".$r->cats[0]->cat_id;
+			$rartroute = JRoute::_($rartlink);
 			echo '<div class="mams-author-related-link">';
 			//Thumb
 			if ($r->art_thumb && $this->params->get('show_pubed_thumb',1)) {
 				echo '<div class="mams-author-related-thumb">';
-				echo '<img class="mams-author-related-artthumb"';
+				echo '<a href="'.$rartroute.'"><img class="mams-author-related-artthumb"';
 				echo ' src="'.$r->art_thumb.'" ';
-				echo ' />';
+				echo ' /></a>';
 				echo '</div>';
 			}
 			echo '<div class="mams-author-related-details">';
 			echo '<div class="mams-author-related-title">';
-			echo '<a href="'.JRoute::_($rartlink).'" class="mams-author-artlink">';
+			echo '<a href="'.$rartroute.'" class="mams-author-artlink">';
 			echo $r->art_title.'</a>';
 			echo '</div>';
 			//Authors
@@ -79,6 +80,22 @@ if ($this->published) {
 				echo implode(", ",$cats);
 				echo '</em>';
 			}
+
+			//Desc
+			if ($this->params->get('show_pubed_desc', 1)) {
+				echo '<div class="mams-author-related-artdesc">';
+				echo $r->art_desc;
+				echo '</div>';
+			}
+
+			if ($this->params->get('show_pubed_readmore', 1)) {
+				echo '<div class="mams-author-related-artreadmore">';
+				echo '<a href="' . JRoute::_( $rartlink ) . '" class="mams-artlist-artlink read-more uk-button btn btn-default">';
+				echo $this->params->get( 'pubed_readmore_text', "Read More" );
+				echo '</a>';
+				echo '</div>';
+			}
+
 			echo '</div>';
 			echo '</div>';
 			echo '</div>';

@@ -22,7 +22,7 @@ if ($saveOrder) {
 	JHtml::_('sortablelist.sortable', 'MAMSSecList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
 }
 $sortFields = $this->getSortFields();
-$db =& JFactory::getDBO();
+$db = JFactory::getDBO();
 ?>
 <script type="text/javascript">
 	Joomla.orderTable = function()

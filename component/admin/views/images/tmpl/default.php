@@ -21,7 +21,7 @@ if ($saveOrder) {
 	JHtml::_('sortablelist.sortable', 'MAMSImageList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 $sortFields = $this->getSortFields();
-$db =& JFactory::getDBO();
+
 $extension	= $this->escape($this->state->get('filter.extension'));
 ?>
 <script type="text/javascript">

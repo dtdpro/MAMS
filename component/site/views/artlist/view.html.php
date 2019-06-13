@@ -72,17 +72,17 @@ class MAMSViewArtList extends JViewLegacy
 	}
 	
 	protected function listSecs() {
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$this->seclist = $model->getSecs($this->params->get("show_count",0));
 	}
 	
 	protected function listCats() {
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$this->catlist = $model->getCats($this->params->get("show_count",0));
 	}
 	
 	protected function listSecByCat() {
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$sec=$this->getSecs();
 		if (!$sec) {
 			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
@@ -104,7 +104,7 @@ class MAMSViewArtList extends JViewLegacy
 	}
 	
 	protected function listCatSec() {
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$sec=$this->getSecs();
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
 		$cat=$this->getCats();
@@ -123,7 +123,7 @@ class MAMSViewArtList extends JViewLegacy
 	}
 	
 	protected function listCategory() {
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$cat=$this->getCats();
 		if (!$cat) {
 			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
@@ -143,14 +143,14 @@ class MAMSViewArtList extends JViewLegacy
 	}
 	
 	protected function listAll() {
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$this->articles=$model->getArticles();
 		$this->pagination = $this->get('Pagination');
 	}
 	
 	
 	protected function listSection() {
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$sec=$this->getSecs();
 		if (!$sec) {
 			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
@@ -168,7 +168,7 @@ class MAMSViewArtList extends JViewLegacy
 	}
 	
 	protected function listAuthor() {
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$sec=$this->getSecs();
 		if (!$sec) {
 			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));

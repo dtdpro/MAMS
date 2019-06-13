@@ -10,10 +10,10 @@ class MAMSHelper {
 	}
 
 	public static function trackViewed($item, $type) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sewn = JFactory::getSession();
 		$sessionid = $sewn->getId();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$userid = $user->id;
 		$q = $db->getQuery(true);
 		$q->insert('#__mams_track');

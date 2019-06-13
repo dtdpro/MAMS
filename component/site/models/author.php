@@ -6,7 +6,7 @@ jimport( 'joomla.application.component.model' );
 class MAMSModelAuthor extends JModelLegacy
 {
     function getAuthor($autid) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -22,7 +22,7 @@ class MAMSModelAuthor extends JModelLegacy
 	}
 	
 	function getAuthorList($secid) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$qsec = $db->getQuery(true);
 		$user = JFactory::getUser();
 
@@ -85,11 +85,11 @@ class MAMSModelAuthor extends JModelLegacy
 		return $secs;
 	}
 	
-	function getPublished($autid) {
+	function getPublished($autid,$params) {
 		$pubedids=$this->getAuthArts($autid);	
 		if (!$pubedids) return false;
 		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
@@ -102,7 +102,8 @@ class MAMSModelAuthor extends JModelLegacy
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id IN ('.implode(",",$pubedids).')');
 		$query->where('a.state >= 1');
-		$query->where('a.access IN ('.implode(",",$alvls).')');
+		if (!$params->get('pubed_by_feataccess',0)) $query->where('a.access IN ('.implode(",",$alvls).')');
+		else  $query->where('a.feataccess IN ('.implode(",",$alvls).')');
 		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
 		$query->order('a.art_publish_up DESC, s.lft ASC, a.ordering ASC');
 		$db->setQuery($query);
@@ -143,7 +144,7 @@ class MAMSModelAuthor extends JModelLegacy
 	}
 	
 	function getAuthArts($aut) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -157,7 +158,7 @@ class MAMSModelAuthor extends JModelLegacy
 	}
 	
 	function getAuthCourses($aut) {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();

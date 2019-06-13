@@ -19,7 +19,7 @@ require_once(JPATH_COMPONENT.'/helpers/mams.php');
 
 // Load StyleSheet for template, based on config
 $cfg = MAMSHelper::getConfig();
-$doc = &JFactory::getDocument();
+$doc = JFactory::getDocument();
 
 //jQuery
 JHtml::_('jquery.framework');

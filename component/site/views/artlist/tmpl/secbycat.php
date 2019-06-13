@@ -17,6 +17,7 @@ if (count($this->secinfo) == 1) {
 	echo '<div class="mams-secbycat-header">';
 	if ($this->secinfo[0]->sec_desc) echo '<div class="mams-secbycat-header-secdesc">'.$this->secinfo[0]->sec_content.'</div>';
 	echo '<div class="mams-secbycat-header-catlist">';
+	$i = 0;
 	foreach ($this->cats as $c) {
 		if ($i==1) $i=0; else $i=1;
 		echo '<div class="mams-secbycat-header-cat';

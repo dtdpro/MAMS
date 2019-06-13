@@ -12,7 +12,7 @@ class MAMSModelFieldgroups extends JModelList
 		
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'ordering', 'f.ordering'
+				'ordering', 'g.ordering'
 			);
 		}
 		parent::__construct($config);

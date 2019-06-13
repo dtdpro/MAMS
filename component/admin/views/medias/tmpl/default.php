@@ -16,7 +16,7 @@ $archived	= $this->state->get('filter.published') == 2 ? true : false;
 $trashed	= $this->state->get('filter.published') == -2 ? true : false;
 $published = $this->state->get('filter.published');
 $sortFields = $this->getSortFields();
-$db =& JFactory::getDBO();
+
 $extension	= $this->escape($this->state->get('filter.extension'));
 ?>
 <script type="text/javascript">

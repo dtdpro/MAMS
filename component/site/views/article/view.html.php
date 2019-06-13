@@ -20,7 +20,7 @@ class MAMSViewArticle extends JViewLegacy
 		
 
 		
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		$art=$app->input->getInt('artid',0);
 		if (!$art) {
 			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
@@ -75,7 +75,7 @@ class MAMSViewArticle extends JViewLegacy
 				$this->document->setTitle($this->article->art_title);
 				$this->article->track_id = MAMSHelper::trackViewed($art,'article');
 				if ($this->params->get('show_related',1)) {
-					$this->related=$model->getRelated($art,$this->article->cats,$this->article->auts,$this->article->sec_id);
+					$this->related=$model->getRelated($this->article,$this->article->cats,$this->article->auts,$this->article->sec_id);
 				}
 				//run plugins
 				$results = $dispatcher->trigger('onMAMSPrepare', array(&$this->article->art_content));

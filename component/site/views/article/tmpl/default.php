@@ -34,10 +34,18 @@ if ($this->article->fields) {
 	foreach ($this->article->fields as $f) {
 		if ($f->field_type == "related" && (!$this->params->get('show_related',1) || !$this->related)) { continue; }
 		$fn = $f->field_name;
-		$gns = "show_".$f->group_name;
+		$gns = 0;
+
+		if ($f->group_name == "article") {
+		    $gns = 1;
+        } else {
+		    $gnsv = "show_".$f->group_name;
+		    if (isset($this->article->art_fielddata->$gnsv)) $gns = $this->article->art_fielddata->$gnsv;
+		    else $gns = 0;
+        }
 
         // Start Group and/or end previous group
-        if ($f->group_name != $curgroup && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
+        if ($f->group_name != $curgroup && $gns) {
 			if (!$first) { echo '<div style="clear:both"></div>'; echo '</div>';  }
 			else { $first=false; }
 			echo '<div class="mams-article-'.$f->group_name.'">';
@@ -60,8 +68,8 @@ if ($this->article->fields) {
             case "textfield":
             case "textbox":
             case "editor":
-                if ($this->article->art_fielddata->$fn) {
-                    $has_content = true;
+                if (isset($this->article->art_fielddata->$fn)) {
+                    if ($this->article->art_fielddata->$fn) $has_content = true;
                 }
                 break;
             case 'pubinfo':
@@ -86,12 +94,12 @@ if ($this->article->fields) {
         }
 
         // Group set to show or named article
-        if (($this->article->art_fielddata->$gns == "1" || $f->group_name == "article") && $has_content) {
+        if ($gns && $has_content) {
 
             // Start Field
             echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'">';
             echo '<a name="'.$f->group_name.'-'.$f->field_name.'"></a>';
-            if ($f->params->show_title_page && ($this->article->art_fielddata->$gns == "1" || $f->group_name == "article")) {
+            if ($f->params->show_title_page && $gns) {
                 echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-title">';
                 echo $f->field_title;
                 echo '</div>';
@@ -353,17 +361,19 @@ if ($this->article->fields) {
 	                        if ($r->params->get('article_seclock', 1))  $rartlink .= "&secid=".$r->sec_id.":".$r->sec_alias;
                             $rartlink .= "&artid=".$r->art_id.":".$r->art_alias;
                             if ($r->cats && $r->params->get('article_catlock', 1)) $rartlink .= "&catid=".$r->cats[0]->cat_id;
+
+                            $rartroute=JRoute::_($rartlink);
                             //Thumb
                             if ($r->art_thumb) {
                                 echo '<div class="mams-article-related-thumb">';
-                                echo '<img class="mams-article-related-artthumb"';
+                                echo '<a href="'.$rartroute.'"><img class="mams-article-related-artthumb"';
                                 echo ' src="'.$r->art_thumb.'" ';
-                                echo ' />';
+                                echo ' /></a>';
                                 echo '</div>';
                             }
                             echo '<div class="mams-article-related-details">';
                             echo '<div class="mams-article-related-title">';
-                            echo '<a href="'.JRoute::_($rartlink).'" class="mams-article-related-artlink">';
+                            echo '<a href="'.$rartroute.'" class="mams-article-related-artlink">';
                             echo $r->art_title.'</a>';
                             echo '</div>';
                             //Authors
@@ -395,6 +405,22 @@ if ($this->article->fields) {
                                 echo implode(", ",$cats);
                                 echo '</em>';
                             }
+
+	                        //Desc
+	                        if ($this->params->get('show_related_desc', 1)) {
+                                echo '<div class="mams-article-related-artdesc">';
+                                echo $r->art_desc;
+                                echo '</div>';
+	                        }
+
+	                        if ($this->params->get('show_related_readmore', 1)) {
+		                        echo '<div class="mams-artlist-artreadmore">';
+		                        echo '<a href="' . JRoute::_( $rartlink ) . '" class="mams-artlist-artlink read-more uk-button btn btn-default">';
+		                        echo $this->params->get( 'related_readmore_text', "Read More" );
+		                        echo '</a>';
+		                        echo '</div>';
+	                        }
+
                             echo '</div>';
                             echo '</div>';
                             echo '</div>';
