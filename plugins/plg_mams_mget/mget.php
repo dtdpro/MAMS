@@ -11,7 +11,7 @@ class  plgMAMSMGet extends JPlugin
 {
 
 	public function onMAMSPrepare(&$text) {
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		
 		$uid=$user->id;
 		if ($uid) {

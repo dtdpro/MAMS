@@ -17,10 +17,10 @@ class modMAMSLatestHelper
 		$alvls = array_merge($alvls,$cfg->reggroup);
 
 		$orderby1 = $params->get('orderby1','s.lft ASC');
-		if ($orderby1 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby1 = str_replace('.ordering','.lft',$orderby1);
 		$orderby2 = $params->get('orderby2','s.lft ASC');
-		if ($orderby2 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby2 = str_replace('.ordering','.lft',$orderby2);
 		$orderby3 = $params->get('orderby3','s.lft ASC');
+		if ($orderby1 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby1 = str_replace('.ordering','.lft',$orderby1);
+		if ($orderby2 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby2 = str_replace('.ordering','.lft',$orderby2);
 		if ($orderby3 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby3 = str_replace('.ordering','.lft',$orderby3);
 		
 		$secs = array();
@@ -77,8 +77,8 @@ class modMAMSLatestHelper
 		return $items;
 	}
 	
-	protected function getArticleListFields($artid,$alvls) {
-		$db =& JFactory::getDBO();
+	protected static function getArticleListFields($artid,$alvls) {
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		
 		$query->select('*,f.params as field_params,g.params as group_params');
@@ -114,8 +114,8 @@ class modMAMSLatestHelper
 		return $items;
 	}
 	
-	protected function getFieldAuthors($artid, $fid, $alvls) {
-		$db =& JFactory::getDBO();
+	protected static function getFieldAuthors($artid, $fid, $alvls) {
+		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
 		$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
 		$qa->from('#__mams_artauth as aa');
@@ -130,8 +130,8 @@ class modMAMSLatestHelper
 		return $db->loadObjectList();
 	}
 	
-	protected function getFieldDownloads($artid, $fid, $alvls) {
-		$db =& JFactory::getDBO();
+	protected static function getFieldDownloads($artid, $fid, $alvls) {
+		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
 		$qa->select('d.*');
 		$qa->from('#__mams_artdl as ad');
@@ -146,8 +146,8 @@ class modMAMSLatestHelper
 		return $db->loadObjectList();
 	}
 	
-	protected function getFieldLinks($artid, $fid, $alvls) {
-		$db =& JFactory::getDBO();
+	protected static function getFieldLinks($artid, $fid, $alvls) {
+		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
 		$qa->select('l.*');
 		$qa->from('#__mams_artlinks as al');
@@ -162,9 +162,9 @@ class modMAMSLatestHelper
 		return $db->loadObjectList();
 	}
 	
-	public function getSecInfo($params) {
+	public static function getSecInfo($params) {
 		$secid=$params->get('secid');
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 	
 		$query->select('*');

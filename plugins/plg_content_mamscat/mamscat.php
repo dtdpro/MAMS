@@ -6,12 +6,7 @@ class  plgContentMAMSCat extends JPlugin
 
 	public function onContentPrepare($context, &$article, &$params, $limitstart) {
 		$regex = "#{mamscat}(.*?){/mamscat}#s";
-		$plugin =&JPluginHelper::getPlugin('content', 'MAMSCat');
-		if (!$plugin->published){ 
-			//plugin not published 
-		}else  { 
-			//plugin published 
-		}
+		$plugin = JPluginHelper::getPlugin('content', 'MAMSCat');
 		$matched = preg_match_all( $regex, $article->text, $matches, PREG_SET_ORDER );
 		if ($matches) {
 			foreach ($matches as $match) {
@@ -30,7 +25,7 @@ class  plgContentMAMSCat extends JPlugin
 		require_once('components/com_mams/helpers/mams.php');
 		require_once('components/com_mams/router.php');
 		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();

@@ -106,8 +106,8 @@ class modMAMSMostHelper
 		return $items;
 	}
 
-	protected function getArticleListFields($artid,$alvls) {
-		$db =& JFactory::getDBO();
+	protected static function getArticleListFields($artid,$alvls) {
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
 		$query->select('*,f.params as field_params,g.params as group_params');
@@ -143,8 +143,8 @@ class modMAMSMostHelper
 		return $items;
 	}
 
-	protected function getFeatured() {
-		$db =& JFactory::getDBO();
+	protected static function getFeatured() {
+		$db = JFactory::getDBO();
 		$query=$db->getQuery(true);
 		$query->select('af_art');
 		$query->from('#__mams_artfeat as f');
@@ -152,8 +152,8 @@ class modMAMSMostHelper
 		return $db->loadColumn();
 	}
 
-	protected function getFieldAuthors($artid, $fid, $alvls) {
-		$db =& JFactory::getDBO();
+	protected static function getFieldAuthors($artid, $fid, $alvls) {
+		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
 		$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
 		$qa->from('#__mams_artauth as aa');
@@ -168,8 +168,8 @@ class modMAMSMostHelper
 		return $db->loadObjectList();
 	}
 
-	protected function getFieldDownloads($artid, $fid, $alvls) {
-		$db =& JFactory::getDBO();
+	protected static function getFieldDownloads($artid, $fid, $alvls) {
+		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
 		$qa->select('d.*');
 		$qa->from('#__mams_artdl as ad');
@@ -184,8 +184,8 @@ class modMAMSMostHelper
 		return $db->loadObjectList();
 	}
 
-	protected function getFieldLinks($artid, $fid, $alvls) {
-		$db =& JFactory::getDBO();
+	protected static function getFieldLinks($artid, $fid, $alvls) {
+		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
 		$qa->select('l.*');
 		$qa->from('#__mams_artlinks as al');
