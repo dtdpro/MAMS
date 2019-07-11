@@ -106,6 +106,10 @@ class MAMSModelArticle extends JModelAdmin
         if (!$cfg->edit_cats) {
             $form->removefield('cats');
         }
+
+		if (!$cfg->edit_tags) {
+			$form->removefield('tags');
+		}
 		
 		return $form;
 	}
@@ -155,8 +159,7 @@ class MAMSModelArticle extends JModelAdmin
 		if (!empty($item->art_id))
 		{
 			//Tags
-			$item->tags = new JHelperTags;
-			$item->tags->getTagIds($item->art_id, 'com_mams.article');
+			$item->tags = $this->getTags($item->art_id);
 				
 			//Cats
 			$item->cats = $this->getCats($item->art_id);
@@ -199,6 +202,14 @@ class MAMSModelArticle extends JModelAdmin
 					$query->delete();
 					$query->from('#__mams_artcat');
 					$query->where('ac_art = '.$table->art_id);
+					$db->setQuery((string)$query);
+					$db->execute();
+
+					//Tags
+					$query	= $db->getQuery(true);
+					$query->delete();
+					$query->from('#__mams_arttag');
+					$query->where('at_art = '.$table->art_id);
 					$db->setQuery((string)$query);
 					$db->execute();
 
@@ -301,11 +312,6 @@ class MAMSModelArticle extends JModelAdmin
 		$table = $this->getTable();
 		$cfg = MAMSHelper::getConfig();
 		
-		if ((!empty($data['tags']) && $data['tags'][0] != ''))
-		{
-			$table->newTags = $data['tags'];
-		}
-		
 		$key = $table->getKeyName();
 		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
 		$isNew = true;
@@ -400,6 +406,29 @@ class MAMSModelArticle extends JModelAdmin
                 }
             }
         }
+
+		//Tags
+		if ($cfg->edit_tags) {
+			$query = $db->getQuery(true);
+			$query->delete();
+			$query->from('#__mams_arttag');
+			$query->where('at_art = ' . $table->art_id);
+			$db->setQuery((string)$query);
+			$db->query();
+			if ((!empty($data['tags']) && $data['tags'][0] != '')) {
+				$actable = $this->getTable("Arttag", "MAMSTable");
+				$order = 0;
+				foreach ($data['tags'] as $tag) {
+					$actable->at_id = 0;
+					$actable->at_tag = $tag;
+					$actable->at_art = $table->art_id;
+					$actable->published = 1;
+					$actable->ordering = $order;
+					$actable->store();
+					$order++;
+				}
+			}
+		}
 
         //Authors
         if ($cfg->edit_auths) {
@@ -854,6 +883,17 @@ class MAMSModelArticle extends JModelAdmin
 		$query->select('a.ac_cat');
 		$query->from('#__mams_artcat as a');
 		$query->where('a.ac_art = '.$art_id);
+		$query->order('a.ordering');
+		$db->setQuery($query);
+		return $db->loadColumn();
+	}
+
+	protected function getTags($art_id) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('a.at_tag');
+		$query->from('#__mams_arttag as a');
+		$query->where('a.at_art = '.$art_id);
 		$query->order('a.ordering');
 		$db->setQuery($query);
 		return $db->loadColumn();

@@ -16,17 +16,6 @@ else {
 	$msg = $config->loginmsg;
 }
 
-//echo '<pre>';
-//print_r($this->article);
-//echo '</pre>';
-
-//Title
-if ($this->params->get("show_page_heading",1)) {
-	echo '<h2 class="title uk-article-title">';
-	echo $this->article->art_title;
-	echo '</h2>';
-}
-
 //Fields Renderer
 if ($this->article->fields) {
 	$curgroup = "";
@@ -60,11 +49,21 @@ if ($this->article->fields) {
 
         $has_content = false;
         switch ($f->field_type) {
+	        case "title":
+		        if ($this->article->art_title) {
+			        $has_content = true;
+		        }
+		        break;
             case "body":
                 if ($this->article->art_content) {
                    $has_content = true;
                 }
                 break;
+	        case "tags":
+		        if ($this->article->tags) {
+			        $has_content = true;
+		        }
+		        break;
             case "textfield":
             case "textbox":
             case "editor":
@@ -97,7 +96,9 @@ if ($this->article->fields) {
         if ($gns && $has_content) {
 
             // Start Field
-            echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'">';
+            echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name;
+            if ($f->params->additional_css) echo " ".$f->params->additional_css;
+            echo '">';
             echo '<a name="'.$f->group_name.'-'.$f->field_name.'"></a>';
             if ($f->params->show_title_page && $gns) {
                 echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-title">';
@@ -106,6 +107,11 @@ if ($this->article->fields) {
             }
 
 			switch ($f->field_type) {
+				case "title":
+                    echo '<h2 class="title uk-article-title">';
+                    echo $this->article->art_title;
+                    echo '</h2>';
+					break;
                 case "body":
                     echo '<div class="mams-article-content">';
                     echo $this->article->art_content;
@@ -149,6 +155,16 @@ if ($this->article->fields) {
                         echo '</div>';
                     }
                     break;
+				case "tags":
+					foreach ($this->article->tags as $t) {
+						echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
+						echo '<span class="uk-badge badge badge-primary mams-article-'.$f->group_name.'-'.$f->field_name.'-link mams-article-tag">';
+						if ($t->tag_icon) echo '<i class="'.$t->tag_icon.'"></i> ';
+ 						echo $t->tag_title;
+						echo '</span> ';
+						echo '</a>';
+					}
+					break;
 				case "auths":
 					$auths = $f->data;
 					$authbyrow=$this->params->get('auth_byrow',2);
@@ -361,6 +377,7 @@ if ($this->article->fields) {
 	                        if ($r->params->get('article_seclock', 1))  $rartlink .= "&secid=".$r->sec_id.":".$r->sec_alias;
                             $rartlink .= "&artid=".$r->art_id.":".$r->art_alias;
                             if ($r->cats && $r->params->get('article_catlock', 1)) $rartlink .= "&catid=".$r->cats[0]->cat_id;
+	                        if ($r->tags && $r->params->get('article_taglock', 1)) $rartlink .= "&tagid=".$r->tags[0]->tag_id;
 
                             $rartroute=JRoute::_($rartlink);
                             //Thumb

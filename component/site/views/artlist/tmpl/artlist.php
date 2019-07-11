@@ -23,6 +23,9 @@ if (isset($this->articles)) {
 			if ( $a->cats && $a->params->get( 'article_catlock', 1 ) ) {
 				$artlink .= '&catid=' . $a->cats[0]->cat_id;
 			}
+			if ( $a->tags && $a->params->get( 'article_taglock', 1 ) ) {
+				$artlink .= '&tagid=' . $a->tags[0]->tag_id;
+			}
 		}
 		if ( $a->content_type == "section" ) {
 			$artlink = "index.php?option=com_mams&view=artlist&layout=section&secid=" . $a->art_id . ":" . $a->art_alias;
@@ -35,10 +38,51 @@ if (isset($this->articles)) {
 		}
 		echo '">';
 
+		//Tags Above
+		if ($this->params->get( 'show_tags', 1 ) && $this->params->get( 'show_tags_location', "above" ) == "above" && $a->tags) {
+			echo '<div class="mams-artlist-arttags">';
+			foreach ($a->tags as $t) {
+				echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
+				echo '<span class="uk-badge badge badge-primary">';
+				if ($t->tag_icon) echo '<i class="'.$t->tag_icon.'"></i> ';
+				echo $t->tag_title;
+				echo '</span>';
+				echo '</a> ';
+			}
+			echo '</div>';
+		}
+
 		//Title
 		echo '<div class="mams-artlist-arttitle">';
 		echo '<a href="' . JRoute::_( $artlink ) . '" class="mams-artlist-artlink">' . $a->art_title . '</a>';
+		//Tags After
+		if ($this->params->get( 'show_tags', 1 ) && $this->params->get( 'show_tags_location', "above" ) == "after" && $a->tags) {
+			echo '<span class="mams-artlist-arttags">';
+			foreach ($a->tags as $t) {
+				echo ' <a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
+				echo '<span class="uk-badge badge badge-primary">';
+				if ($t->tag_icon) echo '<i class="'.$t->tag_icon.'"></i> ';
+				echo $t->tag_title;
+				echo '</span>';
+				echo '</a>';
+			}
+			echo '</span>';
+		}
 		echo '</div>';
+
+		//Tags Below
+		if ($this->params->get( 'show_tags', 1 ) && $this->params->get( 'show_tags_location', "above" ) == "below" && $a->tags) {
+			echo '<div class="mams-artlist-arttags">';
+			foreach ($a->tags as $t) {
+				echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
+				echo '<span class="uk-badge badge badge-primary">';
+				if ($t->tag_icon) echo '<i class="'.$t->tag_icon.'"></i> ';
+				echo $t->tag_title;
+				echo '</span>';
+				echo '</a> ';
+			}
+			echo '</div>';
+		}
 
 		//Authors
 		if ( isset( $a->auts ) ) {

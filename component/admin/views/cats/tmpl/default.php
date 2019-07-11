@@ -204,7 +204,7 @@ if ($saveOrder) {
 				</td>
 				<td class="nowrap has-context">
 					<div class="pull-left">
-						<?php echo str_repeat('<span class="gi">&mdash;</span>', $item->level - 1) ?>
+						<?php if ($item->level > 0) { echo str_repeat('<span class="gi">&mdash;</span>', $item->level - 1); } ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_mams&task=cat.edit&cat_id='.(int) $item->cat_id); ?>">
 						<?php echo $this->escape($item->cat_title); ?></a>
 						<div class="small">Alias: <?php echo $item->cat_alias; ?></div>

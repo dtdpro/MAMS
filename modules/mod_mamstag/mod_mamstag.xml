@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.1" client="site" method="upgrade">
+	<name>mod_mamstag</name>
+	<author>DtD Productions</author>
+	<creationDate>July 2019</creationDate>
+	<copyright>Copyright 2019 DtD Productions All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>info@dtdpro.com</authorEmail>
+	<authorUrl>www.dtdpro.com</authorUrl>
+	<version>1.0.0</version>
+	<description>MOD_MAMSTAG_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_mamstag">mod_mamstag.php</filename>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_mamstag.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.mod_mamstag.ini</language>
+		<language tag="en-GB">en-GB.mod_mamstag.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
+				<field name="tagid" type="Tags" description="MOD_MAMSTAG_TAG_DESC" label="MOD_MAMSTAG_TAG_LABEL" required="true" />
+				<field name="article_seclock" type="radio" label="MOD_MAMSTAG_FIELD_SECLOCK_LABEL" description="MOD_MAMSTAG_FIELD_SECLOCK_DESC" class="btn-group" default="1">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="article_catlock" type="radio" label="MOD_MAMSTAG_FIELD_CATLOCK_LABEL" description="MOD_MAMSTAG_FIELD_CATLOCK_DESC" class="btn-group" default="1">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="article_taglock" type="radio" label="MOD_MAMSTAG_FIELD_TAGLOCK_LABEL" description="MOD_MAMSTAG_FIELD_TAGLOCK_DESC" class="btn-group" default="1">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="restrict_feat" type="radio" label="MOD_MAMSTAG_RESTRICT_FEAT_LABEL" description="MOD_MAMSTAG_RESTRICT_FEAT_DESC" class="btn-group" default="0">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="show_image" type="radio" label="MOD_MAMSTAG_SHOW_IMAGE_LABEL" description="MOD_MAMSTAG_SHOW_IMAGE_DESC" class="btn-group" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="link_image" type="radio" label="MOD_MAMSTAG_LINK_IMAGE_LABEL" description="MOD_MAMSTAG_LINK_IMAGE_DESC" class="btn-group" default="0">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="count" type="text" default="5" label="MOD_MAMSTAG_COUNT_LABEL" description="MOD_MAMSTAG_COUNT_DESC" />
+				<field name="show_thumb" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_THUMB_DESC" label="MOD_MAMSTAG_SHOW_THUMB_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_author" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_AUTHOR_DESC" label="MOD_MAMSTAG_SHOW_AUTHOR_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubinfo" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_PUBINFO_DESC" label="MOD_MAMSTAG_SHOW_PUBINFO_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubdate" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_PUBDATE_DESC" label="MOD_MAMSTAG_SHOW_PUBDATE_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubsec" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_PUBSEC_DESC" label="MOD_MAMSTAG_SHOW_PUBSEC_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_pubcat" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_PUBCAT_DESC" label="MOD_MAMSTAG_SHOW_PUBCAT_LABEL" default="1">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_desc" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_DESC_DESC" label="MOD_MAMSTAG_SHOW_DESC_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_readmore" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_READMORE_DESC" label="MOD_MAMSTAG_SHOW_READMORE_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="text_readmore" type="text" default="Read More" label="MOD_MAMSTAG_TEXT_READMORE_LABEL" description="MOD_MAMSTAG_TEXT_READMORE_DESC" />
+				<field name="link_pubinfo" type="radio" class="btn-group" description="MOD_MAMSTAG_LINK_PUBINFO_DESC" label="MOD_MAMSTAG_LINK_PUBINFO_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="show_allfields" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_ALLFIELDS_DESC" label="MOD_MAMSTAG_SHOW_ALLFIELDS_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="orderby1" type="list" description="MOD_MAMSTAG_FIELD_ORDERBY1_DESC" label="MOD_MAMSTAG_FIELD_ORDERBY1_LABEL" default="a.art_publish_up DESC">
+					<option value="a.art_publish_up ASC">MOD_MAMSTAG_ORDER_PUBASC</option>
+					<option value="a.art_publish_up DESC">MOD_MAMSTAG_ORDER_PUBDSC</option>
+					<option value="a.art_title ASC">MOD_MAMSTAG_ORDER_TITASC</option>
+					<option value="a.art_title DESC">MOD_MAMSTAG_ORDER_TITDSC</option>
+					<option value="a.ordering ASC">MOD_MAMSTAG_ORDER_ARTORDERINGASC</option>
+					<option value="a.ordering DESC">MOD_MAMSTAG_ORDER_ARTORDERINGDSC</option>
+					<option value="s.lft ASC">MOD_MAMSTAG_ORDER_SECORDERINGASC</option>
+					<option value="s.lft DESC">MOD_MAMSTAG_ORDER_SECORDERINGDSC</option>
+				</field>
+				<field name="orderby2" type="list" description="MOD_MAMSTAG_FIELD_ORDERBY2_DESC" label="MOD_MAMSTAG_FIELD_ORDERBY2_LABEL" default="s.lft ASC">
+					<option value="a.art_publish_up ASC">MOD_MAMSTAG_ORDER_PUBASC</option>
+					<option value="a.art_publish_up DESC">MOD_MAMSTAG_ORDER_PUBDSC</option>
+					<option value="a.art_title ASC">MOD_MAMSTAG_ORDER_TITASC</option>
+					<option value="a.art_title DESC">MOD_MAMSTAG_ORDER_TITDSC</option>
+					<option value="a.ordering ASC">MOD_MAMSTAG_ORDER_ARTORDERINGASC</option>
+					<option value="a.ordering DESC">MOD_MAMSTAG_ORDER_ARTORDERINGDSC</option>
+					<option value="s.lft ASC">MOD_MAMSTAG_ORDER_SECORDERINGASC</option>
+					<option value="s.lft DESC">MOD_MAMSTAG_ORDER_SECORDERINGDSC</option>
+				</field>
+				<field name="orderby3" type="list" description="MOD_MAMSTAG_FIELD_ORDERBY3_DESC" label="MOD_MAMSTAG_FIELD_ORDERBY3_LABEL" default="a.ordering ASC">
+					<option value="a.art_publish_up ASC">MOD_MAMSTAG_ORDER_PUBASC</option>
+					<option value="a.art_publish_up DESC">MOD_MAMSTAG_ORDER_PUBDSC</option>
+					<option value="a.art_title ASC">MOD_MAMSTAG_ORDER_TITASC</option>
+					<option value="a.art_title DESC">MOD_MAMSTAG_ORDER_TITDSC</option>
+					<option value="a.ordering ASC">MOD_MAMSTAG_ORDER_ARTORDERINGASC</option>
+					<option value="a.ordering DESC">MOD_MAMSTAG_ORDER_ARTORDERINGDSC</option>
+					<option value="s.lft ASC">MOD_MAMSTAG_ORDER_SECORDERINGASC</option>
+					<option value="s.lft DESC">MOD_MAMSTAG_ORDER_SECORDERINGDSC</option>
+				</field>
+				<field name="show_viewall" type="radio" class="btn-group" description="MOD_MAMSTAG_SHOW_VIEWALL_DESC" label="MOD_MAMSTAG_SHOW_VIEWALL_LABEL" default="0">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				<field name="text_viewall" type="text" default="View All" label="MOD_MAMSTAG_TEXT_VIEWALL_LABEL" description="MOD_MAMSTAG_TEXT_VIEWALL_DESC" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field
+						name="moduleclass_sfx"
+						type="textarea"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
+						rows="3"
+				/>
+
+				<field
+						name="cache"
+						type="list"
+						label="COM_MODULES_FIELD_CACHING_LABEL"
+						description="COM_MODULES_FIELD_CACHING_DESC"
+						default="1"
+						filter="integer"
+				>
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+
+				<field
+						name="cache_time"
+						type="number"
+						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+						description="COM_MODULES_FIELD_CACHE_TIME_DESC"
+						default="900"
+						filter="integer"
+				/>
+				<field
+						name="cachemode"
+						type="hidden"
+						default="static"
+				>
+					<option value="static"></option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

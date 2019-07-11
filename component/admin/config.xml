@@ -19,6 +19,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="edit_tags" type="radio" label="COM_MAMS_CONFIG_FIELD_EDITTAG_LABEL" description="COM_MAMS_CONFIG_FIELD_EDITTAG_DESC" default="1" class="btn-group">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="compcss" type="radio" label="COM_MAMS_CONFIG_FIELD_COMPCSS_LABEL" description="COM_MAMS_CONFIG_FIELD_COMPCSS_DESC" default="0" class="btn-group">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
@@ -38,6 +42,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="article_taglock" type="radio" label="COM_MAMS_FIELD_TAGLOCK_LABEL" description="COM_MAMS_FIELD_TAGLOCK_DESC" class="btn-group" default="1">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="show_artlist_desc" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_ARTLIST_DESC_DESC" label="COM_MAMS_FIELD_SHOW_ARTLIST_DESC_LABEL" default="1">
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
@@ -45,6 +53,15 @@
 		<field name="show_pubinfo" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PUBINFO_DESC" label="COM_MAMS_FIELD_SHOW_PUBINFO_LABEL" default="1">	
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_tags" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_TAGS_DESC" label="COM_MAMS_FIELD_SHOW_TAGS_LABEL" default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="show_tags_location" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_TAGS_LOCATION_DESC" label="COM_MAMS_FIELD_SHOW_TAGS_LOCATION_LABEL" default="above">
+			<option value="above">Above</option>
+			<option value="below">Below</option>
+			<option value="after">After</option>
 		</field>
 		<field name="show_title2" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_TITLE2_DESC" label="COM_MAMS_FIELD_SHOW_TITLE2_LABEL" default="0">
 			<option value="0">JHIDE</option>

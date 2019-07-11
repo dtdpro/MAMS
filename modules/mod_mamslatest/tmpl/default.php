@@ -16,6 +16,7 @@ foreach ($articles as $a) {
 	if ($params->get('article_seclock', 1)) $artlink .= "&secid=" . $a->art_sec . ":" . $a->sec_alias;
 	$artlink .= "&artid=" . $a->art_id . ":" . $a->art_alias;
 	if ($a->cats && $params->get('article_catlock', 1)) $artlink .= '&catid=' . $a->cats[0]->cat_id;
+	if ($a->tags && $params->get('article_taglock', 1)) $artlink .= '&tagid=' . $a->tags[0]->tag_id;
 
 	echo '<div class="mams-featmod-article';
 	if ($firstart) { echo ' first-child'; $firstart=false; }

@@ -64,6 +64,19 @@ class modMAMSCatHelper
 			$qc->order('ac.ordering ASC');
 			$db->setQuery($qc);
 			$i->cats=$db->loadObjectList();
+
+			// Tags
+			$qc = $db->getQuery( true );
+			$qc->select( 't.tag_id,t.tag_title,t.tag_alias' );
+			$qc->from( '#__mams_arttag as at' );
+			$qc->join( 'RIGHT', '#__mams_tags AS t ON at.at_tag = t.tag_id' );
+			$qc->where( 'at.published >= 1' );
+			$qc->where( 't.published >= 1' );
+			$qc->where( 't.access IN (' . implode( ",", $alvls ) . ')' );
+			$qc->where( 'at.at_art = ' . $i->art_id );
+			$qc->order( 'at.ordering ASC' );
+			$db->setQuery( $qc );
+			$i->tags=$db->loadObjectList();
 			
 			if ($i->art_fielddata)
 			{

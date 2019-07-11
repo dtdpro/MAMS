@@ -49,12 +49,29 @@ $params = $this->form->getFieldsets('params');
 			</div>
 		</div>
 		<div class="span2">
-			<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('state'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('state'); ?></div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('access'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('access'); ?></div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('version_note'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('version_note'); ?></div>
+            </div>
 			<?php if ($this->cfg->edit_cats) { ?>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('cats'); ?></div>
 				<div class="controls"><?php echo $this->form->getInput('cats'); ?></div>
 			</div>
+			<?php } ?>
+			<?php if ($this->cfg->edit_tags) { ?>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('tags'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('tags'); ?></div>
+                </div>
 			<?php } ?>
 			<?php if ($this->cfg->edit_auths) { ?>
 			<div class="control-group">

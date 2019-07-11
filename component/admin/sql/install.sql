@@ -18,6 +18,15 @@ CREATE TABLE IF NOT EXISTS `#__mams_artcat` (
   PRIMARY KEY (`ac_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__mams_arttag` (
+  `at_id` int(11) NOT NULL AUTO_INCREMENT,
+  `at_art` int(11) NOT NULL,
+  `at_tag` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  PRIMARY KEY (`at_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `#__mams_artdl` (
   `ad_id` int(11) NOT NULL AUTO_INCREMENT,
   `ad_field` int(11) NOT NULL DEFAULT '7',
@@ -281,6 +290,21 @@ CREATE TABLE IF NOT EXISTS `#__mams_secs` (
   KEY `asset_id` (`asset_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__mams_tags` (
+  `tag_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tag_title` varchar(255) NOT NULL,
+  `tag_alias` varchar(255) NOT NULL,
+  `tag_desc` text NOT NULL,
+  `tag_image` varchar(255) NOT NULL,
+  `tag_featured` tinyint(1) NOT NULL DEFAULT '0',
+  `tag_feataccess` text NOT NULL,
+  `tag_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tag_modified` datetime NOT NULL,
+  `published` int(11) NOT NULL,
+  `access` int(11) NOT NULL,
+  PRIMARY KEY (`tag_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `#__mams_track` (
   `mt_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `mt_user` int(11) NOT NULL,
@@ -301,7 +325,7 @@ INSERT INTO `#__mams_article_fieldgroups` (`group_id`, `group_name`, `group_titl
 (1, 'article', 'Main', 0, 1, 1, 1);
 
 INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `field_rssname`, `field_type`, `field_group`, `field_show_page`, `field_show_list`, `field_show_module`, `ordering`, `access`, `published`, `params`) VALUES
-(1, 'art-title', 'Article Title', 'title', 'title', 1, 1, 1, 0, 1, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
+(1, 'art-title', 'Article Title', 'title', 'title', 1, 1, 1, 0, 2, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
 (2, 'art-desc', 'Article Description', 'description', 'desc', 1, 0, 1, 0, 4, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
 (3, 'art-content', 'Article Body', 'body', 'body', 1, 1, 0, 0, 9, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
 (4, 'art-pubinfo', 'Article Publishing Information', '', 'pubinfo', 1, 1, 1, 0, 3, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
@@ -310,6 +334,7 @@ INSERT INTO `#__mams_article_fields` (`field_id`, `field_name`, `field_title`, `
 (7, 'art-dloads', 'Article Downloads', '', 'dloads', 1, 1, 0, 0, 7, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
 (8, 'art-links', 'Article Links', '', 'links', 1, 1, 0, 0, 10, 1, 1, '{"show_title_page":"0","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
 (9, 'art-related', 'Related Items', '', 'related', 1, 1, 0, 0, 11, 1, 1, '{"show_title_page":"1","show_title_desc":"0","pretext":"","posttext":"","linktext":"0"}'),
-(10, 'art-images', 'Article Images', '', 'images', 1, 1, 0, 0, 6, 1, 1, '{"show_title_page":"0","show_title_desc":"0","show_title_module":"0","pretext":"","posttext":"","linktext":"0"}');
+(10, 'art-images', 'Article Images', '', 'images', 1, 1, 0, 0, 6, 1, 1, '{"show_title_page":"0","show_title_desc":"0","show_title_module":"0","pretext":"","posttext":"","linktext":"0"}'),
+(11, 'art-tags', 'Tags', '', 'tags', 1, 1, 0, 0, 1, 1, 1, '{"show_title_page":"0","show_title_desc":"0","show_title_module":"0","pretext":"","posttext":"","linktext":"0"}');
 
 

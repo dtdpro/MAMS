@@ -35,27 +35,6 @@
 			default="1"
 			filter="integer"/>
 		<field
-				name="lft"
-				type="hidden"
-				filter="unset"/>
-
-		<field
-				name="rgt"
-				type="hidden"
-				filter="unset"/>
-
-		<field
-				name="level"
-				type="hidden"
-				filter="unset"/>
-
-		<field
-				name="path"
-				type="hidden"
-				class="readonly"
-				size="40"
-				readonly="true"/>
-		<field
 			name="cat_title"
 			type="text"
 			label="COM_MAMS_CAT_FIELD_NAME_LABEL"
@@ -105,6 +84,27 @@
 			default="1"
 			multiple="true"
 		/>
+		<field
+				name="lft"
+				type="hidden"
+				filter="unset"/>
+
+		<field
+				name="rgt"
+				type="hidden"
+				filter="unset"/>
+
+		<field
+				name="level"
+				type="hidden"
+				filter="unset"/>
+
+		<field
+				name="path"
+				type="hidden"
+				class="readonly"
+				size="40"
+				readonly="true"/>
 	</fieldset>
 </form>
 

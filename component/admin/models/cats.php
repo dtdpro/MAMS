@@ -140,8 +140,8 @@ class MAMSModelCats extends JModelList
 		foreach ($this->cache[$store] as &$i) {
 			$alevels = explode(",",$i->cat_feataccess);
 			$leveltext = array();
-			foreach ($alevels as $a) {
-				$leveltext[] = $allist[$a];
+			foreach ( $alevels as $a ) {
+				$leveltext[] = $allist[ $a ];
 			}
 			$i->feataccess_level = implode(", ",$leveltext);
 		}

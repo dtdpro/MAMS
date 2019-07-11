@@ -74,6 +74,7 @@ class MAMSModelArticle extends JModelItem
 		
 		//Get Article Drilldowns
 		$item->cats=$this->getArticleCats($item->art_id);
+		$item->tags=$this->getArticleTags($item->art_id);
 		$item->auts=$this->getFieldAuthors($item->art_id,5);
 		
 		//Additional Fields
@@ -102,7 +103,6 @@ class MAMSModelArticle extends JModelItem
 		$query->where('g.published >= 1');
 		$query->where('g.access IN ('.implode(",",$this->alvls).')');
 		$query->where('f.field_show_page = 1');
-		$query->where('f.field_type != "title"');
 		$query->order('f.ordering ASC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
@@ -218,7 +218,22 @@ class MAMSModelArticle extends JModelItem
 		$db->setQuery($qa);
 		return $db->loadObjectList();
 	}
-	
+
+	protected function getArticleTags($artid) {
+		$db = JFactory::getDBO();
+		$qc = $db->getQuery( true );
+		$qc->select( 't.tag_id,t.tag_title,t.tag_alias,t.tag_icon' );
+		$qc->from( '#__mams_arttag as at' );
+		$qc->join( 'RIGHT', '#__mams_tags AS t ON at.at_tag = t.tag_id' );
+		$qc->where( 'at.published >= 1' );
+		$qc->where( 't.published >= 1' );
+		$qc->where( 't.access IN (' . implode( ",", $this->alvls ) . ')' );
+		$qc->where( 'at.at_art = ' . $artid );
+		$qc->order( 'at.ordering ASC' );
+		$db->setQuery( $qc );
+		return $db->loadObjectList();
+	}
+
 	function getRelated($article,$cats,$auts,$secid) {
 		$app = JFactory::getApplication('site');
 		$user = JFactory::getUser();
@@ -262,6 +277,7 @@ class MAMSModelArticle extends JModelItem
 
 				$i->auts=$this->getFieldAuthors($i->art_id,5);
 				$i->cats=$this->getArticleCats($i->art_id);
+				$i->tags=$this->getArticleTags($i->art_id);
 			}
 		} else {
 			return false;

@@ -10,7 +10,7 @@ class MAMSModelField extends JModelAdmin
 {
 	protected function canDelete($record)
 	{
-		if ($record->field_id <= 10) return false;
+		if ($record->field_id <= 50) return false;
 		
 		if (!empty($record->field_id))
 		{
@@ -26,7 +26,7 @@ class MAMSModelField extends JModelAdmin
 	
 	protected function canEditState($record)
 	{
-		if ($record->field_id <= 10) return false;
+		if ($record->field_id <= 50) return false;
 		
 		$user = JFactory::getUser();
 	
@@ -76,7 +76,7 @@ class MAMSModelField extends JModelAdmin
 		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));
 		
 		//Disallow editing of primary fields
-		if ($data->field_id <= 10 && $data->field_id != 0) {
+		if ($data->field_id <= 50 && $data->field_id != 0) {
 			$form->setFieldAttribute('published', 'disabled', 'true');
 			$form->setFieldAttribute('access', 'disabled', 'true');
 				

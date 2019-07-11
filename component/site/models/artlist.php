@@ -124,6 +124,19 @@ class MAMSModelArtList extends JModelList
 				$db->setQuery($qc);
 				$i->cats = $db->loadObjectList();
 
+				// Get Tags
+				$qc = $db->getQuery(true);
+				$qc->select('t.tag_id,t.tag_title,t.tag_alias,t.tag_icon');
+				$qc->from('#__mams_arttag as at');
+				$qc->join('RIGHT', '#__mams_tags AS t ON at.at_tag = t.tag_id');
+				$qc->where('at.published >= 1');
+				$qc->where('t.published >= 1');
+				$qc->where('t.access IN (' . implode(",", $this->alvls) . ')');
+				$qc->where('at.at_art = ' . $i->art_id);
+				$qc->order('at.ordering ASC');
+				$db->setQuery($qc);
+				$i->tags = $db->loadObjectList();
+
 				// Get extra fields
 				if ($i->art_fielddata) {
 					$field_registry = new JRegistry;
@@ -265,16 +278,30 @@ class MAMSModelArtList extends JModelList
 		$items = $db->loadColumn();
 		return $items;
 	}
-	
+
 	function getCatArts($cat) {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
-		
+
 		$query->select('ac.ac_art');
 		$query->from('#__mams_artcat AS ac');
 		$query->where('ac.ac_cat IN ( '.implode(",",$cat).')');
 		$query->where('ac.published >= 1');
+		$db->setQuery($query);
+		$items = $db->loadColumn();
+		return $items;
+	}
+	
+	function getTagArts($tag) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+		
+		$query->select('at.at_art');
+		$query->from('#__mams_arttag AS at');
+		$query->where('at.at_tag IN ( '.implode(",",$tag).')');
+		$query->where('at.published >= 1');
 		$db->setQuery($query);
 		$items = $db->loadColumn();
 		return $items;
@@ -353,6 +380,21 @@ class MAMSModelArtList extends JModelList
 		$query->where('c.cat_id IN ('.implode(",",$cat).')');
 		$query->where('c.published >= 1');
 		$query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		$db->setQuery($query);
+		$info = $db->loadObjectList();
+		return $info;
+	}
+
+	function getTagInfo($tag) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
+
+		$query->select('t.*');
+		$query->from('#__mams_tags AS t');
+		$query->where('t.tag_id IN ('.implode(",",$tag).')');
+		$query->where('t.published >= 1');
+		$query->where('t.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$db->setQuery($query);
 		$info = $db->loadObjectList();
 		return $info;

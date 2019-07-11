@@ -216,6 +216,15 @@ $sortFields = $this->getSortFields();
                                 echo implode(", ",$itemcats);
                                 endif;
                             ?>
+	                        <?php if (count($item->tags)) : ?>
+                                <br /><strong>Tag:</strong> <?php
+		                        $itemtags = array();
+		                        foreach ($item->tags as $t) {
+			                        $itemtags[] = $this->tags[$t];
+		                        }
+		                        echo implode(", ",$itemtags);
+	                        endif;
+	                        ?>
 							<?php if (count($item->authors)) : ?>
 								<br /><strong>Author:</strong> <?php
 								$itemauths = array();

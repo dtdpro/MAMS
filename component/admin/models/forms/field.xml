@@ -58,7 +58,7 @@
 			<option	value="textbox">Text Box</option>
 			<option	value="editor">Text Editor</option>
 			<option	value="auths">Authors</option>
-			<option	value="media">Meida</option>
+			<option	value="media">Media</option>
 			<option	value="dloads">Downloads</option>
 			<option	value="links">Links</option>
 			<option	value="images">Image Gallery</option>
@@ -143,6 +143,7 @@
 				<option	value="1">Field</option>
 				<option	value="2">Group</option>
 			</field>
+			<field name="additional_css" type="text" label="COM_MAMS_FIELD_FIELD_ADDITIONALCSS_LABEL" description="COM_MAMS_FIELD_FIELD_ADDITIONALCSS_DESC" size="60" class="inputbox"	default="" />
 		</fieldset>
 	</fields>
 </form>

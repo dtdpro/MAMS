@@ -110,7 +110,7 @@ if ($saveOrder) {
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->field_id); ?></td>
 				<td class="center"><?php 
-					if ($item->field_id >= 10) echo JHtml::_('jgrid.published', $item->published, $i, 'fields.', true);
+					if ($item->field_id >= 50) echo JHtml::_('jgrid.published', $item->published, $i, 'fields.', true);
 					else echo '<a class="btn btn-micro disabled jgrid"  title="Protected extension"><i class="icon-lock"></i></a>';
 				?></td>
 				<td><?php 

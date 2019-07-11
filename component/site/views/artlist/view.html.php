@@ -25,6 +25,15 @@ class MAMSViewArtList extends JViewLegacy
 		$this->state = $this->get('State');
 		
 		switch($layout) {
+			case "tag":
+				$this->listTag();
+				break;
+			case "tagsec":
+				$this->listTagSec();
+				break;
+			case "tagcat":
+				$this->listTagCat();
+				break;
 			case "catlist": 
 				$this->listCats();
 				break;
@@ -121,6 +130,45 @@ class MAMSViewArtList extends JViewLegacy
 			$this->pagination = $this->get('Pagination');
 		}
 	}
+
+	protected function listTagSec() {
+		$model = $this->getModel();
+		$sec=$this->getSecs();
+		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
+		$tag=$this->getTags();
+		if (!$tag) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
+		$this->taginfo=$model->getTagInfo($tag);
+		if ($this->taginfo) {
+			if (count($this->taginfo) == 1) $this->document->setTitle($this->taginfo[0]->tag_title);
+			$artids=$model->getTagArts($tag);
+			$this->articles=$model->getArticles($artids,$sec);
+			$this->pagination = $this->get('Pagination');
+		}
+	}
+
+	protected function listTagCat() {
+		$model = $this->getModel();
+		$cat=$this->getCats();
+		if (count($cat)) $this->catinfo=$model->getCatInfo($cat);
+		$tag=$this->getTags();
+		if (!$tag) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
+		$this->taginfo=$model->getTagInfo($tag);
+		if ($this->taginfo) {
+			if (count($this->taginfo) == 1) $this->document->setTitle($this->taginfo[0]->tag_title);
+			$artids_tag=$model->getTagArts($tag);
+			$artids_cat=$model->getCatArts($cat);
+			$this->articles=$model->getArticles(array_intersect($artids_tag,$artids_cat));
+			$this->pagination = $this->get('Pagination');
+		}
+	}
 	
 	protected function listCategory() {
 		$model = $this->getModel();
@@ -135,6 +183,25 @@ class MAMSViewArtList extends JViewLegacy
 		if ($this->catinfo) {
 			if (count($this->catinfo) == 1) $this->document->setTitle($this->catinfo[0]->cat_title);
 			$artids=$model->getCatArts($cat);
+			if (count($artids) > 0) {
+				$this->articles=$model->getArticles($artids);
+				$this->pagination = $this->get('Pagination');
+			}
+		}
+	}
+
+	protected function listTag() {
+		$model = $this->getModel();
+		$tag=$this->getTags();
+		if (!$tag) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
+		$this->taginfo=$model->getTagInfo($tag);
+		if ($this->taginfo) {
+			if (count($this->taginfo) == 1) $this->document->setTitle($this->taginfo[0]->tag_title);
+			$artids=$model->getTagArts($tag);
 			if (count($artids) > 0) {
 				$this->articles=$model->getArticles($artids);
 				$this->pagination = $this->get('Pagination');
@@ -204,6 +271,14 @@ class MAMSViewArtList extends JViewLegacy
 			if ((int)$c) $cats[] = (int)$c;
 		}
 		return $cats;
+	}
+
+	protected function getTags() {
+		$tags = array();
+		foreach (JFactory::getApplication()->input->get('tagid', array(), 'array') as $t) {
+			if ((int)$t) $tags[] = (int)$t;
+		}
+		return $tags;
 	}
 	
 	protected function getAuts() {

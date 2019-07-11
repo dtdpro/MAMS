@@ -19,6 +19,7 @@ class MAMSViewArticles extends JViewLegacy
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
         $this->cats = $this->get('Cats');
+		$this->tags = $this->get('Tags');
 		$this->authors = $this->get('AUthors');
 		$this->pagination = $this->get('Pagination');
 		

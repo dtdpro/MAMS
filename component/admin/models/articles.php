@@ -82,6 +82,19 @@ class MAMSModelArticles extends JModelList
         return $catsbyid;
     }
 
+	public function getTags() {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('*')->from('#__mams_tags');
+		$db->setQuery($query);
+		$tags = $db->loadObjectList();
+		$tagsbyid=array();
+		foreach ($tags as $t) {
+			$tagsbyid[$t->tag_id] = $t->tag_title;
+		}
+		return $tagsbyid;
+	}
+
     public function getAuthors() {
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -125,6 +138,14 @@ class MAMSModelArticles extends JModelList
             $query->where('ac_art = '.$item->art_id);
             $this->_db->setQuery($query);
             $item->cats = $this->_db->loadColumn();
+
+	        // Tags
+	        $query = $this->_db->getQuery(true);
+	        $query->select('at_tag');
+	        $query->from('#__mams_arttag');
+	        $query->where('at_art = '.$item->art_id);
+	        $this->_db->setQuery($query);
+	        $item->tags = $this->_db->loadColumn();
 
             // Authors
             $query = $this->_db->getQuery(true);
