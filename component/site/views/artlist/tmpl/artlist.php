@@ -38,17 +38,24 @@ if (isset($this->articles)) {
 		}
 		echo '">';
 
+		// Generate Tags
+		$tagshtml = '';
+		if ($this->params->get( 'show_tags', 1 ) && $a->tags) {
+			foreach ($a->tags as $t) {
+				$tagshtml .= " ";
+				if ($this->params->get( 'link_tags', 1 )) $tagshtml .= '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
+				$tagshtml .= '<span class="uk-badge badge badge-primary">';
+				if ($t->tag_icon) $tagshtml .= '<i class="'.$t->tag_icon.'"></i>';
+				$tagshtml .= $t->tag_title;
+				$tagshtml .= '</span>';
+				if ($this->params->get( 'link_tags', 1 )) $tagshtml .= '</a>';
+			}
+		}
+
 		//Tags Above
 		if ($this->params->get( 'show_tags', 1 ) && $this->params->get( 'show_tags_location', "above" ) == "above" && $a->tags) {
 			echo '<div class="mams-artlist-arttags">';
-			foreach ($a->tags as $t) {
-				echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
-				echo '<span class="uk-badge badge badge-primary">';
-				if ($t->tag_icon) echo '<i class="'.$t->tag_icon.'"></i> ';
-				echo $t->tag_title;
-				echo '</span>';
-				echo '</a> ';
-			}
+			echo $tagshtml;
 			echo '</div>';
 		}
 
@@ -58,14 +65,7 @@ if (isset($this->articles)) {
 		//Tags After
 		if ($this->params->get( 'show_tags', 1 ) && $this->params->get( 'show_tags_location', "above" ) == "after" && $a->tags) {
 			echo '<span class="mams-artlist-arttags">';
-			foreach ($a->tags as $t) {
-				echo ' <a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
-				echo '<span class="uk-badge badge badge-primary">';
-				if ($t->tag_icon) echo '<i class="'.$t->tag_icon.'"></i> ';
-				echo $t->tag_title;
-				echo '</span>';
-				echo '</a>';
-			}
+			echo $tagshtml;
 			echo '</span>';
 		}
 		echo '</div>';
@@ -73,14 +73,7 @@ if (isset($this->articles)) {
 		//Tags Below
 		if ($this->params->get( 'show_tags', 1 ) && $this->params->get( 'show_tags_location', "above" ) == "below" && $a->tags) {
 			echo '<div class="mams-artlist-arttags">';
-			foreach ($a->tags as $t) {
-				echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
-				echo '<span class="uk-badge badge badge-primary">';
-				if ($t->tag_icon) echo '<i class="'.$t->tag_icon.'"></i> ';
-				echo $t->tag_title;
-				echo '</span>';
-				echo '</a> ';
-			}
+			echo $tagshtml;
 			echo '</div>';
 		}
 

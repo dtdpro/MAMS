@@ -621,6 +621,26 @@ class MAMSModelArticle extends JModelAdmin
             $done = true;
         }
 
+		if ($commands['batch-addtag'] != 0)
+		{
+			if (!$this->batchAddTag($commands['batch-addtag'], $pks, $contexts))
+			{
+				return false;
+			}
+
+			$done = true;
+		}
+
+		if ($commands['batch-rmvtag'] != 0)
+		{
+			if (!$this->batchRemoveTag($commands['batch-rmvtag'], $pks, $contexts))
+			{
+				return false;
+			}
+
+			$done = true;
+		}
+
 		if ($commands['batch-addauth'] != 0)
 		{
 			if (!$this->batchAddAuthor($commands['batch-addauth'], $pks, $contexts))
@@ -748,24 +768,41 @@ class MAMSModelArticle extends JModelAdmin
 	{
 		// Set the variables
 		$user = JFactory::getUser();
-		
+		$db = JFactory::getDbo();
 	
 		foreach ($pks as $pk) {
-			if ($user->authorise('core.edit', $contexts[$pk]))	{
-				$table = $this->getTable("ArtCat","MAMSTable");
-				$table->ac_art=$pk;
-				$table->ac_cat=$value;
-				$table->published=1;
-				
-				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__mams_artcat WHERE ac_art = "'.$pk.'"');
-				$max = $db->loadResult();
-				
-				$table->ordering = $max+1;
-				
-				if (!$table->check()) {	$this->setError($table->getError()); return false; }
-	
-				if (!$table->store()) { $this->setError($table->getError()); return false; }
+			$exists_query = $db->getQuery(true);
+			$exists_query->select("ac_id");
+			$exists_query->from('#__mams_artcat');
+			$exists_query->where('ac_art = '.(int)$pk);
+			$exists_query->where('ac_cat = '.(int)$value);
+			$db->setQuery($exists_query);
+			$countofcats = $db->loadColumn();
+
+			if (!$countofcats) {
+				if ($user->authorise('core.edit', $contexts[$pk]))	{
+					$table            = $this->getTable( "ArtCat", "MAMSTable" );
+					$table->ac_art    = $pk;
+					$table->ac_cat    = $value;
+					$table->published = 1;
+
+					$db->setQuery( 'SELECT MAX(ordering) FROM #__mams_artcat WHERE ac_art = "' . $pk . '"' );
+					$max = $db->loadResult();
+
+					$table->ordering = $max + 1;
+
+					if ( ! $table->check() ) {
+						$this->setError( $table->getError() );
+
+						return false;
+					}
+
+					if ( ! $table->store() ) {
+						$this->setError( $table->getError() );
+
+						return false;
+					}
+				}
 			} else {
 				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 				return false;
@@ -802,31 +839,128 @@ class MAMSModelArticle extends JModelAdmin
         return true;
     }
 
-	protected function batchAddAuthor($value, $pks, $contexts)
+	protected function batchAddTag($value, $pks, $contexts)
+	{
+		// Set the variables
+		$user = JFactory::getUser();
+		$db = JFactory::getDbo();
+
+
+		foreach ($pks as $pk) {
+			$exists_query = $db->getQuery(true);
+			$exists_query->select("at_id");
+			$exists_query->from('#__mams_arttag');
+			$exists_query->where('at_art = '.(int)$pk);
+			$exists_query->where('at_tag = '.(int)$value);
+			$db->setQuery($exists_query);
+			$countoftags = $db->loadColumn();
+
+			if (!$countoftags) {
+				if ( $user->authorise( 'core.edit', $contexts[ $pk ] ) ) {
+					$table            = $this->getTable( "ArtTag", "MAMSTable" );
+					$table->at_art    = $pk;
+					$table->at_tag    = $value;
+					$table->published = 1;
+
+					$db->setQuery( 'SELECT MAX(ordering) FROM #__mams_arttag WHERE at_art = "' . $pk . '"' );
+					$max = $db->loadResult();
+
+					$table->ordering = $max + 1;
+
+					if ( ! $table->check() ) {
+						$this->setError( $table->getError() );
+
+						return false;
+					}
+
+					if ( ! $table->store() ) {
+						$this->setError( $table->getError() );
+
+						return false;
+					}
+				} else {
+					$this->setError( JText::_( 'JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT' ) );
+
+					return false;
+				}
+			}
+		}
+
+		// Clean the cache
+		$this->cleanCache();
+
+		return true;
+	}
+
+	protected function batchRemoveTag($value, $pks, $contexts)
 	{
 		// Set the variables
 		$user = JFactory::getUser();
 
+		if ($user->authorise('core.edit', $contexts[$pk]))	{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->delete('#__mams_arttag');
+			$query->where('at_art IN ('.implode(",",$pks).')');
+			$query->where('at_tag = '.(int)$value);
+			$db->setQuery($query);
+			$db->execute();
+		} else {
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+			return false;
+		}
+
+		// Clean the cache
+		$this->cleanCache();
+
+		return true;
+	}
+
+	protected function batchAddAuthor($value, $pks, $contexts)
+	{
+		// Set the variables
+		$user = JFactory::getUser();
+		$db = JFactory::getDbo();
+
 
 		foreach ($pks as $pk) {
-			if ($user->authorise('core.edit', $contexts[$pk]))	{
-				$table = $this->getTable("ArtAUth","MAMSTable");
-				$table->aa_art=$pk;
-				$table->aa_auth=$value;
-				$table->published=1;
+			$exists_query = $db->getQuery(true);
+			$exists_query->select("aa_id");
+			$exists_query->from('#__mams_artauth');
+			$exists_query->where('aa_art = '.(int)$pk);
+			$exists_query->where('aa_auth = '.(int)$value);
+			$exists_query->where('aa_field = 5');
+			$db->setQuery($exists_query);
+			$countofauths = $db->loadColumn();
 
-				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__mams_artauth WHERE aa_art = "'.$pk.'"');
-				$max = $db->loadResult();
+			if (!$countofauths) {
+				if ( $user->authorise( 'core.edit', $contexts[ $pk ] ) ) {
+					$table            = $this->getTable( "ArtAUth", "MAMSTable" );
+					$table->aa_art    = $pk;
+					$table->aa_auth   = $value;
+					$table->published = 1;
 
-				$table->ordering = $max+1;
+					$db->setQuery( 'SELECT MAX(ordering) FROM #__mams_artauth WHERE aa_art = "' . $pk . '"' );
+					$max = $db->loadResult();
 
-				if (!$table->check()) {	$this->setError($table->getError()); return false; }
+					$table->ordering = $max + 1;
 
-				if (!$table->store()) { $this->setError($table->getError()); return false; }
-			} else {
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
-				return false;
+					if ( ! $table->check() ) {
+						$this->setError( $table->getError() );
+
+						return false;
+					}
+
+					if ( ! $table->store() ) {
+						$this->setError( $table->getError() );
+
+						return false;
+					}
+				} else {
+					$this->setError( JText::_( 'JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT' ) );
+
+					return false;
+				}
 			}
 		}
 
@@ -847,6 +981,7 @@ class MAMSModelArticle extends JModelAdmin
 			$query->delete('#__mams_artauth');
 			$query->where('aa_art IN ('.implode(",",$pks).')');
 			$query->where('aa_auth = '.(int)$value);
+			$query->where('aa_field = 5');
 			$db->setQuery($query);
 			$db->execute();
 		} else {

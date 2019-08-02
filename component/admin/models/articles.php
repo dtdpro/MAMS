@@ -47,6 +47,9 @@ class MAMSModelArticles extends JModelList
         $catId = $this->getUserStateFromRequest($this->context.'.filter.cat', 'filter_cat', null, 'int');
         $this->setState('filter.cat', $catId);
 
+		$tagId = $this->getUserStateFromRequest($this->context.'.filter.tag', 'filter_tag', null, 'int');
+		$this->setState('filter.tag', $tagId);
+
         $authId = $this->getUserStateFromRequest($this->context.'.filter.auth', 'filter_auth', null, 'int');
         $this->setState('filter.auth', $authId);
 		
@@ -65,6 +68,7 @@ class MAMSModelArticles extends JModelList
 		$id .= ':' . $this->getState('filter.state');
 		$id .= ':' . $this->getState('filter.sec');
         $id .= ':' . $this->getState('filter.cat');
+		$id .= ':' . $this->getState('filter.tag');
 	
 		return parent::getStoreId($id);
 	}
@@ -152,6 +156,7 @@ class MAMSModelArticles extends JModelList
             $query->select('aa_auth');
             $query->from('#__mams_artauth');
             $query->where('aa_art = '.$item->art_id);
+	        $query->where('aa_field = 5');
             $this->_db->setQuery($query);
             $item->authors = $this->_db->loadColumn();
         }
@@ -209,6 +214,16 @@ class MAMSModelArticles extends JModelList
                     . ' ON ' . $db->quoteName('ac.ac_art') . ' = ' . $db->quoteName('a.art_id')
                 );
         }
+
+		// Filter by a tag
+		if ($tagId = $this->getState('filter.tag'))
+		{
+			$query->where($db->quoteName('at.at_tag') . ' = ' . (int) $tagId)
+			      ->join(
+				      'LEFT', $db->quoteName('#__mams_arttag', 'at')
+				              . ' ON ' . $db->quoteName('at.at_art') . ' = ' . $db->quoteName('a.art_id')
+			      );
+		}
 
 		// Filter by a author
 		if ($catId = $this->getState('filter.auth'))

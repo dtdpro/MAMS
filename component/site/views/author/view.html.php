@@ -39,7 +39,7 @@ class MAMSViewAuthor extends JViewLegacy
 			MAMSHelper::trackViewed($aut,'author');
 			$this->document->setTitle($this->author->auth_name);
 			if ($this->params->get('show_pubed',1)) { 
-				 $this->published=$model->getPublished($aut,$this->params);
+				 $this->published=$model->getPublishedItems($aut,$this->params);
 				 //$this->courses=$model->getAuthCourses($aut);
 			}
 			return true;

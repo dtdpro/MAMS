@@ -237,7 +237,7 @@ class plgSearchMAMS extends JPlugin
 			$query->from('#__mams_authors AS a');
 			$query->innerJoin('#__mams_secs AS c ON c.sec_id=a.auth_sec');
 			$query->where('('. $where .')' . 'AND a.published >= 1 AND c.published >= 1 AND a.access IN ('.$groups.') '
-					.'AND c.access IN ('.$groups.') AND a.auth_added <= NOW() AND auth_mirror = 0');
+					.'AND c.access IN ('.$groups.') AND a.auth_added <= NOW() AND auth_mirror = 0 AND auth_exclude_search = 0');
 			$query->group('a.auth_id');
 			$query->order($order);
 		

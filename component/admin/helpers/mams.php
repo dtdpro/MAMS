@@ -108,6 +108,27 @@ abstract class MAMSHelper
 		return $options;
 	}
 
+	public static function getTags()
+	{
+		$db = JFactory::getDbo();
+		$db->setQuery(
+			'SELECT tag_id AS value, tag_title AS text' .
+			' FROM #__mams_tags ' .
+			' WHERE published >= 0 ' .
+			' ORDER BY tag_title'
+		);
+		$options = $db->loadObjectList();
+
+		// Check for a database error.
+		if ($db->getErrorNum())
+		{
+			JError::raiseNotice(500, $db->getErrorMsg());
+			return null;
+		}
+
+		return $options;
+	}
+
 	public static function getAuths()
 	{
 		$db = JFactory::getDbo();

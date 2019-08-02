@@ -49,8 +49,8 @@
 		/>
 		<field
 			name="field_type"
-			type="radio"
-			class="btn-group"
+			type="list"
+			class="inputbox"
 			label="COM_MAMS_FIELD_FIELD_TYPE_LABEL"
 			description="COM_MAMS_FIELD_FIELD_TYPE_DESC"
 			default="textfield">
@@ -121,6 +121,16 @@
 			<option	value="0">No</option>
 			<option	value="1">Yes</option>
 		</field>
+		<field
+				name="field_show_author"
+				type="radio"
+				class="btn-group"
+				label="COM_MAMS_FIELD_FIELD_SHOWAUTHOR_LABEL"
+				description="COM_MAMS_FIELD_FIELD_SHOWAUTHOR_DESC"
+				default="0">
+			<option	value="0">No</option>
+			<option	value="1">Yes</option>
+		</field>
 	</fieldset>
 	<fields name="params">
 		<fieldset name="jbasic" label="COM_MAMS_FIELDSET_FIELD_OPTIONS_LABEL">
@@ -132,7 +142,7 @@
 				<option	value="0">No</option>
 				<option	value="1">Yes</option>
 			</field>
-			<field name="show_title_module" type="radio" class="btn-group" label="COM_MAMS_FIELD_FIELD_SHOWTITLEMODULE_LABEL" description="COM_MAMS_FIELD_FIELD_SHOWTITLEDMODULE_DESC" default="0">
+			<field name="show_title_module" type="radio" class="btn-group" label="COM_MAMS_FIELD_FIELD_SHOWTITLEMODULE_LABEL" description="COM_MAMS_FIELD_FIELD_SHOWTITLEMODULE_DESC" default="0">
 				<option	value="0">No</option>
 				<option	value="1">Yes</option>
 			</field>
@@ -144,6 +154,7 @@
 				<option	value="2">Group</option>
 			</field>
 			<field name="additional_css" type="text" label="COM_MAMS_FIELD_FIELD_ADDITIONALCSS_LABEL" description="COM_MAMS_FIELD_FIELD_ADDITIONALCSS_DESC" size="60" class="inputbox"	default="" />
+			<field name="auth_page_title" type="text" label="COM_MAMS_FIELD_FIELD_AUTHPAGETITLE_LABEL" description="COM_MAMS_FIELD_FIELD_AUTHPAGETITLE_DESC" size="60" class="inputbox"	default="" />
 		</fieldset>
 	</fields>
 </form>

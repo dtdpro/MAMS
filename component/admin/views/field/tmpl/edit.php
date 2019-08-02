@@ -17,23 +17,23 @@ $params = $this->form->getFieldsets('params');
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&layout=edit&field_id='.(int) $this->item->field_id); ?>" method="post" name="adminForm" id="mams-form" class="form-validate">
 	<div class="row-fluid">
-		<div class="span12 form-horizontal">
+		<div class="span6 form-horizontal">
 		
-		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_MAMS_ARTICLE_DETAILS')); ?>
+
 			<h4><?php echo JText::_( 'COM_MAMS_FIELDGROUP_DETAILS' ); ?></h4>
 			<?php foreach($this->form->getFieldset('details') as $field): ?>
 				<div class="control-group">
 					<div class="control-label"><?php echo $field->label;?></div>
 					<div class="controls"><?php echo $field->input;?></div>
 				</div>
-			<?php endforeach; 
-		echo JHtml::_('bootstrap.endTab');
-		
+			<?php endforeach; ?>
+		</div>
+		<div class="span6 form-horizontal">
+            <h4><?php echo JText::_( 'COM_MAMS_FIELDSET_FIELDGROUP_OPTIONS_LABEL' ); ?></h4>
+		<?php
 		$fieldSets = $this->form->getFieldsets('params'); 
 		foreach ($fieldSets as $name => $fieldSet) : 
-			$paramstabs = 'params-' . $name; 
-			echo JHtml::_('bootstrap.addTab', 'myTab', $paramstabs, JText::_($fieldSet->label, true)); 
+			$paramstabs = 'params-' . $name;
 			$fieldSets = $this->form->getFieldsets('params');
 			foreach ($fieldSets as $name => $fieldSet) :
 				?>
@@ -50,11 +50,9 @@ $params = $this->form->getFieldsets('params');
 					</div>
 				<?php endforeach; ?>
 				</div>
-			<?php endforeach;  
-			echo JHtml::_('bootstrap.endTab'); 
-		endforeach; 
-	
-		echo JHtml::_('bootstrap.endTabSet'); ?>
+			<?php endforeach;
+		endforeach; ?>
+
 		<input type="hidden" name="task" value="field.edit" />
 		<?php echo JHtml::_('form.token'); ?>
 			

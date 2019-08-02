@@ -157,12 +157,12 @@ if ($this->article->fields) {
                     break;
 				case "tags":
 					foreach ($this->article->tags as $t) {
-						echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
+						if ($this->params->get( 'link_tags', 1 )) echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
 						echo '<span class="uk-badge badge badge-primary mams-article-'.$f->group_name.'-'.$f->field_name.'-link mams-article-tag">';
 						if ($t->tag_icon) echo '<i class="'.$t->tag_icon.'"></i> ';
  						echo $t->tag_title;
 						echo '</span> ';
-						echo '</a>';
+						if ($this->params->get( 'link_tags', 1 )) echo '</a>';
 					}
 					break;
 				case "auths":

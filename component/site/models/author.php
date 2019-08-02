@@ -84,9 +84,42 @@ class MAMSModelAuthor extends JModelLegacy
 		}
 		return $secs;
 	}
+
+	function getPublishedItems($autid,$params) {
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser();
+
+		$query = $db->getQuery(true);
+		$query->select('a.*');
+		$query->from('#__mams_article_fields AS a');
+		if ($params->get('show_pubed_additional',1)) {
+			// ALl in one
+			$query->where('a.field_id = 5');
+		} else {
+			// By section
+			$query->where('a.field_type = "auths"');
+			$query->where('a.published >= 1');
+			$query->where('a.field_show_author = 1');
+			$query->where('a.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+		}
+		$db->setQuery($query);
+		$author_fields = $db->loadObjectList();
+
+		foreach ($author_fields as &$af) {
+			$af->articles = $this->getPublished($autid,$params,$af->field_id);
+
+			$registryf = new JRegistry;
+			$registryf->loadString($af->params);
+			$af->params = $registryf->toObject();
+
+			if (!$af->params->auth_page_title) $af->params->auth_page_title = "Authored Items";
+		}
+
+		return $author_fields;
+	}
 	
-	function getPublished($autid,$params) {
-		$pubedids=$this->getAuthArts($autid);	
+	function getPublished($autid,$params,$field=0) {
+		$pubedids=$this->getAuthArts($autid,$params,$field);
 		if (!$pubedids) return false;
 		
 		$db = JFactory::getDBO();
@@ -143,7 +176,7 @@ class MAMSModelAuthor extends JModelLegacy
 	
 	}
 	
-	function getAuthArts($aut) {
+	function getAuthArts($aut,$params,$fieldid) {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
@@ -152,6 +185,7 @@ class MAMSModelAuthor extends JModelLegacy
 		$query->from('#__mams_artauth AS aa');
 		$query->where('aa.aa_auth = '.(int)$aut);
 		$query->where('aa.published >= 1');
+		if (!$params->get('show_pubed_additional',1)) $query->where('aa.aa_field = '.(int)$fieldid);
 		$db->setQuery($query);
 		$items = $db->loadColumn(0);
 		return $items;

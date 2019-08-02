@@ -89,6 +89,10 @@ class MAMSModelField extends JModelAdmin
 			$form->removeField('field_show_list');
 			$form->removeField('field_show_module');
 		}
+
+		if ($data->field_type != "auths" && $data->field_id != 0) {
+			$form->removeField('field_show_author');
+		}
 	
 		// Check for errors encountered while preparing the form.
 		if (count($results) && in_array(false, $results, true))
