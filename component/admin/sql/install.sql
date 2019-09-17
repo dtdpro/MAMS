@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_article_fields` (
   `published` int(11) NOT NULL,
   `params` text NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=200;
 
 CREATE TABLE IF NOT EXISTS `#__mams_artlinks` (
   `al_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -154,6 +154,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_authors` (
   `auth_credentials` text NOT NULL,
   `auth_bio` text NOT NULL,
   `auth_image` varchar(255) NOT NULL,
+  `auth_exclude_search` BOOLEAN NOT NULL DEFAULT FALSE,
   `auth_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `auth_modified` datetime NOT NULL,
   `auth_mirror` int(11) NOT NULL,
@@ -297,6 +298,7 @@ CREATE TABLE IF NOT EXISTS `#__mams_tags` (
   `tag_alias` varchar(255) NOT NULL,
   `tag_desc` text NOT NULL,
   `tag_image` varchar(255) NOT NULL,
+  `tag_icon` VARCHAR(255) NOT NULL,
   `tag_featured` tinyint(1) NOT NULL DEFAULT '0',
   `tag_feataccess` text NOT NULL,
   `tag_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
