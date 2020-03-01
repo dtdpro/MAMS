@@ -14,6 +14,7 @@ class MAMSViewArtList extends JViewLegacy
 	protected $pagination = null;
 	protected $state = null;
 	protected $error = false;
+	protected $title='';
 	
 	public function display($tpl = null)
 	{
@@ -69,7 +70,8 @@ class MAMSViewArtList extends JViewLegacy
 		$this->document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 		$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
-		
+
+		$this->_prepareTitle();
 		parent::display($tpl);
 		if ($layout != "secbycat" && $layout != "catlist" && $layout != "seclist") {
 			if ($this->params->get("listview","blog") == "blog") $this->setLayout('artlist');
@@ -101,7 +103,7 @@ class MAMSViewArtList extends JViewLegacy
 		$this->secinfo=$model->getSecInfo($sec);
 		$this->cats = $model->getSecCats($sec);
 		if ($this->secinfo && $this->cats) {
-			if (count($this->secinfo) == 1) $this->document->setTitle($this->secinfo[0]->sec_name);
+			if (count($this->secinfo) == 1) $this->title=$this->secinfo[0]->sec_name;
 			foreach ($this->cats as &$c) {
 				$cat = array();
 				$cat[] = $c->cat_id;
@@ -124,7 +126,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
-			if (count($this->catinfo) == 1) $this->document->setTitle($this->catinfo[0]->cat_title);
+			if (count($this->catinfo) == 1) $this->title = $this->catinfo[0]->cat_title;
 			$artids=$model->getCatArts($cat);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
@@ -143,7 +145,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->taginfo=$model->getTagInfo($tag);
 		if ($this->taginfo) {
-			if (count($this->taginfo) == 1) $this->document->setTitle($this->taginfo[0]->tag_title);
+			if (count($this->taginfo) == 1) $this->title = $this->taginfo[0]->tag_title;
 			$artids=$model->getTagArts($tag);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
@@ -162,7 +164,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->taginfo=$model->getTagInfo($tag);
 		if ($this->taginfo) {
-			if (count($this->taginfo) == 1) $this->document->setTitle($this->taginfo[0]->tag_title);
+			if (count($this->taginfo) == 1) $this->title = $this->taginfo[0]->tag_title;
 			$artids_tag=$model->getTagArts($tag);
 			$artids_cat=$model->getCatArts($cat);
 			$this->articles=$model->getArticles(array_intersect($artids_tag,$artids_cat));
@@ -181,7 +183,7 @@ class MAMSViewArtList extends JViewLegacy
 		$this->catinfo=$model->getCatInfo($cat);
 		$this->childcatlist = $model->getCats($this->params->get("show_count",0),$cat);
 		if ($this->catinfo) {
-			if (count($this->catinfo) == 1) $this->document->setTitle($this->catinfo[0]->cat_title);
+			if (count($this->catinfo) == 1) $this->title = $this->catinfo[0]->cat_title;
 			$artids=$model->getCatArts($cat);
 			if (count($artids) > 0) {
 				$this->articles=$model->getArticles($artids);
@@ -200,7 +202,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->taginfo=$model->getTagInfo($tag);
 		if ($this->taginfo) {
-			if (count($this->taginfo) == 1) $this->document->setTitle($this->taginfo[0]->tag_title);
+			if (count($this->taginfo) == 1) $this->title = $this->taginfo[0]->tag_title;
 			$artids=$model->getTagArts($tag);
 			if (count($artids) > 0) {
 				$this->articles=$model->getArticles($artids);
@@ -226,7 +228,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
-			if (count($this->secinfo) == 1) $this->document->setTitle($this->secinfo[0]->sec_name);
+			if (count($this->secinfo) == 1) $this->title = $this->secinfo[0]->sec_name;
 			$artids=$model->getSecArts($sec);
 			$this->children=$model->getSecChildren($sec);
 			$this->articles=$model->getArticles($artids,$sec);
@@ -287,6 +289,33 @@ class MAMSViewArtList extends JViewLegacy
 			if ((int)$a) $auts[] = (int)$a;
 		}
 		return $auts;
+	}
+
+	protected function _prepareTitle()
+	{
+		$app     = JFactory::getApplication();
+		$menus   = $app->getMenu();
+		$title   = null;
+		$params = $this->params;
+		$title = $this->title;
+		// Check for empty title and add site name if param is set
+		if (empty($title))
+		{
+			$title = $app->get('sitename');
+		}
+		elseif ($app->get('sitename_pagetitles', 0) == 1)
+		{
+			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+		}
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
+		{
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+		}
+		if (empty($title))
+		{
+			$title = $this->title;
+		}
+		$this->document->setTitle($title);
 	}
 	
 	

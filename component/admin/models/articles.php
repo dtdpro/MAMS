@@ -268,7 +268,7 @@ class MAMSModelArticles extends JModelList
 		$orderDirn	= $this->state->get('list.direction');
 		
 		if ($orderCol == 'a.ordering') {
-			$query->order($db->escape('a.art_publish_up '.$orderDirn.', s.lft '.$orderDirn.', a.ordering '.$orderDirn));
+			$query->order($db->escape('a.art_publish_up desc, s.lft '.$orderDirn.', a.ordering '.$orderDirn));
 		} else if ($orderCol == 'a.art_publish_up') {
 			$query->order($db->escape('a.art_publish_up '.$orderDirn.', s.lft ASC, a.ordering ASC'));
 		} else{
@@ -277,4 +277,61 @@ class MAMSModelArticles extends JModelList
 				
 		return $query;
 	}
+
+	// Rebuild ordering by section, publish up date
+	function rebuild()
+	{
+		$table  = $this->getTable( "Article", "MAMSTable" );
+		$db = JFactory::getDBO();
+
+		//get secids
+		$query = $db->getQuery(true);
+		$query->select('a.art_sec');
+		$query->from('#__mams_articles as a');
+		$query->group('a.art_sec');
+		$db->setQuery($query);
+		$secids = $db->loadColumn();
+
+		// section by section
+		foreach ($secids as $secid) {
+
+			// Get publish up dates by section
+			$query = $db->getQuery(true);
+			$query->select('a.art_publish_up');
+			$query->from('#__mams_articles as a');
+			$query->where('a.art_sec = '.$secid);
+			$query->group('a.art_publish_up');
+			$db->setQuery($query);
+			$pubdates = $db->loadColumn();
+
+			// date by date
+			foreach ($pubdates as $pubdate) {
+
+				// get articles by section, pubupdate
+				$query = $db->getQuery(true);
+				$query->select('a.art_id');
+				$query->from('#__mams_articles as a');
+				$query->where('a.art_sec = '.$secid);
+				$query->where('a.art_publish_up = "'.$pubdate.'"');
+				$query->order('a.ordering asc');
+				$db->setQuery($query);
+				$artids = $db->loadColumn();
+
+				$ordering = 1;
+				foreach ($artids as $artid) {
+					$table->reset();
+					$table->load($artid);
+					$table->ordering = $ordering;
+					$table->store();
+					$ordering++;
+				}
+			}
+
+		}
+
+
+
+	}
+
+
 }

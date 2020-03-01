@@ -998,7 +998,14 @@ class MAMSModelArticle extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		if (empty($table->art_id)) {
-			$table->reorder('art_sec = "'.$table->art_sec.'" && art_publish_up = "'.$table->art_publish_up.'"');
+			if (empty($table->ordering)) {
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT MAX(ordering) FROM #__mams_articles WHERE art_sec = "'.$table->art_sec.'" && art_publish_up = "'.$table->art_publish_up.'"');
+				$max = $db->loadResult();
+
+				$table->ordering = $max+1;
+			}
+			//$table->reorder('art_sec = "'.$table->art_sec.'" && art_publish_up = "'.$table->art_publish_up.'"');
 		}
 		
 		//Increment Version Number
@@ -1045,5 +1052,5 @@ class MAMSModelArticle extends JModelAdmin
 		$db->setQuery($query);
 		return $db->loadColumn();
 	}
-	
+
 }

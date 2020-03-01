@@ -51,136 +51,19 @@ class plgSearchMAMS extends JPlugin
 			return array();
 		}
 		
-		// search articles
-		if ($limit > 0)
-		{
-			$wheres = array();
-			switch ($phrase) {
-				case 'exact':
-					$text		= $db->quote('%'.$db->escape($text, true).'%', false);
-					$wheres2	= array();
-					$wheres2[]	= 'a.art_title LIKE '.$text;
-					$wheres2[]	= 'a.art_content LIKE '.$text;
-					$wheres2[]	= 'a.metakey LIKE '.$text;
-					$wheres2[]	= 'a.metadesc LIKE '.$text;
-					$wheres2[]	= 'a.art_desc LIKE '.$text;
-					$where		= '(' . implode(') OR (', $wheres2) . ')';
-					break;
-	
-				case 'all':
-				case 'any':
-				default:
-					$words = explode(' ', $text);
-					$wheres = array();
-					foreach ($words as $word) {
-						$word		= $db->quote('%'.$db->escape($word, true).'%', false);
-						$wheres2	= array();
-						$wheres2[]	= 'a.art_title LIKE '.$word;
-						$wheres2[]	= 'a.art_content LIKE '.$word;
-						$wheres2[]	= 'a.metakey LIKE '.$word;
-						$wheres2[]	= 'a.metadesc LIKE '.$word;
-						$wheres2[]	= 'a.art_desc LIKE '.$word;
-						$wheres[]	= implode(' OR ', $wheres2);
-					}
-					$where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
-					break;
-			}
-	
-			$morder = '';
-			switch ($ordering) {
-				case 'oldest':
-					$order = 'a.art_publish_up ASC';
-					break;
-	
-				case 'popular':
-					$order = 'a.art_hits DESC';
-					break;
-	
-				case 'alpha':
-					$order = 'a.art_title ASC';
-					break;
-	
-				case 'category':
-					$order = 'c.sec_name ASC, a.art_title ASC';
-					$morder = 'a.art_title ASC';
-					break;
-	
-				case 'newest':
-				default:
-					$order = 'a.art_publish_up DESC';
-					break;
-			}
-	
-			$query	= $db->getQuery(true);
-
-
-			$query->clear();
-			$query->select('a.art_title AS title, a.metadesc as metadesc, a.metakey as metakey, a.art_publish_up AS created, a.art_id, a.params, '
-						.'a.art_desc AS text, c.sec_name AS section, '
-						.'CASE WHEN CHAR_LENGTH(a.art_alias) THEN CONCAT_WS(":", a.art_id, a.art_alias) ELSE a.art_id END as slug, '
-						.'CASE WHEN CHAR_LENGTH(c.sec_alias) THEN CONCAT_WS(":", c.sec_id, c.sec_alias) ELSE c.sec_id END as catslug, '
-						.'"2" AS browsernav');
-			$query->from('#__mams_articles AS a');
-			$query->innerJoin('#__mams_secs AS c ON c.sec_id=a.art_sec');
-			$query->where('('. $where .')' . 'AND a.state >= 1 AND c.published >= 1 AND a.access IN ('.$groups.') '
-						.'AND c.access IN ('.$groups.') AND a.art_publish_up <= NOW() AND (a.art_publish_down >= NOW() OR a.art_publish_down = "0000-00-00")');
-			$query->group('a.art_id');
-			$query->order($order);
-
-			$db->setQuery($query, 0, $limit);
-			$list = $db->loadObjectList();
-			$limit -= count($list);
-
-			if (isset($list))
-			{
-				foreach($list as $key => $item)
-				{
-					//Load up the Params
-					$registry = new JRegistry;
-					$registry->loadString($item->params);
-					$item->params = $registry;
-
-					//Merge Params
-					$params = $app->getParams('com_mams');
-					$item->params = $params->merge($item->params);
-
-					//Categories
-					$qc=$db->getQuery(true);
-					$qc->select('c.cat_id,c.cat_title,c.cat_alias');
-					$qc->from('#__mams_artcat as ac');
-					$qc->join('RIGHT','#__mams_cats AS c ON ac.ac_cat = c.cat_id');
-					$qc->where('ac.published >= 1');
-					$qc->where('c.published >= 1');
-					$qc->where('c.access IN ('.$groups.')');
-					$qc->where('ac.ac_art = '.$item->art_id);
-					$qc->order('ac.ordering ASC');
-					$db->setQuery($qc);
-					$cats=$db->loadObjectList();
-					$cat = $cats[0];
-
-					$link = "index.php?option=com_mams&view=article&artid=".$item->slug;
-					if ($item->params->get('article_seclock',1)) $link .= "&secid=".$item->catslug;
-					if ($item->params->get('article_catlock',1)) $link .= "&catid=".$cat->cat_id;
-
-					$list[$key]->href = JRoute::_($link);
-				}
-			}
-			$rows[] = $list;
-		}
-		
 		// search authors
 		if ($limit > 0)
 		{
 			$wheres = array();
 			switch ($phrase) {
 				case 'exact':
-					$text		= $db->quote('%'.$db->escape($text, true).'%', false);
+					$stext		= $db->quote('%'.$db->escape($text, true).'%', false);
 					$wheres2	= array();
-					$wheres2[]	= 'a.auth_name LIKE '.$text;
-					$wheres2[]	= 'a.auth_credentials LIKE '.$text;
-					$wheres2[]	= 'a.auth_bio LIKE '.$text;
-					$wheres2[]	= 'a.metakey LIKE '.$text;
-					$wheres2[]	= 'a.metadesc LIKE '.$text;
+					$wheres2[]	= 'a.auth_name LIKE '.$stext;
+					$wheres2[]	= 'a.auth_credentials LIKE '.$stext;
+					$wheres2[]	= 'a.auth_bio LIKE '.$stext;
+					$wheres2[]	= 'a.metakey LIKE '.$stext;
+					$wheres2[]	= 'a.metadesc LIKE '.$stext;
 					$where		= '(' . implode(') OR (', $wheres2) . ')';
 					break;
 		
@@ -230,7 +113,7 @@ class plgSearchMAMS extends JPlugin
 		
 			$query->clear();
 			$query->select('a.auth_name AS title, a.metadesc as metadesc, a.metakey as metakey, a.auth_added AS created, '
-					.'a.metadesc AS text, c.sec_name AS section, '
+					.'a.metadesc AS text, c.sec_name AS section, a.auth_id, '
 					.'CASE WHEN CHAR_LENGTH(a.auth_alias) THEN CONCAT_WS(":", a.auth_id, a.auth_alias) ELSE a.auth_id END as slug, '
 					.'CASE WHEN CHAR_LENGTH(c.sec_alias) THEN CONCAT_WS(":", c.sec_id, c.sec_alias) ELSE c.sec_id END as catslug, '
 					.'"2" AS browsernav');
@@ -244,12 +127,151 @@ class plgSearchMAMS extends JPlugin
 			$db->setQuery($query, 0, $limit);
 			$list = $db->loadObjectList();
 			$limit -= count($list);
-		
+			$authorids = array();
 			if (isset($list))
 			{
 				foreach($list as $key => $item)
 				{
 					$list[$key]->href = JRoute::_("index.php?option=com_mams&view=author&secid=".$item->catslug."&autid=".$item->slug);
+					$authorids[] = $item->auth_id;
+				}
+			}
+			$rows[] = $list;
+
+			// get articles form authors
+			$aquery = $db->getQuery(true);
+			$user = JFactory::getUser();
+
+			if (count($authorids)) {
+				$aquery->select( 'aa.aa_art' );
+				$aquery->from( '#__mams_artauth AS aa' );
+				$aquery->where( 'aa.aa_auth IN ( ' . implode( ",", $authorids ) . ')' );
+				$aquery->where( 'aa.aa_field = 5' );
+				$aquery->where( 'aa.published >= 1' );
+				$db->setQuery( $aquery );
+				$authoredartcicleids = $db->loadColumn();
+			}
+		}
+
+		// search articles
+		if ($limit > 0)
+		{
+			$wheres = array();
+			switch ($phrase) {
+				case 'exact':
+					$stext		= $db->quote('%'.$db->escape($text, true).'%', false);
+					$wheres2	= array();
+					$wheres2[]	= 'a.art_title LIKE '.$stext;
+					$wheres2[]	= 'a.art_content LIKE '.$stext;
+					$wheres2[]	= 'a.metakey LIKE '.$stext;
+					$wheres2[]	= 'a.metadesc LIKE '.$stext;
+					$wheres2[]	= 'a.art_desc LIKE '.$stext;
+					$where		= '(' . implode(') OR (', $wheres2) . ')';
+					break;
+
+				case 'all':
+				case 'any':
+				default:
+					$words = explode(' ', $text);
+					$wheres = array();
+					foreach ($words as $word) {
+						$word		= $db->quote('%'.$db->escape($word, true).'%', false);
+						$wheres2	= array();
+						$wheres2[]	= 'a.art_title LIKE '.$word;
+						$wheres2[]	= 'a.art_content LIKE '.$word;
+						$wheres2[]	= 'a.metakey LIKE '.$word;
+						$wheres2[]	= 'a.metadesc LIKE '.$word;
+						$wheres2[]	= 'a.art_desc LIKE '.$word;
+						$wheres[]	= implode(' OR ', $wheres2);
+					}
+					$where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
+					break;
+			}
+
+			$morder = '';
+			switch ($ordering) {
+				case 'oldest':
+					$order = 'a.art_publish_up ASC';
+					break;
+
+				case 'popular':
+					$order = 'a.art_hits DESC';
+					break;
+
+				case 'alpha':
+					$order = 'a.art_title ASC';
+					break;
+
+				case 'category':
+					$order = 'c.sec_name ASC, a.art_title ASC';
+					$morder = 'a.art_title ASC';
+					break;
+
+				case 'newest':
+				default:
+					$order = 'a.art_publish_up DESC';
+					break;
+			}
+
+			$query	= $db->getQuery(true);
+
+
+			$query->clear();
+			$query->select('a.art_title AS title, a.metadesc as metadesc, a.metakey as metakey, a.art_publish_up AS created, a.art_id, a.params, '
+			               .'a.art_desc AS text, c.sec_name AS section, a.access as art_access, c.access as sec_access, '
+			               .'CASE WHEN CHAR_LENGTH(a.art_alias) THEN CONCAT_WS(":", a.art_id, a.art_alias) ELSE a.art_id END as slug, '
+			               .'CASE WHEN CHAR_LENGTH(c.sec_alias) THEN CONCAT_WS(":", c.sec_id, c.sec_alias) ELSE c.sec_id END as catslug, '
+			               .'"2" AS browsernav');
+			$query->from('#__mams_articles AS a');
+			$query->innerJoin('#__mams_secs AS c ON c.sec_id=a.art_sec');
+			$qwhere = '('. $where .')' . 'AND a.state >= 1 AND c.published >= 1 AND a.access IN ('.$groups.') '
+			         .'AND c.access IN ('.$groups.') AND a.art_publish_up <= NOW() AND (a.art_publish_down >= NOW() OR a.art_publish_down = "0000-00-00")';
+			if (count($authoredartcicleids)) $qwhere .= ' OR (a.art_id IN ('.implode(",",$authoredartcicleids).') AND a.access IN ('.$groups.') AND c.access IN ('.$groups.'))';
+			$query->where($qwhere);
+			$query->group('a.art_id');
+			$query->order($order);
+
+			$db->setQuery($query, 0, $limit);
+			$list = $db->loadObjectList();
+
+			$limit -= count($list);
+
+			if (isset($list))
+			{
+				foreach($list as $key => $item)
+				{
+					//Load up the Params
+					$registry = new JRegistry;
+					$registry->loadString( $item->params );
+					$item->params = $registry;
+
+					//Merge Params
+					$params       = $app->getParams( 'com_mams' );
+					$item->params = $params->merge( $item->params );
+
+					//Categories
+					$qc = $db->getQuery( true );
+					$qc->select( 'c.cat_id,c.cat_title,c.cat_alias' );
+					$qc->from( '#__mams_artcat as ac' );
+					$qc->join( 'RIGHT', '#__mams_cats AS c ON ac.ac_cat = c.cat_id' );
+					$qc->where( 'ac.published >= 1' );
+					$qc->where( 'c.published >= 1' );
+					$qc->where( 'c.access IN (' . $groups . ')' );
+					$qc->where( 'ac.ac_art = ' . $item->art_id );
+					$qc->order( 'ac.ordering ASC' );
+					$db->setQuery( $qc );
+					$cats = $db->loadObjectList();
+					$cat  = $cats[0];
+
+					$link = "index.php?option=com_mams&view=article&artid=" . $item->slug;
+					if ( $item->params->get( 'article_seclock', 1 ) ) {
+						$link .= "&secid=" . $item->catslug;
+					}
+					if ( $item->params->get( 'article_catlock', 1 ) ) {
+						$link .= "&catid=" . $cat->cat_id;
+					}
+
+					$list[ $key ]->href = JRoute::_( $link );
 				}
 			}
 			$rows[] = $list;

@@ -27,6 +27,7 @@ class MAMSViewAuthor extends JViewLegacy
 				$err=$this->listAuthors();
 				break;
 		}
+		$this->_prepareTitle();
 		if ($err) parent::display($tpl);
 		else return false;
 	}
@@ -37,7 +38,6 @@ class MAMSViewAuthor extends JViewLegacy
 		$this->author=$model->getAuthor($aut);
 		if ($this->author) {
 			MAMSHelper::trackViewed($aut,'author');
-			$this->document->setTitle($this->author->auth_name);
 			if ($this->params->get('show_pubed',1)) { 
 				 $this->published=$model->getPublishedItems($aut,$this->params);
 				 //$this->courses=$model->getAuthCourses($aut);
@@ -61,6 +61,32 @@ class MAMSViewAuthor extends JViewLegacy
 			if ((int)$s) $secs[] = (int)$s;
 		}
 		return $secs;
+	}
+
+	protected function _prepareTitle()
+	{
+		$app     = JFactory::getApplication();
+		$title   = null;
+
+		$title = $this->author->auth_name;
+		// Check for empty title and add site name if param is set
+		if (empty($title))
+		{
+			$title = $app->get('sitename');
+		}
+		elseif ($app->get('sitename_pagetitles', 0) == 1)
+		{
+			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+		}
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
+		{
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+		}
+		if (empty($title))
+		{
+			$title = $this->author->auth_name;
+		}
+		$this->document->setTitle($title);
 	}
 	
 }

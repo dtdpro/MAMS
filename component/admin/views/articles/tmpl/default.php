@@ -16,7 +16,10 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $archived	= $this->state->get('filter.published') == 2 ? true : false;
 $trashed	= $this->state->get('filter.published') == -2 ? true : false;
-$saveOrder = ($listOrder == 'a.ordering');
+$saveOrder = ($listOrder == 'a.ordering' && $this->state->get('filter.sec'));
+if ($this->state->get('filter.cat') || $this->state->get('filter.tag') || $this->state->get('filter.auth') || $this->state->get('filter.feataccess') || $this->state->get('filter.access') || $this->state->get('filter.state')) {
+    $saveOrder = false;
+}
 $published = $this->state->get('filter.published');
 if ($saveOrder) {
 	$saveOrderingUrl = 'index.php?option=com_mams&task=articles.saveOrderAjax&tmpl=component';
@@ -73,7 +76,7 @@ $sortFields = $this->getSortFields();
 		</div>
 		<div class="btn-group pull-right">
 			<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY');?></label>
-			<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
+			<select name="sortTable" id="sortTable" class="input-large" onchange="Joomla.orderTable()">
 				<option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
 				<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder);?>
 			</select>
@@ -94,6 +97,9 @@ $sortFields = $this->getSortFields();
 				<th width="1%" class="nowrap center hidden-phone">
 					<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 				</th>
+                <?php if($app->get('debug') == '1') { ?>
+                    <th width="1%"></th>
+                <?php } ?>
 				<th width="1%">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>	
@@ -158,6 +164,9 @@ $sortFields = $this->getSortFields();
 					<?php endif; ?>
 
 				</td>
+				<?php if($app->get('debug') == '1') { ?>
+                    <td><?php echo $item->ordering; ?></td>
+				<?php } ?>
 				<td><?php echo JHtml::_('grid.id', $i, $item->art_id); ?></td>
 				<td class="center">
 					<div class="btn-group">

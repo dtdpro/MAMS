@@ -133,6 +133,25 @@ class MAMSControllerArticles extends JControllerAdmin
 		// Close the application
 		JFactory::getApplication()->close();
 	}
+
+	public function rebuild()
+	{
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		$this->setRedirect(JRoute::_('index.php?option=com_mams&view=articles', false));
+		$model = $this->getModel("Articles");
+		if ($model->rebuild())
+		{
+			// Rebuild succeeded.
+			$this->setMessage(JText::_('COM_CATEGORIES_REBUILD_SUCCESS'));
+			return true;
+		}
+		else
+		{
+			// Rebuild failed.
+			$this->setMessage(JText::_('COM_CATEGORIES_REBUILD_FAILURE'));
+			return false;
+		}
+	}
 	
 	function drilldowns()
 	{

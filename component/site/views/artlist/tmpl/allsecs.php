@@ -5,7 +5,7 @@ if ($this->params->get('divwrapper',1)) {
 }
 $app = JFactory::getApplication();
 if ($this->params->get("show_page_heading",1)) {
-	echo '<h2 class="title uk-article-title">';
+	echo '<h1 class="title uk-article-title">';
 	echo $this->params->get( "page_title", $app->getMenu()->getActive()->title );
-	echo '</h2>';
+	echo '</h1>';
 }

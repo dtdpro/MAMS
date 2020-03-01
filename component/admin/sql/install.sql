@@ -316,7 +316,10 @@ CREATE TABLE IF NOT EXISTS `#__mams_track` (
   `mt_session` varchar(60) NOT NULL,
   `mt_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `mt_ipaddr` varchar(15) NOT NULL,
-  PRIMARY KEY (`mt_id`)
+  PRIMARY KEY (`mt_id`),
+  KEY `mt_type` (`mt_type`),
+  KEY `mt_item` (`mt_item`),
+  KEY `mt_time` (`mt_time`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__content_types` (`type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`) VALUES

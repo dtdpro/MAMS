@@ -4,7 +4,7 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
-echo '<div class="mams-featmod">';
+echo '<div class="mams-featmod uk-grid" uk-grid>';
 $firstart=true;
 foreach ($articles as $a) {
 	$artlink = "index.php?option=com_mams&view=article";
@@ -14,6 +14,7 @@ foreach ($articles as $a) {
 	if ($a->tags && $params->get('article_taglock', 1)) $artlink .= '&tagid=' . $a->tags[0]->tag_id;
 
 	echo '<div class="mams-featmod-article';
+	echo ' uk-width-1-'.$params->get('articles_byrow',1).'@m';
 	if ($firstart) { echo ' first-child'; $firstart=false; }
 	echo '">';
 	if ($a->art_thumb && $params->get('show_thumb',0)) {

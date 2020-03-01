@@ -73,6 +73,10 @@ class MAMSViewArticles extends JViewLegacy
 		}
 		if ($canDo->get('core.admin'))
 		{
+			JToolbarHelper::custom('articles.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
+		}
+		if ($canDo->get('core.admin'))
+		{
 			JToolbarHelper::preferences('com_mams');
 		}
 		
@@ -91,7 +95,7 @@ class MAMSViewArticles extends JViewLegacy
 	protected function getSortFields()
 	{
 		return array(
-				'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+				'a.ordering' => "Ordering, Newest First",
 				'a.state' => JText::_('JSTATUS'),
 				'a.art_publish_up' => JText::_('COM_MAMS_ARTICLE_HEADING_PUBLISH_ON'),
 				'a.art_publish_down' => JText::_('COM_MAMS_ARTICLE_HEADING_PUBLISH_DOWN'),

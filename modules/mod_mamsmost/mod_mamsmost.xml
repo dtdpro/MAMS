@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.4.4</version>
+	<version>1.5.0</version>
 	<description>MOD_MAMSMOST_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamsmost">mod_mamsmost.php</filename>
@@ -23,6 +23,12 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
+				<field name="articles_byrow" class="btn-group" type="radio" description="MOD_MAMSMOST_FIELD_ARTICLES_BYROW_DESC" label="MOD_MAMSMOST_FIELD_ARTICLES_BYROW_LABEL" default="1">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+				</field>
                 <field name="count" type="text" default="5" label="MOD_MAMSMOST_COUNT_LABEL" description="MOD_MAMSMOST_COUNT_DESC" />
                 <field name="num_days_read" type="radio" class="btn-group" description="MOD_MAMSMOST_NUM_DAYS_READ_DESC" label="MOD_MAMSMOST_NUM_DAYS_READ_LABEL" default="30">
                     <option value="30">30</option>

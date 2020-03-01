@@ -4,11 +4,12 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
-echo '<div class="mams-featmod">';
+echo '<div class="mams-featmod uk-grid" uk-grid>';
 if ($params->get('show_image',0)) {
 	echo '<div class="mams-featmod-image">';
 	if ($params->get('link_image',0)) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$catinfo->cat_id.":".$catinfo->cat_alias).'">';
-	echo '<img src="'.$catinfo->cat_image.'" class="mams-featmod-image-img">';
+	if ($params->get('override_image','')) echo '<img src="'.$params->get('override_image').'" class="mams-featmod-image-img">';
+	else echo '<img src="'.$catinfo->cat_image.'" class="mams-featmod-image-img">';
 	if ($params->get('link_image',0)) echo '</a>';
 	echo '</div>';
 }
@@ -21,12 +22,11 @@ if ($articles) {
 	    if ($a->cats && $params->get('article_catlock', 1)) $artlink .= '&catid=' . $a->cats[0]->cat_id;
 	    if ($a->tags && $params->get('article_taglock', 1)) $artlink .= '&tagid=' . $a->tags[0]->tag_id;
 
-        echo '<div class="mams-featmod-article';
-        if ($firstart) {
-            echo ' first-child';
-            $firstart = false;
-        }
-        echo '">';
+
+	    echo '<div class="mams-featmod-article';
+	    echo ' uk-width-1-'.$params->get('articles_byrow',1).'@m';
+	    if ($firstart) { echo ' first-child'; $firstart=false; }
+	    echo '">';
         if ($a->art_thumb && $params->get('show_thumb', 0)) {
             echo '<div class="mams-featmod-thumb">';
             echo '<a href="' . JRoute::_($artlink) . '">';

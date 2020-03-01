@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<description>MOD_MAMSTAG_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamstag">mod_mamstag.php</filename>
@@ -24,6 +24,12 @@
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
 				<field name="tagid" type="Tags" description="MOD_MAMSTAG_TAG_DESC" label="MOD_MAMSTAG_TAG_LABEL" required="true" />
+				<field name="articles_byrow" class="btn-group" type="radio" description="MOD_MAMSTAG_FIELD_ARTICLES_BYROW_DESC" label="MOD_MAMSTAG_FIELD_ARTICLES_BYROW_LABEL" default="1">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+				</field>
 				<field name="article_seclock" type="radio" label="MOD_MAMSTAG_FIELD_SECLOCK_LABEL" description="MOD_MAMSTAG_FIELD_SECLOCK_DESC" class="btn-group" default="1">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
