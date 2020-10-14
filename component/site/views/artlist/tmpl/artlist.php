@@ -1,7 +1,6 @@
 <?php
 defined('_JEXEC') or die();
 $first = true;
-
 if (isset($this->articles)) {
 	foreach ( $this->articles as $a ) {
 		//Load up the Params
@@ -10,7 +9,7 @@ if (isset($this->articles)) {
 		$a->params = $registry;
 
 		// Merge menu item params with item params, item params take precedence
-		$params = $this->params;
+		$params = clone $this->params;
 		$params->merge( $a->params );
 		$a->params = $params;
 
@@ -78,15 +77,17 @@ if (isset($this->articles)) {
 		}
 
 		//Authors
-		if ( isset( $a->auts ) ) {
-			if ( $a->auts ) {
-				echo '<div class="mams-artlist-artaut">';
-				$auts = Array();
-				foreach ( $a->auts as $f ) {
-					$auts[] = '<a href="' . JRoute::_( "index.php?option=com_mams&view=author&secid=" . $f->auth_sec . "&autid=" . $f->auth_id . ":" . $f->auth_alias ) . '" class="mams-artlist-autlink">' . $f->auth_fname . ( ( $f->auth_mi ) ? " " . $f->auth_mi : "" ) . " " . $f->auth_lname . ( ( $f->auth_titles ) ? ", " . $f->auth_titles : "" ) . '</a>';
+		if ( isset( $a->auts )) {
+			if ($this->params->get( 'show_mainauth', 1 )) {
+				if ( $a->auts ) {
+					echo '<div class="mams-artlist-artaut">';
+					$auts = array();
+					foreach ( $a->auts as $f ) {
+						$auts[] = '<a href="' . JRoute::_( "index.php?option=com_mams&view=author&secid=" . $f->auth_sec . "&autid=" . $f->auth_id . ":" . $f->auth_alias ) . '" class="mams-artlist-autlink">' . $f->auth_fname . ( ( $f->auth_mi ) ? " " . $f->auth_mi : "" ) . " " . $f->auth_lname . ( ( $f->auth_titles ) ? ", " . $f->auth_titles : "" ) . '</a>';
+					}
+					echo implode( ", ", $auts );
+					echo '</div>';
 				}
-				echo implode( ", ", $auts );
-				echo '</div>';
 			}
 		}
 
@@ -163,6 +164,9 @@ if (isset($this->articles)) {
 				$curgroup = "";
 				$first    = true;
 				foreach ( $a->fields as $f ) {
+					if ($f->field_type == "auths" && !$this->params->get( 'show_mainauth', 1 )) {
+						continue;
+					}
 					$fn = $f->field_name;
 					if ( $a->art_fielddata->$fn || $f->data ) {
 						if ( $f->group_name != $curgroup ) {

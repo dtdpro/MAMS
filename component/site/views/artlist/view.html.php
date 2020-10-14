@@ -47,8 +47,11 @@ class MAMSViewArtList extends JViewLegacy
 			case "catsec": 
 				$this->listCatSec();
 				break;
-			case "author": 
+			case "author":
 				$this->listAuthor();
+				break;
+			case "artauthed":
+				$this->listArticlesAuthored();
 				break;
 			case "allsecs": 
 				$this->listAll();
@@ -257,6 +260,26 @@ class MAMSViewArtList extends JViewLegacy
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
 		}
+	}
+
+	protected function listArticlesAuthored() {
+		$model = $this->getModel();
+		$app = JFactory::getApplication();
+		$input = $app->input;
+		$artid=$input->get('artid',0,'INT');
+		if (!$artid) {
+			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$this->error=true;
+			return false;
+		}
+		$this->authors = $model->getArticlesAuthoredAuthors($artid);
+		$authids = [];
+		foreach ($this->authors as $auth) {
+			$authids[] = $auth->auth_id;
+		}
+		$artids = $model->getArticlesAuthored($authids,$artid);
+		$this->articles=$model->getArticles($artids);
+		$this->pagination = $this->get('Pagination');
 	}
 	
 	protected function getSecs() {

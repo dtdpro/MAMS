@@ -62,6 +62,7 @@
 			<option	value="dloads">Downloads</option>
 			<option	value="links">Links</option>
 			<option	value="images">Image Gallery</option>
+			<option	value="artauthedlink">Articles by these Authors</option>
 		</field>
 		<field
 			name="field_name"

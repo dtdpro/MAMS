@@ -135,6 +135,7 @@ if ($saveOrder) {
 						case "pubinfo": echo "Publish Info"; break;
 						case "related": echo "Related Items"; break;
 						case "images": echo "Image Gallery"; break;
+						case "artauthedlink": echo "Articles by these Authors"; break;
 					}
 				?></td>
 				<td class="small hidden-phone"><?php echo $item->access_level; ?></td>

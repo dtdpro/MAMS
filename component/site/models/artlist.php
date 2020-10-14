@@ -354,6 +354,38 @@ class MAMSModelArtList extends JModelList
 		$items = $db->loadColumn();
 		return $items;
 	}
+
+	function getArticlesAuthoredAuthors($artid) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+
+		$query->select('*');
+		$query->from('#__mams_artauth AS aa');
+		$query->join('RIGHT','#__mams_authors AS a ON a.auth_id = aa.aa_auth');
+		$query->where('aa.aa_art = '.$db->escape((int)$artid));
+		$query->where('aa.aa_field = 5');
+		$query->where('aa.published >= 1');
+		$query->order('aa.ordering ASC');
+		$db->setQuery($query);
+		$authors = $db->loadObjectList();
+
+		return $authors;
+	}
+
+	function getArticlesAuthored($authors, $artid) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('aa.aa_art');
+		$query->from('#__mams_artauth AS aa');
+		$query->where('aa.aa_auth IN ( '.implode(",",$authors).')');
+		$query->where('aa.aa_field = 5');
+		$query->where('aa.published >= 1');
+		$query->where('aa.aa_art != '.$db->escape((int)$artid));
+		$db->setQuery($query);
+		$items = $db->loadColumn();
+
+		return $items;
+	}
 	
 	function getSecInfo($sec) {
 		$db = JFactory::getDBO();

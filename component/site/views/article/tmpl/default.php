@@ -54,6 +54,9 @@ if ($this->article->fields) {
 			        $has_content = true;
 		        }
 		        break;
+	        case "artauthedlink":
+	            $has_content = true;
+		        break;
             case "body":
                 if ($this->article->art_content) {
                    $has_content = true;
@@ -83,6 +86,9 @@ if ($this->article->fields) {
             case "media":
                 if ($f->data) {
                     $has_content = true;
+                }
+                if ($this->params->get('show_mainauth',1) == 0 && $f->field_type == "auths") {
+	                $has_content = false;
                 }
                 break;
             case 'related':
@@ -238,6 +244,16 @@ if ($this->article->fields) {
 						}
 						echo '</div>';
 					}
+					break;
+				case "artauthedlink":
+						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-link mams-article-link">';
+						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=artauthed&artid=".$this->article->art_id).'" ';
+						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artlink uk-button uk-button-small uk-button-default';
+						echo '">';
+						echo 'View additional articles by these authors';
+						echo '</a>';
+						echo '</div>';
+
 					break;
 				case "links":
 					$links = $f->data;

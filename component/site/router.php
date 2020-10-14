@@ -295,7 +295,12 @@ function MAMSBuildRoute(&$query)
 	}
 	
 	if ($view == 'artlist') {
-		if ($foundaut) {
+		if ($foundart) {
+			$query['Itemid'] = $foundart;
+			//unset ($query['view']);
+			//unset ($query['autid']);
+			//unset ($query['layout']);
+		} elseif ($foundaut) {
 			$query['Itemid'] = $foundaut;
 			unset ($query['view']);
 			unset ($query['autid']);

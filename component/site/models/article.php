@@ -239,9 +239,12 @@ class MAMSModelArticle extends JModelItem
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
 		$relatedids = Array();
+
+		$relatedBy = $cfg->relatedby;
+		if (!$relatedBy) $relatedBy = 'both';
 	
-		foreach ($cats as $c) { $relatedids=array_merge($relatedids,$this->getCatArts($article->art_id, $c->cat_id)); }
-		foreach ($auts as $a) { $relatedids=array_merge($relatedids,$this->getAuthArts($article->art_id, $a->auth_id));}
+		if ($relatedBy == 'both' || $relatedBy == 'category') foreach ($cats as $c) { $relatedids=array_merge($relatedids,$this->getCatArts($article->art_id, $c->cat_id)); }
+		if ($relatedBy == 'both' || $relatedBy == 'author') foreach ($auts as $a) { $relatedids=array_merge($relatedids,$this->getAuthArts($article->art_id, $a->auth_id));}
 		$relatedids = array_unique($relatedids);	
 		
 		$db = JFactory::getDBO();
