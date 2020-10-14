@@ -29,6 +29,13 @@ class plgSearchMAMS extends JPlugin
 		$alvls = array_merge($alvls,$cfg->reggroup);
 		$groups	= implode(',', $alvls);
 		$tag = JFactory::getLanguage()->getTag();
+		// search module section limiter
+		$module = JModuleHelper::getModule('mod_searchsection'); // Load up the params from the mod_searchsection module
+		$moduleParams = new JRegistry();
+		$moduleParams->loadString($module->params);
+		$selectedSection = $moduleParams->get('secid', ''); // Assign selected value to variable
+		$filterID = explode(':', $selectedSection); // Extract the ID number from the string
+		$sectionIDFilter = $filterID[0];
 
 		require_once JPATH_SITE.'/administrator/components/com_search/helpers/search.php';
 
@@ -57,11 +64,11 @@ class plgSearchMAMS extends JPlugin
 			$wheres = array();
 			switch ($phrase) {
 				case 'exact':
-					$stext		= $db->quote('%'.$db->escape($text, true).'%', false);
+					$stext		= $db->quote('%'.$db->escape($searchText, true).'%', false);
 					$wheres2	= array();
 					$wheres2[]	= 'a.auth_name LIKE '.$stext;
 					$wheres2[]	= 'a.auth_credentials LIKE '.$stext;
-					$wheres2[]	= 'a.auth_bio LIKE '.$stext;
+					//$wheres2[]	= 'a.auth_bio LIKE '.$stext;
 					$wheres2[]	= 'a.metakey LIKE '.$stext;
 					$wheres2[]	= 'a.metadesc LIKE '.$stext;
 					$where		= '(' . implode(') OR (', $wheres2) . ')';
@@ -70,16 +77,16 @@ class plgSearchMAMS extends JPlugin
 				case 'all':
 				case 'any':
 				default:
-					$words = explode(' ', $text);
+					$words = explode(' ', $searchText);
 					$wheres = array();
 					foreach ($words as $word) {
 						$word		= $db->quote('%'.$db->escape($word, true).'%', false);
 						$wheres2	= array();
-						$wheres2[]	= 'a.auth_name LIKE '.$word;
-						$wheres2[]	= 'a.auth_credentials LIKE '.$word;
-						$wheres2[]	= 'a.auth_bio LIKE '.$word;
-						$wheres2[]	= 'a.metakey LIKE '.$word;
-						$wheres2[]	= 'a.metadesc LIKE '.$word;
+						$wheres2[]	= 'LOWER(a.auth_name) LIKE LOWER('.$word.')';
+						$wheres2[]	= 'LOWER(a.auth_credentials) LIKE LOWER('.$word.')';
+						//$wheres2[]	= 'LOWER(a.auth_bio LIKE LOWER('.$word.')';
+						$wheres2[]	= 'LOWER(a.metakey) LIKE LOWER('.$word.')';
+						$wheres2[]	= 'LOWER(a.metadesc) LIKE LOWER('.$word.')';
 						$wheres[]	= implode(' OR ', $wheres2);
 					}
 					$where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
@@ -159,7 +166,7 @@ class plgSearchMAMS extends JPlugin
 			$wheres = array();
 			switch ($phrase) {
 				case 'exact':
-					$stext		= $db->quote('%'.$db->escape($text, true).'%', false);
+					$stext		= $db->quote('%'.$db->escape($searchText, true).'%', false);
 					$wheres2	= array();
 					$wheres2[]	= 'a.art_title LIKE '.$stext;
 					$wheres2[]	= 'a.art_content LIKE '.$stext;
@@ -172,16 +179,16 @@ class plgSearchMAMS extends JPlugin
 				case 'all':
 				case 'any':
 				default:
-					$words = explode(' ', $text);
+					$words = explode(' ', $searchText);
 					$wheres = array();
 					foreach ($words as $word) {
 						$word		= $db->quote('%'.$db->escape($word, true).'%', false);
 						$wheres2	= array();
-						$wheres2[]	= 'a.art_title LIKE '.$word;
-						$wheres2[]	= 'a.art_content LIKE '.$word;
-						$wheres2[]	= 'a.metakey LIKE '.$word;
-						$wheres2[]	= 'a.metadesc LIKE '.$word;
-						$wheres2[]	= 'a.art_desc LIKE '.$word;
+						$wheres2[]	= 'LOWER(a.art_title) LIKE LOWER('.$word.')';
+						$wheres2[]	= 'LOWER(a.art_content) LIKE LOWER('.$word.')';
+						$wheres2[]	= 'LOWER(a.metakey) LIKE LOWER('.$word.')';
+						$wheres2[]	= 'LOWER(a.metadesc) LIKE LOWER('.$word.')';
+						$wheres2[]	= 'LOWER(a.art_desc) LIKE LOWER('.$word.')';
 						$wheres[]	= implode(' OR ', $wheres2);
 					}
 					$where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
@@ -227,6 +234,8 @@ class plgSearchMAMS extends JPlugin
 			$qwhere = '('. $where .')' . 'AND a.state >= 1 AND c.published >= 1 AND a.access IN ('.$groups.') '
 			         .'AND c.access IN ('.$groups.') AND a.art_publish_up <= NOW() AND (a.art_publish_down >= NOW() OR a.art_publish_down = "0000-00-00")';
 			if (count($authoredartcicleids)) $qwhere .= ' OR (a.art_id IN ('.implode(",",$authoredartcicleids).') AND a.access IN ('.$groups.') AND c.access IN ('.$groups.'))';
+			// search module section limiter
+			if (!empty($selectedSection)) $qwhere .= ' AND (a.art_sec=('.$sectionIDFilter.'))';
 			$query->where($qwhere);
 			$query->group('a.art_id');
 			$query->order($order);
