@@ -278,8 +278,10 @@ class MAMSViewArtList extends JViewLegacy
 			$authids[] = $auth->auth_id;
 		}
 		$artids = $model->getArticlesAuthored($authids,$artid);
-		$this->articles=$model->getArticles($artids);
-		$this->pagination = $this->get('Pagination');
+		if (count($artids) !== 0) {
+			$this->articles   = $model->getArticles( $artids );
+			$this->pagination = $this->get( 'Pagination' );
+		}
 	}
 	
 	protected function getSecs() {
