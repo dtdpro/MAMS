@@ -150,10 +150,10 @@ if ($this->article->fields) {
                             } else {
                                 echo ' - <em>';
                             }
-                            $cats = Array();
+                            $cats = array();
                             foreach ($this->article->cats as $c) {
-                                if (!$this->params->get('restrictcat', 0)) $cats[] = '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=" . $c->cat_id . ":" . $c->cat_alias) . '" class="mams-article-catlink">' . $c->cat_title . '</a>';
-                                else $cats[] = '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=catsec&secid=" . $this->article->sec_id . ":" . $this->article->sec_alias . "&catid=" . $c->cat_id . ":" . $c->cat_alias) . '" class="mams-article-catlink">' . $c->cat_title . '</a>';
+                                if (!$this->params->get('restrictcat', 0)) {$cats[] = '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=" . $c->cat_id . ":" . $c->cat_alias) . '" class="mams-article-catlink">' . $c->cat_title . '</a>';}
+                                else {$cats[] = '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=catsec&secid=" . $this->article->sec_id . ":" . $this->article->sec_alias . "&catid=" . $c->cat_id . ":" . $c->cat_alias) . '" class="mams-article-catlink">' . $c->cat_title . '</a>';}
                             }
                             echo implode(", ", $cats);
                             echo '</em>';
@@ -163,12 +163,12 @@ if ($this->article->fields) {
                     break;
 				case "tags":
 					foreach ($this->article->tags as $t) {
-						if ($this->params->get( 'link_tags', 1 )) echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';
+						if ($this->params->get( 'link_tags', 1 )) {echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';}
 						echo '<span class="uk-badge badge badge-primary mams-article-'.$f->group_name.'-'.$f->field_name.'-link mams-article-tag">';
-						if ($t->tag_icon) echo '<i class="'.$t->tag_icon.'"></i> ';
+						if ($t->tag_icon) {echo '<i class="'.$t->tag_icon.'"></i> ';}
  						echo $t->tag_title;
 						echo '</span> ';
-						if ($this->params->get( 'link_tags', 1 )) echo '</a>';
+						if ($this->params->get( 'link_tags', 1 )) {echo '</a>';}
 					}
 					break;
 				case "auths":
@@ -184,7 +184,7 @@ if ($this->article->fields) {
 						echo $d->auth_fname.(($d->auth_mi) ? " ".$d->auth_mi : "")." ".$d->auth_lname.(($d->auth_titles) ? ", ".$d->auth_titles : "").'</a>';
 						echo '</div>';
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth-cred mams-article-auth-cred">';
-						if ($this->params->get('show_authcred',1)) echo $d->auth_credentials;
+						if ($this->params->get('show_authcred',1)) {echo $d->auth_credentials;}
 						echo '</div></div>';
 						$authcount++;
 						if ($authcount == $authbyrow) {
@@ -200,8 +200,8 @@ if ($this->article->fields) {
 					$firstdl=true;
 					foreach ($dloads as $d) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-dload">';
-						if (in_array($d->access,$user->getAuthorisedViewLevels())) echo '<a href="'.JRoute::_("components/com_mams/dl.php?dlid=".$d->dl_id).'" target="_blank" ';
-						else echo '<a href="'.JRoute::_($rurl).'" ';
+						if (in_array($d->access,$user->getAuthorisedViewLevels())) {echo '<a href="'.JRoute::_("components/com_mams/dl.php?dlid=".$d->dl_id).'" target="_blank" ';}
+						else {echo '<a href="'.JRoute::_($rurl).'" ';}
 						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artdload mams-article-dllink uk-button btn btn-default';
 						if ($firstdl) { echo ' firstdload'; $firstdl=false; }
 						echo '">';
@@ -218,8 +218,8 @@ if ($this->article->fields) {
 						if ($firstimg) { echo ' firstimage'; $firstimg=false; }
 						echo '">';
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-image-img">';
-						if (in_array($i->access,$user->getAuthorisedViewLevels())) echo '<a href="'.$i->img_full.'" target="_blank" ';
-						else echo '<a href="'.JRoute::_($rurl).'" ';
+						if (in_array($i->access,$user->getAuthorisedViewLevels())) {echo '<a href="'.$i->img_full.'" target="_blank" ';}
+						else {echo '<a href="'.JRoute::_($rurl).'" ';}
 						echo 'data-lightbox="group:'.$f->group_name.'-'.$f->field_name.'-images" class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artimage mams-article-imglink';
 						echo '">';
 						echo '<img src="'.$i->img_thumb.'" class="mams-article-imgthumb">';
@@ -228,8 +228,8 @@ if ($this->article->fields) {
 							echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-image-info">';
 							if ($this->params->get('show_imgtitle',1)) {
 								echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-image-title">';
-								if (in_array($i->access,$user->getAuthorisedViewLevels())) echo '<a href="'.$i->img_full.'" target="_blank" ';
-								else echo '<a href="'.JRoute::_($rurl).'" ';
+								if (in_array($i->access,$user->getAuthorisedViewLevels())) {echo '<a href="'.$i->img_full.'" target="_blank" ';}
+								else {echo '<a href="'.JRoute::_($rurl).'" ';}
 								echo 'data-lightbox="group:'.$f->group_name.'-'.$f->field_name.'-links" class="mams-article-'.$f->group_name.'-'.$f->field_name.'-imglink';
 								echo '">';
 								echo $i->img_exttitle;
@@ -246,14 +246,16 @@ if ($this->article->fields) {
 					}
 					break;
 				case "artauthedlink":
+					if (count($this->article->auts) > 0) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-link mams-article-link">';
 						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=artauthed&artid=".$this->article->art_id).'" ';
 						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artlink uk-button uk-button-small uk-button-default';
 						echo '">';
-						echo 'View additional articles by these authors';
+						if (count($this->article->auts) > 1) { echo 'View additional articles by these authors'; }
+					    else { echo 'View additional articles by this author';}
 						echo '</a>';
 						echo '</div>';
-
+                    }
 					break;
 				case "links":
 					$links = $f->data;
@@ -472,7 +474,9 @@ if ($this->article->fields) {
 }
 
 //Last Modifed
-echo '<div class="mams-article-modified">';
-echo 'Last modified: '.date("F j, Y",strtotime($this->article->art_modified));
-echo '</div>';
+if ($this->params->get('show_modified',1)) {
+	echo '<div class="mams-article-modified">';
+	echo 'Last modified: ' . date( "F j, Y", strtotime( $this->article->art_modified ) );
+	echo '</div>';
+}
 if ($this->params->get('divwrapper',1)) { echo '</div>'; }

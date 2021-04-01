@@ -378,7 +378,7 @@ class MAMSModelArtList extends JModelList
 		$query->select('aa.aa_art');
 		$query->from('#__mams_artauth AS aa');
 		$query->where('aa.aa_auth IN ( '.implode(",",$authors).')');
-		$query->where('aa.aa_field = 5');
+		//$query->where('aa.aa_field = 5');
 		$query->where('aa.published >= 1');
 		$query->where('aa.aa_art != '.$db->escape((int)$artid));
 		$db->setQuery($query);

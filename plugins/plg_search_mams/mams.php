@@ -46,9 +46,9 @@ class plgSearchMAMS extends JPlugin
 			}
 		}
 
-		$limit			= $this->params->def('search_limit',		50);
+		$limit = $this->params->def('search_limit',		50);
 
-		$nullDate		= $db->getNullDate();
+		$nullDate = $db->getNullDate();
 		$date = JFactory::getDate();
 		$now = $date->toSql();
 		$rows = array();
@@ -59,7 +59,7 @@ class plgSearchMAMS extends JPlugin
 		}
 		
 		// search authors
-		if ($limit > 0)
+		if ($limit > 0 && empty($selectedSection))
 		{
 			$wheres = array();
 			switch ($phrase) {
@@ -233,7 +233,7 @@ class plgSearchMAMS extends JPlugin
 			$query->innerJoin('#__mams_secs AS c ON c.sec_id=a.art_sec');
 			$qwhere = '('. $where .')' . 'AND a.state >= 1 AND c.published >= 1 AND a.access IN ('.$groups.') '
 			         .'AND c.access IN ('.$groups.') AND a.art_publish_up <= NOW() AND (a.art_publish_down >= NOW() OR a.art_publish_down = "0000-00-00")';
-			if (count($authoredartcicleids)) $qwhere .= ' OR (a.art_id IN ('.implode(",",$authoredartcicleids).') AND a.access IN ('.$groups.') AND c.access IN ('.$groups.'))';
+			if (count($authoredartcicleids) && empty($selectedSection)) $qwhere .= ' OR (a.art_id IN ('.implode(",",$authoredartcicleids).') AND a.access IN ('.$groups.') AND c.access IN ('.$groups.'))';
 			// search module section limiter
 			if (!empty($selectedSection)) $qwhere .= ' AND (a.art_sec=('.$sectionIDFilter.'))';
 			$query->where($qwhere);

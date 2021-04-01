@@ -80,6 +80,10 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
+		<field name="show_modified" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_MODIFIED_DESC" label="COM_MAMS_FIELD_SHOW_MODIFIED_LABEL" default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 		<field name="auth_byrow" class="btn-group" type="radio" description="COM_MAMS_FIELD_AUTH_BYROW_DESC" label="COM_MAMS_FIELD_AUTH_BYROW_LABEL" default="2">
 			<option value="1">1</option>
 			<option value="2">2</option>

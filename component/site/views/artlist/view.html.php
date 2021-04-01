@@ -59,9 +59,12 @@ class MAMSViewArtList extends JViewLegacy
 			case "secbycat": 
 				$this->listSecbyCat();
 				break;
-			case "section": 
-			default:
+			case "section":
 				$this->listSection();
+				break;
+			default:
+				JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+				$this->error=true;
 				break;
 		}
 		

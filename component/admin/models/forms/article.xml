@@ -253,6 +253,11 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field name="show_modified" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_MODIFIED_DESC" label="COM_MAMS_FIELD_SHOW_MODIFIED_LABEL" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 			<field name="show_related" type="radio" label="COM_MAMS_FIELD_SHOW_RELATED_LABEL" description="COM_MAMS_FIELD_SHOW_RELATED_DESC" class="btn-group" default="">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
