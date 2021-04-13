@@ -5,8 +5,12 @@ if ($this->params->get('divwrapper',1)) {
 }
 $app = JFactory::getApplication();
 	if ($this->params->get("show_page_heading",1)) {
-		echo '<h1 class="title uk-article-title">Additional Articles by the Authors</h1>';
 		$auths = $this->authors;
+		if (count($auths) > 1) {
+			echo '<h1 class="title uk-article-title">Additional Articles by the Authors</h1>';
+		} else {
+			echo '<h1 class="title uk-article-title">Additional Articles by the Author</h1>';
+		}
 		$authbyrow=$this->params->get('auth_byrow',2);
 		$authspan = "span".(12/$authbyrow);
 		$authcount=0;

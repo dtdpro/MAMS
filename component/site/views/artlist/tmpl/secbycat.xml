@@ -11,6 +11,12 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="cat_orderby" type="list" description="COM_MAMS_FIELD_CATORDERBY_DESC" label="COM_MAMS_FIELD_CATORDERBY_LABEL" default="titasc">
+				<option value="titasc">COM_MAMS_ORDER_TITASC</option>
+				<option value="titdsc">COM_MAMS_ORDER_TITDSC</option>
+				<option value="orderasc">COM_MAMS_ORDER_ORDERINGASC</option>
+				<option value="orderdsc">COM_MAMS_ORDER_ORDERINGDSC</option>
+			</field>
 			<field name="orderby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
 				<option value="pubasc">COM_MAMS_ORDER_PUBASC</option>
 				<option value="pubdsc">COM_MAMS_ORDER_PUBDSC</option>
@@ -119,12 +125,6 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
-            <field name="cat_orderby" type="list" description="COM_MAMS_FIELD_CATORDERBY_DESC" label="COM_MAMS_FIELD_CATORDERBY_LABEL" default="titasc">
-                <option value="titasc">COM_MAMS_ORDER_TITASC</option>
-                <option value="titdsc">COM_MAMS_ORDER_TITDSC</option>
-                <option value="orderasc">COM_MAMS_ORDER_ORDERINGASC</option>
-                <option value="orderdsc">COM_MAMS_ORDER_ORDERINGDSC</option>
-            </field>
 		</fieldset>
 	</fields>
 

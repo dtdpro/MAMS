@@ -131,10 +131,11 @@ if (isset($this->articles)) {
 			if ( isset( $a->cats ) ) {
 				if ( $a->cats ) {
 					if ( $this->params->get( 'show_pubdate', 1 ) ) {
-						echo ' in <em>';
+						echo ' in ';
 					} else {
-						echo ' - <em>';
+						echo ' - ';
 					}
+					echo '<em>';
 					$cats = Array();
 					foreach ( $a->cats as $c ) {
 						if ( ! $this->params->get( 'restrictcat', 0 ) ) {

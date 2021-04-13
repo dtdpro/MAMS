@@ -330,8 +330,8 @@ class MAMSModelArtList extends JModelList
         switch ($this->params->get("cat_orderby","titasc")) {
             case "titasc": $query->order('cat_title ASC'); break;
             case "titdsc": $query->order('cat_title DESC'); break;
-            case "orderasc": $query->order('ordering ASC'); break;
-            case "orderdsc": $query->order('ordering ASC'); break;
+            case "orderasc": $query->order('lft ASC'); break;
+            case "orderdsc": $query->order('lft DESC'); break;
             default: $query->order('cat_title ASC'); break;
         }
 		$db->setQuery($query);
