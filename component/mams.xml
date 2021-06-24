@@ -5,10 +5,10 @@
 	<author>DtD Productions</author>
 	<authorEmail>mike@dtdpro.com</authorEmail>
 	<authorUrl>http://www.dtdpro.com</authorUrl>
-	<copyright>Copyright 2012-2019 DtD Productions</copyright>
+	<copyright>Copyright 2012-2021 DtD Productions</copyright>
 	<license>GPL v2</license>
-	<version>2.12.4</version>
-	<releaseDate>2019.07.07</releaseDate>
+	<version>2.12.5</version>
+	<releaseDate>2021.05.04</releaseDate>
 	<releaseType>Update</releaseType>
 	<downloadUrl>http://www.dtdpro.com/</downloadUrl>
 	<description>COM_MAMS_DESC</description>

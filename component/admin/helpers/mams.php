@@ -59,7 +59,7 @@ abstract class MAMSHelper
 	{
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTICLESRETURN'),'index.php?option=com_mams&view=articles',$submenu == 'articles');
 		JHtmlSidebar::addEntry('<span class="nav-header">'.$arttitle.'</span>');
-		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTCATS'),'index.php?option=com_mams&view=artcats',$submenu == 'artcats');
+		//JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTCATS'),'index.php?option=com_mams&view=artcats',$submenu == 'artcats');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTTAGS'),'index.php?option=com_mams&view=arttags',$submenu == 'arttags');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTAUTHS'),'index.php?option=com_mams&view=artauths',$submenu == 'artauths');
 		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTMEDIAS'),'index.php?option=com_mams&view=artmeds',$submenu == 'artmeds');

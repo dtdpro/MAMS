@@ -10,6 +10,9 @@ if (count($this->catinfo) == 1) {
 		echo $this->catinfo[0]->cat_title;
 		echo '</h1>';
 	}
+	if ($this->headerContent) {
+		echo $this->headerContent;
+	}
 	if ($this->params->get("show_catimage",0)) {
 		echo '<div class="mams-artlist-catimage"><img src="'.$this->catinfo[0]->cat_image.'" class="mams-artlist-catimage-img"></div>';
 	}
@@ -18,6 +21,13 @@ if (count($this->catinfo) == 1) {
 	echo '<h1 class="title uk-article-title">';
 	echo $this->params->get("page_title",$app->getMenu()->getActive()->title);
 	echo '</h1>';
+	if ($this->headerContent) {
+		echo $this->headerContent;
+	}
+} else {
+	if ($this->headerContent) {
+		echo $this->headerContent;
+	}
 }
 if (count($this->childcatlist)) {
 	echo '<div class="mams-catlist">';

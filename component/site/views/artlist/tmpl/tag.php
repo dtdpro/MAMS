@@ -10,6 +10,9 @@ if (count($this->taginfo) == 1) {
 		echo $this->taginfo[0]->tag_title;
 		echo '</h1>';
 	}
+	if ( $this->headerContent ) {
+		echo $this->headerContent;
+	}
 	if ($this->params->get("show_tagimage",0)) {
 		echo '<div class="mams-artlist-tagimage"><img src="'.$this->taginfo[0]->tag_image.'" class="mams-artlist-tagimage-img"></div>';
 	}
@@ -18,5 +21,12 @@ if (count($this->taginfo) == 1) {
 	echo '<h1 class="title uk-article-title">';
 	echo $this->params->get("page_title",$app->getMenu()->getActive()->title);
 	echo '</h1>';
+	if ( $this->headerContent ) {
+		echo $this->headerContent;
+	}
+} else {
+	if ( $this->headerContent ) {
+		echo $this->headerContent;
+	}
 }
 

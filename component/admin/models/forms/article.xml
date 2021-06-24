@@ -188,8 +188,21 @@
 			<option	value="1">Yes</option>
 			<option	value="0">No</option>
 		</field>
-		
-		<field name="cats" type="SelectCats" description="COM_MAMS_ARTICLE_FIELD_CAT_DESC" label="COM_MAMS_ARTICLE_FIELD_CAT_LABEL" required="false" multiple="true" class="inputbox span12 small" />
+
+		<field
+				name="cats"
+				type="subform"
+				label="COM_MAMS_ARTICLE_FIELD_CAT_LABEL"
+				description="COM_MAMS_ARTICLE_FIELD_CAT_DESC"
+				layout="joomla.form.field.subform.repeatable-table"
+				icon="list"
+				multiple="true"
+		>
+			<form hidden="true" name="cat_options" repeat="true">
+				<field name="cat" type="SelectCats" description="" label="" required="false" class="inputbox span12 small" />
+			</form>
+		</field>
+
 		<field name="tags" type="SelectTags" description="COM_MAMS_ARTICLE_FIELD_TAG_DESC" label="COM_MAMS_ARTICLE_FIELD_TAG_LABEL" required="false" multiple="true" class="inputbox span12 small" />
 		<field name="authors" type="SelectAuthors" description="COM_MAMS_ARTICLE_FIELD_AUTHOR_DESC" label="COM_MAMS_ARTICLE_FIELD_AUTHOR_LABEL" required="false" multiple="true" class="inputbox span12 small" />
 				

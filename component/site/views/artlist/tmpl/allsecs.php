@@ -9,3 +9,6 @@ if ($this->params->get("show_page_heading",1)) {
 	echo $this->params->get( "page_title", $app->getMenu()->getActive()->title );
 	echo '</h1>';
 }
+if ($this->headerContent) {
+	echo $this->headerContent;
+}

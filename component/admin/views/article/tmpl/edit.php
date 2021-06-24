@@ -46,6 +46,12 @@ $params = $this->form->getFieldsets('params');
 						<div class="controls"><?php echo $this->form->getInput('art_desc');?></div>
 					</div>
 				</div>
+                <div class="span6">
+                    <div class="control-group">
+                        <div class="control-label"><?php echo $this->form->getLabel('cats'); ?></div>
+                        <div class="controls"><?php echo $this->form->getInput('cats'); ?></div>
+                    </div>
+                </div>
 			</div>
 		</div>
 		<div class="span2">
@@ -61,12 +67,6 @@ $params = $this->form->getFieldsets('params');
                 <div class="control-label"><?php echo $this->form->getLabel('version_note'); ?></div>
                 <div class="controls"><?php echo $this->form->getInput('version_note'); ?></div>
             </div>
-			<?php if ($this->cfg->edit_cats) { ?>
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('cats'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('cats'); ?></div>
-			</div>
-			<?php } ?>
 			<?php if ($this->cfg->edit_tags) { ?>
                 <div class="control-group">
                     <div class="control-label"><?php echo $this->form->getLabel('tags'); ?></div>

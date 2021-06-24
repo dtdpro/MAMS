@@ -11,6 +11,9 @@ if (count($this->secinfo) == 1) {
 		echo $this->secinfo[0]->sec_name;
 		echo '</h1>';
 	}
+	if ($this->headerContent) {
+		echo $this->headerContent;
+	}
 	if ($this->params->get("show_secimage",0)) {
 		echo '<div class="mams-artlist-secimage"><img src="'.$this->secinfo[0]->sec_image.'" class="mams-artlist-secimage-img"></div>';
 	}
@@ -35,6 +38,9 @@ if (count($this->secinfo) == 1) {
 		echo '<h1 class="title uk-article-title">';
 		echo $this->params->get( "page_title", $app->getMenu()->getActive()->title );
 		echo '</h1>';
+	}
+	if ($this->headerContent) {
+		echo $this->headerContent;
 	}
 	echo '<div class="mams-secbycat-header">';
 	echo '<div class="mams-secbycat-header-catlist">';

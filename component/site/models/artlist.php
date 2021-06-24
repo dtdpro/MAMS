@@ -279,7 +279,7 @@ class MAMSModelArtList extends JModelList
 		return $items;
 	}
 
-	function getCatArts($cat) {
+	function getCatArts($cat,$canBeLimited = false) {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
@@ -287,6 +287,7 @@ class MAMSModelArtList extends JModelList
 		$query->select('ac.ac_art');
 		$query->from('#__mams_artcat AS ac');
 		$query->where('ac.ac_cat IN ( '.implode(",",$cat).')');
+		if ($this->params->get("primary_cat_only",0) && $canBeLimited) $query->andWhere('ac.ordering = 0');
 		$query->where('ac.published >= 1');
 		$db->setQuery($query);
 		$items = $db->loadColumn();
@@ -318,6 +319,7 @@ class MAMSModelArtList extends JModelList
 		$query->select('ac.ac_cat');
 		$query->from('#__mams_artcat AS ac');
 		$query->where('ac.ac_art IN ( '.implode(",",$artids).')');
+		if ($this->params->get("primary_cat_only",0)) $query->andWhere('ac.ordering = 0');
 		$query->where('ac.published >= 1');
 		$db->setQuery($query);
 		$catids = $db->loadColumn();

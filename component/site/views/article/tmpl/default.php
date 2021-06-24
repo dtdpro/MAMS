@@ -399,7 +399,7 @@ if ($this->article->fields) {
 
                             $rartroute=JRoute::_($rartlink);
                             //Thumb
-                            if ($r->art_thumb) {
+                            if ($r->art_thumb && $this->params->get( 'show_thumb', 1 )) {
                                 echo '<div class="mams-article-related-thumb">';
                                 echo '<a href="'.$rartroute.'"><img class="mams-article-related-artthumb"';
                                 echo ' src="'.$r->art_thumb.'" ';

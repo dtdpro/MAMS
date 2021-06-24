@@ -103,10 +103,6 @@ class MAMSModelArticle extends JModelAdmin
             $form->removefield('auths');
         }
 
-        if (!$cfg->edit_cats) {
-            $form->removefield('cats');
-        }
-
 		if (!$cfg->edit_tags) {
 			$form->removefield('tags');
 		}
@@ -162,7 +158,12 @@ class MAMSModelArticle extends JModelAdmin
 			$item->tags = $this->getTags($item->art_id);
 				
 			//Cats
-			$item->cats = $this->getCats($item->art_id);
+			$item->cats = [];
+			foreach ($this->getCats($item->art_id) as $c) {
+				$addCat = new stdClass();
+				$addCat->cat = $c;
+				$item->cats[] = $addCat;
+			}
 
 			//Authors
 			$item->authors = $this->getAuthors($item->art_id);
@@ -385,19 +386,19 @@ class MAMSModelArticle extends JModelAdmin
 		$this->setState($this->getName() . '.new', $isNew);
 
         //Cats
-        if ($cfg->edit_cats) {
+        //if ($cfg->edit_cats) {
             $query = $db->getQuery(true);
             $query->delete();
             $query->from('#__mams_artcat');
             $query->where('ac_art = ' . $table->art_id);
             $db->setQuery((string)$query);
             $db->query();
-            if ((!empty($data['cats']) && $data['cats'][0] != '')) {
+            if ((!empty($data['cats']))) { // && $data['cats'][0]->cat != ''
                 $actable = $this->getTable("Artcat", "MAMSTable");
                 $order = 0;
                 foreach ($data['cats'] as $cat) {
                     $actable->ac_id = 0;
-                    $actable->ac_cat = $cat;
+                    $actable->ac_cat = $cat['cat'];
                     $actable->ac_art = $table->art_id;
                     $actable->published = 1;
                     $actable->ordering = $order;
@@ -405,7 +406,7 @@ class MAMSModelArticle extends JModelAdmin
                     $order++;
                 }
             }
-        }
+        //}
 
 		//Tags
 		if ($cfg->edit_tags) {

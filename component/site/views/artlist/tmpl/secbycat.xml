@@ -42,6 +42,10 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
+			<field name="primary_cat_only" type="radio" label="COM_MAMS_FIELD_PRIMARY_CAT_ONLY_LABEL" description="COM_MAMS_FIELD_PRIMARY_CAT_ONLY_DESC" class="btn-group" default="0">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
 			<field name="show_count" type="radio" label="COM_MAMS_FIELD_SHOW_COUNT_LABEL" description="COM_MAMS_FIELD_SHOW_COUNT_DESC" class="btn-group" default="0">
 				<option value="0">No</option>
 				<option value="1">Yes</option>
@@ -125,6 +129,10 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
+		</fieldset>
+		<fieldset name="extra" label="COM_MAMS_FIELDSET_EXTRAS_LABEL">
+			<field name="extras_header" type="textarea" label="COM_MAMS_FIELD_EXTRA_HEADER_LABEL" description="COM_MAMS_FIELD_EXTRA_HEADER_DESC" rows="6" cols="80" class="inputbox" filter="safehtml" buttons="false"/>
+			<field name="extras_footer" type="textarea" label="COM_MAMS_FIELD_EXTRA_FOOTER_LABEL" description="COM_MAMS_FIELD_EXTRA_FOOTER_DESC" rows="6" cols="80" class="inputbox" filter="safehtml" buttons="false"/>
 		</fieldset>
 	</fields>
 

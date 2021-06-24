@@ -15,7 +15,7 @@ class MAMSViewArtCats extends JViewLegacy
 	function display($tpl = null) 
 	{
 		$this->state		= $this->get('State');
-		$this->items = $this->get('Items');
+		//$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->arttitle = $this->get('ArticleTitle');
 		
@@ -27,7 +27,7 @@ class MAMSViewArtCats extends JViewLegacy
 			return false;
 		}
 		
-		$this->addToolBar();
+		//$this->addToolBar();
 		$this->sidebar = JHtmlSidebar::render();	
 
 		parent::display($tpl);

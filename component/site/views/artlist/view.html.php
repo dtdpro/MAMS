@@ -15,6 +15,8 @@ class MAMSViewArtList extends JViewLegacy
 	protected $state = null;
 	protected $error = false;
 	protected $title='';
+	protected $headerContent = false;
+	protected $footerContent = false;
 	
 	public function display($tpl = null)
 	{
@@ -77,12 +79,32 @@ class MAMSViewArtList extends JViewLegacy
 		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 		$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 
+		// Pre Headr and Footer text
+		$dispatcher	= JDispatcher::getInstance();
+		JPluginHelper::importPlugin('content');
+		if ($this->params->get("extras_header","")) {
+			$this->headerContent = $this->params->get("extras_header");
+			$headerContent = (object) array("text" => $this->headerContent);
+			$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$headerContent, &$this->params, 0));
+			$this->headerContent = $headerContent->text;
+		}
+		if ($this->params->get("extras_footer","")) {
+			$this->footerContent = $this->params->get("extras_footer");
+			$footerContent = (object) array("text" => $this->footerContent);
+			$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$headerContent, &$this->params, 0));
+			$this->footerContent = $footerContent->text;
+		}
+
 		$this->_prepareTitle();
 		parent::display($tpl);
 		if ($layout != "secbycat" && $layout != "catlist" && $layout != "seclist") {
 			if ($this->params->get("listview","blog") == "blog") $this->setLayout('artlist');
 			else $this->setLayout('artgal');
 			parent::display($tpl);
+		}
+
+		if ( $this->footerContent ) {
+			echo $this->footerContent;
 		}
 
 		if ($this->params->get('divwrapper',1)) { echo '</div>'; }
@@ -113,7 +135,7 @@ class MAMSViewArtList extends JViewLegacy
 			foreach ($this->cats as &$c) {
 				$cat = array();
 				$cat[] = $c->cat_id;
-				$artids=$model->getCatArts($cat);
+				$artids=$model->getCatArts($cat,true);
 				$c->artids = $artids;
 				$c->articles=$model->getArticles($artids,$sec,false);
 			}
