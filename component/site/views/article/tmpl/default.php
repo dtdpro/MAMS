@@ -114,9 +114,11 @@ if ($this->article->fields) {
 
 			switch ($f->field_type) {
 				case "title":
-                    echo '<h1 class="title uk-article-title">';
-                    echo $this->article->art_title;
-                    echo '</h1>';
+					if ($this->params->get("show_page_heading",1)) {
+						echo '<h1 class="title uk-article-title">';
+						echo $this->article->art_title;
+						echo '</h1>';
+					}
 					break;
                 case "body":
                     echo '<div class="mams-article-content">';
