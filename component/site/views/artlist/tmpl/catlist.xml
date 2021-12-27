@@ -115,6 +115,11 @@
                 <option value="0">JHIDE</option>
                 <option value="1">JSHOW</option>
             </field>
+            <field name="show_authimg" type="radio" label="COM_MAMS_FIELD_SHOW_AUTHIMG_LABEL" description="COM_MAMS_FIELD_SHOW_AUTHIMG_DESC" class="btn-group" default="">
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
             <field name="show_imgtitle" type="radio" label="COM_MAMS_FIELD_SHOW_IMGTITLE_LABEL" description="COM_MAMS_FIELD_SHOW_IMGTITLE_DESC" class="btn-group" default="1">
                 <option value="0">JHIDE</option>
                 <option value="1">JSHOW</option>

@@ -1,4 +1,4 @@
-    <?php
+<?php
 defined('_JEXEC') or die();
 if ($this->params->get('divwrapper',1)) {
 	echo '<div id="system" class="'.$this->params->get('wrapperclass','uk-article').'">';
@@ -176,27 +176,76 @@ if ($this->article->fields) {
 				case "auths":
 					$auths = $f->data;
 					$authbyrow=$this->params->get('auth_byrow',2);
-					$authspan = "span".(12/$authbyrow);
 					$authcount=0;
-					echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-authrow mams-article-authrow row-fluid">';
+
+					// Begin Row Div
+					echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-authrow mams-article-authrow uk-grid uk-grid-medium" uk-grid>';
+
 					foreach ($auths as $d) {
-						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth mams-article-auth '.$authspan.'">';
+						// Begin Outer Div
+						echo '<div class="uk-width-1-'. $authbyrow .'@s uk-width-1-1 uk-width-small-1-'. $authbyrow .'">';
+
+						// Begin Inner Div
+						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth mams-article-auth uk-grid-small uk-grid" uk-grid>';
+
+						// Author Image
+						if (!(empty($d->auth_image)) && $this->params->get('show_authimg',0)) {
+							echo '<div class="uk-width-1-4@l uk-width-1-3@m uk-width-1-4@s uk-width-1-5">';
+							echo '<div class="mams-article-auth-image"><img src="'. $d->auth_image .'" /></div>';
+							echo '</div>';
+						}
+
+						// Begin Details Div
+						echo '<div';
+						if (!(empty($d->auth_image)) && $this->params->get('show_authimg',0))  {
+							echo ' class="uk-align-middle uk-width-3-4@l uk-width-2-3@m uk-width-3-4@s uk-width-4-5"';
+						}
+						echo '>';
+
+						// Author Name
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth-name mams-article-auth-name">';
 						echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$d->auth_sec."&autid=".$d->auth_id.":".$d->auth_alias).'" class="mams-article-'.$f->group_name.'-'.$f->field_name.'-autlink">';
 						echo $d->auth_fname.(($d->auth_mi) ? " ".$d->auth_mi : "")." ".$d->auth_lname.(($d->auth_titles) ? ", ".$d->auth_titles : "").'</a>';
 						echo '</div>';
-						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-auth-cred mams-article-auth-cred">';
-						if ($this->params->get('show_authcred',1)) {echo $d->auth_credentials;}
-						echo '</div></div>';
-						$authcount++;
-						if ($authcount == $authbyrow) {
+
+						// Author Credentials
+						if ($this->params->get('show_authcred',1)) {
+							echo '<div class="mams-article-' . $f->group_name . '-' . $f->field_name . '-auth-cred mams-article-auth-cred">';
+							echo $d->auth_credentials;
 							echo '</div>';
-							echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-authrow mams-article-authrow row-fluid">';
+						}
+
+						// End Details Div
+						echo '</div>';
+
+						// End Inner Div
+						echo '</div>';
+
+						// End Outer Div
+						echo '</div>';
+
+						// Increment authors in row count
+						$authcount++;
+
+						// Reset Row div when column number met
+						if ($authcount == $authbyrow) {
+							// End Row Div
+							echo '</div>';
+
+							// Begin Row Div
+							echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-authrow mams-article-authrow uk-grid uk-grid-medium" uk-grid>';
+
+							// Reset authors in row count
 							$authcount=0;
 						}
+
 					}
+
+					// End Row Div
 					echo '</div>';
+
 					break;
+
 				case "dloads":
 					$dloads = $f->data;
 					$firstdl=true;
