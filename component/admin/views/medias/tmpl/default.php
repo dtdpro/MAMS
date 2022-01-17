@@ -162,6 +162,7 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 						case 'vids': echo 'CDN Video'; break;
 						case 'vid': echo 'Video'; break;
 						case 'aud': echo 'Audio'; break;
+						case 'auds': echo 'CDN Audio'; break;
 					} 
 				
 				?></td>

@@ -1,0 +1,1 @@
+ALTER TABLE `#__mams_media` CHANGE `med_type` `med_type` ENUM('vid','vids','aud','auds') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

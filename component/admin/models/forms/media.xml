@@ -56,6 +56,7 @@
 			<option	value="vids">CDN Video</option>
 			<option	value="vid">Video</option>
 			<option	value="aud">Audio</option>
+			<option	value="auds">CDN Audio</option>
 		</field>
 		<field
 			name="med_inttitle"

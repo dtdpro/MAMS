@@ -209,10 +209,14 @@
 			<option value="1">Fixed</option>
 			<option value="0">Responsive</option>
 		</field>
-	</fieldset>
-	<fieldset name="auido" label="COM_MAMS_CONFIG_AUDIO_LABEL" description="COM_MAMS_CONFIG_AUDIO_DESC">
-		<field name="aud_w" type="text" label="COM_MAMS_CONFIG_FIELD_AUDW_LABEL" description="COM_MAMS_CONFIG_FIELD_AUDW_DESC" size="5" class="inputbox" required="false" integer="true" default="768" />
-		<field name="aud_h" type="text" label="COM_MAMS_CONFIG_FIELD_AUDH_LABEL" description="COM_MAMS_CONFIG_FIELD_AUDH_DESC" size="5" class="inputbox" required="false" integer="true" default="432" />
+		<field name="player_multiple" type="radio" description="COM_MAMS_CONFIG_FIELD_PLAYER_MULTI_DESC" label="COM_MAMS_CONFIG_FIELD_PLAYER_MULTI_LABEL" default="0" class="btn-group">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</field>
+		<field name="show_media_title" type="radio" description="COM_MAMS_CONFIG_FIELD_SHOW_MEDIA_TITLE_DESC" label="COM_MAMS_CONFIG_FIELD_SHOW_MEDIA_TITLE_LABEL" default="0" class="btn-group">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</field>
 	</fieldset>
 	<fieldset name="reporting" label="COM_MAMS_CONFIG_REPORTING_LABEL" description="COM_MAMS_CONFIG_REPORTING_DESC">
 		<field name="gapro" type="radio" label="COM_MAMS_CONFIG_FIELD_GANAL_LABEL" description="COM_MAMS_CONFIG_FIELD_GANAL_DESC" default="1" class="btn-group">

@@ -325,114 +325,186 @@ if ($this->article->fields) {
 					break;
 				case "media":
 					$media = $f->data;
-					echo '<div align="center">'; //Center the player, enoyingly needed
-					echo '<div class="mams-article-mediawrap"';
-					if ($config->player_fixed) echo ' style="width: '.(int)$config->vid_w.'px;"';
-					echo '>';
-					//Video Player
-					if ($media[0]->med_type == 'vid' || $media[0]->med_type == 'vids') {
-						echo '<div class="mams-article-media-player';
-						if (count($media) == 1) echo 'one';
-						else if ($config->player_fixed) echo 'fixed';
-						echo '">';
-						echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
-						if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
-						echo 'id="mams-article-mediaelement-'.$f->field_name.'" src="';
-						if ($config->vid_https) echo 'https://';
-						else echo 'http://';
-						echo $config->vid5_url.'/'.$media[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$media[0]->med_still.'"';
-						if ($media[0]->med_autoplay) echo ' autoplay="autoplay"';
-						echo '></video>';
-						echo '<script type="text/javascript">';
-						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."',{features: ['playpause','current','progress','duration','volume','fullscreen','mamsanalytics'";
-						if ($config->gapro) echo ",'mamsgoogleanalytics'";
-						echo "], enablePluginSmoothing: true, trackId: ".$this->article->track_id.", videoId: ".$media[0]->med_id.", videoExtTitle: '".addslashes($media[0]->med_exttitle)."', videoIntTitle: '".addslashes($media[0]->med_inttitle)."'});";
-						echo '</script>';
-						if (count($media) > 1) {
-							?>
-								<script type="text/javascript">
-								jQuery(document).ready(function() {
-									jQuery(".mams-article-media-item").click(function(){	
-										var parent = jQuery(this).parents('.mams-article-media-playlist');	
-										jQuery('.mams-article-media-item',parent).removeClass('selected');
-										jQuery(this).addClass('selected');
-									}); <?php 
-									foreach ($media as $m) {
-										echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".pause();";
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".setSrc('http://".$config->vid5_url.'/'.$m->med_file."');";
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".play();";
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoId = ".$m->med_id.";";
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoExtTitle = '".addslashes($m->med_exttitle)."';";
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoIntTitle = '".addslashes($m->med_inttitle)."';";
-										echo '}); ';
-									}?>
-								});
-								</script>
-							<?php 
-						}
-						echo '</div>';
-					}
-							
-					//Audio Player
-					if ($media[0]->med_type == 'aud') { 
-						echo '<div class="mams-article-media-player';
-						if (count($media) == 1) echo 'one';
-						else if ($config->player_fixed) echo 'fixed';
-						echo '">';
-						echo '<audio id="mams-article-mediaelement-'.$f->field_name.'" width="'.(int)$config->vid_w.'" ';
-						if (!$config->player_fixed) echo 'style="width: 100%;" ';
-						echo 'src="'.JURI::base( true ).'/'.$media[0]->med_file.'" type="audio/mp3" controls="controls"></audio>';
-						echo '<script type="text/javascript">';
-						echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."',{features: ['playpause','current','progress','duration','volume','mamsanalytics'";
-						if ($config->gapro) echo ",'mamsgoogleanalytics'";
-						echo "], trackId: ".$this->article->track_id.", videoId: ".$media[0]->med_id.", videoExtTitle: '".addslashes($media[0]->med_exttitle)."', videoIntTitle: '".addslashes($media[0]->med_inttitle)."'});";
-						echo '</script>';
-						
-						
-						if (count($media) > 1) {
-							?>
-								<script type="text/javascript">
-								jQuery(document).ready(function() {
-									jQuery(".mams-article-media-item").click(function(){	
-										var parent = jQuery(this).parents('.mams-article-media-playlist');	
-										jQuery('.mams-article-media-item',parent).removeClass('selected');
-										jQuery(this).addClass('selected');
-									}); <?php 
-									foreach ($media as $m) {
-										echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
-									    echo "fmplayer_".str_replace("-","_",$f->field_name).".pause();fmplayer_".str_replace("-","_",$f->field_name).".setSrc('".JURI::base( true ).'/'.$m->med_file."');fmplayer_".str_replace("-","_",$f->field_name).".play();";
-										echo '}); ';
-									}?>
-								});
-								</script>
-							<?php 
-						}
-						echo '</div>';
-					}
-					//Playlist
-					if (count($media) > 1) {
-						echo '<div class="mams-article-media-playlist';
-						if ($config->player_fixed) echo 'fixed';
-						echo '">';
-						echo '<ul>';
-						$first = true;
-						foreach ($media as $m) {
-							echo '<li class="mams-article-media-item mampli-'.$m->med_id;
-							if ($first) { echo ' selected'; $first=false; }
+					$multiplePlayers = $config->player_multiple;
+					if ($multiplePlayers) {
+					    foreach ($media as $m) {
+						    if ($config->show_media_title) {
+							    echo '<div class="mams-article-mediatitle">'.$m->med_exttitle.'</div>';
+						    }
+                            echo '<div align="center">'; //Center the player, enoyingly needed
+                            echo '<div class="mams-article-mediawrap"';
+                            if ($config->player_fixed) echo ' style="width: '.(int)$config->vid_w.'px;"';
+                            echo '>';
+
+						    //Video Player
+                            if ($m->med_type == 'vid' || $m->med_type == 'vids') {
+                                echo '<div class="mams-article-media-player';
+                                echo 'one';
+                                echo '">';
+                                echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
+                                if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
+                                echo 'id="mams-article-mediaelement-'.$f->field_name.'-'.$m->med_id.'" src="';
+                                if ($config->vid_https) echo 'https://';
+                                else echo 'http://';
+                                echo $config->vid5_url.'/'.$m->med_file.'" type="video/mp4" controls="controls" poster="'.$m->med_still.'"';
+                                if ($m->med_autoplay) echo ' autoplay="autoplay"';
+                                echo '></video>';
+                                echo '<script type="text/javascript">';
+                                echo "var fmplayer_".$m->med_id." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."-".$m->med_id."',{features: ['playpause','current','progress','duration','volume','fullscreen','mamsanalytics'";
+                                if ($config->gapro) echo ",'mamsgoogleanalytics'";
+                                echo "], enablePluginSmoothing: true, trackId: ".$this->article->track_id.", videoId: ".$m->med_id.", videoExtTitle: '".addslashes($m->med_exttitle)."', videoIntTitle: '".addslashes($m->med_inttitle)."'});";
+                                echo '</script>';
+                                echo '</div>';
+                            }
+
+                            //Audio Player
+                            if ($m->med_type == 'aud') {
+                                echo '<div class="mams-article-media-player';
+                                echo 'one';
+                                echo '">';
+                                echo '<audio id="mams-article-mediaelement-'.$f->field_name.'-'.$m->med_id.'" width="'.(int)$config->vid_w.'" ';
+                                if (!$config->player_fixed) echo 'style="width: 100%;" ';
+                                echo 'src="'.JURI::base( true ).'/'.$m->med_file.'" type="audio/mp3" controls="controls"></audio>';
+                                echo '<script type="text/javascript">';
+                                echo "var fmplayer_".$m->med_id." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."-".$m->med_id."',{features: ['playpause','current','progress','duration','volume','mamsanalytics'";
+                                if ($config->gapro) echo ",'mamsgoogleanalytics'";
+                                echo "], trackId: ".$this->article->track_id.", videoId: ".$m->med_id.", videoExtTitle: '".addslashes($m->med_exttitle)."', videoIntTitle: '".addslashes($m->med_inttitle)."'});";
+                                echo '</script>';
+                                echo '</div>';
+                            }
+
+						    //Audio Player - CDN
+						    if ($m->med_type == 'auds') {
+							    echo '<div class="mams-article-media-player';
+							    echo 'one';
+							    echo '">';
+							    echo '<audio id="mams-article-mediaelement-'.$f->field_name.'-'.$m->med_id.'" width="'.(int)$config->vid_w.'" ';
+							    if (!$config->player_fixed) echo 'style="width: 100%;" src="';
+							    if ($config->vid_https) echo 'https://';
+							    else echo 'http://';
+							    echo $config->vid5_url.'/'.$m->med_file.'" type="audio/mp3" controls="controls"></audio>';
+							    echo '<script type="text/javascript">';
+							    echo "var fmplayer_".$m->med_id." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."-".$m->med_id."',{features: ['playpause','current','progress','duration','volume','mamsanalytics'";
+							    if ($config->gapro) echo ",'mamsgoogleanalytics'";
+							    echo "], trackId: ".$this->article->track_id.", videoId: ".$m->med_id.", videoExtTitle: '".addslashes($m->med_exttitle)."', videoIntTitle: '".addslashes($m->med_inttitle)."'});";
+							    echo '</script>';
+							    echo '</div>';
+						    }
+
+                            echo '</div>';
+                            echo '<div style="clear:both"></div>';
+                            echo '</div>';
+                        }
+                    } else {
+						echo '<div align="center">'; //Center the player, enoyingly needed
+						echo '<div class="mams-article-mediawrap"';
+						if ($config->player_fixed) echo ' style="width: '.(int)$config->vid_w.'px;"';
+						echo '>';
+						//Video Player
+						if ($media[0]->med_type == 'vid' || $media[0]->med_type == 'vids') {
+							echo '<div class="mams-article-media-player';
+							if (count($media) == 1) echo 'one';
+							else if ($config->player_fixed) echo 'fixed';
 							echo '">';
-							echo "";
-							echo '<div class="mampli-thumb"><img src="'.$m->med_still.'" border="0" class="size-auto"></div>';
-							echo '<div class="mampli-text"><div class="mampli-title">'.$m->med_exttitle.'</div><div class="mampli-desc">'.$m->med_desc;
-							echo '</div></div>';
-							echo '</li>';
+							echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
+							if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
+							echo 'id="mams-article-mediaelement-'.$f->field_name.'" src="';
+							if ($config->vid_https) echo 'https://';
+							else echo 'http://';
+							echo $config->vid5_url.'/'.$media[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$media[0]->med_still.'"';
+							if ($media[0]->med_autoplay) echo ' autoplay="autoplay"';
+							echo '></video>';
+							echo '<script type="text/javascript">';
+							echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."',{features: ['playpause','current','progress','duration','volume','fullscreen','mamsanalytics'";
+							if ($config->gapro) echo ",'mamsgoogleanalytics'";
+							echo "], enablePluginSmoothing: true, trackId: ".$this->article->track_id.", videoId: ".$media[0]->med_id.", videoExtTitle: '".addslashes($media[0]->med_exttitle)."', videoIntTitle: '".addslashes($media[0]->med_inttitle)."'});";
+							echo '</script>';
+							if (count($media) > 1) {
+								?>
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function() {
+                                        jQuery(".mams-article-media-item").click(function(){
+                                            var parent = jQuery(this).parents('.mams-article-media-playlist');
+                                            jQuery('.mams-article-media-item',parent).removeClass('selected');
+                                            jQuery(this).addClass('selected');
+                                        }); <?php
+										foreach ($media as $m) {
+											echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
+											echo "fmplayer_".str_replace("-","_",$f->field_name).".pause();";
+											echo "fmplayer_".str_replace("-","_",$f->field_name).".setSrc('http://".$config->vid5_url.'/'.$m->med_file."');";
+											echo "fmplayer_".str_replace("-","_",$f->field_name).".play();";
+											echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoId = ".$m->med_id.";";
+											echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoExtTitle = '".addslashes($m->med_exttitle)."';";
+											echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoIntTitle = '".addslashes($m->med_inttitle)."';";
+											echo '}); ';
+										}?>
+                                    });
+                                </script>
+								<?php
+							}
+							echo '</div>';
 						}
-						echo '</ul>';
+
+						//Audio Player
+						if ($media[0]->med_type == 'aud') {
+							echo '<div class="mams-article-media-player';
+							if (count($media) == 1) echo 'one';
+							else if ($config->player_fixed) echo 'fixed';
+							echo '">';
+							echo '<audio id="mams-article-mediaelement-'.$f->field_name.'" width="'.(int)$config->vid_w.'" ';
+							if (!$config->player_fixed) echo 'style="width: 100%;" ';
+							echo 'src="'.JURI::base( true ).'/'.$media[0]->med_file.'" type="audio/mp3" controls="controls"></audio>';
+							echo '<script type="text/javascript">';
+							echo "var fmplayer_".str_replace("-","_",$f->field_name)." = new MediaElementPlayer('#mams-article-mediaelement-".$f->field_name."',{features: ['playpause','current','progress','duration','volume','mamsanalytics'";
+							if ($config->gapro) echo ",'mamsgoogleanalytics'";
+							echo "], trackId: ".$this->article->track_id.", videoId: ".$media[0]->med_id.", videoExtTitle: '".addslashes($media[0]->med_exttitle)."', videoIntTitle: '".addslashes($media[0]->med_inttitle)."'});";
+							echo '</script>';
+
+
+							if (count($media) > 1) {
+								?>
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function() {
+                                        jQuery(".mams-article-media-item").click(function(){
+                                            var parent = jQuery(this).parents('.mams-article-media-playlist');
+                                            jQuery('.mams-article-media-item',parent).removeClass('selected');
+                                            jQuery(this).addClass('selected');
+                                        }); <?php
+										foreach ($media as $m) {
+											echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
+											echo "fmplayer_".str_replace("-","_",$f->field_name).".pause();fmplayer_".str_replace("-","_",$f->field_name).".setSrc('".JURI::base( true ).'/'.$m->med_file."');fmplayer_".str_replace("-","_",$f->field_name).".play();";
+											echo '}); ';
+										}?>
+                                    });
+                                </script>
+								<?php
+							}
+							echo '</div>';
+						}
+						//Playlist
+						if (count($media) > 1) {
+							echo '<div class="mams-article-media-playlist';
+							if ($config->player_fixed) echo 'fixed';
+							echo '">';
+							echo '<ul>';
+							$first = true;
+							foreach ($media as $m) {
+								echo '<li class="mams-article-media-item mampli-'.$m->med_id;
+								if ($first) { echo ' selected'; $first=false; }
+								echo '">';
+								echo "";
+								echo '<div class="mampli-thumb"><img src="'.$m->med_still.'" border="0" class="size-auto"></div>';
+								echo '<div class="mampli-text"><div class="mampli-title">'.$m->med_exttitle.'</div><div class="mampli-desc">'.$m->med_desc;
+								echo '</div></div>';
+								echo '</li>';
+							}
+							echo '</ul>';
+							echo '</div>';
+						}
+						echo '</div>';
+						echo '<div style="clear:both"></div>';
 						echo '</div>';
 					}
-					echo '</div>';
-					echo '<div style="clear:both"></div>';
-					echo '</div>';
 					break;
                 case 'related':
                     if ($this->params->get('show_related',1) && $this->related) {
