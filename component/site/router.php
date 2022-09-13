@@ -28,8 +28,8 @@ function MAMSBuildRoute(&$query)
 	if (isset($query['catid'])) $catid = $query['catid']; else $catid = 0;
 	if (isset($query['tagid'])) $tagid = $query['tagid']; else $tagid = 0;
 	if (isset($query['Itemid'])) $default = $query['Itemid']; else $default = 0;
-	
-	if (!is_array($catid) && !is_array($secid)){
+
+	if (!is_array($catid) && !is_array($secid) && !is_array($tagid)){
 		foreach ($items as $mi) {
 
 			// Article
