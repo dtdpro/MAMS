@@ -4,10 +4,35 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.keepalive');
+
+// Section Title
+if ($params->get('show_sectitle',0)) {
+	echo '<div class="mams-featmod-section-title">' . $secinfo->sec_name . '</div>';
+}
+
+// Get Section Link if needed
+if ($params->get('show_image',0) || $params->get('show_viewall',0)) {
+	$vasid   = $params->get( 'secid' );
+	$secLink = '';
+	if ( count( $articles ) == 1 ) {
+		$artlink = "index.php?option=com_mams&view=article";
+		if ( $params->get( 'article_seclock', 1 ) ) {
+			$artlink .= "&secid=" . $articles[0]->art_sec . ":" . $articles[0]->sec_alias;
+		}
+		$artlink .= "&artid=" . $articles[0]->art_id . ":" . $articles[0]->art_alias;
+		if ( $articles[0]->cats && $params->get( 'article_catlock', 1 ) ) {
+			$artlink .= '&catid=' . $articles[0]->cats[0]->cat_id;
+		}
+		$secLink = JRoute::_( $artlink );
+	} else {
+		$secLink = JRoute::_( "index.php?option=com_mams&view=artlist&secid=" . $vasid[0] );
+	}
+}
+
 echo '<div class="mams-featmod uk-grid" uk-grid>';
 if ($params->get('show_image',0)) {
 	echo '<div class="mams-featmod-image">';
-	echo '<img src="'.$secinfo->sec_image.'" class="mams-featmod-image-img">';
+	echo '<a href="'.$secLink.'"><img src="'.$secinfo->sec_image.'" class="mams-featmod-image-img"></a>';
 	echo '</div>';
 }
 $firstart=true;
@@ -187,9 +212,8 @@ foreach ($articles as $a) {
 	echo '</div>';
 }
 if ($params->get('show_viewall',0)) {
-	$vasid=$params->get('secid');
 	echo '<div class="mams-featmod-viewall">';
-	echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&secid=".$vasid[0]).'" class="mams-featmod-artlink read-more">';
+	echo '<a href="'.$secLink.'" class="mams-featmod-artlink read-more">';
 	echo $params->get('text_viewall',"Read More");
 	echo '</a></div>';
 }

@@ -10,7 +10,7 @@ class MAMSControllerTags extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_TAG";
 	
-	public function getModel($name = 'Tag', $prefix = 'MAMSModel')
+	public function getModel($name = 'Tag', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

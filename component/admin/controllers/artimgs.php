@@ -11,7 +11,7 @@ class MAMSControllerArtimgs extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_ARTIMG";
 	
-	public function getModel($name = 'Artimg', $prefix = 'MAMSModel') 
+	public function getModel($name = 'Artimg', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

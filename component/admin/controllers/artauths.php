@@ -10,7 +10,7 @@ class MAMSControllerArtauths extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_ARTAUTH";
 	
-	public function getModel($name = 'Artauth', $prefix = 'MAMSModel') 
+	public function getModel($name = 'Artauth', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

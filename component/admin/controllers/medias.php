@@ -10,7 +10,7 @@ class MAMSControllerMedias extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_MEDIA";
 	
-	public function getModel($name = 'Media', $prefix = 'MAMSModel') 
+	public function getModel($name = 'Media', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

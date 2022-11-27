@@ -12,7 +12,7 @@ class MAMSControllerFieldgroups extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_FIELDGROUP";
 	
-	public function getModel($name = 'FieldGroup', $prefix = 'MAMSModel') 
+	public function getModel($name = 'FieldGroup', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

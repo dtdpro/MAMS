@@ -462,12 +462,15 @@ class MAMSModelArticle extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$app = JFactory::getApplication();
+		$date	= JFactory::getDate();
 		$data = $app->getUserState('com_mams.edit.article.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
 			if ($data->art_id == 0) {
 				$data->set('art_sec', $app->input->getInt('art_sec', $app->getUserState('com_mams.articles.filter.sec')));
+				$data->set('art_publish_up', $date->toSql());
+				$data->set('art_publish_down', $this->_db->getNullDate());
 			}
 		}
 		return $data;

@@ -139,9 +139,11 @@ class MAMSModelTags extends JModelList
 		// Create a string of the access levels available
 		foreach ($this->cache[$store] as &$i) {
 			$alevels = explode(",",$i->tag_feataccess);
-			$leveltext = array();
+			$leveltext = [];
 			foreach ($alevels as $a) {
-				$leveltext[] = $allist[$a];
+				if (isset($allist[$a])) {
+					$leveltext[] = $allist[ $a ];
+				}
 			}
 			$i->feataccess_level = implode(", ",$leveltext);
 		}

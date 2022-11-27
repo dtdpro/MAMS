@@ -9,7 +9,7 @@ require_once('components/com_mams/helpers/mams.php');
 require_once('components/com_mams/router.php');
 
 
-$doc = &JFactory::getDocument();
+$doc = JFactory::getDocument();
 //jQuery
 JHtml::_('jquery.framework');
 $doc->addScript('media/com_mams/mediaelementjs/mediaelement-and-player.js');

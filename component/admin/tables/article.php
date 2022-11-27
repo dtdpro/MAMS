@@ -98,42 +98,6 @@ class MAMSTableArticle extends JTable
 	
 	public function store($updateNulls = false)
 	{
-		$date	= JFactory::getDate();
-		$user	= JFactory::getUser();
-		if (!$this->art_id) {
-			// New article. A article created on field can be set by the user,
-			// so we don't touch either of these if they are set.
-			if (!intval($this->art_added)) {
-				$this->art_added = $date->toSql();
-			}
-		}
-		
-		// Set modification info, new is modified as well
-		$this->art_modified		= $date->toSql();
-		$this->art_modified_by	= $user->get('id');
-		if (empty($this->art_added_by)) {
-			$this->art_added_by	= $user->get('id');
-		}
-		
-		// Set publish_up to now if not set
-		if (!$this->art_publish_up || $this->art_publish_up == "0000-00-00")
-		{
-			$this->art_publish_up = $date->toSql();
-		}
-		
-		// Set publish_down to null date if not set
-		if (!$this->art_publish_down)
-		{
-			$this->art_publish_down = $this->_db->getNullDate();
-		}
-
-		// Verify that the alias is unique
-		$table = JTable::getInstance('Article', 'MAMSTable');
-		if ($table->load(array('art_alias'=>$this->art_alias)) && ($table->art_id != $this->art_id || $this->art_id==0)) {
-			$this->setError(JText::_('COM_MAMS_ERROR_UNIQUE_ALIAS'));
-			return false;
-		}
-		
 		// Attempt to store the user data.	
 		$this->tagsHelper->preStoreProcess($this);
 		$result = parent::store($updateNulls);
@@ -142,6 +106,9 @@ class MAMSTableArticle extends JTable
 	
 	public function check()
 	{
+		$date	= JFactory::getDate();
+		$user	= JFactory::getUser();
+
 		// check for valid name
 		if (trim($this->art_title) == '') {
 			$this->setError(JText::_('COM_MAMS_ERR_TABLES_TITLE'));
@@ -154,6 +121,27 @@ class MAMSTableArticle extends JTable
 		$this->art_alias = JApplication::stringURLSafe($this->art_alias);
 		if (trim(str_replace('-','',$this->art_alias)) == '') {
 			$this->art_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
+		}
+
+		// Verify that the alias is unique
+		$table = JTable::getInstance('Article', 'MAMSTable');
+		if ($table->load(array('art_alias'=>$this->art_alias)) && ($table->art_id != $this->art_id || $this->art_id==0)) {
+			$this->setError(JText::_('COM_MAMS_ERROR_UNIQUE_ALIAS'));
+			return false;
+		}
+
+		// set added date for new article if not set
+		if (!$this->art_id) {
+			if (!$this->art_added) {
+				$this->art_added = $date->toSql();
+			}
+		}
+
+		// Set modification info, new is modified as well
+		$this->art_modified		= $date->toSql();
+		$this->art_modified_by	= $user->get('id');
+		if (empty($this->art_added_by)) {
+			$this->art_added_by	= $user->get('id');
 		}
 
 		// populate metadesc if empty

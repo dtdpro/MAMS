@@ -11,7 +11,7 @@ class MAMSControllerArtmeds extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_ARTMED";
 	
-	public function getModel($name = 'Artmed', $prefix = 'MAMSModel') 
+	public function getModel($name = 'Artmed', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

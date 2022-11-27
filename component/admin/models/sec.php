@@ -173,13 +173,6 @@ class MAMSModelSec extends JModelAdmin
 			return false;
 		}
 
-		if (in_array(false, $result, true))
-		{
-			$this->setError($table->getError());
-
-			return false;
-		}
-
 		// Store the data.
 		if (!$table->store())
 		{

@@ -10,7 +10,7 @@ class MAMSControllerArtdloads extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_ARTDLOAD";
 	
-	public function getModel($name = 'Artdload', $prefix = 'MAMSModel') 
+	public function getModel($name = 'Artdload', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

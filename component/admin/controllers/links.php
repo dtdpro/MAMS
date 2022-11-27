@@ -10,7 +10,7 @@ class MAMSControllerLinks extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_LINK";
 	
-	public function getModel($name = 'Link', $prefix = 'MAMSModel') 
+	public function getModel($name = 'Link', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

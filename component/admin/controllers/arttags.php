@@ -10,7 +10,7 @@ class MAMSControllerArttags extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_ARTTAG";
 	
-	public function getModel($name = 'Arttag', $prefix = 'MAMSModel')
+	public function getModel($name = 'Arttag', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

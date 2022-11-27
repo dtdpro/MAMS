@@ -10,7 +10,7 @@ class MAMSControllerCats extends JControllerAdmin
 
 	protected $text_prefix = "COM_MAMS_CAT";
 	
-	public function getModel($name = 'Cat', $prefix = 'MAMSModel') 
+	public function getModel($name = 'Cat', $prefix = 'MAMSModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
