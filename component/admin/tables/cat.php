@@ -64,7 +64,7 @@ class MAMSTableCat extends JTable
 		if (empty($this->cat_alias)) {
 			$this->cat_alias = $this->cat_title;
 		}
-		$this->cat_alias = JApplication::stringURLSafe($this->cat_alias);
+		$this->cat_alias = JApplicationHelper::stringURLSafe($this->cat_alias);
 		if (trim(str_replace('-','',$this->cat_alias)) == '') {
 			$this->cat_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}

@@ -19,6 +19,7 @@ if ($this->autlist) {
                     echo '<div class="mams-author-authsec-title">'.$s->sec_name.'</div>';
                 }
 				echo '<div class="mams-author-authsec-auths">';
+				$i=0;
                 foreach ($s->authors as $f) {
                     echo '<div class="mams-author-authitem';
                     if ($i==1) {
@@ -34,7 +35,7 @@ if ($this->autlist) {
                         echo ' /></div>';
                     }
                     echo '<div class="mams-author-authinfo"><div class="mams-author-authname">';
-                    if ($this->params->get("show_authlink",1)) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec.":".$f->sec_alias."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-article-autlink">';
+                    if ($this->params->get("show_authlink",1)) echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-article-autlink">';
                     echo $f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "");
                     if ($this->params->get("show_authlink",1)) echo '</a>';
                     echo '</div>';
@@ -48,7 +49,7 @@ if ($this->autlist) {
                     //Read More
                     if ($this->params->get('show_readmore',1)) {
                         echo '<div class="mams-author-authreadmore">';
-                        echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec.":".$f->sec_alias."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-author-authlink read-more uk-button">';
+                        echo '<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-author-authlink read-more uk-button">';
                         echo $this->params->get('readmore_text',"Read More");
                         echo '</a>';
                         echo '</div>';

@@ -1,6 +1,10 @@
 <?php
 defined('_JEXEC') or die();
 
+use Joomla\Event\Event;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
+
 jimport( 'joomla.application.component.view');
 
 class MAMSViewArtList extends JViewLegacy
@@ -72,20 +76,36 @@ class MAMSViewArtList extends JViewLegacy
 		
 		if ($this->error) return false;
 		
-		// Pre Headr and Footer text
-		$dispatcher	= JDispatcher::getInstance();
-		JPluginHelper::importPlugin('content');
-		if ($this->params->get("extras_header","")) {
-			$this->headerContent = $this->params->get("extras_header");
-			$headerContent = (object) array("text" => $this->headerContent);
-			$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$headerContent, &$this->params, 0));
-			$this->headerContent = $headerContent->text;
-		}
-		if ($this->params->get("extras_footer","")) {
-			$this->footerContent = $this->params->get("extras_footer");
-			$footerContent = (object) array("text" => $this->footerContent);
-			$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$headerContent, &$this->params, 0));
-			$this->footerContent = $footerContent->text;
+		// Pre Header and Footer text
+		if (JVersion::MAJOR_VERSION == 3)  {
+			$dispatcher	= JDispatcher::getInstance();
+			JPluginHelper::importPlugin('content');
+			if ($this->params->get("extras_header","")) {
+				$this->headerContent = $this->params->get("extras_header");
+				$headerContent = (object) array("text" => $this->headerContent);
+				$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$headerContent, &$this->params, 0));
+				$this->headerContent = $headerContent->text;
+			}
+			if ($this->params->get("extras_footer","")) {
+				$this->footerContent = $this->params->get("extras_footer");
+				$footerContent = (object) array("text" => $this->footerContent);
+				$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$headerContent, &$this->params, 0));
+				$this->footerContent = $footerContent->text;
+			}
+		} else {
+			PluginHelper::importPlugin('content');
+			if ($this->params->get("extras_header","")) {
+				$this->headerContent = $this->params->get("extras_header");
+				$headerContent = (object) array("text" => $this->headerContent);
+				$this->dispatchEvent(new Event('onContentPrepare', array ('com_mams.article', &$headerContent, &$this->params, 0)));
+				$this->headerContent = $headerContent->text;
+			}
+			if ($this->params->get("extras_footer","")) {
+				$this->footerContent = $this->params->get("extras_footer");
+				$footerContent = (object) array("text" => $this->footerContent);
+				$this->dispatchEvent(new Event('onContentPrepare', array ('com_mams.article', &$headerContent, &$this->params, 0)));
+				$this->footerContent = $footerContent->text;
+			}
 		}
 
 		$this->_prepareTitle();
@@ -116,9 +136,10 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listSecByCat() {
 		$model = $this->getModel();
 		$sec=$this->getSecs();
+		$app = JFactory::getApplication();
 		if (!$sec) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		$this->secinfo=$model->getSecInfo($sec);
@@ -138,11 +159,12 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listCatSec() {
 		$model = $this->getModel();
 		$sec=$this->getSecs();
+		$app = JFactory::getApplication();
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
 		$cat=$this->getCats();
 		if (!$cat) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		$this->catinfo=$model->getCatInfo($cat);
@@ -157,11 +179,12 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listTagSec() {
 		$model = $this->getModel();
 		$sec=$this->getSecs();
+		$app = JFactory::getApplication();
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
 		$tag=$this->getTags();
 		if (!$tag) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		$this->taginfo=$model->getTagInfo($tag);
@@ -176,11 +199,12 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listTagCat() {
 		$model = $this->getModel();
 		$cat=$this->getCats();
+		$app = JFactory::getApplication();
 		if (count($cat)) $this->catinfo=$model->getCatInfo($cat);
 		$tag=$this->getTags();
 		if (!$tag) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		$this->taginfo=$model->getTagInfo($tag);
@@ -196,9 +220,10 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listCategory() {
 		$model = $this->getModel();
 		$cat=$this->getCats();
+		$app = JFactory::getApplication();
 		if (!$cat) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		$this->catinfo=$model->getCatInfo($cat);
@@ -216,9 +241,10 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listTag() {
 		$model = $this->getModel();
 		$tag=$this->getTags();
+		$app = JFactory::getApplication();
 		if (!$tag) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		$this->taginfo=$model->getTagInfo($tag);
@@ -242,9 +268,10 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listSection() {
 		$model = $this->getModel();
 		$sec=$this->getSecs();
+		$app = JFactory::getApplication();
 		if (!$sec) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		$this->secinfo=$model->getSecInfo($sec);
@@ -260,16 +287,17 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listAuthor() {
 		$model = $this->getModel();
 		$sec=$this->getSecs();
+		$app = JFactory::getApplication();
 		if (!$sec) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
 		$aut=$this->getAuts();
 		if (!$aut) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		$this->autinfo=$model->getAutInfo($aut);
@@ -286,8 +314,8 @@ class MAMSViewArtList extends JViewLegacy
 		$input = $app->input;
 		$artid=$input->get('artid',0,'INT');
 		if (!$artid) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
-			$this->error=true;
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
 		$this->authors = $model->getArticlesAuthoredAuthors($artid);

@@ -2,6 +2,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
 
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
@@ -25,8 +26,8 @@ class MAMSControllerFields extends JControllerAdmin
 		$order = $this->input->post->get('order', array(), 'array');
 	
 		// Sanitize the input
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
+		ArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($order);
 	
 		// Get the model
 		$model = $this->getModel();

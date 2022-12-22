@@ -13,17 +13,22 @@ class MAMSViewSecs extends JViewLegacy
 	
 	function display($tpl = null) 
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		$this->state		= $this->get('State');
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+
 
 		// Preprocess the list of items to find ordering divisions.
 		foreach ($this->items as &$item)
 		{
 			$this->ordering[$item->parent_id][] = $item->sec_id;
 		}
-		
-		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
+
+		if (JVersion::MAJOR_VERSION == 3)  MAMSHelper::addSubmenu($jinput->getVar('view'),$jinput->getVar('extension', 'com_mams'));
 		
 		if (count($errors = $this->get('Errors'))) 
 		{
@@ -53,7 +58,7 @@ class MAMSViewSecs extends JViewLegacy
 			JToolBarHelper::custom('secs.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
 			JToolBarHelper::custom('secs.unpublish', 'unpublish.png', 'unpublish_f2.png','JTOOLBAR_UNPUBLISH', true);
 		}
-		if ($state->get('filter.state') == -2 && $canDo->get('core.delete')) {
+		if ($state->get('filter.published') == -2 && $canDo->get('core.delete')) {
 			JToolBarHelper::deleteList('', 'secs.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		} else if ($canDo->get('core.edit.state')) {
@@ -63,28 +68,5 @@ class MAMSViewSecs extends JViewLegacy
 		{
 			JToolbarHelper::custom('secs.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
 		}
-
-		$typesl[1] = JHTML::_('select.option',  'article','Article');
-		$typesl[2] = JHTML::_('select.option',  'author','Authors');
-		
-		JHtmlSidebar::setAction('index.php?option=com_mams&view=secs');
-		
-		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
-		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_ACCESS'),'filter_access',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')));
-		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_TYPE'),'filter_type',JHtml::_('select.options', $typesl, 'value', 'text', $this->state->get('filter.type')));
-	}
-	
-	protected function getSortFields()
-	{
-		return array(
-				's.lft' => JText::_('JGRID_HEADING_ORDERING'),
-				's.published' => JText::_('JSTATUS'),
-				's.sec_id' => JText::_('JGRID_HEADING_ID'),
-				's.sec_type' => JText::_('COM_MAMS_SEC_HEADING_TYPE'),
-				's.sec_name' => JText::_('COM_MAMS_SEC_HEADING_NAME'),
-				's.access' => JText::_('JGRID_HEADING_ACCESS'),
-				's.sec_added' => JText::_('COM_MAMS_SEC_ADDED'),
-				's.sec_modified' => JText::_('COM_MAMS_SEC_MODIFIED')
-		);
 	}
 }

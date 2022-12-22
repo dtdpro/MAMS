@@ -17,7 +17,7 @@ class MAMSModelDloads extends JModelList
 				'dl_fname', 'd.dl_fname',
 				'dl_id', 'd.dl_id',
 				'published', 'd.published',
-				'access', 'd.access',
+				'access', 'd.access','state'
 			);
 		}
 		parent::__construct($config);
@@ -48,45 +48,7 @@ class MAMSModelDloads extends JModelList
 		parent::populateState('d.dl_fname', 'asc');
 	}
 
-	public function getItems()
-	{
-		// Get a storage key.
-		$store = $this->getStoreId();
-		// Try to load the data from internal storage.
-		if (isset($this->cache[$store]))
-		{
-			return $this->cache[$store];
-		}
-		// Load the list items.
-		$query = $this->_getListQuery();
-		try
-		{
-			$items = $this->_getList($query, $this->getStart(), $this->getState('list.limit'));
-		}
-		catch (RuntimeException $e)
-		{
-			$this->setError($e->getMessage());
-			return false;
-		}
-		/*
-		foreach ($items as &$item) {
-
-			// Hits
-			$query = $this->_db->getQuery(true);
-			$query->select('mt_item');
-			$query->from('#__mams_track');
-			$query->where('mt_type = "dload"');
-			$query->where('mt_item = '.$item->dl_id);
-			$this->_db->setQuery($query);
-			$item->dl_hits = count($this->_db->loadColumn());
-		}
-		*/
-		// Add the items to the internal cache.
-		$this->cache[$store] = $items;
-		return $this->cache[$store];
-	}
-
-	protected function getListQuery() 
+	protected function getListQuery()
 	{
 		// Create a new query object.
 		$db = JFactory::getDBO();

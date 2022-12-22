@@ -23,6 +23,7 @@ class MAMSModelTags extends JModelList
 				'rgt', 'c.rgt',
 				'level', 'c.level',
 				'path', 'c.path',
+				'state'
 			);
 		}
 		parent::__construct($config);

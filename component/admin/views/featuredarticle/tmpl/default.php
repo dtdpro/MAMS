@@ -3,18 +3,25 @@
 // no direct access
 defined('_JEXEC') or die;
 
+if (JVersion::MAJOR_VERSION == 3) JHtml::_('bootstrap.tooltip');
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Layout\LayoutHelper;
+
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $saveOrder = ($listOrder == 'f.ordering');
 if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option=com_mams&task=featuredarticle.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'MAMSFeaturedArticleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	if (JVersion::MAJOR_VERSION == 3) {
+		$saveOrderingUrl = 'index.php?option=com_mams&task=featuredarticle.saveOrderAjax&tmpl=component';
+		JHtml::_('sortablelist.sortable', 'MAMSFeaturedArticleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	} else {
+		$saveOrderingUrl = 'index.php?option=com_mams&task=featuredarticle.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+		HTMLHelper::_('draggablelist.draggable');
+	}
 }
 $sortFields = $this->getSortFields();
 
@@ -45,27 +52,10 @@ $sortFields = $this->getSortFields();
 <?php else : ?>
 	<div id="j-main-container">
 <?php endif;?>
-	<div id="filter-bar" class="btn-toolbar">
-		<div class="btn-group pull-right hidden-phone">
-			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
-		<div class="btn-group pull-right hidden-phone">
-			<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC');?></label>
-			<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
-				<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC');?></option>
-				<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING');?></option>
-				<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');?></option>
-			</select>
-		</div>
-		<div class="btn-group pull-right">
-			<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY');?></label>
-			<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
-				<option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
-				<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder);?>
-			</select>
-		</div>
-	</div>
+    <?php
+    // Search tools bar
+    echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+    ?>
 	
 	<div class="clearfix"> </div>
 	
@@ -93,14 +83,14 @@ $sortFields = $this->getSortFields();
 				</td>
 			</tr>
 		</tfoot>
-		<tbody>
+        <tbody <?php if (JVersion::MAJOR_VERSION == 4) { ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php } ?>>
 		<?php
 		foreach ($this->items as $i => $item) :
 			$item->max_ordering = 0; //??
 			$ordering	= ($listOrder == 'f.ordering');
 			
 			?>
-			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="featmedia">
+            <tr class="row<?php echo $i % 2; ?>" <?php if (JVersion::MAJOR_VERSION == 3) { ?>sortable-group-id="featmedia" <?php } else { ?>data-draggable-group="featmedia"<?php } ?>>
 				<td class="order nowrap center hidden-phone">
 					<?php 
 					$disableClassName = '';

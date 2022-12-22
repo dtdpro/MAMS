@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.5.0</version>
+	<version>1.6.0</version>
 	<description>MOD_MAMSMOST_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamsmost">mod_mamsmost.php</filename>
@@ -22,7 +22,7 @@
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
+			<fieldset name="basic">
 				<field name="articles_byrow" class="btn-group" type="radio" description="MOD_MAMSMOST_FIELD_ARTICLES_BYROW_DESC" label="MOD_MAMSMOST_FIELD_ARTICLES_BYROW_LABEL" default="1">
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -42,7 +42,20 @@
                     <option value="180">180</option>
                     <option value="360">360</option>
                 </field>
-				<field name="exclude_cats" type="Cats" description="MOD_MAMSMOST_EXCLUDEDCATS_DESC" label="MOD_MAMSMOST_EXCLUDEDCATS_LABEL" required="false" multiple="true" />
+				<field
+						name="exclude_cats"
+						type="sql"
+						description="MOD_MAMSMOST_EXCLUDEDCATS_DESC"
+						label="MOD_MAMSMOST_EXCLUDEDCATS_LABEL"
+						required="false"
+						multiple="true"
+						sql_select="CONCAT(cat_id,':',cat_alias) AS value, cat_title AS text"
+						sql_from="#__mams_cats"
+						sql_order="cat_title ASC"
+						key_field="value"
+						value_field="text"
+						layout="joomla.form.field.list-fancy-select"
+				/>
 				<field name="article_seclock" type="radio" label="MOD_MAMSMOST_FIELD_SECLOCK_LABEL" description="MOD_MAMSMOST_FIELD_SECLOCK_DESC" class="btn-group" default="1">
 					<option value="0">No</option>
 					<option value="1">Yes</option>

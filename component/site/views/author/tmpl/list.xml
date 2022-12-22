@@ -5,7 +5,21 @@
 	</layout>
 	<fields name="request" addfieldpath="administrator/components/com_mams/models/fields">
 		<fieldset name="request">
-			<field name="secid" type="Secs" description="COM_MAMS_FIELD_SELECT_SEC_DESC" label="COM_MAMS_FIELD_SELECT_SEC_LABEL" required="false" multiple="true" mamssec="author" />
+			<field
+					name="secid"
+					type="sql"
+					description="COM_MAMS_FIELD_SELECT_SEC_DESC"
+					label="COM_MAMS_FIELD_SELECT_SEC_LABEL"
+					required="true"
+					multiple="true"
+					sql_select="CONCAT(sec_id,':',sec_alias) AS value, sec_name AS text"
+					sql_from="#__mams_secs"
+					sql_where="sec_type = 'author'"
+					sql_order="sec_name ASC"
+					key_field="value"
+					value_field="text"
+					layout="joomla.form.field.list-fancy-select"
+			/>
 		</fieldset>
 	</fields>
 	

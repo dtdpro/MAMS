@@ -61,6 +61,7 @@ if (isset($this->articles)) {
 		//Title
 		echo '<div class="mams-artlist-arttitle">';
 		echo '<a href="' . JRoute::_( $artlink ) . '" class="mams-artlist-artlink">' . $a->art_title . '</a>';
+
 		//Tags After
 		if ($this->params->get( 'show_tags', 1 ) && $this->params->get( 'show_tags_location', "above" ) == "after" && $a->tags) {
 			echo '<span class="mams-artlist-arttags">';
@@ -169,7 +170,7 @@ if (isset($this->articles)) {
 						continue;
 					}
 					$fn = $f->field_name;
-					if ( $a->art_fielddata->$fn || $f->data ) {
+					if ( $a->art_fielddata->$fn || property_exists($f,'data') ) {
 						if ( $f->group_name != $curgroup ) {
 							if ( ! $first ) {
 								echo '</div>';

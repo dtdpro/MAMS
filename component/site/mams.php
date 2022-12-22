@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once (JPATH_COMPONENT.'/controller.php');
 
 // Require specific controller if requested
-if($controller = JRequest::getVar('controller')) {
+if($controller = JFactory::getApplication()->input->get('controller')) {
 	require_once (JPATH_COMPONENT.'/controllers/'.$controller.'.php');
 }
 
@@ -37,7 +37,7 @@ $controller = new $classname( );
 JPluginHelper::importPlugin('mams');
 
 // Perform the Request task
-$controller->execute( JRequest::getVar('task'));
+$controller->execute( JFactory::getApplication()->input->get('task'));
 
 // Redirect if set by the controller
 $controller->redirect();

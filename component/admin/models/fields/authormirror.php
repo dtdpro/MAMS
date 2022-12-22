@@ -30,8 +30,8 @@ class JFormFieldAuthorMirror extends JFormField
 				' WHERE auth_mirror = 0' .
 				' ORDER BY auth_lname';
 		$db->setQuery($query);
-		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
-		$html[] = '<option value="">None</option>';
+		$html[] = '<select name="'.$this->name.'" '.$attr.'>';
+		$html[] = '<option value="0">None</option>';
 		$html[] = JHtml::_('select.options',$db->loadObjectList(),"value","text",$this->value);
 		$html[] = '</select>';		
 

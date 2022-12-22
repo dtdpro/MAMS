@@ -1,10 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
-
-
 ?>
 <form action="" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
@@ -15,23 +10,30 @@ JHtml::_('formbehavior.chosen', 'select');
 <?php else : ?>
 	<div id="j-main-container">
 <?php endif;?>
-	<div id="filter-bar" class="btn-toolbar">
-		<div class="pull-left form-horizontal btn-group">
-			<label for="startdate" class="element-invisible">Start: </label>
-			<?php echo JHtml::_('calendar',$this->model->getState('startdate'),'startdate','startdate','%Y-%m-%d','onchange="this.form.submit()"'); ?>
-		</div>
-		<div class="pull-left form-horizontal btn-group">
-			<label> to </label>
-		</div>
-		<div class="pull-left form-horizontal btn-group">
-			<label for="enddate" class="element-invisible">End: </label>
-			<?php echo JHtml::_('calendar',$this->model->getState('enddate'),'enddate','enddate','%Y-%m-%d','onchange="this.form.submit()"'); ?>
-		</div>
-		<div class="btn-group pull-right hidden-phone">
-			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
-	</div>
+
+
+
+        <div class="js-stools" role="search">
+            <div class="js-stools-container-bar">
+                <div class="btn-toolbar row row-fluid" style="padding-bottom:10px;">
+                    <div class="btn-group col-md-3 span3">
+                        <label for="startdate" class="element-invisible">Type: </label>
+		                <?php echo JHtml::_('select.genericlist', $this->typesl, 'filter_type',['class'=>"inputbox form-select",'onchange'=>"this.form.submit();"],'value', 'text', $this->model->getState('filter_type')); ?>
+                    </div>
+
+                    <div class="btn-group col-md-8 span8 text-center">
+		                <?php echo JHtml::_('calendar',$this->model->getState('startdate'),'startdate','startdate','%Y-%m-%d',['onChange'=>'this.form.submit()']); ?>
+                        <label>&nbsp;to&nbsp;</label>
+	                    <?php echo JHtml::_('calendar',$this->model->getState('enddate'),'enddate','enddate','%Y-%m-%d',['onChange'=>'this.form.submit()']); ?>
+                    </div>
+                    <div class="btn-group pull-right hidden-phone col-md-1 span1 text-right">
+                        <label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+		                <?php echo $this->pagination->getLimitBox(); ?>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 	
 	<div class="clearfix"> </div>
 

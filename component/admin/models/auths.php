@@ -18,6 +18,7 @@ class MAMSModelAuths extends JModelList
 				'auth_lname', 'a.auth_lname',
 				'auth_sec', 'a.auth_sec',
 				'ordering', 'a.ordering',
+				'state','access','sec'
 			);
 		}
 		parent::__construct($config);
@@ -69,9 +70,9 @@ class MAMSModelAuths extends JModelList
 		$query->join('LEFT', '#__mams_secs AS s ON s.sec_id = a.auth_sec');
 		
 		// Filter by section.
-		if ($sec = $this->getState('filter.sec')) {
+		/*if ($sec = $this->getState('filter.sec')) {
 			$query->where('a.auth_sec = '.(int) $sec);
-		}
+		}*/
 		
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {

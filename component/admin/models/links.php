@@ -18,7 +18,7 @@ class MAMSModelLinks extends JModelList
 				'link_id', 'l.link_id',
 				'link_url', 'l.link_url',
 				'published', 'l.published',
-				'access', 'l.access',
+				'access', 'l.access', 'state'
 			);
 		}
 		parent::__construct($config);

@@ -5,6 +5,9 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
 
+
+use Joomla\Utilities\ArrayHelper;
+
 class MAMSControllerCats extends JControllerAdmin
 {
 
@@ -36,7 +39,7 @@ class MAMSControllerCats extends JControllerAdmin
 				
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($ids);
+			ArrayHelper::toInteger($ids);
 				
 			// Remove the items.
 			if ($model->featured($ids,1))
@@ -72,7 +75,7 @@ class MAMSControllerCats extends JControllerAdmin
 	
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($ids);
+			ArrayHelper::toInteger($ids);
 	
 			// Remove the items.
 			if ($model->featured($ids,0))

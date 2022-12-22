@@ -4,9 +4,22 @@
 		<message>Tag Article List</message>
 	</layout>
 	<!-- Add fields to the request variables for the layout. -->
-	<fields name="request" addfieldpath="administrator/components/com_mams/models/fields">
+	<fields name="request">
 		<fieldset name="request">
-AG			<field name="tagid" type="Tags" description="COM_MAMS_FIELD_SELECT_TAG_DESC" label="COM_MAMS_FIELD_SELECT_TAG_LABEL" required="true" multiple="true" />
+			<field
+					name="tagid"
+					type="sql"
+					description="COM_MAMS_FIELD_SELECT_TAG_DESC"
+					label="COM_MAMS_FIELD_SELECT_TAG_LABEL"
+					required="true"
+					multiple="true"
+					sql_select="CONCAT(tag_id,':',tag_alias) AS value, tag_title AS text"
+					sql_from="#__mams_tags"
+					sql_order="tag_title ASC"
+					key_field="value"
+					value_field="text"
+					layout="joomla.form.field.list-fancy-select"
+			/>
 		</fieldset>
 	</fields>
 	<fields name="params">

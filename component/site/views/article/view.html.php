@@ -1,6 +1,10 @@
 <?php
 defined('_JEXEC') or die();
 
+use Joomla\Event\Event;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
+
 jimport( 'joomla.application.component.view');
 
 class MAMSViewArticle extends JViewLegacy
@@ -16,14 +20,13 @@ class MAMSViewArticle extends JViewLegacy
 		$cfg = MAMSHelper::getConfig();
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
-		$dispatcher	= JDispatcher::getInstance();
-		
+		if (JVersion::MAJOR_VERSION == 3)  $dispatcher	= JDispatcher::getInstance();
 
-		
 		$model = $this->getModel();
 		$art=$app->input->getInt('artid',0);
 		if (!$art) {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		} else {
 			$this->article=$model->getArticle($art);
@@ -69,79 +72,53 @@ class MAMSViewArticle extends JViewLegacy
 			foreach ($mdata as $k => $v) {
 				if ($v)	$this->document->setMetadata($k, $v);
 			}
-			
-			
+
+			// get return url
+			$this->returnUrl = base64_encode(Uri::getInstance());
+
 			if (in_array($this->article->access,$user->getAuthorisedViewLevels())) {
 				$this->_prepareTitle();
 				$this->article->track_id = MAMSHelper::trackViewed($art,'article');
 				if ($this->params->get('show_related',1)) {
 					$this->related=$model->getRelated($this->article,$this->article->cats,$this->article->auts,$this->article->sec_id);
 				}
-				//run plugins
-				$results = $dispatcher->trigger('onMAMSPrepare', array(&$this->article->art_content));
+				// run mams plugins
+				if (JVersion::MAJOR_VERSION == 3) $results = $dispatcher->trigger('onMAMSPrepare', array(&$this->article->art_content));
+				else $this->dispatchEvent(new Event('onMAMSPrepare', array(&$this->article->art_content)));
 
-				JPluginHelper::importPlugin('content');
+				// run content plugins
 				$page_content = (object) array("text" => $this->article->art_content);
-				$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$page_content, &$this->article->params, 0));
+				if (JVersion::MAJOR_VERSION == 3) {
+					JPluginHelper::importPlugin('content');
+					$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$page_content, &$this->article->params, 0));
+				}
+				else {
+					PluginHelper::importPlugin('content');
+					$this->dispatchEvent(new Event('onContentPrepare', array ('com_mams.article', &$page_content, &$this->article->params, 0)));
+				}
+
+				// put processed content back
 				$this->article->art_content = $page_content->text;
 
 				parent::display($tpl);
 			} else {
-				$urlnc = $this->getReturnURL();
 				if ($user->id) {
 					$sec = $model->getArticleSec($art);
 					$url = JRoute::_('index.php?option=com_mams&view=artlist&secid='.$sec);
 					$msg = $cfg->noaccessmsg;
 				}
 				else {
-					$url = JRoute::_('index.php?option=com_users&view=login&return='.$urlnc);
+					$url = JRoute::_('index.php?option=com_users&view=login&return='.$this->returnUrl);
 					$msg = $cfg->loginmsg;
 				}
-				$app->redirect($url,$msg);
+				$app->enqueueMessage($msg, 'message');
+				$app->redirect($url);
 			}
 		} else {
-			JError::raiseError(404, JText::_('COM_MAMS_ARTICLE_NOT_FOUND'));
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
 			return false;
 		}
-	}
-	
-	static function getReturnURL()
-	{
-		$app	= JFactory::getApplication();
-		$router = $app->getRouter();
-		$url = null;
-		
-		// stay on the same page
-		$uri = clone JFactory::getURI();
-		$vars = $router->parse($uri);
-		unset($vars['lang']);
-		if ($router->getMode() == JROUTER_MODE_SEF)
-		{
-			if (isset($vars['Itemid']))
-			{
-				$itemid = $vars['Itemid'];
-				$menu = $app->getMenu();
-				$item = $menu->getItem($itemid);
-				unset($vars['Itemid']);
-				if (isset($item) && $vars == $item->query) {
-					$url = 'index.php?Itemid='.$itemid;
-				}
-				else {
-					$url = 'index.php?'.JURI::buildQuery($vars).'&Itemid='.$itemid;
-				}
-			}
-			else
-			{
-				$url = 'index.php?'.JURI::buildQuery($vars);
-			}
-		}
-		else
-		{
-			$url = 'index.php?'.JURI::buildQuery($vars);
-		}
-		
-	
-		return base64_encode($url);
 	}
 
 	protected function _prepareTitle()

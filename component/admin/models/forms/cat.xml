@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="details">
-		<field
-			name="cat_id"
-			type="text"
-			class="readonly" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description ="JGLOBAL_FIELD_ID_DESC"
-			readonly="true"
-		/>
+	<fieldset name="options">
 		<field name="parent_id" type="CatParent" class="inputbox" label="COM_MAMS_CAT_FIELD_PARENT_LABEL" description="COM_MAMS_CAT_FIELD_PARENT_DESC" required="false" />
 		<field
 			name="published"
@@ -34,6 +26,32 @@
 			description="JFIELD_ACCESS_DESC"
 			default="1"
 			filter="integer"/>
+		<field name="cat_featured" type="radio" label="COM_MAMS_CAT_FIELD_FEAT_LABEL" description="COM_MAMS_CAT_FIELD_FEAT_DESC" class="btn-group" default="0">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field
+				name="cat_feataccess"
+				type="accesslevel"
+				id="cat_feataccess"
+				class="inputbox"
+				label="COM_MAMS_CAT_FIELD_FEATACCESS_LABEL"
+				description="COM_MAMS_CAT_FIELD_FEATACCESS_DESC"
+				default="1"
+				multiple="true"
+				layout="joomla.form.field.list-fancy-select"
+		/>
+		<field
+				name="cat_id"
+				type="text"
+				class="readonly"
+				label="JGLOBAL_FIELD_ID_LABEL"
+				description ="JGLOBAL_FIELD_ID_DESC"
+				readonly="true"
+		/>
+	</fieldset>
+
+	<fieldset name="details">
 		<field
 			name="cat_title"
 			type="text"
@@ -69,20 +87,6 @@
 			type="media"
 			label="COM_MAMS_CAT_FIELD_IMAGE_LABEL"
 			description="COM_MAMS_CAT_FIELD_IMAGE_DESC"
-		/>
-		<field name="cat_featured" type="radio" label="COM_MAMS_CAT_FIELD_FEAT_LABEL" description="COM_MAMS_CAT_FIELD_FEAT_DESC" class="btn-group" default="0">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
-		<field
-			name="cat_feataccess"
-			type="AccessLevelMulti"
-			id="cat_feataccess"
-			class="inputbox"
-			label="COM_MAMS_CAT_FIELD_FEATACCESS_LABEL"
-			description="COM_MAMS_CAT_FIELD_FEATACCESS_DESC"
-			default="1"
-			multiple="true"
 		/>
 		<field
 				name="lft"

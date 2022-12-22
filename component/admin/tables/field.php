@@ -47,7 +47,7 @@ class MAMSTableField extends JTable
 		if (empty($this->field_name)) {
 			$this->field_name = $this->field_title;
 		}
-		$this->field_name = JApplication::stringURLSafe($this->field_name);
+		$this->field_name = JApplicationHelper::stringURLSafe($this->field_name);
 		if (trim(str_replace('-','',$this->field_name)) == '') {
 			$this->field_name = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}

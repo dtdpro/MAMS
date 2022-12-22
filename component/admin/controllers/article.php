@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
+
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
 
@@ -9,10 +11,10 @@ class MAMSControllerArticle extends JControllerForm
 {
 	protected $text_prefix = "COM_MAMS_ARTICLE";
 	
-	protected function allowAdd($data = array())
+	/*protected function allowAdd($data = array())
 	{
 		$user = JFactory::getUser();
-		$secId = JArrayHelper::getValue($data, 'art_sec', $this->input->getInt('filter_sec'), 'int');
+		$secId = ArrayHelper::getValue($data, 'art_sec', $this->input->getInt('filter_sec'), 'int');
 		$allow = null;
 	
 		if ($secId)
@@ -74,7 +76,7 @@ class MAMSControllerArticle extends JControllerForm
 	
 		// Since there is no asset tracking, revert to the component permissions.
 		return parent::allowEdit($data, $key);
-	}
+	}*/
 	
 	public function batch($model = null)
 	{

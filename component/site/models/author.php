@@ -111,8 +111,8 @@ class MAMSModelAuthor extends JModelLegacy
 			$registryf = new JRegistry;
 			$registryf->loadString($af->params);
 			$af->params = $registryf->toObject();
-
-			if (!$af->params->auth_page_title) $af->params->auth_page_title = "Authored Items";
+			$afParamns = $af->params;
+			if (!property_exists($afParamns,'auth_page_title')) $af->params->auth_page_title = "Authored Items";
 		}
 
 		return $author_fields;

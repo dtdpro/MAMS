@@ -64,7 +64,7 @@ class MAMSTableTag extends JTable
 		if (empty($this->tag_alias)) {
 			$this->tag_alias = $this->tag_title;
 		}
-		$this->tag_alias = JApplication::stringURLSafe($this->tag_alias);
+		$this->tag_alias = JApplicationHelper::stringURLSafe($this->tag_alias);
 		if (trim(str_replace('-','',$this->tag_alias)) == '') {
 			$this->tag_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}

@@ -1,9 +1,9 @@
 <?php
-
 defined('_JEXEC') or die;
 
-require_once dirname(__FILE__).'/articles.php';
+use Joomla\Utilities\ArrayHelper;
 
+require_once dirname(__FILE__).'/articles.php';
 
 class MAMSControllerFeaturedarticle extends MAMSControllerArticles
 {
@@ -48,8 +48,8 @@ class MAMSControllerFeaturedarticle extends MAMSControllerArticles
 		$order = $this->input->post->get('order', array(), 'array');
 	
 		// Sanitize the input
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
+		ArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($order);
 	
 		// Get the model
 		$model = $this->getModel();

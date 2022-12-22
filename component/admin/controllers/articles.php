@@ -2,7 +2,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-
+use Joomla\Utilities\ArrayHelper;
 
 class MAMSControllerArticles extends JControllerAdmin
 {
@@ -46,7 +46,7 @@ class MAMSControllerArticles extends JControllerAdmin
 				
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($ids);
+			ArrayHelper::toInteger($ids);
 				
 			// Remove the items.
 			if ($model->featured($ids,1))
@@ -93,7 +93,7 @@ class MAMSControllerArticles extends JControllerAdmin
 	
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($ids);
+			ArrayHelper::toInteger($ids);
 	
 			// Remove the items.
 			if ($model->featured($ids,0))
@@ -116,8 +116,8 @@ class MAMSControllerArticles extends JControllerAdmin
 		$order = $this->input->post->get('order', array(), 'array');
 	
 		// Sanitize the input
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
+		ArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($order);
 	
 		// Get the model
 		$model = $this->getModel();

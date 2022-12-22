@@ -13,6 +13,8 @@ class MAMSControllerMedia extends JControllerForm
 	
 	public function __construct($config = array())
 	{
+		$this->view_list = "medias";
+
 		parent::__construct($config);
 	
 		// Guess the JText message prefix. Defaults to the option.
@@ -21,7 +23,7 @@ class MAMSControllerMedia extends JControllerForm
 			$this->extension = JFactory::getApplication()->input->get('extension', 'com_mams');
 		}
 	}
-	
+
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'med_id')
 	{
 		$append = parent::getRedirectToItemAppend($recordId,$urlVar);

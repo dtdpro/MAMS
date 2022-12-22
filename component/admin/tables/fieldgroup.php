@@ -46,7 +46,7 @@ class MAMSTableFieldgroup extends JTable
 		if (empty($this->group_name)) {
 			$this->group_name = $this->group_title;
 		}
-		$this->group_name = JApplication::stringURLSafe($this->group_name);
+		$this->group_name = JApplicationHelper::stringURLSafe($this->group_name);
 		if (trim(str_replace('-','',$this->group_name)) == '') {
 			$this->group_name = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}

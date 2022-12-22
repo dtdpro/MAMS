@@ -13,23 +13,26 @@ class MAMSViewTags extends JViewLegacy
 	
 	function display($tpl = null) 
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		$this->state		= $this->get('State');
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
-		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
-		
-		if (count($errors = $this->get('Errors'))) 
+		if (JVersion::MAJOR_VERSION == 3)  MAMSHelper::addSubmenu($jinput->getVar('view'),$jinput->getVar('extension', 'com_mams'));
+
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		
+
 		$this->addToolBar();
 		$this->sidebar = JHtmlSidebar::render();
 
 		parent::display($tpl);
-
 	}
 
 	protected function addToolBar() 
@@ -54,7 +57,6 @@ class MAMSViewTags extends JViewLegacy
 		}
 		
 		//Batch Button
-		JHtml::_('bootstrap.modal', 'collapseModal');
 		$title = JText::_('JTOOLBAR_BATCH');
 		
 		// Instantiate a new JLayoutFile instance and render the batch button
@@ -62,11 +64,6 @@ class MAMSViewTags extends JViewLegacy
 		
 		$dhtml = $layout->render(array('title' => $title));
 		$bar->appendButton('Custom', $dhtml, 'batch');
-		
-		JHtmlSidebar::setAction('index.php?option=com_mams&view=tags');
-		
-		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
-		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_ACCESS'),'filter_access',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')));
 	}
 	
 	protected function getSortFields()

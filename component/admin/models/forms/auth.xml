@@ -2,14 +2,6 @@
 <form>
 	<fieldset name="details">
 		<field
-			name="auth_id"
-			type="text"
-			class="readonly" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description ="JGLOBAL_FIELD_ID_DESC"
-			readonly="true"
-		/>
-		<field
 			name="published"
 			type="list"
 			id="published"
@@ -36,7 +28,7 @@
 		<field
 			name="ordering"
 			type="OrderAuthor"
-			class="inputbox"
+			class="inputbox form-select"
 			label="JFIELD_ORDERING_LABEL"
 			description="JFIELD_ORDERING_DESC"
 		/>
@@ -48,13 +40,6 @@
 			description="COM_MAMS_AUTH_FIELD_SEC_DESC"
 		/>
 		<field
-			name="auth_mirror"
-			type="AuthorMirror"
-			class="inputbox"
-			label="COM_MAMS_AUTH_FIELD_MIRROR_LABEL"
-			description="COM_MAMS_AUTH_FIELD_MIRROR_DESC"
-		/>
-		<field
 			name="auth_alias"
 			type="text"
 			label="COM_MAMS_AUTH_FIELD_ALIAS_LABEL"
@@ -63,7 +48,15 @@
 			class="inputbox"
 			default=""
 		/>
-		<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true"></field>
+		<field name="tags" type="tag" label="JTAG" multiple="true" />
+		<field
+				name="auth_id"
+				type="text"
+				class="readonly"
+				label="JGLOBAL_FIELD_ID_LABEL"
+				description ="JGLOBAL_FIELD_ID_DESC"
+				readonly="true"
+		/>
 	</fieldset>
 	<fieldset name="nameinfo">
 		<field
@@ -108,14 +101,6 @@
 			default=""
 		/>
 		<field
-			name="auth_name"
-			type="text"
-			class="readonly" 
-			label="COM_MAMS_AUTH_FIELD_NAME_LABEL"
-			description ="COM_MAMS_AUTH_FIELD_NAME_DESC"
-			readonly="true"
-		/>
-		<field
 			name="auth_credentials"
 			type="textarea"
 			label="COM_MAMS_AUTH_FIELD_DESC_LABEL"
@@ -132,6 +117,23 @@
 			label="COM_MAMS_AUTH_FIELD_IMAGE_LABEL"
 			description="COM_MAMS_AUTH_FIELD_IMAGE_DESC"
 		/>
+	</fieldset>
+	<fieldset name="metadata">
+		<field
+				name="auth_name"
+				type="text"
+				class="readonly"
+				label="COM_MAMS_AUTH_FIELD_NAME_LABEL"
+				description ="COM_MAMS_AUTH_FIELD_NAME_DESC"
+				readonly="true"
+		/>
+		<field
+				name="auth_mirror"
+				type="AuthorMirror"
+				class="inputbox form-select"
+				label="COM_MAMS_AUTH_FIELD_MIRROR_LABEL"
+				description="COM_MAMS_AUTH_FIELD_MIRROR_DESC"
+		/>
 		<field
 				name="auth_exclude_search"
 				type="radio"
@@ -143,8 +145,6 @@
 			<option	value="1">Yes</option>
 			<option	value="0">No</option>
 		</field>
-	</fieldset>
-	<fieldset name="metadata">
 		<field 
 			name="metakey" 
 			type="textarea"
@@ -152,7 +152,8 @@
 			description="JFIELD_META_KEYWORDS_DESC"
 			class="inputbox" 
 			rows="3" 
-			cols="30" 
+			cols="30"
+			default=""
 		/>
 		<field 
 			name="metadesc" 
@@ -161,7 +162,8 @@
 			description="JFIELD_META_DESCRIPTION_DESC"
 			class="inputbox" 
 			rows="3" 
-			cols="30" 
+			cols="30"
+			default=""
 		/>
 	</fieldset>
 	<fieldset name="content">

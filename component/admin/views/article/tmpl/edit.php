@@ -1,205 +1,237 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+if (JVersion::MAJOR_VERSION == 3) JHtml::_('formbehavior.chosen', 'select');
 $params = $this->form->getFieldsets('params');
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'article.cancel' || document.formvalidator.isValid(document.id('mams-form'))) {
+		if (task == 'article.cancel' || document.formvalidator.isValid(document.getElementById('mams-form'))) {
 			Joomla.submitform(task, document.getElementById('mams-form'));
 		}
 	}
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&layout=edit&art_id='.(int) $this->item->art_id); ?>" method="post" name="adminForm" id="mams-form" class="form-validate">
-	<div class="row-fluid">
-		<div class="form-inline form-inline-header">
-			<div class="control-group ">
-				<div class="control-label"><?php echo $this->form->getLabel('art_title'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('art_title'); ?></div>
-			</div>
-		</div>
-		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_MAMS_ARTICLE_DETAILS')); ?>
-			
-		<div class="span10 form-horizontal">
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('art_sec'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('art_sec'); ?></div>
-			</div>
-			<div class="control-group">
-				<?php echo $this->form->getInput('art_content'); ?>
-			</div>
-			<div class="row-fluid">
-				<div class="span6">
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_thumb')?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_thumb');?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_desc')?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_desc');?></div>
-					</div>
-				</div>
-                <div class="span6">
-                    <div class="control-group">
-                        <div class="control-label"><?php echo $this->form->getLabel('cats'); ?></div>
-                        <div class="controls"><?php echo $this->form->getInput('cats'); ?></div>
+
+    <div class="<?php if (JVersion::MAJOR_VERSION == 3) { ?>form-inline form-inline-header <?php } ?>row row-fluid title-alias form-vertical mb-3">
+        <div class="col-md-12 span12">
+			<?php echo $this->form->renderField('art_title'); ?>
+        </div>
+    </div>
+
+    <?php if (JVersion::MAJOR_VERSION == 4) { ?><div class="form-horizontal main-card"><?php } ?>
+
+		<?php
+		if (JVersion::MAJOR_VERSION == 4) {
+			echo HTMLHelper::_('uitab.startTabSet', 'myTab', array( 'active' => 'details', 'recall' => true, 'breakpoint' => 768 ) );
+			echo HTMLHelper::_('uitab.addTab', 'myTab', 'general', Text::_('COM_MAMS_FIELDGROUP_DETAILS'));
+		} else {
+			echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general'));
+			echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_MAMS_FIELDGROUP_DETAILS', true));
+		}
+		?>
+
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+            <div class="span10 form-vertical col-md-10">
+                <?php echo $this->form->renderField('art_sec'); ?>
+                <?php echo $this->form->renderField('art_content'); ?>
+            </div>
+            <div class="span2 form-vertical col-md-2">
+	            <?php echo $this->form->renderField('state'); ?>
+	            <?php echo $this->form->renderField('access'); ?>
+	            <?php echo $this->form->renderField('version_note'); ?>
+	            <?php echo $this->form->renderField('art_thumb'); ?>
+	            <?php echo $this->form->renderField('art_desc'); ?>
+            </div>
+        </div>
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+            <div class="span12 col-md-12">
+                <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+                    <div class="span4 form-vertical col-md-4">
+	                    <?php echo $this->form->renderField('authors'); ?>
+                    </div>
+                    <div class="span4 form-vertical col-md-4">
+			            <?php echo $this->form->renderField('cats'); ?>
+                    </div>
+                    <div class="span4 form-vertical col-md-4">
+			            <?php echo $this->form->renderField('tags'); ?>
                     </div>
                 </div>
-			</div>
-		</div>
-		<div class="span2">
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('state'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('state'); ?></div>
             </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('access'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('access'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('version_note'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('version_note'); ?></div>
-            </div>
-			<?php if ($this->cfg->edit_tags) { ?>
-                <div class="control-group">
-                    <div class="control-label"><?php echo $this->form->getLabel('tags'); ?></div>
-                    <div class="controls"><?php echo $this->form->getInput('tags'); ?></div>
+        </div>
+
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+            <div class="span12 col-md-12">
+                <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+                    <div class="span3 form-vertical col-md-3">
+						<?php echo $this->form->renderField('medias'); ?>
+                    </div>
+                    <div class="span3 form-vertical col-md-3">
+	                    <?php echo $this->form->renderField('images'); ?>
+                    </div>
+                    <div class="span3 form-vertical col-md-3">
+	                    <?php echo $this->form->renderField('dloads'); ?>
+                    </div>
+                    <div class="span3 form-vertical col-md-3">
+	                    <?php echo $this->form->renderField('links'); ?>
+                    </div>
                 </div>
-			<?php } ?>
-			<?php if ($this->cfg->edit_auths) { ?>
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('authors'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('authors'); ?></div>
-			</div>
-			<?php } ?>
-		</div>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_MAMS_ARTICLE_PUBLISHING')); ?>
-			<div class="row-fluid">
-				<div class="span6 form-horizontal">
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('feataccess')?></div>
-						<div class="controls"><?php echo $this->form->getInput('feataccess');?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_alias')?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_alias');?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_id')?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_id');?></div>
-					</div>	
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_added_by'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_added_by'); ?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_added'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_added'); ?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_excluded'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_excluded'); ?></div>
-					</div>
-				</div>
-				
-				<div class="span6 form-horizontal">
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_publish_up')?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_publish_up');?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_publish_down')?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_publish_down');?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_modified_by'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_modified_by'); ?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_modified'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_modified'); ?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('version'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('version'); ?></div>
-					</div>
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('art_hits'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('art_hits'); ?></div>
-					</div>
-				</div>
-			</div>
-		<?php echo JHtml::_('bootstrap.endTab'); 
-		$fieldSets = $this->form->getFieldsets('params'); 
-		foreach ($fieldSets as $name => $fieldSet) : 
-			$paramstabs = 'params-' . $name; 
-			echo JHtml::_('bootstrap.addTab', 'myTab', $paramstabs, JText::_($fieldSet->label, true)); 
+            </div>
+        </div>
+
+		<?php
+		if (JVersion::MAJOR_VERSION == 4) {
+			echo HTMLHelper::_('uitab.endTab');
+			echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('COM_MAMS_ARTICLE_PUBLISHING'));
+		} else {
+			echo JHtml::_('bootstrap.endTab');
+			echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_MAMS_ARTICLE_PUBLISHING', true));
+		}
+		?>
+
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+            <div class="span6 form-horizontal col-md-6">
+                <?php echo $this->form->renderField('feataccess'); ?>
+                <?php echo $this->form->renderField('art_alias'); ?>
+                <?php echo $this->form->renderField('art_id'); ?>
+                <?php echo $this->form->renderField('art_added_by'); ?>
+                <?php echo $this->form->renderField('art_added'); ?>
+                <?php echo $this->form->renderField('art_excluded'); ?>
+            </div>
+
+            <div class="span6 form-horizontal col-md-6">
+                <?php echo $this->form->renderField('art_publish_up'); ?>
+                <?php echo $this->form->renderField('art_publish_down'); ?>
+                <?php echo $this->form->renderField('art_modified_by'); ?>
+                <?php echo $this->form->renderField('art_modified'); ?>
+                <?php echo $this->form->renderField('version'); ?>
+                <?php echo $this->form->renderField('art_hits'); ?>
+            </div>
+        </div>
+
+
+		<?php
+		if (JVersion::MAJOR_VERSION == 4) {
+			echo HTMLHelper::_('uitab.endTab');
+		} else {
+			echo JHtml::_('bootstrap.endTab');
+		}
+
+        // Parameters
+		$fieldSets = $this->form->getFieldsets('params');
+		foreach ($fieldSets as $name => $fieldSet) {
+			$paramstabs = 'params-' . $name;
+
+			if (JVersion::MAJOR_VERSION == 4) {
+				echo HTMLHelper::_('uitab.addTab', 'myTab', $paramstabs, Text::_($fieldSet->label, true));
+			} else {
+				echo JHtml::_('bootstrap.addTab', 'myTab', $paramstabs, JText::_($fieldSet->label, true));
+			}
+
 			$fieldSets = $this->form->getFieldsets('params');
-			foreach ($fieldSets as $name => $fieldSet) :
-				?>
-				<div class="tab-pane" id="params-<?php echo $name;?>">
-				<?php
-				if (isset($fieldSet->description) && trim($fieldSet->description)) :
-					echo '<p class="alert alert-info">'.$this->escape(JText::_($fieldSet->description)).'</p>';
-				endif;
-				?>
-				<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-					<div class="control-group">
-						<div class="control-label"><?php echo $field->label; ?></div>
-						<div class="controls"><?php echo $field->input; ?></div>
-					</div>
-				<?php endforeach; ?>
-				</div>
-			<?php endforeach;  
-			echo JHtml::_('bootstrap.endTab'); 
-		endforeach; 
-		
+			foreach ($fieldSets as $name => $fieldSet) {
+				if (isset($fieldSet->description) && trim($fieldSet->description)) {
+					echo '<p class="alert alert-info">' . $this->escape( JText::_( $fieldSet->description ) ) . '</p>';
+				}
+				foreach ($this->form->getFieldset($name) as $field) { ?>
+                    <div class="control-group">
+                        <div class="control-label"><?php echo $field->label; ?></div>
+                        <div class="controls"><?php echo $field->input; ?></div>
+                    </div>
+                <?php }
+
+            }
+
+
+			if (JVersion::MAJOR_VERSION == 4) {
+				echo HTMLHelper::_('uitab.endTab');
+			} else {
+				echo JHtml::_('bootstrap.endTab');
+			}
+		}
+
+		// Metadata
 		$fieldSets = $this->form->getFieldsets('metadata'); 
-		foreach ($fieldSets as $name => $fieldSet) : 
-			$metadatatabs = 'metadata-' . $name; 
-			echo JHtml::_('bootstrap.addTab', 'myTab', $metadatatabs, JText::_($fieldSet->label, true)); 
-			echo JLayoutHelper::render('joomla.edit.metadata', $this);
-			echo JHtml::_('bootstrap.endTab'); 
-		endforeach; 
-		
+		foreach ($fieldSets as $name => $fieldSet) {
+			$metadatatabs = 'metadata-' . $name;
 
+			if (JVersion::MAJOR_VERSION == 4) {
+				echo HTMLHelper::_('uitab.addTab', 'myTab', $metadatatabs, Text::_($fieldSet->label, true));
+			} else {
+				echo JHtml::_('bootstrap.addTab', 'myTab', $metadatatabs, JText::_($fieldSet->label, true));
+			}
 
-		if ($this->canDo->get('core.admin')) : ?>
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_MAMS_ARTICLE_RULES', true)); ?>
-					<?php echo $this->form->getInput('rules'); ?>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-		<?php endif; 
+			echo JLayoutHelper::render( 'joomla.edit.metadata', $this );
+
+			if (JVersion::MAJOR_VERSION == 4) {
+				echo HTMLHelper::_('uitab.endTab');
+			} else {
+				echo JHtml::_('bootstrap.endTab');
+			}
+		}
+
+		// Rules
+		if ($this->canDo->get('core.admin')) {
+			if (JVersion::MAJOR_VERSION == 4) {
+				echo HTMLHelper::_('uitab.addTab', 'myTab', 'permissions', Text::_('COM_MAMS_ARTICLE_RULES', true));
+			} else {
+				echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_MAMS_ARTICLE_RULES', true));
+			}
+
+            echo $this->form->getInput('rules');
+
+			if (JVersion::MAJOR_VERSION == 4) {
+				echo HTMLHelper::_('uitab.endTab');
+			} else {
+				echo JHtml::_('bootstrap.endTab');
+			}
+		}
 						
 		
 		//Aditional Fields
 		foreach ($this->addfields as $g) {
-			echo JHtml::_('bootstrap.addTab', 'myTab', $g->group_name,$g->group_title);
+			if (JVersion::MAJOR_VERSION == 4) {
+				echo HTMLHelper::_('uitab.addTab', 'myTab', $g->group_name, $g->group_title);
+			} else {
+				echo JHtml::_('bootstrap.addTab', 'myTab', $g->group_name, $g->group_title);
+			}
+
 			foreach($g->form->getFieldset($g->group_name) as $field): ?>
 				<div class="control-group">
 					<div class="control-label"><?php echo $field->label;?></div>
 					<div class="controls"><?php echo $field->input;?></div>
 				</div>
-			<?php endforeach; 
+			<?php endforeach;
 
-			echo JHtml::_('bootstrap.endTab');
+			if (JVersion::MAJOR_VERSION == 4) {
+				echo HTMLHelper::_('uitab.endTab');
+			} else {
+				echo JHtml::_('bootstrap.endTab');
+			}
 
 		}
-		echo JHtml::_('bootstrap.endTabSet'); 
-		
-		?>
-		</div>
 
-		<input type="hidden" name="task" value="article.edit" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+
+		if ( JVersion::MAJOR_VERSION == 4 ) {
+			echo HTMLHelper::_( 'uitab.endTabSet' );
+		} else {
+			echo JHtml::_( 'bootstrap.endTabSet' );
+		}
+
+
+		?>
+
+    <?php if (JVersion::MAJOR_VERSION == 4) { ?></div><?php } ?>
+
+    <input type="hidden" name="task" value="article.edit" />
+    <?php echo JHtml::_('form.token'); ?>
 
 </form>
 

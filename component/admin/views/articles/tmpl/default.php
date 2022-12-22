@@ -3,10 +3,17 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
 // load tooltip behavior
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
+if (JVersion::MAJOR_VERSION == 3) {
+    JHtml::_('bootstrap.tooltip');
+	JHtml::_('formbehavior.chosen', 'select');
+}
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Button\FeaturedButton;
+use Joomla\CMS\Button\PublishedButton;
+
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 $app	= JFactory::getApplication();
@@ -22,8 +29,13 @@ if ($this->state->get('filter.cat') || $this->state->get('filter.tag') || $this-
 }
 $published = $this->state->get('filter.published');
 if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option=com_mams&task=articles.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'MAMSArtList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	if (JVersion::MAJOR_VERSION == 3) {
+		$saveOrderingUrl = 'index.php?option=com_mams&task=articles.saveOrderAjax&tmpl=component';
+		JHtml::_('sortablelist.sortable', 'MAMSArtList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	} else {
+		$saveOrderingUrl = 'index.php?option=com_mams&task=articles.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+		HTMLHelper::_('draggablelist.draggable');
+	}
 }
 $sortFields = $this->getSortFields();
 ?>
@@ -53,35 +65,10 @@ $sortFields = $this->getSortFields();
 <?php else : ?>
 	<div id="j-main-container">
 <?php endif;?>
-	<div id="filter-bar" class="btn-toolbar">
-		<div class="filter-search btn-group pull-left">
-			<label class="element-invisible" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('COM_MAMS_SEARCH_IN_TITLE'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_MAMS_SEARCH_IN_TITLE'); ?>" />
-		</div>
-		<div class="btn-group pull-left">
-			<button class="btn hasTooltip" type="submit" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
-            <button class="btn hasTooltip" type="button" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>" onclick="jQuery('#filter_search').val('');this.form.submit();"><i class="icon-remove"></i></button>
-        </div>
-		<div class="btn-group pull-right hidden-phone">
-			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
-		<div class="btn-group pull-right hidden-phone">
-			<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC');?></label>
-			<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
-				<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC');?></option>
-				<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING');?></option>
-				<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');?></option>
-			</select>
-		</div>
-		<div class="btn-group pull-right">
-			<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY');?></label>
-			<select name="sortTable" id="sortTable" class="input-large" onchange="Joomla.orderTable()">
-				<option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
-				<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder);?>
-			</select>
-		</div>
-	</div>
+    <?php
+    // Search tools bar
+    echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+    ?>
 	
 	<div class="clearfix"> </div>
 
@@ -104,9 +91,12 @@ $sortFields = $this->getSortFields();
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>	
 				<th width="1%" style="min-width:55px" class="nowrap center">
-					<?php echo JHtml::_('grid.sort','JSTATUS','s.published', $listDirn, $listOrder); ?>
-				</th>		
-				<th>
+					<?php echo JText::_('JSTATUS'); ?>
+				</th>
+                <th width="1%" style="min-width:55px" class="nowrap center">
+					<?php echo JText::_('JFEATURED'); ?>
+                </th>
+                <th>
 					<?php echo JHtml::_('grid.sort','COM_MAMS_ARTICLE_HEADING_TITLE','a.art_title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
@@ -134,7 +124,7 @@ $sortFields = $this->getSortFields();
 		
 		</thead>
 		<tfoot><tr><td colspan="15"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
-		<tbody>
+        <tbody <?php if (JVersion::MAJOR_VERSION == 4) { ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php } ?>>
 		<?php foreach($this->items as $i => $item): 
 			$canCreate = $user->authorise('core.create', 'com_mams.sec.'.$item->art_sec);
 			$canEdit = $user->authorise('core.edit', 'com_mams.article.'.$item->art_id);
@@ -144,7 +134,7 @@ $sortFields = $this->getSortFields();
 			$canFeature = $user->authorise('core.edit.featured', 'com_mams.article.'.$item->art_id);
 			$canChange = $user->authorise('core.edit.state', 'com_mams.article.'.$item->art_id) && $canCheckin;
 			?>
-			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->art_publish_up?>">
+            <tr class="row<?php echo $i % 2; ?>" <?php if (JVersion::MAJOR_VERSION == 3) { ?>sortable-group-id="<?php echo $item->art_publish_up; ?>" <?php } else { ?>data-draggable-group="<?php echo $item->art_publish_up; ?>"<?php } ?>>
 				<td class="order nowrap center hidden-phone">
 					<?php if ($canChange) :
 						$disableClassName = '';
@@ -168,45 +158,26 @@ $sortFields = $this->getSortFields();
                     <td><?php echo $item->ordering; ?></td>
 				<?php } ?>
 				<td><?php echo JHtml::_('grid.id', $i, $item->art_id); ?></td>
-				<td class="center">
-					<div class="btn-group">
-						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange); ?>
-						<?php echo JHtml::_('mamsadministrator.featured', $item->featured, $i, $canFeature); ?>
-						<?php echo JHtml::_('mamsadministrator.drilldowns',$i, $canEditDrilldowns); ?>
-						<?php
-							// Create dropdown items
-							if ($canChange) :
-								if ($item->state) :
-									JHtml::_('actionsdropdown.unpublish', 'cb' . $i, 'articles');
-								else :
-									JHtml::_('actionsdropdown.publish', 'cb' . $i, 'articles');
-								endif;
-								
-								JHtml::_('actionsdropdown.divider');
-								
-								if ($canFeature) :
-									if ($item->featured) :
-										JHtml::_('actionsdropdown.unfeature', 'cb' . $i, 'articles');
-									else :
-										JHtml::_('actionsdropdown.feature', 'cb' . $i, 'articles');
-									endif;
-									
-									JHtml::_('actionsdropdown.divider');
-								endif;
-		
-								if ($trashed) :
-									JHtml::_('actionsdropdown.untrash', 'cb' . $i, 'articles');
-								else :
-									JHtml::_('actionsdropdown.trash', 'cb' . $i, 'articles');
-								endif;
-							endif;
-							// Render dropdown list
-							if ($canEdit || $canEditOwn || $canChange) :
-								echo JHtml::_('actionsdropdown.render');
-							endif;
-							?>
-					</div>
-				</td>
+                <td class="center text-center">
+		            <?php
+		            if (JVersion::MAJOR_VERSION == 3) {
+			            echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', true);
+		            } else {
+			            $options = [ 'task_prefix' => 'articles.', 'id' => 'state-' . $item->art_id ];
+			            echo ( new PublishedButton() )->render( (int) $item->state, $i, $options );
+		            }
+		            ?>
+                </td>
+                <td class="center text-center">
+		            <?php
+		            if (JVersion::MAJOR_VERSION == 3) {
+			            echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true, "articles");
+		            } else {
+			            $options = [ 'task_prefix' => 'articles.', 'id' => 'featured-' . $item->art_id ];
+			            echo ( new FeaturedButton() )->render( (int) $item->featured, $i, $options );
+		            }
+		            ?>
+                </td>
 				<td class="has-context">
 					<div class="pull-left">
 					
@@ -226,7 +197,7 @@ $sortFields = $this->getSortFields();
                             <strong>Category:</strong> <?php
                                 $itemcats = array();
                                 foreach ($item->cats as $c) {
-                                    $itemcats[] = $this->cats[$c];
+                                    if (isset($this->cats[$c])) $itemcats[] = $this->cats[$c];
                                 }
                                 echo implode(", ",$itemcats);
                                 endif;
@@ -235,7 +206,7 @@ $sortFields = $this->getSortFields();
                                 <br /><strong>Tag:</strong> <?php
 		                        $itemtags = array();
 		                        foreach ($item->tags as $t) {
-			                        $itemtags[] = $this->tags[$t];
+			                        if (isset($this->tags[$t])) $itemtags[] = $this->tags[$t];
 		                        }
 		                        echo implode(", ",$itemtags);
 	                        endif;
@@ -244,7 +215,7 @@ $sortFields = $this->getSortFields();
 								<br /><strong>Author:</strong> <?php
 								$itemauths = array();
 								foreach ($item->authors as $a) {
-									$itemauths[] = $this->authors[$a];
+									if (isset($this->authors[$a])) $itemauths[] = $this->authors[$a];
 								}
 								echo implode("; ",$itemauths);
 							endif;
@@ -266,143 +237,8 @@ $sortFields = $this->getSortFields();
 		</tbody>
 	</table>
 <?php endif; ?>
-	<div class="modal hide fade" id="collapseModal">
-		<div class="modal-header">
-			<button type="button" role="presentation" class="close" data-dismiss="modal">x</button>
-			<h3><?php echo JText::_('COM_MAMS_ARTICLE_BATCH_OPTIONS');?></h3>
-		</div>
-		<div class="modal-body modal-batch">
-            <div class="container-fluid">
-                <p><?php echo JText::_('COM_MAMS_ARTICLE_BATCH_TIP'); ?></p>
-                <div class="row-fluid">
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php echo JHtml::_('batch.access'); ?>
-                        </div>
-                    </div>
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php
-                                echo '<label id="batch-feataccess-lbl" for="batch-feataccess" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL_DESC') . '">';
-                                echo JText::_('COM_MAMS_ARTICLE_BATCH_FEATACCESS_LABEL').'</label>';
-                                echo JHtml::_('access.assetgrouplist','batch[featassetgroup_id]', '','class="inputbox"',array('title' => JText::_('JLIB_HTML_BATCH_NOCHANGE'),'id' => 'batch-feataccess'));
-                            ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php
-                                echo '<label id="batch-section-lbl" for="featsection_id" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL_DESC') . '">';
-                                echo JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL').'</label>';
-                            ?>
-                            <select name="batch[featsection_id]" class="inputbox" id="featsection_id">
-                                <option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
-                                <?php echo JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', "");?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php
-                            echo '<label id="batch-section-lbl" for="batch-stratdate" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_STARTDATE_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_STARTDATE_DESC') . '">';
-                            echo JText::_('COM_MAMS_ARTICLE_BATCH_STARTDATE_LABEL').'</label>';
-                            ?>
-                            <?php echo JHtml::_('calendar',null,'batch[batch-startdate]','batch-startdate','%Y-%m-%d'); ?>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php
-                            echo '<label id="batch-section-lbl" for="batch-addcat" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_ADDCAT_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_ADDCAT_DESC') . '">';
-                            echo JText::_('COM_MAMS_ARTICLE_BATCH_ADDCAT_LABEL').'</label>';
-                            ?>
-                            <select name="batch[batch-addcat]" class="inputbox" id="batch-addcat">
-                                <option value="*"><?php echo JText::_('COM_MAMS_SELECT_Cat');?></option>
-                                <?php echo JHtml::_('select.options', MAMSHelper::getCats(), 'value', 'text', "");?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php
-                            echo '<label id="batch-section-lbl" for="batch-rmvcat" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_RMVCAT_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_RMVCAT_DESC') . '">';
-                            echo JText::_('COM_MAMS_ARTICLE_BATCH_RMVCAT_LABEL').'</label>';
-                            ?>
-                            <select name="batch[batch-rmvcat]" class="inputbox" id="batch-rmvcat">
-                                <option value="*"><?php echo JText::_('COM_MAMS_SELECT_CAT');?></option>
-                                <?php echo JHtml::_('select.options', MAMSHelper::getCats(), 'value', 'text', "");?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php
-                            echo '<label id="batch-section-lbl" for="batch-addtag" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_ADDTAG_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_ADDTAG_DESC') . '">';
-                            echo JText::_('COM_MAMS_ARTICLE_BATCH_ADDTAG_LABEL').'</label>';
-                            ?>
-                            <select name="batch[batch-addtag]" class="inputbox" id="batch-addtag">
-                                <option value="*"><?php echo JText::_('COM_MAMS_SELECT_TAG');?></option>
-                                <?php echo JHtml::_('select.options', MAMSHelper::getTags(), 'value', 'text', "");?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php
-                            echo '<label id="batch-section-lbl" for="batch-rmvtag" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_RMVTAG_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_RMVTAG_DESC') . '">';
-                            echo JText::_('COM_MAMS_ARTICLE_BATCH_RMVTAG_LABEL').'</label>';
-                            ?>
-                            <select name="batch[batch-rmvtag]" class="inputbox" id="batch-rmvtag">
-                                <option value="*"><?php echo JText::_('COM_MAMS_SELECT_TAG');?></option>
-                                <?php echo JHtml::_('select.options', MAMSHelper::getTags(), 'value', 'text', "");?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php
-                            echo '<label id="batch-section-lbl" for="batch-addauth" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_ADDAUTH_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_ADDAUTH_DESC') . '">';
-                            echo JText::_('COM_MAMS_ARTICLE_BATCH_ADDAUTH_LABEL').'</label>';
-                            ?>
-                            <select name="batch[batch-addauth]" class="inputbox" id="batch-addauth">
-                                <option value="*"><?php echo JText::_('COM_MAMS_SELECT_AUTHOR');?></option>
-                                <?php echo JHtml::_('select.options', MAMSHelper::getAuths(), 'value', 'text', "");?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span6">
-                        <div class="controls">
-                            <?php
-                            echo '<label id="batch-section-lbl" for="batch-addauth" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_RMVAUTH_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_RMVAUTH_DESC') . '">';
-                            echo JText::_('COM_MAMS_ARTICLE_BATCH_RMVAUTH_LABEL').'</label>';
-                            ?>
-                            <select name="batch[batch-rmvauth]" class="inputbox" id="batch-rmvauth">
-                                <option value="*"><?php echo JText::_('COM_MAMS_SELECT_AUTHOR');?></option>
-                                <?php echo JHtml::_('select.options', MAMSHelper::getAuths(), 'value', 'text', "");?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-		<div class="modal-footer">	
-			<button class="btn" type="button" onclick="document.id('batch-access').value='';document.id('batch-feataccess').value='';document.id('featsection_id').value='';" data-dismiss="modal">
-				<?php echo JText::_('JCANCEL'); ?>
-			</button>
-			<button class="btn btn-primary" type="submit" onclick="Joomla.submitbutton('article.batch');">
-				<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
-			</button>
-		</div>
-	</div>
+		<?php echo JHtml::_( 'bootstrap.renderModal', 'collapseModal', array( 'title'  => JText::_('COM_MAMS_CAT_BATCH_OPTIONS'), 'footer' => $this->loadTemplate('batch_footer'), ), $this->loadTemplate('batch_body') ); ?>
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

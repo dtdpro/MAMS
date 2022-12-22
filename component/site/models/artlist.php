@@ -242,25 +242,14 @@ class MAMSModelArtList extends JModelList
 		jimport('joomla.html.pagination');
 		$limit = (int) $this->getState('list.limit');
 		$page = new JPagination($this->getTotal(), (int) $this->getState('list.start'), $limit);
-		
-		
-		
+
 		return $page;
 	}
 	
 	public function getTotal() {
-				
 		// Load the total.
 		$query = $this->getListQuery();
 		$total = (int) $this->_getListCount($query);
-		
-		// Check for a database error.
-		if ($this->_db->getErrorNum())
-		{
-		$this->setError($this->_db->getErrorMsg());
-		return false;
-		}
-		
 		
 		return $total;
 	}
@@ -276,6 +265,7 @@ class MAMSModelArtList extends JModelList
 		$query->where('a.access IN ('.implode(",",$this->alvls).')');
 		$db->setQuery($query); 
 		$items = $db->loadColumn();
+
 		return $items;
 	}
 

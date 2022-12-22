@@ -54,19 +54,6 @@ abstract class MAMSHelper
 			}
 		}
 	}
-	
-	public static function addArtDDSubmenu($submenu,$arttitle) 
-	{
-		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTICLESRETURN'),'index.php?option=com_mams&view=articles',$submenu == 'articles');
-		JHtmlSidebar::addEntry('<span class="nav-header">'.$arttitle.'</span>');
-		//JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTCATS'),'index.php?option=com_mams&view=artcats',$submenu == 'artcats');
-		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTTAGS'),'index.php?option=com_mams&view=arttags',$submenu == 'arttags');
-		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTAUTHS'),'index.php?option=com_mams&view=artauths',$submenu == 'artauths');
-		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTMEDIAS'),'index.php?option=com_mams&view=artmeds',$submenu == 'artmeds');
-		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTIMAGES'),'index.php?option=com_mams&view=artimgs',$submenu == 'artimgs');
-		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTDLOADS'),'index.php?option=com_mams&view=artdloads',$submenu == 'artdloads');
-		JHtmlSidebar::addEntry(JText::_('COM_MAMS_SUBMENU_ARTLINKS'),'index.php?option=com_mams&view=artlinks',$submenu == 'artlinks');
-	}
 
 	public static function getSections($type = "article")
 	{
@@ -78,11 +65,6 @@ abstract class MAMSHelper
 		);
 		$options = $db->loadObjectList();
 		// Check for a database error.
-		if ($db->getErrorNum())
-		{
-		JError::raiseNotice(500, $db->getErrorMsg());
-		return null;
-		}
 		
 		return $options;
 	}
@@ -98,13 +80,6 @@ abstract class MAMSHelper
 		);
 		$options = $db->loadObjectList();
 		
-		// Check for a database error.
-		if ($db->getErrorNum())
-		{
-		JError::raiseNotice(500, $db->getErrorMsg());
-		return null;
-		}
-		
 		return $options;
 	}
 
@@ -118,13 +93,6 @@ abstract class MAMSHelper
 			' ORDER BY tag_title'
 		);
 		$options = $db->loadObjectList();
-
-		// Check for a database error.
-		if ($db->getErrorNum())
-		{
-			JError::raiseNotice(500, $db->getErrorMsg());
-			return null;
-		}
 
 		return $options;
 	}
@@ -140,13 +108,6 @@ abstract class MAMSHelper
 		);
 		$options = $db->loadObjectList();
 
-		// Check for a database error.
-		if ($db->getErrorNum())
-		{
-			JError::raiseNotice(500, $db->getErrorMsg());
-			return null;
-		}
-
 		return $options;
 	}
 
@@ -159,13 +120,6 @@ abstract class MAMSHelper
 			' ORDER BY ordering'
 		);
 		$options = $db->loadObjectList();
-		
-		// Check for a database error.
-		if ($db->getErrorNum())
-		{
-		JError::raiseNotice(500, $db->getErrorMsg());
-		return null;
-		}
 		
 		return $options;
 	}

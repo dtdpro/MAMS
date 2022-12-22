@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.model' );
 
-class MAMSModelArticle extends JModelItem
+class MAMSModelArticle extends JModelLegacy
 {
 	protected $alvls = Array();
 	
@@ -64,13 +64,14 @@ class MAMSModelArticle extends JModelItem
 		$item->metadata = $registry;
 		
 		if (!$item) return 0;
-		
+
+		// Add hit
 		$qhit = $db->getQuery(true);
 		$qhit->update('#__mams_articles');
 		$qhit->set('art_hits = art_hits + 1');
 		$qhit->where('art_id = '.$artid);
 		$db->setQuery($qhit);
-		$db->query();
+		$db->execute();
 		
 		//Get Article Drilldowns
 		$item->cats=$this->getArticleCats($item->art_id);

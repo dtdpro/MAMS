@@ -16,18 +16,6 @@
 			<option value="author">Author</option>
 			<option value="both">Both</option>
 		</field>
-		<field name="edit_auths" type="radio" label="COM_MAMS_CONFIG_FIELD_EDITAUTH_LABEL" description="COM_MAMS_CONFIG_FIELD_EDITAUTH_DESC" default="1" class="btn-group">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
-		<!--<field name="edit_cats" type="radio" label="COM_MAMS_CONFIG_FIELD_EDITCAT_LABEL" description="COM_MAMS_CONFIG_FIELD_EDITCAT_DESC" default="1" class="btn-group">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>-->
-		<field name="edit_tags" type="radio" label="COM_MAMS_CONFIG_FIELD_EDITTAG_LABEL" description="COM_MAMS_CONFIG_FIELD_EDITTAG_DESC" default="1" class="btn-group">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
 		<field name="compcss" type="radio" label="COM_MAMS_CONFIG_FIELD_COMPCSS_LABEL" description="COM_MAMS_CONFIG_FIELD_COMPCSS_DESC" default="0" class="btn-group">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

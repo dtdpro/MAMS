@@ -65,14 +65,7 @@ class MAMSModelFieldgroup extends JModelAdmin
 	
 	protected function preprocessForm(JForm $form, $data, $group = 'content')
 	{
-		// Import the appropriate plugin group.
-		JPluginHelper::importPlugin($group);
-	
-		// Get the dispatcher.
-		$dispatcher = JEventDispatcher::getInstance();
-	
-		// Trigger the form preparation event.
-		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));
+		parent::preprocessForm($form,$data,$group);
 	
 		//Disallow editing of primary fields
 		if ($data->group_id == 1) {
@@ -85,18 +78,6 @@ class MAMSModelFieldgroup extends JModelAdmin
 			$form->setFieldAttribute('group_name', 'filter', 'unset');
 			$form->setFieldAttribute('published', 'filter', 'unset');
 			$form->setFieldAttribute('access', 'filter', 'unset');
-		}
-	
-		// Check for errors encountered while preparing the form.
-		if (count($results) && in_array(false, $results, true))
-		{
-			// Get the last error.
-			$error = $dispatcher->getError();
-	
-			if (!($error instanceof Exception))
-			{
-				throw new Exception($error);
-			}
 		}
 	}
 	

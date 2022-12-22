@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="details">
-		<field
-			name="img_id"
-			type="text"
-			class="readonly" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description ="JGLOBAL_FIELD_ID_DESC"
-			readonly="true"
-		/>
+	<fieldset name="options">
 		<field
 			name="img_sec"
 			type="ImageSecs"
-			class="inputbox"
+			class="inputbox form-select"
 			label="COM_MAMS_IMAGE_FIELD_SEC_LABEL"
 			description="COM_MAMSIMAGE_FIELD_SEC_DESC"
-		/>
-		<field
-			name="img_extension"
-			type="hidden"
 		/>
 		<field
 			name="published"
@@ -47,10 +35,25 @@
 		<field
 			name="ordering"
 			type="OrderImage"
-			class="inputbox"
+			class="inputbox form-select"
 			label="JFIELD_ORDERING_LABEL"
 			description="JFIELD_ORDERING_DESC"
 		/>
+		<field
+				name="img_id"
+				type="text"
+				class="readonly"
+				label="JGLOBAL_FIELD_ID_LABEL"
+				description ="JGLOBAL_FIELD_ID_DESC"
+				readonly="true"
+		/>
+		<field
+				name="img_extension"
+				type="hidden"
+		/>
+	</fieldset>
+
+	<fieldset name="details">
 		<field
 			name="img_inttitle"
 			type="text"

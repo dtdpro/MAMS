@@ -38,25 +38,7 @@ class MAMSModelSec extends JModelAdmin
 	
 	public function getItem($pk = null)
 	{
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
-		$table = $this->getTable();
-	
-		if ($pk > 0)
-		{
-			// Attempt to load the row.
-			$return = $table->load($pk);
-	
-			// Check for a table object error.
-			if ($return === false && $table->getError())
-			{
-				$this->setError($table->getError());
-				return false;
-			}
-		}
-	
-		// Convert to the JObject before adding other data.
-		$properties = $table->getProperties(1);
-		$item = JArrayHelper::toObject($properties, 'JObject');
+		$item = parent::getItem($pk);
 	
 		//Tags
 		if (!empty($item->sec_id))
@@ -107,7 +89,6 @@ class MAMSModelSec extends JModelAdmin
 
 	public function save($data)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
 		$table      = $this->getTable();
 		$input      = JFactory::getApplication()->input;
 		$pk         = (!empty($data['sec_id'])) ? $data['sec_id'] : (int) $this->getState($this->getName() . '.id');
@@ -119,6 +100,13 @@ class MAMSModelSec extends JModelAdmin
 		{
 			$table->load($pk);
 			$isNew = false;
+		} else {
+			$data['level']=0;
+			$data['lft']=0;
+			$data['rgt']=0;
+			$data['path']="";
+			$data['metadata']="";
+			$data['asset_id']=0;
 		}
 
 		// Set the new parent id if parent id not matched OR while New/Save as Copy .

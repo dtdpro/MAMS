@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
+
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
@@ -96,7 +98,7 @@ class MAMSModelCat extends JModelAdmin
 	{
 		// Sanitize user ids.
 		$pks = array_unique($pks);
-		JArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($pks);
 	
 		// Remove any values of zero.
 		if (array_search(0, $pks, true))
@@ -245,7 +247,7 @@ class MAMSModelCat extends JModelAdmin
 		}
 		// Convert to the JObject before adding other data.
 		$properties = $table->getProperties(1);
-		$item = JArrayHelper::toObject($properties, 'JObject');
+		$item = ArrayHelper::toObject($properties, 'JObject');
 		if (property_exists($item, 'params'))
 		{
 			$registry = new Registry;
@@ -257,6 +259,10 @@ class MAMSModelCat extends JModelAdmin
 			$item->cat_feataccess = explode(",",$item->cat_feataccess);
 		} else {
 			$item->cat_feataccess=array();
+			$item->level=0;
+			$item->lft=0;
+			$item->rgt=0;
+			$item->path="";
 		}
 		return $item;
 	}
@@ -273,14 +279,10 @@ class MAMSModelCat extends JModelAdmin
 	public function save($data)
 	{
 		// Initialise variables;
-		$dispatcher = JDispatcher::getInstance();
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
 		$isNew = true;
-
-		// Include the content plugins for the on save events.
-		JPluginHelper::importPlugin('content');
 
 		// Allow an exception to be thrown.
 		try
@@ -290,6 +292,12 @@ class MAMSModelCat extends JModelAdmin
 			{
 				$table->load($pk);
 				$isNew = false;
+			} else {
+				$data['cat_feataccess'] = "";
+				$data['level']=0;
+				$data['lft']=0;
+				$data['rgt']=0;
+				$data['path']="";
 			}
 
 			//Set Featured access level list as comma separated string
@@ -309,14 +317,6 @@ class MAMSModelCat extends JModelAdmin
 
 			// Check the data.
 			if (!$table->check())
-			{
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Trigger the onContentBeforeSave event.
-			$result = $dispatcher->trigger($this->event_before_save, array($this->option . '.' . $this->name, &$table, $isNew));
-			if (in_array(false, $result, true))
 			{
 				$this->setError($table->getError());
 				return false;
@@ -346,9 +346,6 @@ class MAMSModelCat extends JModelAdmin
 
 			// Clean the cache.
 			$this->cleanCache();
-
-			// Trigger the onContentAfterSave event.
-			$dispatcher->trigger($this->event_after_save, array($this->option . '.' . $this->name, &$table, $isNew));
 		}
 		catch (Exception $e)
 		{

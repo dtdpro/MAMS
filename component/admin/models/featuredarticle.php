@@ -21,7 +21,7 @@ class MAMSModelFeaturedarticle extends MAMSModelArticles
 	
 	protected function populateState($ordering = null, $direction = null)
 	{
-		parent::populateState('f.ordering', 'desc');
+		parent::populateState('f.ordering', 'asc');
 	}
 
 	function getListQuery($resolveFKs = true)

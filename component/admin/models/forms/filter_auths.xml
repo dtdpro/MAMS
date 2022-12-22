@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fields name="filter">
+        <field
+                name="search"
+                type="text"
+                label="COM_CONTENT_FILTER_SEARCH_DESC"
+                hint="JSEARCH_FILTER"
+        />
+        <field
+                name="state"
+                type="status"
+                label="COM_CONTENT_FILTER_PUBLISHED"
+                description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+                onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+        <field
+                name="access"
+                type="accesslevel"
+                label="JOPTION_FILTER_ACCESS"
+                description="JOPTION_FILTER_ACCESS_DESC"
+                onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_ACCESS</option>
+        </field>
+        <!--<field
+                name="sec"
+                type="sql"
+                label="COM_MAMS_SELECT_SEC"
+                required="false"
+                multiple="false"
+                sql_select="CONCAT(sec_id,':',sec_alias) AS value, sec_name AS text"
+                sql_from="#__mams_secs"
+                sql_where="sec_type = 'author'"
+                sql_order="sec_name ASC"
+                key_field="value"
+                value_field="text"
+                onchange="this.form.submit();"
+        />-->
+    </fields>
+    <fields name="list">
+        <field
+                name="fullordering"
+                type="list"
+                label="COM_CONTENT_LIST_FULL_ORDERING"
+                description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+                onchange="this.form.submit();"
+                default="a.ordering ASC"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.auth_fname ASC">COM_MAMS_AUTH_HEADING_FNAME_ASC</option>
+            <option value="a.auth_fname DESC">COM_MAMS_AUTH_HEADING_FNAME_DESC</option>
+            <option value="a.auth_lname ASC">COM_MAMS_AUTH_HEADING_LNAME_ASC</option>
+            <option value="a.auth_lname DESC">COM_MAMS_AUTH_HEADING_LNAME_DESC</option>
+            <option value="a.access ASC">JGRID_HEADING_ACCESS_ASC</option>
+            <option value="a.access DESC">JGRID_HEADING_ACCESS_DESC</option>
+            <option value="a.auth_added ASC">Added Ascending</option>
+            <option value="a.auth_added DESC">Added Descending</option>
+            <option value="a.auth_modified ASC">Modified Ascending</option>
+            <option value="a.auth_modified DESC">Modified Descending</option>
+            <option value="a.auth_id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="a.auth_id DESC">JGRID_HEADING_ID_DESC</option>
+            <option value="a.ordering ASC">Order Ascending</option>
+            <option value="a.ordering DESC">Order Descending</option>
+        </field>
+        <field
+                name="limit"
+                type="limitbox"
+                class="input-mini"
+                default="50"
+                label="COM_CONTENT_LIST_LIMIT"
+                description="COM_CONTENT_LIST_LIMIT_DESC"
+                onchange="this.form.submit();"
+        />
+    </fields>
+</form>

@@ -2,15 +2,6 @@
 <form>
 	<fieldset name="details">
 		<field
-			name="sec_id"
-			type="text"
-			class="readonly" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description ="JGLOBAL_FIELD_ID_DESC"
-			readonly="true"
-		/>
-		<field name="asset_id" type="hidden" filter="unset" />
-		<field
 			name="published"
 			type="list"
 			id="published"
@@ -50,6 +41,7 @@
 			label="COM_MAMS_SEC_FIELD_PARENT_LABEL"
 			description="COM_MAMS_SEC_FIELD_PARENT_DESC"
 			required="false"
+			layout="joomla.form.field.list-fancy-select"
 		/>
 		<field
 			name="sec_type"
@@ -62,7 +54,16 @@
 			<option	value="author">Author</option>
 			<option	value="image">Image</option>
 		</field>
-		<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true"></field>
+		<field name="tags" type="tag" label="JTAG" multiple="true" />
+		<field
+				name="sec_id"
+				type="text"
+				class="readonly"
+				label="JGLOBAL_FIELD_ID_LABEL"
+				description ="JGLOBAL_FIELD_ID_DESC"
+				readonly="true"
+		/>
+		<field name="asset_id" type="hidden" filter="unset" default="0" />
 		<field
 			name="lft"
 			type="hidden"

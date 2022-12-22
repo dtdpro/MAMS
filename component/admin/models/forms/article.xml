@@ -161,9 +161,9 @@
 
 		<field name="checked_out_time" type="hidden" filter="unset" />
 		
-		<field name="version" type="text" class="readonly" label="COM_MAMS_ARTICLE_FIELD_VERSION_LABEL" size="6" description="COM_MAMS_ARTICLE_FIELD_VERSION_DESC" readonly="true" filter="unset" labelclass="control-label" />
+		<field name="version" type="text" class="readonly" label="COM_MAMS_ARTICLE_FIELD_VERSION_LABEL" size="6" description="COM_MAMS_ARTICLE_FIELD_VERSION_DESC" readonly="true" labelclass="control-label" />
 		
-		<field name="art_hits" type="text" class="readonly" label="COM_MAMS_ARTICLE_FIELD_HITS_LABEL" size="6" description="COM_MAMS_ARTICLE_FIELD_HITS_DESC" readonly="true" filter="unset" labelclass="control-label" />
+		<field name="art_hits" type="text" class="readonly" label="COM_MAMS_ARTICLE_FIELD_HITS_LABEL" size="6" description="COM_MAMS_ARTICLE_FIELD_HITS_DESC" readonly="true" labelclass="control-label" />
 		
 		<field name="rules" type="rules" label="JFIELD_RULES_LABEL"
 		translate_label="false" class="inputbox" filter="rules"
@@ -193,7 +193,6 @@
 				name="cats"
 				type="subform"
 				label="COM_MAMS_ARTICLE_FIELD_CAT_LABEL"
-				description="COM_MAMS_ARTICLE_FIELD_CAT_DESC"
 				layout="joomla.form.field.subform.repeatable-table"
 				icon="list"
 				multiple="true"
@@ -203,8 +202,83 @@
 			</form>
 		</field>
 
-		<field name="tags" type="SelectTags" description="COM_MAMS_ARTICLE_FIELD_TAG_DESC" label="COM_MAMS_ARTICLE_FIELD_TAG_LABEL" required="false" multiple="true" class="inputbox span12 small" />
-		<field name="authors" type="SelectAuthors" description="COM_MAMS_ARTICLE_FIELD_AUTHOR_DESC" label="COM_MAMS_ARTICLE_FIELD_AUTHOR_LABEL" required="false" multiple="true" class="inputbox span12 small" />
+		<field
+				name="tags"
+				type="subform"
+				label="COM_MAMS_ARTICLE_FIELD_TAG_LABEL"
+				layout="joomla.form.field.subform.repeatable-table"
+				icon="list"
+				multiple="true"
+		>
+			<form hidden="true" name="tag_options" repeat="true">
+				<field name="tag" type="SelectTags" description="" label="" required="false" class="inputbox span12 small" />
+			</form>
+		</field>
+
+		<field
+				name="authors"
+				type="subform"
+				label="COM_MAMS_ARTICLE_FIELD_AUTHOR_LABEL"
+				layout="joomla.form.field.subform.repeatable-table"
+				icon="list"
+				multiple="true"
+		>
+			<form hidden="true" name="auth_options" repeat="true">
+				<field name="auth" type="SelectAuthors" description="" label="" required="false" class="inputbox span12 small" />
+			</form>
+		</field>
+
+		<field
+				name="medias"
+				type="subform"
+				label="Media"
+				layout="joomla.form.field.subform.repeatable-table"
+				icon="list"
+				multiple="true"
+		>
+			<form hidden="true" name="media_options" repeat="true">
+				<field name="media" type="SelectMedias" description="" label="" required="false" class="inputbox span12 small" />
+			</form>
+		</field>
+
+		<field
+				name="images"
+				type="subform"
+				label="Images"
+				layout="joomla.form.field.subform.repeatable-table"
+				icon="list"
+				multiple="true"
+		>
+			<form hidden="true" name="image_options" repeat="true">
+				<field name="image" type="SelectImages" description="" label="" required="false" class="inputbox span12 small" />
+			</form>
+		</field>
+
+		<field
+				name="dloads"
+				type="subform"
+				label="Downloads"
+				layout="joomla.form.field.subform.repeatable-table"
+				icon="list"
+				multiple="true"
+		>
+			<form hidden="true" name="dload_options" repeat="true">
+				<field name="dload" type="SelectDloads" description="" label="" required="false" class="inputbox span12 small" />
+			</form>
+		</field>
+
+		<field
+				name="links"
+				type="subform"
+				label="Links"
+				layout="joomla.form.field.subform.repeatable-table"
+				icon="list"
+				multiple="true"
+		>
+			<form hidden="true" name="link_options" repeat="true">
+				<field name="link" type="SelectLInks" description="" label="" required="false" class="inputbox span12 small" />
+			</form>
+		</field>
 				
 	</fieldset>
 	<fields name="metadata">

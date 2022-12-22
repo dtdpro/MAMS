@@ -6,13 +6,12 @@ if ($this->params->get('divwrapper',1)) {
 $config=MAMSHelper::getConfig();
 $user=JFactory::getUser();
 
-$urlnc = $this->getReturnURL();
 if ($user->id) {
 	$rurl = JRoute::_('index.php?option=com_mams&view=artlist&secid='.$this->article->art_sec);
 	$msg = $config->noaccessmsg;
 }
 else {
-	$rurl = JRoute::_('index.php?option=com_users&view=login&return='.$urlnc);
+	$rurl = JRoute::_('index.php?option=com_users&view=login&return='.$this->returnUrl);
 	$msg = $config->loginmsg;
 }
 

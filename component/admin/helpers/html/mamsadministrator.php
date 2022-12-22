@@ -1,9 +1,11 @@
 <?php
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 abstract class JHtmlMAMSAdministrator
 {	
-	public static function featured($value = 0, $i, $canChange = true,$taskController="articles")
+	public static function featured($value = 0, $i=0, $canChange = true,$taskController="articles")
 	{
 		JHtml::_('bootstrap.tooltip');
 	
@@ -12,7 +14,7 @@ abstract class JHtmlMAMSAdministrator
 				0	=> array('star-empty',	$taskController.'.featured',	'COM_MAMS_DEFEATURED',	'COM_MAMS_TOGGLE_TO_FEATURE'),
 				1	=> array('star',	$taskController.'.unfeatured',	'COM_MAMS_FEATURED',		'COM_MAMS_TOGGLE_TO_DEFEATURE'),
 		);
-		$state	= JArrayHelper::getValue($states, (int) $value, $states[1]);
+		$state	= ArrayHelper::getValue($states, (int) $value, $states[1]);
 		$icon	= $state[0];
 	
 		if ($canChange)

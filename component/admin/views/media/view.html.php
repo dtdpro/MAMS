@@ -17,8 +17,6 @@ class MAMSViewMedia extends JViewLegacy
 		$this->state = $this->get('State');
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
-		
-		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -34,7 +32,8 @@ class MAMSViewMedia extends JViewLegacy
 
 	protected function addToolBar() 
 	{
-		JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+		$jinput->set('hidemainmenu', true);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->med_id == 0;

@@ -32,7 +32,7 @@ class MAMSModelFeaturearticle extends MAMSModelArticle
 		$query->from('#__mams_artfeat');
 		$query->where('af_id IN ('.implode(",",$pks).")");
 		$db->setQuery((string)$query);
-		if (!$db->query()) {
+		if (!$db->execute()) {
 			$this->setError($db->getErrorMsg());
 			return false;
 		}

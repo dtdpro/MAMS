@@ -16,7 +16,7 @@ class MAMSTableArticle extends JTable
 		$this->tagsHelper = new JHelperTags();
 		$this->tagsHelper->typeAlias = 'com_mams.article';
 		
-		JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'MAMSTableArticle', array('typeAlias' => 'com_mams.article'));
+		//JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'MAMSTableArticle', array('typeAlias' => 'com_mams.article'));
 	}
 	
 	protected function _getAssetName()
@@ -118,7 +118,7 @@ class MAMSTableArticle extends JTable
 		if (empty($this->art_alias)) {
 			$this->art_alias = $this->art_title;
 		}
-		$this->art_alias = JApplication::stringURLSafe($this->art_alias);
+		$this->art_alias = JApplicationHelper::stringURLSafe($this->art_alias);
 		if (trim(str_replace('-','',$this->art_alias)) == '') {
 			$this->art_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
@@ -148,6 +148,8 @@ class MAMSTableArticle extends JTable
 		if (empty($this->metadesc)) {
 			$this->metadesc = strip_tags($this->art_desc);
 		}
+
+		if (!$this->art_publish_down) $this->art_publish_down = "0000-00-00";
 		
 
 		// Check the publish down date is not earlier than publish up.

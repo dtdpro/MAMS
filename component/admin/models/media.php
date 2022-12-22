@@ -46,6 +46,7 @@ class MAMSModelMedia extends JModelAdmin
 
 	protected function loadFormData() 
 	{
+		$jinput = JFactory::getApplication()->input;
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_mams.edit.media.data', array());
 		if (empty($data)) 
@@ -53,7 +54,7 @@ class MAMSModelMedia extends JModelAdmin
 			$data = $this->getItem();
 			if ($this->getState('media.med_id') == 0) {
 				$app = JFactory::getApplication();
-				$data->set('med_extension', JRequest::getString('med_extension', $app->getUserState('com_mams.medias.filter.extension')));
+				$data->set('med_extension', $jinput->get('med_extension', $app->getUserState('com_mams.medias.filter.extension')));
 				
 			}
 		}
@@ -73,7 +74,7 @@ class MAMSModelMedia extends JModelAdmin
 		$query->from('#__mams_mediafeat');
 		$query->where('mf_media IN ('.implode(",",$pks).")");
 		$db->setQuery((string)$query);
-		if (!$db->query()) {
+		if (!$db->execute()) {
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
@@ -81,7 +82,7 @@ class MAMSModelMedia extends JModelAdmin
 			foreach ($pks as $i => $pk) {
 				$qf = 'INSERT INTO #__mams_mediafeat (mf_media) VALUES ('.$pk.')';
 				$db->setQuery($qf);
-				if (!$db->query()) {
+				if (!$db->execute()) {
 					$this->setError($db->getErrorMsg());
 					return false;
 				}

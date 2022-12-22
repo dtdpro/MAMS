@@ -4,12 +4,39 @@
 		<message>Section/Category Article List</message>
 	</layout>
 	<!-- Add fields to the request variables for the layout. -->
-	<fields name="request" addfieldpath="administrator/components/com_mams/models/fields">
+	<fields name="request">
 		<fieldset name="request">
-			<field name="secid" type="Secs" description="COM_MAMS_FIELD_SELECT_SEC_DESC" label="COM_MAMS_FIELD_SELECT_SEC_LABEL" required="true" multiple="true" mamssec="article" />
+			<field
+					name="secid"
+					type="sql"
+					description="COM_MAMS_FIELD_SELECT_SEC_DESC"
+					label="COM_MAMS_FIELD_SELECT_SEC_LABEL"
+					required="true"
+					multiple="true"
+					sql_select="CONCAT(sec_id,':',sec_alias) AS value, sec_name AS text"
+					sql_from="#__mams_secs"
+					sql_where="sec_type = 'article'"
+					sql_order="sec_name ASC"
+					key_field="value"
+					value_field="text"
+					layout="joomla.form.field.list-fancy-select"
+			/>
 		</fieldset>
 		<fieldset name="request">
-			<field name="catid" type="Cats" description="COM_MAMS_FIELD_SELECT_CAT_DESC" label="COM_MAMS_FIELD_SELECT_CAT_LABEL" required="true" multiple="true" />
+			<field
+					name="catid"
+					type="sql"
+					description="COM_MAMS_FIELD_SELECT_CAT_DESC"
+					label="COM_MAMS_FIELD_SELECT_CAT_LABEL"
+					required="true"
+					multiple="true"
+					sql_select="CONCAT(cat_id,':',cat_alias) AS value, cat_title AS text"
+					sql_from="#__mams_cats"
+					sql_order="cat_title ASC"
+					key_field="value"
+					value_field="text"
+					layout="joomla.form.field.list-fancy-select"
+			/>
 		</fieldset>
 	</fields>
 	<fields name="params">

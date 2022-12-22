@@ -74,7 +74,7 @@ class MAMSTableAuth extends JTable
 		if (empty($this->auth_alias)) {
 			$this->auth_alias = $this->auth_fname.'-'.$this->auth_lname;
 		}
-		$this->auth_alias = JApplication::stringURLSafe($this->auth_alias);
+		$this->auth_alias = JApplicationHelper::stringURLSafe($this->auth_alias);
 		if (trim(str_replace('-','',$this->auth_alias)) == '') {
 			$this->auth_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}

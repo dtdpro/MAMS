@@ -22,6 +22,7 @@ class MAMSModelArticles extends JModelList
 				'ordering', 'a.ordering',
 				'state', 'a.state',
 				'access', 'a.access',
+				'tag','feataccess','sec','cat','auth'
 			);
 		}
 		parent::__construct($config);
@@ -199,6 +200,10 @@ class MAMSModelArticles extends JModelList
 		// Join over the users for the user who modified.
 		$query->select('um.name AS modifier')
 		->join('LEFT', '#__users AS um ON um.id = a.art_modified_by');
+
+		// Join over the users for the user who modified.
+		$query->select('uc.name AS editor')
+		      ->join('LEFT', '#__users AS uc ON uc.id = a.checked_out');
 				
 		// Filter by section.
 		if ($sec = $this->getState('filter.sec')) {

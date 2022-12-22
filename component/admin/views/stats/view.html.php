@@ -7,16 +7,17 @@ class MAMSViewStats extends JViewLegacy
 {
 	function display($tpl = null)
 	{
+		$jinput = JFactory::getApplication()->input;
 		$this->config=MAMSHelper::getConfig();
 		
-		$typesl[1] = JHTML::_('select.option',  'article','Article Page');
-		$typesl[2] = JHTML::_('select.option',  'author','Author Page');
-		$typesl[3] = JHTML::_('select.option',  'seclist','Section Artice List');
-		$typesl[4] = JHTML::_('select.option',  'catlist','Category Artice List');
-		$typesl[5] = JHTML::_('select.option',  'autlist','Author Artice List');
-		$typesl[6] = JHTML::_('select.option',  'authors','Authors List');
-		$typesl[7] = JHTML::_('select.option',  'dload','Download');
-		$typesl[8] = JHTML::_('select.option',  'media','Media');
+		$this->typesl[1] = JHTML::_('select.option',  'article','Article Page');
+		$this->typesl[2] = JHTML::_('select.option',  'author','Author Page');
+		$this->typesl[3] = JHTML::_('select.option',  'seclist','Section Artice List');
+		$this->typesl[4] = JHTML::_('select.option',  'catlist','Category Artice List');
+		$this->typesl[5] = JHTML::_('select.option',  'autlist','Author Artice List');
+		$this->typesl[6] = JHTML::_('select.option',  'authors','Authors List');
+		$this->typesl[7] = JHTML::_('select.option',  'dload','Download');
+		$this->typesl[8] = JHTML::_('select.option',  'media','Media');
 		
 		$this->model = $this->getModel();
 		$this->items = $this->get('Items');
@@ -27,15 +28,8 @@ class MAMSViewStats extends JViewLegacy
 		$tbar = JToolBar::getInstance('toolbar');
 		$tbar->appendButton('Link','archive','Export CSV','index.php?option=com_mams&view=stats&format=csv');
 		
-		//Sidebar Filters
-		JHtmlSidebar::setAction('index.php?option=com_mams&view=articles');
-		JHtmlSidebar::addFilter(JText::_('Item Type'),'filter_type',JHtml::_('select.options', $typesl, 'value', 'text', $this->model->getState('filter_type')));
-		if ($this->config->mue) {
-			JHtmlSidebar::addFilter(JText::_('User Group'),'filter_group',JHtml::_('select.options', $this->get('UserGroups'), 'value', 'text', $this->model->getState('filter.group')));
-		}
-		
 		//Sidebar Menu
-		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
+		if (JVersion::MAJOR_VERSION == 3)  MAMSHelper::addSubmenu($jinput->getVar('view'),$jinput->getVar('extension', 'com_mams'));
 		$this->sidebar = JHtmlSidebar::render();	
 		
 		parent::display($tpl);

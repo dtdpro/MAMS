@@ -6,29 +6,23 @@ jimport('joomla.application.component.modellist');
 
 class MAMSModelCats extends JModelList
 {
-	
 	public function __construct($config = array())
 	{
-		
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
 				'cat_added', 'c.cat_added',
 				'cat_modified', 'c.cat_modified',
 				'cat_title', 'c.cat_title',
 				'cat_id','c.cat_id',
-                'cat_items','c.cat_items',
-				'access','c.access',
+				'access','c.access','state',
 				'published','c.published',
 				'lft', 'c.lft',
-				'rgt', 'c.rgt',
-				'level', 'c.level',
-				'path', 'c.path',
 			);
 		}
 		parent::__construct($config);
 	}
 	
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'c.lft', $direction = 'asc')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -47,7 +41,7 @@ class MAMSModelCats extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('c.lft', 'asc');
+		parent::populateState($ordering, $direction);
 	}
 	
 	protected function getListQuery() 
@@ -92,15 +86,16 @@ class MAMSModelCats extends JModelList
 		}
 
 		// Add the list ordering clause
-		$listOrdering = $this->getState('list.ordering', 'c.lft');
-		$listDirn = $db->escape($this->getState('list.direction', 'ASC'));
-		if ($listOrdering == 'c.access')
+		$orderCol  = $this->state->get('list.ordering', 'c.lft');
+		$orderDirn = $this->state->get('list.direction', 'ASC');
+
+		if ($orderCol == 'c.access')
 		{
-			$query->order('c.access ' . $listDirn . ', c.lft ' . $listDirn);
+			$query->order('c.access ' . $orderDirn . ', c.lft ' . $orderDirn);
 		}
 		else
 		{
-			$query->order($db->escape($listOrdering) . ' ' . $listDirn);
+			$query->order($db->escape($orderCol) . ' ' . $orderDirn);
 		}
 				
 		return $query;
@@ -125,7 +120,7 @@ class MAMSModelCats extends JModelList
 		try
 		{
 			// Load the list items and add the items to the internal cache.
-			$this->cache[$store] = $this->_getList($this->_getListQuery(), $this->getStart(), $this->getState('list.limit'));
+			$items = $this->_getList($this->_getListQuery(), $this->getStart(), $this->getState('list.limit'));
 		}
 		catch (RuntimeException $e)
 		{
@@ -137,7 +132,7 @@ class MAMSModelCats extends JModelList
 		$allist = $this->getAccessLevelList();
 
 		// Create a string of the access levels available
-		foreach ($this->cache[$store] as &$i) {
+		foreach ($items as &$i) {
 			$alevels = explode(",",$i->cat_feataccess);
 			$leveltext = array();
 			foreach ( $alevels as $a ) {
@@ -148,6 +143,7 @@ class MAMSModelCats extends JModelList
 			$i->feataccess_level = implode(", ",$leveltext);
 		}
 
+		$this->cache[$store] = $items;
 		return $this->cache[$store];
 	}
 

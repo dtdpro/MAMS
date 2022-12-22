@@ -4,12 +4,40 @@
 		<message>Author article list</message>
 	</layout>
 	<!-- Add fields to the request variables for the layout. -->
-	<fields name="request" addfieldpath="administrator/components/com_mams/models/fields">
+	<fields name="request">
 		<fieldset name="request">
-			<field name="secid" type="Secs" description="COM_MAMS_FIELD_SELECT_SEC_DESC" label="COM_MAMS_FIELD_SELECT_SEC_LABEL" multiple="true" mamssec="article" />
+			<field
+					name="secid"
+					type="sql"
+					description="COM_MAMS_FIELD_SELECT_SEC_DESC"
+					label="COM_MAMS_FIELD_SELECT_SEC_LABEL"
+					required="true"
+					multiple="true"
+					sql_select="CONCAT(sec_id,':',sec_alias) AS value, sec_name AS text"
+					sql_from="#__mams_secs"
+					sql_where="sec_type = 'article'"
+					sql_order="sec_name ASC"
+					key_field="value"
+					value_field="text"
+					layout="joomla.form.field.list-fancy-select"
+			/>
 		</fieldset>
 		<fieldset name="request">
-			<field name="autid" type="Authors" description="COM_MAMS_FIELD_SELECT_AUT_DESC" label="COM_MAMS_FIELD_SELECT_AUT_LABEL" required="true" multiple="true" />
+			<field
+					name="autid"
+					type="sql"
+					description="COM_MAMS_FIELD_SELECT_AUT_DESC"
+					label="COM_MAMS_FIELD_SELECT_AUT_LABEL"
+					required="true"
+					multiple="true"
+					sql_select="CONCAT(auth_id,':',auth_alias) AS value, CONCAT(auth.auth_fname,IF(auth.auth_mi != '',CONCAT(' ',auth.auth_mi),''),' ',auth.auth_lname,IF(auth.auth_titles != '',CONCAT(', ',auth.auth_titles),''))   AS text"
+					sql_from="#__mams_authors as auth"
+					sql_where="auth_mirror = 0"
+					sql_order="auth_lname ASC"
+					key_field="value"
+					value_field="text"
+					layout="joomla.form.field.list-fancy-select"
+			/>
 		</fieldset>
 	</fields>
 	<fields name="params">

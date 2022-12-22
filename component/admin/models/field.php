@@ -66,14 +66,15 @@ class MAMSModelField extends JModelAdmin
 	
 	protected function preprocessForm(JForm $form, $data, $group = 'content')
 	{
+		parent::preprocessForm($form,$data,$group);
 		// Import the appropriate plugin group.
-		JPluginHelper::importPlugin($group);
+		//JPluginHelper::importPlugin($group);
 	
 		// Get the dispatcher.
-		$dispatcher = JEventDispatcher::getInstance();
+		//$dispatcher = JEventDispatcher::getInstance();
 	
 		// Trigger the form preparation event.
-		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));
+		//$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));
 		
 		//Disallow editing of primary fields
 		if ($data->field_id <= 50 && $data->field_id != 0) {
@@ -95,7 +96,7 @@ class MAMSModelField extends JModelAdmin
 		}
 	
 		// Check for errors encountered while preparing the form.
-		if (count($results) && in_array(false, $results, true))
+		/*if (count($results) && in_array(false, $results, true))
 		{
 			// Get the last error.
 			$error = $dispatcher->getError();
@@ -104,7 +105,7 @@ class MAMSModelField extends JModelAdmin
 			{
 				throw new Exception($error);
 			}
-		}
+		}*/
 	}
 	
 	protected function prepareTable($table)

@@ -29,7 +29,7 @@ class JFormFieldFieldGroups extends JFormField
 				' WHERE group_id != 1' .
 				' ORDER BY ordering';
 		$db->setQuery($query);
-		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
+		$html[] = '<select name="'.$this->name.'" '.$attr.'>';
 		$html[] = JHtml::_('select.options',$db->loadObjectList(),"value","text",$this->value);
 		$html[] = '</select>';		
 

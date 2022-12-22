@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>2.9.0</version>
+	<version>2.10.0</version>
 	<description>MOD_MAMSCAT_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamscat">mod_mamscat.php</filename>
@@ -22,8 +22,21 @@
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
-				<field name="catid" type="Cats" description="MOD_MAMSCAT_CAT_DESC" label="MOD_MAMSCAT_CAT_LABEL" required="true" />
+			<fieldset name="basic">
+				<field
+						name="catid"
+						type="sql"
+						description="MOD_MAMSCAT_CAT_DESC"
+						label="MOD_MAMSCAT_CAT_LABEL"
+						required="true"
+						multiple="true"
+						sql_select="CONCAT(cat_id,':',cat_alias) AS value, cat_title AS text"
+						sql_from="#__mams_cats"
+						sql_order="cat_title ASC"
+						key_field="value"
+						value_field="text"
+						layout="joomla.form.field.list-fancy-select"
+				/>
 				<field name="articles_byrow" class="btn-group" type="radio" description="MOD_MAMSCAT_FIELD_ARTICLES_BYROW_DESC" label="MOD_MAMSCAT_FIELD_ARTICLES_BYROW_LABEL" default="1">
 					<option value="1">1</option>
 					<option value="2">2</option>

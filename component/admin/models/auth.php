@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
+
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
@@ -51,7 +53,7 @@ class MAMSModelAuth extends JModelAdmin
 	
 		// Convert to the JObject before adding other data.
 		$properties = $table->getProperties(1);
-		$item = JArrayHelper::toObject($properties, 'JObject');
+		$item = ArrayHelper::toObject($properties, 'JObject');
 		
 		//Tags
 		if (!empty($item->auth_id))
@@ -127,7 +129,7 @@ class MAMSModelAuth extends JModelAdmin
     {
         // Sanitize user ids.
         $pks = array_unique($pks);
-        JArrayHelper::toInteger($pks);
+        ArrayHelper::toInteger($pks);
 
         // Remove any values of zero.
         if (array_search(0, $pks, true))

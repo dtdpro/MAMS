@@ -13,18 +13,22 @@ class MAMSViewMedias extends JViewLegacy
 	
 	function display($tpl = null) 
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		$this->state		= $this->get('State');
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
-		
-		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
-		
-		if (count($errors = $this->get('Errors'))) 
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+
+		if (JVersion::MAJOR_VERSION == 3)  MAMSHelper::addSubmenu($jinput->getVar('view'),$jinput->getVar('extension', 'com_mams'));
+
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		
+
 		$this->addToolBar();
 		$this->sidebar = JHtmlSidebar::render();
 
@@ -49,17 +53,11 @@ class MAMSViewMedias extends JViewLegacy
 		} else  {
 			JToolBarHelper::trash('medias.trash');
 		}
-		
-		JHtmlSidebar::setAction('index.php?option=com_mams&view=medias');
-		
-		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
-		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_ACCESS'),'filter_access',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')));
 	}
 	
 	protected function getSortFields()
 	{
 		return array(
-				'm.published' => JText::_('JSTATUS'),
 				'm.med_inttitle' => JText::_('COM_MAMS_MEDIA_HEADING_NAME'),
 				'm.access' => JText::_('JGRID_HEADING_ACCESS'),
 				'm.med_added' => JText::_('COM_MAMS_MEDIA_ADDED'),

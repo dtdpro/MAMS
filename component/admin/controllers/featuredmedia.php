@@ -1,9 +1,9 @@
 <?php
-
 defined('_JEXEC') or die;
 
-require_once dirname(__FILE__).'/medias.php';
+use Joomla\Utilities\ArrayHelper;
 
+require_once dirname(__FILE__).'/medias.php';
 
 class MAMSControllerFeaturedMedia extends MAMSControllerMedias
 {
@@ -48,8 +48,8 @@ class MAMSControllerFeaturedMedia extends MAMSControllerMedias
 		$order = $this->input->post->get('order', array(), 'array');
 	
 		// Sanitize the input
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
+		ArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($order);
 	
 		// Get the model
 		$model = $this->getModel();

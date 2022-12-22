@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
+
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
@@ -46,6 +48,7 @@ class MAMSModelImage extends JModelAdmin
 
 	protected function loadFormData() 
 	{
+		$jinput = JFactory::getApplication()->input;
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_mams.edit.image.data', array());
 		if (empty($data)) 
@@ -53,7 +56,7 @@ class MAMSModelImage extends JModelAdmin
 			$data = $this->getItem();
 			if ($this->getState('image.img_id') == 0) {
 				$app = JFactory::getApplication();
-				$data->set('img_extension', JRequest::getString('img_extension', $app->getUserState('com_mams.images.filter.extension')));
+				$data->set('img_extension', $jinput->get('img_extension', $app->getUserState('com_mams.images.filter.extension')));
 				
 			}
 		}
@@ -94,7 +97,7 @@ class MAMSModelImage extends JModelAdmin
 	{
 		// Sanitize user ids.
 		$pks = array_unique($pks);
-		JArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($pks);
 	
 		// Remove any values of zero.
 		if (array_search(0, $pks, true))

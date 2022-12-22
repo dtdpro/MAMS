@@ -20,14 +20,14 @@ class MAMSViewAuthor extends JViewLegacy
 		if ($aut) { $layout="default"; $this->setLayout('default;'); }
 		
 		switch($layout) {
-			case "default": 
+			case "default":
 				$err=$this->showAuthor($aut);
+				$this->_prepareTitle();
 				break;
 			case "list": 
 				$err=$this->listAuthors();
 				break;
 		}
-		$this->_prepareTitle();
 		if ($err) parent::display($tpl);
 		else return false;
 	}

@@ -2,11 +2,11 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
-// load tooltip behavior
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
+if (JVersion::MAJOR_VERSION == 3) JHtml::_('bootstrap.tooltip');
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Layout\LayoutHelper;
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -15,10 +15,14 @@ $trashed	= $this->state->get('filter.published') == -2 ? true : false;
 $saveOrder = ($listOrder == 'f.ordering');
 $published = $this->state->get('filter.published');
 if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option=com_mams&task=fields.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'MAMSFieldList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	if (JVersion::MAJOR_VERSION == 3) {
+		$saveOrderingUrl = 'index.php?option=com_mams&task=fields.saveOrderAjax&tmpl=component';
+		JHtml::_('sortablelist.sortable', 'MAMSFieldList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	} else {
+		$saveOrderingUrl = 'index.php?option=com_mams&task=fields.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+		HTMLHelper::_('draggablelist.draggable');
+	}
 }
-
 
 ?>
 <script type="text/javascript">
@@ -47,12 +51,10 @@ if ($saveOrder) {
 <?php else : ?>
 	<div id="j-main-container">
 <?php endif;?>
-	<div id="filter-bar" class="btn-toolbar">
-		<div class="btn-group pull-right hidden-phone">
-			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
-	</div>
+    <?php
+    // Search tools bar
+    echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+    ?>
 	
 	<div class="clearfix"> </div>
 	
@@ -91,9 +93,9 @@ if ($saveOrder) {
 		
 		</thead>
 		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
-		<tbody>
+        <tbody <?php if (JVersion::MAJOR_VERSION == 4) { ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php } ?>>
 		<?php foreach($this->items as $i => $item): ?>
-			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="field">
+            <tr class="row<?php echo $i % 2; ?>" <?php if (JVersion::MAJOR_VERSION == 3) { ?>sortable-group-id="field" <?php } else { ?>data-draggable-group="field"<?php } ?>>
 				<td class="order nowrap center hidden-phone">
 					<?php 
 					$disableClassName = '';

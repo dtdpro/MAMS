@@ -12,7 +12,7 @@ class MAMSModelFieldgroups extends JModelList
 		
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'ordering', 'g.ordering'
+				'ordering', 'g.ordering','state','access'
 			);
 		}
 		parent::__construct($config);
@@ -28,6 +28,9 @@ class MAMSModelFieldgroups extends JModelList
 
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
+
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
 		
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mams');
@@ -64,6 +67,17 @@ class MAMSModelFieldgroups extends JModelList
 			$query->where('g.published = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(g.published IN (0, 1))');
+		}
+
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('g.group_id = '.(int) substr($search, 3));
+			} else {
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+				$query->where('(g.group_title LIKE '.$search.' OR g.group_name LIKE '.$search.')');
+			}
 		}
 		
 		$orderCol	= $this->state->get('list.ordering');

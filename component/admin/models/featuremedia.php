@@ -32,7 +32,7 @@ class MAMSModelFeaturemedia extends MAMSModelMedia
 		$query->from('#__mams_mediafeat');
 		$query->where('mf_id IN ('.implode(",",$pks).")");
 		$db->setQuery((string)$query);
-		if (!$db->query()) {
+		if (!$db->execute()) {
 			$this->setError($db->getErrorMsg());
 			return false;
 		}

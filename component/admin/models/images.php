@@ -16,7 +16,7 @@ class MAMSModelImages extends JModelList
 				'img_modified', 'i.img_modified',
 				'img_inttitle', 'i.img_inttitle',
 				'img_id', 'i.img_id',
-				'published', 'i.published',
+				'published', 'i.published','state',
 				'access', 'i.access',
 				'ordering', 'i.ordering',
 			);
@@ -38,8 +38,8 @@ class MAMSModelImages extends JModelList
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 		
-		$secId = $this->getUserStateFromRequest($this->context.'.filter.sec', 'filter_sec', null, 'int');
-		$this->setState('filter.sec', $secId);
+		/*$secId = $this->getUserStateFromRequest($this->context.'.filter.sec', 'filter_sec', null, 'int');
+		$this->setState('filter.sec', $secId);*/
 		
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -72,10 +72,10 @@ class MAMSModelImages extends JModelList
 		$query->select('s.sec_name');
 		$query->join('LEFT', '#__mams_secs AS s ON s.sec_id = i.img_sec');
 		
-		// Filter by section.
+		/*// Filter by section.
 		if ($sec = $this->getState('filter.sec')) {
 			$query->where('a.auth_sec = '.(int) $sec);
-		}
+		}*/
 		
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
@@ -102,7 +102,7 @@ class MAMSModelImages extends JModelList
 				$query->where('i.img_id = '.(int) substr($search, 3));
 			} else {
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
-				$query->where('(i.img_title LIKE '.$search.' OR i.img_full LIKE '.$search.' OR i.img_thumb LIKE '.$search.')');
+				$query->where('(i.img_exttitle LIKE '.$search.' OR i.img_inttitle LIKE '.$search.' OR i.img_full LIKE '.$search.' OR i.img_thumb LIKE '.$search.')');
 			}
 		}
 		

@@ -121,7 +121,7 @@ class MAMSTableSec extends JTable
 		if (empty($this->sec_alias)) {
 			$this->sec_alias = $this->sec_name;
 		}
-		$this->sec_alias = JApplication::stringURLSafe($this->sec_alias);
+		$this->sec_alias = JApplicationHelper::stringURLSafe($this->sec_alias);
 		if (trim(str_replace('-','',$this->sec_alias)) == '') {
 			$this->sec_alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}

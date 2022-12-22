@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
+
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
@@ -98,14 +100,6 @@ class MAMSModelArticle extends JModelAdmin
 			$form->setFieldAttribute('publish_down', 'filter', 'unset');
 			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
-
-        if (!$cfg->edit_auths) {
-            $form->removefield('auths');
-        }
-
-		if (!$cfg->edit_tags) {
-			$form->removefield('tags');
-		}
 		
 		return $form;
 	}
@@ -130,13 +124,61 @@ class MAMSModelArticle extends JModelAdmin
 	
 		// Convert to the JObject before adding other data.
 		$properties = $table->getProperties(1);
-		$item = JArrayHelper::toObject($properties, 'JObject');
+		$item = ArrayHelper::toObject($properties, 'JObject');
 	
 		if (property_exists($item, 'art_fielddata'))
 		{
 			$registry = new JRegistry;
 			$registry->loadString($item->art_fielddata);
 			$item->art_fielddata = $registry->toArray();
+
+			$groups = $this->getAdditionalFields();
+			foreach ($groups as &$g) {
+				foreach ( $g->fields as $f ) {
+					switch ( $f->field_type ) {
+						case "auths":
+							$item->art_fielddata[$f->field_name] = [];
+							foreach ($this->getAuthors($item->art_id,$f->field_id) as $a) {
+								$addAuth = new stdClass();
+								$addAuth->auth = $a;
+								$item->art_fielddata[$f->field_name][] = $addAuth;
+							}
+							break;
+						case "media":
+							$item->art_fielddata[$f->field_name] = [];
+							foreach ($this->getMedias($item->art_id,$f->field_id) as $a) {
+								$addMedia = new stdClass();
+								$addMedia->media = $a;
+								$item->art_fielddata[$f->field_name][] = $addMedia;
+							}
+							break;
+						case "images":
+							$item->art_fielddata[$f->field_name] = [];
+							foreach ($this->getImages($item->art_id,$f->field_id) as $a) {
+								$addImage = new stdClass();
+								$addImage->image = $a;
+								$item->art_fielddata[$f->field_name][] = $addImage;
+							}
+							break;
+						case "dloads":
+							$item->art_fielddata[$f->field_name] = [];
+							foreach ($this->getDloads($item->art_id,$f->field_id) as $a) {
+								$addDload = new stdClass();
+								$addDload->dload = $a;
+								$item->art_fielddata[$f->field_name][] = $addDload;
+							}
+							break;
+						case "links":
+							$item->art_fielddata[$f->field_name] = [];
+							foreach ($this->getLinks($item->art_id,$f->field_id) as $a) {
+								$addLink = new stdClass();
+								$addLink->link = $a;
+								$item->art_fielddata[$f->field_name][] = $addLink;
+							}
+							break;
+					}
+				}
+			}
 		}
 		
 		if (property_exists($item, 'params'))
@@ -151,11 +193,16 @@ class MAMSModelArticle extends JModelAdmin
 		$registry->loadString($item->metadata);
 		$item->metadata = $registry->toArray();
 		
-		//Tags
+		//Taxonomy
 		if (!empty($item->art_id))
 		{
 			//Tags
-			$item->tags = $this->getTags($item->art_id);
+			$item->tags = [];
+			foreach ($this->getTags($item->art_id) as $t) {
+				$addTag = new stdClass();
+				$addTag->tag = $t;
+				$item->tags[] = $addTag;
+			}
 				
 			//Cats
 			$item->cats = [];
@@ -166,7 +213,44 @@ class MAMSModelArticle extends JModelAdmin
 			}
 
 			//Authors
-			$item->authors = $this->getAuthors($item->art_id);
+			$item->authors = [];
+			foreach ($this->getAuthors($item->art_id) as $a) {
+				$addAuth = new stdClass();
+				$addAuth->auth = $a;
+				$item->authors[] = $addAuth;
+			}
+
+			//Medias
+			$item->medias = [];
+			foreach ($this->getMedias($item->art_id,6) as $a) {
+				$addMedia = new stdClass();
+				$addMedia->media = $a;
+				$item->medias[] = $addMedia;
+			}
+
+			//Images
+			$item->images = [];
+			foreach ($this->getImages($item->art_id,10) as $a) {
+				$addImage = new stdClass();
+				$addImage->image = $a;
+				$item->images[] = $addImage;
+			}
+
+			//Downloads
+			$item->dloads = [];
+			foreach ($this->getDloads($item->art_id,7) as $a) {
+				$addDload = new stdClass();
+				$addDload->dload = $a;
+				$item->dloads[] = $addDload;
+			}
+
+			//Links
+			$item->links = [];
+			foreach ($this->getLinks($item->art_id,8) as $a) {
+				$addLink = new stdClass();
+				$addLink->link = $a;
+				$item->links = $addLink;
+			}
 		}
 
 		if ($item->art_publish_down == "0000-00-00") {
@@ -179,12 +263,8 @@ class MAMSModelArticle extends JModelAdmin
 	public function delete(&$pks)
 	{
 		$db	= $this->getDbo();
-		$dispatcher = JEventDispatcher::getInstance();
 		$pks = (array) $pks;
 		$table = $this->getTable();
-
-		// Include the plugins for the delete events.
-		JPluginHelper::importPlugin($this->events_map['delete']);
 
 		// Iterate the items to delete each one.
 		foreach ($pks as $i => $pk)
@@ -194,9 +274,6 @@ class MAMSModelArticle extends JModelAdmin
 				if ($this->canDelete($table))
 				{
 					$context = $this->option . '.' . $this->name;
-
-					// Trigger the before delete event.
-					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
 
 					//Cats
 					$query	= $db->getQuery(true);
@@ -254,22 +331,12 @@ class MAMSModelArticle extends JModelAdmin
                     $db->setQuery((string)$query);
                     $db->execute();
 
-					if (in_array(false, $result, true))
-					{
-						$this->setError($table->getError());
-
-						return false;
-					}
-
 					if (!$table->delete($pk))
 					{
 						$this->setError($table->getError());
 
 						return false;
 					}
-
-					// Trigger the after event.
-					$dispatcher->trigger($this->event_after_delete, array($context, $table));
 				}
 				else
 				{
@@ -309,16 +376,12 @@ class MAMSModelArticle extends JModelAdmin
 	public function save($data)
 	{
 		$db	= $this->getDbo();
-		$dispatcher = JEventDispatcher::getInstance();
 		$table = $this->getTable();
 		$cfg = MAMSHelper::getConfig();
 		
 		$key = $table->getKeyName();
 		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
 		$isNew = true;
-		
-		// Include the content plugins for the on save events.
-		JPluginHelper::importPlugin('content');
 		
 		// Allow an exception to be thrown.
 		try
@@ -348,15 +411,6 @@ class MAMSModelArticle extends JModelAdmin
 				return false;
 			}
 		
-			// Trigger the onContentBeforeSave event.
-			$result = $dispatcher->trigger($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew));
-		
-			if (in_array(false, $result, true))
-			{
-				$this->setError($table->getError());
-				return false;
-			}
-		
 			// Store the data.
 			if (!$table->store())
 			{
@@ -366,9 +420,6 @@ class MAMSModelArticle extends JModelAdmin
 		
 			// Clean the cache.
 			$this->cleanCache();
-		
-			// Trigger the onContentAfterSave event.
-			$dispatcher->trigger($this->event_after_save, array($this->option . '.' . $this->name, $table, $isNew));
 		}
 		catch (Exception $e)
 		{
@@ -386,74 +437,286 @@ class MAMSModelArticle extends JModelAdmin
 		$this->setState($this->getName() . '.new', $isNew);
 
         //Cats
-        //if ($cfg->edit_cats) {
-            $query = $db->getQuery(true);
-            $query->delete();
-            $query->from('#__mams_artcat');
-            $query->where('ac_art = ' . $table->art_id);
-            $db->setQuery((string)$query);
-            $db->query();
-            if ((!empty($data['cats']))) { // && $data['cats'][0]->cat != ''
-                $actable = $this->getTable("Artcat", "MAMSTable");
-                $order = 0;
-                foreach ($data['cats'] as $cat) {
-                    $actable->ac_id = 0;
-                    $actable->ac_cat = $cat['cat'];
-                    $actable->ac_art = $table->art_id;
-                    $actable->published = 1;
-                    $actable->ordering = $order;
-                    $actable->store();
-                    $order++;
-                }
+        $query = $db->getQuery(true);
+        $query->delete();
+        $query->from('#__mams_artcat');
+        $query->where('ac_art = ' . $table->art_id);
+        $db->setQuery((string)$query);
+        $db->execute();
+        if ((!empty($data['cats']))) { // && $data['cats'][0]->cat != ''
+            $actable = $this->getTable("Artcat", "MAMSTable");
+            $order = 0;
+            foreach ($data['cats'] as $cat) {
+                $actable->ac_id = 0;
+                $actable->ac_cat = $cat['cat'];
+                $actable->ac_art = $table->art_id;
+                $actable->published = 1;
+                $actable->ordering = $order;
+                $actable->store();
+                $order++;
             }
-        //}
+        }
 
 		//Tags
-		if ($cfg->edit_tags) {
-			$query = $db->getQuery(true);
-			$query->delete();
-			$query->from('#__mams_arttag');
-			$query->where('at_art = ' . $table->art_id);
-			$db->setQuery((string)$query);
-			$db->query();
-			if ((!empty($data['tags']) && $data['tags'][0] != '')) {
-				$actable = $this->getTable("Arttag", "MAMSTable");
-				$order = 0;
-				foreach ($data['tags'] as $tag) {
-					$actable->at_id = 0;
-					$actable->at_tag = $tag;
-					$actable->at_art = $table->art_id;
-					$actable->published = 1;
-					$actable->ordering = $order;
-					$actable->store();
-					$order++;
-				}
+		$query = $db->getQuery(true);
+		$query->delete();
+		$query->from('#__mams_arttag');
+		$query->where('at_art = ' . $table->art_id);
+		$db->setQuery((string)$query);
+		$db->execute();
+		if ((!empty($data['tags']))) {// && $data['tags'][0] != ''
+			$actable = $this->getTable("Arttag", "MAMSTable");
+			$order = 0;
+			foreach ($data['tags'] as $tag) {
+				$actable->at_id = 0;
+				$actable->at_tag = $tag['tag'];
+				$actable->at_art = $table->art_id;
+				$actable->published = 1;
+				$actable->ordering = $order;
+				$actable->store();
+				$order++;
 			}
 		}
 
         //Authors
-        if ($cfg->edit_auths) {
-            $query = $db->getQuery(true);
-            $query->delete();
-            $query->from('#__mams_artauth');
-            $query->where('aa_art = ' . $table->art_id);
-            $query->where('aa_field = 5');
-            $db->setQuery((string)$query);
-            $db->query();
-            if ((!empty($data['authors']) && $data['authors'][0] != '')) {
-                $aatable = $this->getTable("Artauth", "MAMSTable");
-                $order = 0;
-                foreach ($data['authors'] as $auth) {
-                    $aatable->aa_id = 0;
-                    $aatable->aa_auth = $auth;
-                    $aatable->aa_art = $table->art_id;
-                    $aatable->published = 1;
-                    $aatable->ordering = $order;
-                    $aatable->store();
-                    $order++;
-                }
+        $query = $db->getQuery(true);
+        $query->delete();
+        $query->from('#__mams_artauth');
+        $query->where('aa_art = ' . $table->art_id);
+        $query->where('aa_field = 5');
+        $db->setQuery((string)$query);
+        $db->execute();
+        if ((!empty($data['authors']))) {//&& $data['authors'][0] != ''
+            $aatable = $this->getTable("Artauth", "MAMSTable");
+            $order = 0;
+            foreach ($data['authors'] as $auth) {
+                $aatable->aa_id = 0;
+                $aatable->aa_auth = $auth['auth'];
+                $aatable->aa_art = $table->art_id;
+                $aatable->published = 1;
+                $aatable->ordering = $order;
+                $aatable->store();
+                $order++;
             }
         }
+
+		//Medias
+		$query = $db->getQuery(true);
+		$query->delete();
+		$query->from('#__mams_artmed');
+		$query->where('am_art = ' . $table->art_id);
+		$query->where('am_field = 6');
+		$db->setQuery((string)$query);
+		$db->execute();
+		if ((!empty($data['medias']))) {
+			$amtable = $this->getTable("Artmed", "MAMSTable");
+			$order = 0;
+			foreach ($data['medias'] as $media) {
+				$amtable->am_id = 0;
+				$amtable->am_media = $media['media'];
+				$amtable->am_art = $table->art_id;
+				$amtable->am_field = 6;
+				$amtable->published = 1;
+				$amtable->ordering = $order;
+				$amtable->store();
+				$order++;
+			}
+		}
+
+		//Images
+		$query = $db->getQuery(true);
+		$query->delete();
+		$query->from('#__mams_artimg');
+		$query->where('ai_art = ' . $table->art_id);
+		$query->where('ai_field = 10');
+		$db->setQuery((string)$query);
+		$db->execute();
+		if ((!empty($data['images']))) {
+			$aitable = $this->getTable("Artimg", "MAMSTable");
+			$order = 0;
+			foreach ($data['images'] as $image) {
+				$aitable->ai_id = 0;
+				$aitable->ai_image = $image['image'];
+				$aitable->ai_art = $table->art_id;
+				$aitable->ai_field = 10;
+				$aitable->published = 1;
+				$aitable->ordering = $order;
+				$aitable->store();
+				$order++;
+			}
+		}
+
+		//Downlaods
+		$query = $db->getQuery(true);
+		$query->delete();
+		$query->from('#__mams_artdl');
+		$query->where('ad_art = ' . $table->art_id);
+		$query->where('ad_field = 7');
+		$db->setQuery((string)$query);
+		$db->execute();
+		if ((!empty($data['dloads']))) {
+			$adtable = $this->getTable("Artdload", "MAMSTable");
+			$order = 0;
+			foreach ($data['dloads'] as $dload) {
+				$adtable->ad_id = 0;
+				$adtable->ad_dload = $dload['dload'];
+				$adtable->ad_art = $table->art_id;
+				$adtable->ad_field = 7;
+				$adtable->published = 1;
+				$adtable->ordering = $order;
+				$adtable->store();
+				$order++;
+			}
+		}
+
+		//Links
+		$query = $db->getQuery(true);
+		$query->delete();
+		$query->from('#__mams_artlinks');
+		$query->where('al_art = ' . $table->art_id);
+		$query->where('al_field = 8');
+		$db->setQuery((string)$query);
+		$db->execute();
+		if ((!empty($data['links']))) {
+			$altable = $this->getTable("Artlink", "MAMSTable");
+			$order = 0;
+			foreach ($data['links'] as $link) {
+				$altable->al_id = 0;
+				$altable->al_link = $link['link'];
+				$altable->al_art = $table->art_id;
+				$altable->al_field = 8;
+				$altable->published = 1;
+				$altable->ordering = $order;
+				$altable->store();
+				$order++;
+			}
+		}
+
+		$groups = $this->getAdditionalFields();
+		foreach ($groups as &$g) {
+			foreach ( $g->fields as $f ) {
+				switch ( $f->field_type ) {
+					case "auths":
+						$query = $db->getQuery(true);
+						$query->delete();
+						$query->from('#__mams_artauth');
+						$query->where('aa_art = ' . $table->art_id);
+						$query->where('aa_field = '.$f->field_id);
+						$db->setQuery((string)$query);
+						$db->execute();
+						if ((!empty($data['art_fielddata'][$f->field_name]))) {
+							$aatable = $this->getTable("Artauth", "MAMSTable");
+							$order = 0;
+							foreach ($data['art_fielddata'][$f->field_name] as $auth) {
+								$aatable->aa_id = 0;
+								$aatable->aa_auth = $auth['auth'];
+								$aatable->aa_art = $table->art_id;
+								$aatable->aa_field = $f->field_id;
+								$aatable->published = 1;
+								$aatable->ordering = $order;
+								$aatable->store();
+								$order++;
+							}
+						}
+						unset($data['art_fielddata'][$f->field_name]);
+						break;
+					case "media":
+						$query = $db->getQuery(true);
+						$query->delete();
+						$query->from('#__mams_artmed');
+						$query->where('am_art = ' . $table->art_id);
+						$query->where('am_field = '.$f->field_id);
+						$db->setQuery((string)$query);
+						$db->execute();
+						if ((!empty($data['art_fielddata'][$f->field_name]))) {
+							$aatable = $this->getTable("Artmed", "MAMSTable");
+							$order = 0;
+							foreach ($data['art_fielddata'][$f->field_name] as $media) {
+								$aatable->am_id = 0;
+								$aatable->am_media = $media['media'];
+								$aatable->am_art = $table->art_id;
+								$aatable->am_field = $f->field_id;
+								$aatable->published = 1;
+								$aatable->ordering = $order;
+								$aatable->store();
+								$order++;
+							}
+						}
+						unset($data['art_fielddata'][$f->field_name]);
+						break;
+					case "images":
+						$query = $db->getQuery(true);
+						$query->delete();
+						$query->from('#__mams_artimg');
+						$query->where('ai_art = ' . $table->art_id);
+						$query->where('ai_field = '.$f->field_id);
+						$db->setQuery((string)$query);
+						$db->execute();
+						if ((!empty($data['art_fielddata'][$f->field_name]))) {
+							$aitable = $this->getTable("Artimg", "MAMSTable");
+							$order = 0;
+							foreach ($data['art_fielddata'][$f->field_name] as $image) {
+								$aitable->ai_id = 0;
+								$aitable->ai_image = $image['image'];
+								$aitable->ai_art = $table->art_id;
+								$aitable->ai_field = $f->field_id;
+								$aitable->published = 1;
+								$aitable->ordering = $order;
+								$aitable->store();
+								$order++;
+							}
+						}
+						unset($data['art_fielddata'][$f->field_name]);
+						break;
+					case "dloads":
+						$query = $db->getQuery(true);
+						$query->delete();
+						$query->from('#__mams_artdl');
+						$query->where('ad_art = ' . $table->art_id);
+						$query->where('ad_field = '.$f->field_id);
+						$db->setQuery((string)$query);
+						$db->execute();
+						if ((!empty($data['art_fielddata'][$f->field_name]))) {
+							$adtable = $this->getTable("Artdload", "MAMSTable");
+							$order = 0;
+							foreach ($data['art_fielddata'][$f->field_name] as $dload) {
+								$adtable->ad_id = 0;
+								$adtable->ad_dload = $dload['dload'];
+								$adtable->ad_art = $table->art_id;
+								$adtable->ad_field = $f->field_id;
+								$adtable->published = 1;
+								$adtable->ordering = $order;
+								$adtable->store();
+								$order++;
+							}
+						}
+						break;
+					case "links":
+						$query = $db->getQuery(true);
+						$query->delete();
+						$query->from('#__mams_artlinks');
+						$query->where('al_art = ' . $table->art_id);
+						$query->where('al_field = '.$f->field_id);
+						$db->setQuery((string)$query);
+						$db->execute();
+						if ((!empty($data['art_fielddata'][$f->field_name]))) {
+							$altable = $this->getTable("Artlink", "MAMSTable");
+							$order = 0;
+							foreach ($data['art_fielddata'][$f->field_name] as $link) {
+								$altable->al_id = 0;
+								$altable->al_link = $link['link'];
+								$altable->al_art = $table->art_id;
+								$altable->al_field = $f->field_id;
+								$altable->published = 1;
+								$altable->ordering = $order;
+								$altable->store();
+								$order++;
+							}
+						}
+						break;
+				}
+			}
+		}
 		
 		return true;
 	}
@@ -506,9 +769,40 @@ class MAMSModelArticle extends JModelAdmin
 			$formxml.='<field name="show_'.$g->group_name.'" type="radio" label="Show '.$g->group_title.'" class="btn-group" default="0"><option value="1">Yes</option><option value="0">No</option></field>';
 			foreach ($g->fields as $f) {
 				switch ($f->field_type) {
-					case "textfield": $formxml .=  '<field name="'.$f->field_name.'" type="text" default="" label="'.$f->field_title.'" description="" />'; break;
-					case "textbox": $formxml .=  '<field name="'.$f->field_name.'" type="textarea" default="" label="'.$f->field_title.'" description="" filter="safehtml"/>'; break;
-					case "editor": $formxml .=  '<field name="'.$f->field_name.'" label ="'.$f->field_title.'" type="editor" filter="raw" />'; break;
+					case "textfield":
+						$formxml .= '<field name="'.$f->field_name.'" type="text" default="" label="'.$f->field_title.'" description="" />';
+						break;
+					case "textbox":
+						$formxml .= '<field name="'.$f->field_name.'" type="textarea" default="" label="'.$f->field_title.'" description="" filter="safehtml"/>';
+						break;
+					case "editor":
+						$formxml .= '<field name="'.$f->field_name.'" label ="'.$f->field_title.'" type="editor" filter="raw" />';
+						break;
+					case "auths":
+						$formxml .= '<field name="'.$f->field_name.'" type="subform" label="'.$f->field_title.'" layout="joomla.form.field.subform.repeatable-table" icon="list" multiple="true" >';
+						$formxml .= '<form hidden="true" name="auth_options" repeat="true"><field name="auth" type="SelectAuthors" description="" label="" required="false" class="inputbox span12 small" /></form>';
+						$formxml .= '</field>';
+						break;
+					case "media":
+						$formxml .= '<field name="'.$f->field_name.'" type="subform" label="'.$f->field_title.'" layout="joomla.form.field.subform.repeatable-table" icon="list" multiple="true" >';
+						$formxml .= '<form hidden="true" name="media_options" repeat="true"><field name="media" type="SelectMedias" description="" label="" required="false" class="inputbox span12 small" /></form>';
+						$formxml .= '</field>';
+						break;
+					case "images":
+						$formxml .= '<field name="'.$f->field_name.'" type="subform" label="'.$f->field_title.'" layout="joomla.form.field.subform.repeatable-table" icon="list" multiple="true" >';
+						$formxml .= '<form hidden="true" name="image_options" repeat="true"><field name="image" type="SelectImages" description="" label="" required="false" class="inputbox span12 small" /></form>';
+						$formxml .= '</field>';
+						break;
+					case "dloads":
+						$formxml .= '<field name="'.$f->field_name.'" type="subform" label="'.$f->field_title.'" layout="joomla.form.field.subform.repeatable-table" icon="list" multiple="true" >';
+						$formxml .= '<form hidden="true" name="dload_options" repeat="true"><field name="dload" type="SelectDloads" description="" label="" required="false" class="inputbox span12 small" /></form>';
+						$formxml .= '</field>';
+						break;
+					case "links":
+						$formxml .= '<field name="'.$f->field_name.'" type="subform" label="'.$f->field_title.'" layout="joomla.form.field.subform.repeatable-table" icon="list" multiple="true" >';
+						$formxml .= '<form hidden="true" name="link_options" repeat="true"><field name="link" type="SelectLinks" description="" label="" required="false" class="inputbox span12 small" /></form>';
+						$formxml .= '</field>';
+						break;
 				}
 			}
 			$formxml.='</fieldset></form>';
@@ -532,7 +826,7 @@ class MAMSModelArticle extends JModelAdmin
 		$query->from('#__mams_artfeat');
 		$query->where('af_art IN ('.implode(",",$pks).")");
 		$db->setQuery((string)$query);
-		if (!$db->query()) {
+		if (!$db->execute()) {
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
@@ -540,7 +834,7 @@ class MAMSModelArticle extends JModelAdmin
 			foreach ($pks as $i => $pk) {
 				$qf = 'INSERT INTO #__mams_artfeat (af_art) VALUES ('.$pk.')';
 				$db->setQuery($qf);
-				if (!$db->query()) {
+				if (!$db->execute()) {
 					$this->setError($db->getErrorMsg());
 					return false;
 				}
@@ -559,7 +853,7 @@ class MAMSModelArticle extends JModelAdmin
 	{
 		// Sanitize user ids.
 		$pks = array_unique($pks);
-		JArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($pks);
 	
 		// Remove any values of zero.
 		if (array_search(0, $pks, true))
@@ -1045,13 +1339,61 @@ class MAMSModelArticle extends JModelAdmin
 		return $db->loadColumn();
 	}
 	
-	protected function getAuthors($art_id) {
+	protected function getAuthors($art_id, $field = 5) {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('a.aa_auth');
 		$query->from('#__mams_artauth as a');
 		$query->where('a.aa_art = '.$art_id);
-		$query->where('a.aa_field = 5');
+		$query->where('a.aa_field = '.$field);
+		$query->order('a.ordering');
+		$db->setQuery($query);
+		return $db->loadColumn();
+	}
+
+	protected function getMedias($art_id, $field = 6) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('a.am_media');
+		$query->from('#__mams_artmed as a');
+		$query->where('a.am_art = '.$art_id);
+		$query->where('a.am_field = '.$field);
+		$query->order('a.ordering');
+		$db->setQuery($query);
+		return $db->loadColumn();
+	}
+
+	protected function getImages($art_id, $field = 10) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('a.ai_image');
+		$query->from('#__mams_artimg as a');
+		$query->where('a.ai_art = '.$art_id);
+		$query->where('a.ai_field = '.$field);
+		$query->order('a.ordering');
+		$db->setQuery($query);
+		return $db->loadColumn();
+	}
+
+	protected function getDloads($art_id, $field = 7) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('a.ad_dload');
+		$query->from('#__mams_artdl as a');
+		$query->where('a.ad_art = '.$art_id);
+		$query->where('a.ad_field = '.$field);
+		$query->order('a.ordering');
+		$db->setQuery($query);
+		return $db->loadColumn();
+	}
+
+	protected function getLinks($art_id, $field = 8) {
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('a.al_link');
+		$query->from('#__mams_artlinks as a');
+		$query->where('a.al_art = '.$art_id);
+		$query->where('a.al_field = '.$field);
 		$query->order('a.ordering');
 		$db->setQuery($query);
 		return $db->loadColumn();

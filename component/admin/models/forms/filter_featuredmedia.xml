@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fields name="list">
+        <field
+                name="fullordering"
+                type="list"
+                label="COM_CONTENT_LIST_FULL_ORDERING"
+                description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+                onchange="this.form.submit();"
+                default="f.ordering ASC"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="m.med_inttitle ASC">COM_MAMS_MEDIA_HEADING_NAME_ASC</option>
+            <option value="m.med_inttitle DESC">COM_MAMS_MEDIA_HEADING_NAME_DESC</option>
+            <option value="m.med_id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="m.med_id DESC">JGRID_HEADING_ID_DESC</option>
+            <option value="f.ordering ASC">Order Ascending</option>
+            <option value="f.ordering DESC">Order Descending</option>
+        </field>
+        <field
+                name="limit"
+                type="limitbox"
+                class="input-mini"
+                default="50"
+                label="COM_CONTENT_LIST_LIMIT"
+                description="COM_CONTENT_LIST_LIMIT_DESC"
+                onchange="this.form.submit();"
+        />
+    </fields>
+</form>

@@ -36,14 +36,14 @@
 		<field
 			name="ordering"
 			type="OrderField"
-			class="inputbox"
+			class="inputbox form-select"
 			label="JFIELD_ORDERING_LABEL"
 			description="JFIELD_ORDERING_DESC"
 		/>
 		<field
 			name="field_group"
 			type="FieldGroups"
-			class="inputbox"
+			class="inputbox form-select"
 			label="COM_MAMS_FIELD_FIELD_GROUP_LABEL"
 			description="COM_MAMS_FIELD_FIELD_GROUP_DESC"
 		/>

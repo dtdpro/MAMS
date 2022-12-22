@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@dtdpro.com</authorEmail>
 	<authorUrl>www.dtdpro.com</authorUrl>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<description>MOD_MAMSTAG_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mamstag">mod_mamstag.php</filename>
@@ -22,8 +22,21 @@
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="administrator/components/com_mams/models/fields">
-				<field name="tagid" type="Tags" description="MOD_MAMSTAG_TAG_DESC" label="MOD_MAMSTAG_TAG_LABEL" required="true" />
+			<fieldset name="basic">
+				<field
+						name="tagid"
+						type="sql"
+						description="MOD_MAMSTAG_TAG_DESC"
+						label="MOD_MAMSTAG_TAG_LABEL"
+						required="true"
+						multiple="true"
+						sql_select="CONCAT(tag_id,':',tag_alias) AS value, tag_title AS text"
+						sql_from="#__mams_tags"
+						sql_order="tag_title ASC"
+						key_field="value"
+						value_field="text"
+						layout="joomla.form.field.list-fancy-select"
+				/>
 				<field name="articles_byrow" class="btn-group" type="radio" description="MOD_MAMSTAG_FIELD_ARTICLES_BYROW_DESC" label="MOD_MAMSTAG_FIELD_ARTICLES_BYROW_LABEL" default="1">
 					<option value="1">1</option>
 					<option value="2">2</option>

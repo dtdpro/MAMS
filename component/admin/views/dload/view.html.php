@@ -31,7 +31,8 @@ class MAMSViewDload extends JViewLegacy
 
 	protected function addToolBar() 
 	{
-		JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+		$jinput->set('hidemainmenu', true);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->dl_id == 0;

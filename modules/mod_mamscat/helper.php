@@ -22,11 +22,17 @@ class modMAMSCatHelper
 		if ($orderby1 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby1 = str_replace('.ordering','.lft',$orderby1);
 		if ($orderby2 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby2 = str_replace('.ordering','.lft',$orderby2);
 		if ($orderby3 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby3 = str_replace('.ordering','.lft',$orderby3);
+
+
+		$cats = array();
+		foreach ($params->get('catid') as $c) {
+			if ((int)$c) $cats[] = (int)$c;
+		}
 		
 		$qcat = $db->getQuery(true);
 		$qcat->select('ac.ac_art');
 		$qcat->from('#__mams_artcat AS ac');
-		$qcat->where('ac.ac_cat = '.(int)$params->get('catid'));
+		$qcat->where('ac.ac_cat IN ('.implode(",",$cats).')');
 		$qcat->where('ac.published >= 1');
 		$db->setQuery($qcat);
 		$artids = $db->loadColumn(0);

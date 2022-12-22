@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="details">
-		<field
-			name="dl_id"
-			type="text"
-			class="readonly" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description ="JGLOBAL_FIELD_ID_DESC"
-			readonly="true"
-		/>
-		<field
-			name="dl_extension"
-			type="hidden"
-		/>
+	<fieldset name="options">
 		<field
 			name="published"
 			type="list"
@@ -37,6 +25,20 @@
 			description="JFIELD_ACCESS_DESC"
 			default="1"
 			filter="integer"/>
+		<field
+				name="dl_id"
+				type="text"
+				class="readonly"
+				label="JGLOBAL_FIELD_ID_LABEL"
+				description ="JGLOBAL_FIELD_ID_DESC"
+				readonly="true"
+		/>
+		<field
+				name="dl_extension"
+				type="hidden"
+		/>
+	</fieldset>
+	<fieldset name="details">
 		<field
 			name="dl_lname"
 			type="text"

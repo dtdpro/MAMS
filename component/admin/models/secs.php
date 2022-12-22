@@ -15,7 +15,7 @@ class MAMSModelSecs extends JModelList
 				'sec_id', 's.sec_id',
 				'sec_added', 's.sec_added',
 				'sec_modified', 's.sec_modified',
-				'sec_title', 's.sec_title',
+				'sec_name', 's.sec_name',
 				'sec_type', 's.sec_type',
 				'ordering', 's.ordering',
 				'published', 's.published',
@@ -24,8 +24,10 @@ class MAMSModelSecs extends JModelList
 				'rgt', 's.rgt',
 				'level', 's.level',
 				'path', 's.path',
+				'type'
 			);
 		}
+
 		parent::__construct($config);
 	}
 	
@@ -34,8 +36,8 @@ class MAMSModelSecs extends JModelList
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
+		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', $published);
 
 		$accessId = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
@@ -81,7 +83,7 @@ class MAMSModelSecs extends JModelList
 		}
 		
 		// Filter by published state
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('s.published = '.(int) $published);
 		} else if ($published === '') {

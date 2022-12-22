@@ -14,6 +14,7 @@ class MAMSControllerDload extends JControllerForm
 
 	public function __construct($config = array())
 	{
+
 		parent::__construct($config);
 	
 		// Guess the JText message prefix. Defaults to the option.

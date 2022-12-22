@@ -37,7 +37,9 @@ class MAMSViewSec extends JViewLegacy
 	 */
 	protected function addToolBar() 
 	{
-		JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+		$jinput->set('hidemainmenu', true);
+
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->sec_id == 0;

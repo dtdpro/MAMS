@@ -4,8 +4,20 @@
 		<message>Article Page</message>
 	</layout>
 	<fields name="request">
-		<fieldset name="request" addfieldpath="administrator/components/com_mams/models/fields">
-			<field name="artid" type="ModalArticle" label="Article" description="" required="true" />
+		<fieldset name="request">
+			<field
+					name="artid"
+					type="sql"
+					label="Article"
+					required="true"
+					multiple="false"
+					sql_select="art_id AS value, art_title AS text"
+					sql_from="#__mams_articles"
+					sql_order="art_title ASC"
+					key_field="value"
+					value_field="text"
+					layout="joomla.form.field.list-fancy-select"
+			/>
 		</fieldset>
 	</fields>
 	<fields name="params">

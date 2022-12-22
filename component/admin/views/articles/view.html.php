@@ -16,24 +16,28 @@ class MAMSViewArticles extends JViewLegacy
 	
 	function display($tpl = null) 
 	{
-		$this->state = $this->get('State');
+		$jinput = JFactory::getApplication()->input;
+
+		$this->state		= $this->get('State');
 		$this->items = $this->get('Items');
-        $this->cats = $this->get('Cats');
+		$this->cats = $this->get('Cats');
 		$this->tags = $this->get('Tags');
 		$this->authors = $this->get('AUthors');
 		$this->pagination = $this->get('Pagination');
-		
-		// Set the submenu
-		MAMSHelper::addSubmenu(JRequest::getVar('view'),JRequest::getCmd('extension', 'com_mams'));
-		
-		if (count($errors = $this->get('Errors'))) 
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+
+		if (JVersion::MAJOR_VERSION == 3)  MAMSHelper::addSubmenu($jinput->getVar('view'),$jinput->getVar('extension', 'com_mams'));
+
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
 
 		$this->addToolBar();
-		$this->sidebar = JHtmlSidebar::render();		
+		$this->sidebar = JHtmlSidebar::render();
+
 		parent::display($tpl);
 	}
 
@@ -65,7 +69,6 @@ class MAMSViewArticles extends JViewLegacy
 		}
 		if ($user->authorise('core.edit')) {
 			//Batch Button
-			JHtml::_('bootstrap.modal', 'collapseModal');
 			$title = JText::_('JTOOLBAR_BATCH');
 			$layout = new JLayoutFile('joomla.toolbar.batch');
 			$dhtml = $layout->render(array('title' => $title));
@@ -79,16 +82,6 @@ class MAMSViewArticles extends JViewLegacy
 		{
 			JToolbarHelper::preferences('com_mams');
 		}
-		
-		JHtmlSidebar::setAction('index.php?option=com_mams&view=articles');
-		
-		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_PUBLISHED'),'filter_state',JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true));
-		JHtmlSidebar::addFilter(JText::_('JOPTION_SELECT_ACCESS'),'filter_access',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')));
-        JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_FEATACCESS'),'filter_feataccess',JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.feataccess')));
-		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_SEC'),'filter_sec',JHtml::_('select.options', MAMSHelper::getSections("article"), 'value', 'text', $this->state->get('filter.sec')));
-        JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_CAT'),'filter_cat',JHtml::_('select.options', MAMSHelper::getCats(), 'value', 'text', $this->state->get('filter.cat')));
-		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_TAG'),'filter_tag',JHtml::_('select.options', MAMSHelper::getTAgs(), 'value', 'text', $this->state->get('filter.tag')));
-		JHtmlSidebar::addFilter(JText::_('COM_MAMS_SELECT_AUTHOR'),'filter_auth',JHtml::_('select.options', MAMSHelper::getAuths(), 'value', 'text', $this->state->get('filter.auth')));
 		
 	}
 	

@@ -29,7 +29,7 @@ class JFormFieldImageSecs extends JFormField
 				' WHERE sec_type = "image"' .
 				' ORDER BY sec_name';
 		$db->setQuery($query);
-		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';
+		$html[] = '<select name="'.$this->name.'" '.$attr.'>';
 		$html[] = JHtml::_('select.options',$db->loadObjectList(),"value","text",$this->value);
 		$html[] = '</select>';		
 
