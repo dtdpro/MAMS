@@ -22,11 +22,16 @@ class modMAMSTagHelper
 		if ($orderby1 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby1 = str_replace('.ordering','.lft',$orderby1);
 		if ($orderby2 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby2 = str_replace('.ordering','.lft',$orderby2);
 		if ($orderby3 == 's.ordering ASC' || $orderby2 == 's.ordering DESC') $orderby3 = str_replace('.ordering','.lft',$orderby3);
-		
+
+		$tags = array();
+		foreach ($params->get('tagid') as $t) {
+			if ((int)$t) $tags[] = (int)$t;
+		}
+
 		$qcat = $db->getQuery(true);
 		$qcat->select('at.at_art');
 		$qcat->from('#__mams_arttag AS at');
-		$qcat->where('at.at_tag = '.(int)$params->get('tagid'));
+		$qcat->where('at.at_tag IN ('.implode(",",$tags).')');
 		$qcat->where('at.published >= 1');
 		$db->setQuery($qcat);
 		$artids = $db->loadColumn(0);
