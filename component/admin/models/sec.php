@@ -2,6 +2,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -210,8 +211,8 @@ class MAMSModelSec extends JModelAdmin
 		$table = $this->getTable();
 		while ($table->load(array('sec_alias' => $alias, 'parent_id' => $parent_id)))
 		{
-			$title = JString::increment($title);
-			$alias = JString::increment($alias, 'dash');
+			$title = StringHelper::increment($title);
+			$alias = StringHelper::increment($alias, 'dash');
 		}
 		return array($title, $alias);
 	}

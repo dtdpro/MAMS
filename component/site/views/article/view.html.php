@@ -23,15 +23,54 @@ class MAMSViewArticle extends JViewLegacy
 		if (JVersion::MAJOR_VERSION == 3)  $dispatcher	= JDispatcher::getInstance();
 
 		$model = $this->getModel();
+
+		// get return url
+		$this->returnUrl = base64_encode(Uri::getInstance());
+
+		// Get Article ID
 		$art=$app->input->getInt('artid',0);
+
+		// If no article ID, error
 		if (!$art) {
 			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
 			$app->setHeader('status', 404, true);
 			return false;
-		} else {
-			$this->article=$model->getArticle($art);
 		}
-		
+
+		// get access details for article
+		$accessDetails = $model->getArticleAccessDetails($art);
+
+		// if articel does not exist, error
+		if (!$accessDetails->exists) {
+			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
+			$app->setHeader('status', 404, true);
+			return false;
+		}
+
+		// check for access and preview
+		if ($accessDetails->canAccess) {
+			// get article if user can access
+			$this->article=$model->getArticle($art);
+		} else {
+			if ($accessDetails->hasPreview) {
+				// get article preview if the article has one
+				$this->article=$model->getArticle($art,true);
+			} else {
+				// if no preview or access, redirect
+				if ($user->id) {
+					$sec = $model->getArticleSec($art);
+					$url = JRoute::_('index.php?option=com_mams&view=artlist&secid='.$sec);
+					$msg = $cfg->noaccessmsg;
+				}
+				else {
+					$url = JRoute::_('index.php?option=com_users&view=login&return='.$this->returnUrl);
+					$msg = $cfg->loginmsg;
+				}
+				$app->enqueueMessage($msg, 'message');
+				$app->redirect($url);
+			}
+		}
+
 		if ($this->article) {
 			$this->params = $this->article->params;
 			
@@ -73,32 +112,55 @@ class MAMSViewArticle extends JViewLegacy
 				if ($v)	$this->document->setMetadata($k, $v);
 			}
 
-			// get return url
-			$this->returnUrl = base64_encode(Uri::getInstance());
 
-			if (in_array($this->article->access,$user->getAuthorisedViewLevels())) {
+			if (in_array($this->article->access,$user->getAuthorisedViewLevels()) || $accessDetails->hasPreview) {
 				$this->_prepareTitle();
 				$this->article->track_id = MAMSHelper::trackViewed($art,'article');
 				if ($this->params->get('show_related',1)) {
 					$this->related=$model->getRelated($this->article,$this->article->cats,$this->article->auts,$this->article->sec_id);
 				}
-				// run mams plugins
-				if (JVersion::MAJOR_VERSION == 3) $results = $dispatcher->trigger('onMAMSPrepare', array(&$this->article->art_content));
-				else $this->dispatchEvent(new Event('onMAMSPrepare', array(&$this->article->art_content)));
 
-				// run content plugins
-				$page_content = (object) array("text" => $this->article->art_content);
+				// run plugins
+				$item = (object) [
+					"title" => $this->article->art_title,
+					"text" => $this->article->art_content,
+					'id'=>$this->article->art_id,
+					'sec' => $this->article->sec_id,
+					'cats' => $this->article->cats
+				];
 				if (JVersion::MAJOR_VERSION == 3) {
+					$results = $dispatcher->trigger('onMAMSPrepare', array(&$item->text));
+
+					$results = $dispatcher->trigger('onMAMSRenderA', array ('com_mams.article', &$item, &$this->article->params, 0));
+					$this->article->rendera = trim(implode("\n", $results));
+
 					JPluginHelper::importPlugin('content');
-					$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$page_content, &$this->article->params, 0));
+					$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$item, &$this->article->params, 0));
+
+					$results = $dispatcher->trigger('onContentBeforeDisplay', array ('com_mams.article', &$item, &$this->article->params, 0));
+					$this->beforeDisplayContent = trim(implode("\n", $results));
+
+					$results = $dispatcher->trigger('onContentAfterDisplay', array ('com_mams.article', &$item, &$this->article->params, 0));
+					$this->afterDisplayContent = trim(implode("\n", $results));
 				}
 				else {
+					$this->dispatchEvent(new Event('onMAMSPrepare', array(&$item->text)));
+
+					$results = $app->triggerEvent('onMAMSRenderA', array ('com_mams.article', &$item, &$this->article->params, 0));
+					$this->article->rendera = trim(implode("\n", $results));
+
 					PluginHelper::importPlugin('content');
-					$this->dispatchEvent(new Event('onContentPrepare', array ('com_mams.article', &$page_content, &$this->article->params, 0)));
+					$this->dispatchEvent(new Event('onContentPrepare', ['com_mams.article', &$item, &$this->article->params, 0]));
+
+					$results = $app->triggerEvent('onContentBeforeDisplay', ['com_mams.article', &$item, &$this->article->params, 0]);
+					$this->beforeDisplayContent = trim(implode("\n", $results));
+
+					$results = $app->triggerEvent('onContentAfterDisplay', ['com_mams.article', &$item, &$this->article->params, 0]);
+					$this->afterDisplayContent = trim(implode("\n", $results));
 				}
 
 				// put processed content back
-				$this->article->art_content = $page_content->text;
+				$this->article->art_content = $item->text;
 
 				parent::display($tpl);
 			} else {

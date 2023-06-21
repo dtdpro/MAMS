@@ -43,6 +43,7 @@ JHtml::_('bootstrap.tooltip');
 			<th width="60"><?php echo JText::_( 'NUM' ); ?></th>
 			<th><?php echo JText::_( 'Section' ); ?></th>
 			<th><?php echo JText::_( 'Item' ); ?></th>
+            <th><?php echo JText::_( 'Item ID' ); ?></th>
 			<th><?php echo JText::_( 'Type' ); ?></th>
 			<th><?php echo JText::_( 'When' ); ?></th>
 			<th><?php echo JText::_( 'Who' ); ?></th>
@@ -72,6 +73,7 @@ JHtml::_('bootstrap.tooltip');
 			<td class="small"><?php echo $i + 1 + $this->pagination->limitstart; ?></td>
 			<td class="small"><?php echo $row->sec_title; ?></td>
 			<td class="small"><?php echo $row->item_title; ?></td>
+            <td class="small"><?php echo $row->mt_item; ?></td>
 			<td class="small"><?php 
 				switch ($row->mt_type) {
 					case "article": echo "Article Page"; break;

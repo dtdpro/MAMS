@@ -26,7 +26,7 @@ class JFormFieldFieldGroups extends JFormField
 		// Build the query for the ordering list.
 		$query = 'SELECT CONCAT(group_id) AS value, group_title AS text' .
 				' FROM #__mams_article_fieldgroups' .
-				' WHERE group_id != 1' .
+				//' WHERE group_id != 1' .
 				' ORDER BY ordering';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" '.$attr.'>';

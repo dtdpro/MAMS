@@ -11,7 +11,7 @@
 					label="Article"
 					required="true"
 					multiple="false"
-					sql_select="art_id AS value, art_title AS text"
+					sql_select='art_id AS value, CONCAT("(",art_id,") ",art_title) AS text'
 					sql_from="#__mams_articles"
 					sql_order="art_title ASC"
 					key_field="value"

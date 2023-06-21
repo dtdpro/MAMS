@@ -1,5 +1,5 @@
 function MAMSTrackMedia(item_id) {
-	var request = jQuery.ajax({	url: mamsuri+"/components/com_mams/mediatrack.php",	type: "POST", data: { item_id : item_id }, dataType: "html"});
+	//var request = jQuery.ajax({	url: mamsuri+"/components/com_mams/mediatrack.php",	type: "POST", data: { item_id : item_id }, dataType: "html"});
 }
 
 //MAMS Media Analytics

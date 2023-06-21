@@ -1318,6 +1318,7 @@ class MAMSModelArticle extends JModelAdmin
 	}
 	
 	protected function getCats($art_id) {
+		if (!$art_id) $art_id = 0;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('a.ac_cat');
@@ -1329,6 +1330,7 @@ class MAMSModelArticle extends JModelAdmin
 	}
 
 	protected function getTags($art_id) {
+		if (!$art_id) $art_id = 0;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('a.at_tag');
@@ -1340,6 +1342,7 @@ class MAMSModelArticle extends JModelAdmin
 	}
 	
 	protected function getAuthors($art_id, $field = 5) {
+		if (!$art_id) $art_id = 0;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('a.aa_auth');
@@ -1352,6 +1355,7 @@ class MAMSModelArticle extends JModelAdmin
 	}
 
 	protected function getMedias($art_id, $field = 6) {
+		if (!$art_id) $art_id = 0;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('a.am_media');
@@ -1364,6 +1368,7 @@ class MAMSModelArticle extends JModelAdmin
 	}
 
 	protected function getImages($art_id, $field = 10) {
+		if (!$art_id) $art_id = 0;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('a.ai_image');
@@ -1376,6 +1381,7 @@ class MAMSModelArticle extends JModelAdmin
 	}
 
 	protected function getDloads($art_id, $field = 7) {
+		if (!$art_id) $art_id = 0;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('a.ad_dload');
@@ -1388,6 +1394,7 @@ class MAMSModelArticle extends JModelAdmin
 	}
 
 	protected function getLinks($art_id, $field = 8) {
+		if (!$art_id) $art_id = 0;
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('a.al_link');

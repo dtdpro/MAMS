@@ -1,47 +1,78 @@
 <?php
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
+
+require JPATH_COMPONENT."/vendor/autoload.php";
 
 jimport( 'joomla.filesystem.file' );
 
-$path = JPATH_SITE.'/cache/';
 $filename  =  'MAMS_Report' . '-' . date("Y-m-d").'.csv';
 
 $items = $this->items;
-$contents = '';	
-$contents .= "\"Section\",\"Item\",\"What\",\"When\",\"Who\",\"EMail\",";
+
+$headers = ["Section","Item","Item ID","What","When","Who","Email"];
+
 if ($this->config->mue) {
-	$contents .= "\"Group\",";
+	$headers[] = 'Group';
 }
-$contents .= "\"Session\",\"IP Address\"\n";
+$headers[] = 'Session';
+$headers[] = 'IP Address';
+
+$dataRows = [];
 foreach ($items as $row)
 {
+	$dataRow = [];
 	if ($row->mt_user == 0) $row->users_name='Guest User';
 
-	$contents .=  '"'.$row->sec_title.'",';
-	$contents .=  '"'.$row->item_title.'",';
-	$contents .=  '"';
+
+	$dataRow[] =  $row->sec_title;
+	$dataRow[] =  $row->item_title;
+	$dataRow[] =  $row->mt_item;
 	switch ($row->mt_type) {
-		case "article": $contents .= "Article Page"; break;
-		case "author": $contents .= "Author Page"; break;
-		case "catlist": $contents .= "Category Article List"; break;
-		case "seclist": $contents .= "Section Article LIst"; break;
-		case "autlist": $contents .= "Author Article List"; break;
-		case "authors": $contents .= "Authors List"; break;
-		case "dload": $contents .= "Download"; break;	
-		case "media": $contents .= "Media"; break;	
+		case "article": $dataRow[] =  "Article Page"; break;
+		case "author": $dataRow[] =  "Author Page"; break;
+		case "catlist": $dataRow[] =  "Category Article List"; break;
+		case "seclist": $dataRow[] =  "Section Article LIst"; break;
+		case "autlist": $dataRow[] =  "Author Article List"; break;
+		case "authors": $dataRow[] =  "Authors List"; break;
+		case "dload": $dataRow[] =  "Download"; break;
+		case "media": $dataRow[] =  "Media"; break;
 	}
-	$contents .=  '",';
-	$contents .=  '"'.$row->mt_time.'",'; 
-	$contents .=  '"'.$row->users_name.'",'; 
-	$contents .=  '"'.$row->users_email.'",'; 
+	$dataRow[] =  $row->mt_time;
+	$dataRow[] =  $row->users_name;
+	$dataRow[] =  $row->users_email;
 	if ($this->config->mue) {
-		$contents .= '"'.$row->UserGroup.'",';
+		$dataRow[] =  $row->UserGroup;
 	}
-	$contents .=  '"'.$row->mt_session.'",'; 
-	$contents .=  '"'.$row->mt_ipaddr."\"\n"; 
+	$dataRow[] =  $row->mt_session;
+	$dataRow[] =  $row->mt_ipaddr;
+	$dataRows[] = $dataRow;
+
 }
 
-JFile::write($path.$filename,$contents);
+// Set HTTP Headers
+$app = JFactory::getApplication();
+$app->clearHeaders();
+$app->setHeader( "Pragma", "public" );
+$app->setHeader( 'Cache-Control', 'no-cache, must-revalidate', true );
+$app->setHeader( 'Expires', 'Sat, 26 Jul 1997 05:00:00 GMT', true );
+$app->setHeader( 'Content-Type', 'text/csv', true );
+$app->setHeader( 'Content-Description', 'File Transfer', true );
+$app->setHeader( 'Content-Disposition', 'attachment; filename="' . $filename . '"', true );
+$app->setHeader( 'Content-Transfer-Encoding', 'binary', true );
+$app->sendHeaders();
 
- $app = JFactory::getApplication();
- $app->redirect('../cache/'.$filename);
+// Create CSV Writer
+$csv = \League\Csv\Writer::createFromString();
+
+// insert the Headings
+$csv->insertOne($headers);
+
+// insert all the records
+$csv->insertAll($dataRows);
+
+// CSV content
+echo $csv->toString();
+
+// stop
+$app->close();
+

@@ -722,7 +722,7 @@ class MAMSRules implements RulesInterface
 					$aquery = $db->setQuery($db->getQuery(true)
 					                           ->select('cat_alias')
 					                           ->from('#__mams_cats')
-					                           ->where('cat_id='.(int)$query['catid'])
+					                           ->where('cat_id='.$catid)
 					);
 					$alias = $db->loadResult();
 					$catQuery = $catid.':'.$alias;
@@ -737,7 +737,7 @@ class MAMSRules implements RulesInterface
 					$aquery = $db->setQuery($db->getQuery(true)
 					                           ->select('sec_alias')
 					                           ->from('#__mams_secs')
-					                           ->where('sec_id='.(int)$query['secid'])
+					                           ->where('sec_id='.$secid)
 					);
 					$alias = $db->loadResult();
 					$secQuery = $secid.':'.$alias;
@@ -750,9 +750,9 @@ class MAMSRules implements RulesInterface
 			}
 		} else if ($view == 'author') {
 			if ($foundaut != 0) {
-				unset ($query['view'],$query['autid'],$query['secid']);
+				unset ($query['view'],$query['secid']);
 			} else if ($foundsec != 0) {
-				unset ($query['view'],$query['secid'],$query['layout'],$query['autid']);
+				unset ($query['view'],$query['secid'],$query['layout']);
 				if ($autid === false && isset($query['autid'])) {
 					$db = JFactory::getDbo();
 					$aquery = $db->setQuery($db->getQuery(true)

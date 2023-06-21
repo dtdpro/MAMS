@@ -7,7 +7,42 @@ define('JPATH_BASE', dirname(__FILE__) . '/../..' );
 require_once ( JPATH_BASE .'/includes/defines.php' );
 require_once ( JPATH_BASE .'/includes/framework.php' );
 
-$app = JFactory::getApplication('site');
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+if (JVersion::MAJOR_VERSION == 3) {
+	$app = JFactory::getApplication( 'site' );
+} else {
+	//$startTime = microtime(1);
+	//$startMem  = memory_get_usage();
+	if (!file_exists(JPATH_LIBRARIES . '/vendor/autoload.php') || !is_dir(JPATH_ROOT . '/media/vendor'))
+	{
+		echo file_get_contents(JPATH_ROOT . '/templates/system/build_incomplete.html');
+
+		exit;
+	}
+
+	// Set profiler start time and memory usage and mark afterLoad in the profiler.
+	//JDEBUG && \Joomla\CMS\Profiler\Profiler::getInstance('Application')->setStart($startTime, $startMem)->mark('afterLoad');
+
+	// Boot the DI container
+	$container = \Joomla\CMS\Factory::getContainer();
+
+	$container->alias('session.web', 'session.web.site')
+	          ->alias('session', 'session.web.site')
+	          ->alias('JSession', 'session.web.site')
+	          ->alias(\Joomla\CMS\Session\Session::class, 'session.web.site')
+	          ->alias(\Joomla\Session\Session::class, 'session.web.site')
+	          ->alias(\Joomla\Session\SessionInterface::class, 'session.web.site');
+
+	// Instantiate the application.
+	$app = $container->get(\Joomla\CMS\Application\SiteApplication::class);
+
+	// Set the application as global app
+	\Joomla\CMS\Factory::$application = $app;
+}
+
+
 $db  = JFactory::getDBO();
 $user = JFactory::getUser();
 

@@ -128,8 +128,8 @@
 					}
 				}
 				var queryString = "?item_id=" + encodeURIComponent(playdata.itemid);
-				ajaxRequest.open("GET", mamsuri+"/components/com_mams/mediatrack.php" + queryString, true);
-				ajaxRequest.send(null); 
+				//ajaxRequest.open("GET", mamsuri+"/components/com_mams/mediatrack.php" + queryString, true);
+				//ajaxRequest.send(null);
 			} 
 		}
 		function mamstrack_log(log_item, log_data) {

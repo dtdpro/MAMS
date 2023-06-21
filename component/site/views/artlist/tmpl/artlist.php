@@ -119,7 +119,7 @@ if (isset($this->articles)) {
 		if ( $this->params->get( 'show_pubinfo', 1 ) ) {
 			echo '<div class="mams-artlist-pubinfo">';
 			//Section Link
-			echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=section&secid=" . $a->art_sec . ":" . $a->sec_alias ) . '" class="mams-artlist-seclink">' . $a->sec_name . '</a>';
+			echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=section&secid=" . $a->sec_id . ":" . $a->sec_alias ) . '" class="mams-artlist-seclink">' . $a->sec_name . '</a>';
 
 			//Pub Date
 			if ( $this->params->get( 'show_pubdate', 1 ) ) {

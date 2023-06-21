@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="3.0" type="plugin" group="mams" method="upgrade">
+	<name>MAMS Render Event Test</name>
+	<author>DtD Productions</author>
+	<creationDate>2023.02</creationDate>
+	<copyright>Copyright (C) 2023 DtD Productions. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>info@dtdpro.com</authorEmail>
+	<authorUrl>www.dtdpro.com</authorUrl>
+	<version>1.0</version>
+	<description>Render event test, not for production use.</description>
+	<files>
+		<filename plugin="rendertest">rendertest.php</filename>
+	</files>
+
+</extension>

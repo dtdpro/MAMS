@@ -75,8 +75,17 @@ if ($saveOrder) {
 				</th>			
 				<th>
 					<?php echo JText::_('COM_MAMS_FIELD_HEADING_TITLE'); ?>
-				</th>		
-				<th width="15%">
+                </th>
+                <th width="1%" class="text-center">
+					<?php echo "Article"; ?>
+                </th>
+                <th width="1%" class="text-center">
+					<?php echo "Preview"; ?>
+                </th>
+                <th width="1%" class="text-center">
+					<?php echo "List"; ?>
+                </th>
+                <th width="15%">
 					<?php echo JText::_('COM_MAMS_FIELD_HEADING_NAME'); ?>
 				</th>		
 				<th width="15%">
@@ -92,7 +101,7 @@ if ($saveOrder) {
 		
 		
 		</thead>
-		<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+		<tfoot><tr><td colspan="12"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
         <tbody <?php if (JVersion::MAJOR_VERSION == 4) { ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php } ?>>
 		<?php foreach($this->items as $i => $item): ?>
             <tr class="row<?php echo $i % 2; ?>" <?php if (JVersion::MAJOR_VERSION == 3) { ?>sortable-group-id="field" <?php } else { ?>data-draggable-group="field"<?php } ?>>
@@ -111,7 +120,7 @@ if ($saveOrder) {
 
 				</td>
 				<td><?php echo JHtml::_('grid.id', $i, $item->field_id); ?></td>
-				<td class="center"><?php 
+				<td class="center text-center"><?php
 					if ($item->field_id >= 50) echo JHtml::_('jgrid.published', $item->published, $i, 'fields.', true);
 					else echo '<a class="btn btn-micro disabled jgrid"  title="Protected extension"><i class="icon-lock"></i></a>';
 				?></td>
@@ -122,6 +131,15 @@ if ($saveOrder) {
 					<a href="<?php echo JRoute::_('index.php?option=com_mams&task=field.edit&field_id='.(int) $item->field_id); ?>">
 					<?php echo $this->escape($item->field_title); ?></a>
 				</td>
+                <td class="center text-center">
+		            <?php if ($item->field_show_page) echo '<span class="icon-check"></span>'; ?>
+                </td>
+                <td class="center text-center">
+		            <?php if ($item->field_show_preview) echo '<span class="icon-check"></span>'; ?>
+                </td>
+                <td class="center text-center">
+		            <?php if ($item->field_show_list) echo '<span class="icon-check"></span>'; ?>
+                </td>
 				<td class="small"><?php 
 					echo $this->escape($item->field_name);
 				?></td>
@@ -138,6 +156,12 @@ if ($saveOrder) {
 						case "related": echo "Related Items"; break;
 						case "images": echo "Image Gallery"; break;
 						case "artauthedlink": echo "Articles by these Authors"; break;
+						case "rendera": echo "Render A"; break;
+						case "module": echo "Module Position: ".$item->field_rssname; break;
+						case "tags": echo "Tags"; break;
+						case "title": echo "Title"; break;
+						case "desc": echo "Article Desc."; break;
+						case "body": echo "Article Body/Preview"; break;
 					}
 				?></td>
 				<td class="small hidden-phone"><?php echo $item->access_level; ?></td>

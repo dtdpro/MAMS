@@ -44,6 +44,7 @@ use Joomla\CMS\Language\Text;
                 <?php echo $this->form->renderField('art_content'); ?>
             </div>
             <div class="span2 form-vertical col-md-2">
+	            <?php echo $this->form->renderField('art_showtitle'); ?>
 	            <?php echo $this->form->renderField('state'); ?>
 	            <?php echo $this->form->renderField('access'); ?>
 	            <?php echo $this->form->renderField('version_note'); ?>
@@ -83,6 +84,22 @@ use Joomla\CMS\Language\Text;
 	                    <?php echo $this->form->renderField('links'); ?>
                     </div>
                 </div>
+            </div>
+        </div>
+
+		<?php
+		if (JVersion::MAJOR_VERSION == 4) {
+			echo HTMLHelper::_('uitab.endTab');
+			echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('COM_MAMS_ARTICLE_PREVIEW'));
+		} else {
+			echo JHtml::_('bootstrap.endTab');
+			echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_MAMS_ARTICLE_PREVIEW', true));
+		}
+		?>
+
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+            <div class="span12 col-md-12 form-vertical">
+	            <?php echo $this->form->renderField('art_preview'); ?>
             </div>
         </div>
 

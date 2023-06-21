@@ -11,8 +11,8 @@ class MAMSModelArticle extends JModelLegacy
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
 		
-		$this->alvls = $user->getAuthorisedViewLevels();
-		$this->alvls = array_merge($this->alvls,$cfg->reggroup);
+		$this->ulvls = $user->getAuthorisedViewLevels();
+		$this->alvls = array_merge($this->ulvls,$cfg->reggroup);
 
 		parent::__construct($config);
 	}
@@ -27,8 +27,56 @@ class MAMSModelArticle extends JModelLegacy
 		$db->setQuery($query);
 		return $db->loadResult();
 	}
+
+	function getArticleAccessDetails($artid) {
+		$app = JFactory::getApplication('site');
+		$cfg = MAMSHelper::getConfig();
+		$user = JFactory::getUser();
+
+		$accessDetalis = new stdClass();
+		$accessDetalis->exists = false;
+		$accessDetalis->canAccess = false;
+		$accessDetalis->hasPreview = false;
+
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select('a.access,a.params,a.art_publish_up,a.art_publish_down,a.state');
+		$query->from('#__mams_articles AS a');
+		$query->where('a.art_id = '.$artid);
+		$query->where('a.state >= 1');
+		if (!in_array($cfg->ovgroup,$this->alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+		$query->order('a.art_publish_up DESC');
+		$db->setQuery($query);
+		$item = $db->loadObject();
+
+		if (!$item) {
+			return $accessDetalis;
+		}
+
+		$accessDetalis->exists = true;
+
+		if (in_array($item->access,$user->getAuthorisedViewLevels())) {
+			$accessDetalis->canAccess = true;
+		}
+
+		//Load up the Params
+		$registry = new JRegistry;
+		$registry->loadString($item->params);
+		$item->params = $registry;
+
+		// Merge menu item params with item params, item params take precedence
+		$params = $app->getParams();
+		$params->merge($item->params);
+		$item->params = $params;
+
+		if ($item->params->get("show_preview",0)) {
+			$accessDetalis->hasPreview = true;
+		}
+
+		return $accessDetalis;
+	}
 	
-	function getArticle($artid) {
+	function getArticle($artid, $preview=false) {
 		$app = JFactory::getApplication('site');
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -40,13 +88,18 @@ class MAMSModelArticle extends JModelLegacy
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id = '.$artid);
 		$query->where('a.state >= 1');
-		$query->where('a.access IN ('.implode(",",$this->alvls).')');
+		if (!$preview) $query->where('a.access IN ('.implode(",",$this->alvls).')');
 		if (!in_array($cfg->ovgroup,$this->alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
 		$query->order('a.art_publish_up DESC');
 		$db->setQuery($query);
 		$item = $db->loadObject();
 		
 		if (!$item) return false;
+
+		// if preview, set article content to preview content
+		if ($preview) {
+			$item->art_content = $item->art_preview;
+		}
 		
 		//Load up the Params
 		$registry = new JRegistry;
@@ -86,12 +139,12 @@ class MAMSModelArticle extends JModelLegacy
 			$item->art_fielddata = $registry->toObject();
 		}
 			
-		$item->fields = $this->getArticleFields($item->art_id);
+		$item->fields = $this->getArticleFields($item->art_id,$preview);
 		
 		return $item;
 	}
 	
-	protected function getArticleFields($artid) {
+	protected function getArticleFields($artid, $preview = false) {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		
@@ -100,10 +153,11 @@ class MAMSModelArticle extends JModelLegacy
 		$query->select('g.group_title,g.group_show_title,g.group_name');
 		$query->join('LEFT', '#__mams_article_fieldgroups AS g ON g.group_id = f.field_group');
 		$query->where('f.published >= 1');
-		$query->where('f.access IN ('.implode(",",$this->alvls).')');
+		$query->where('f.access IN ('.implode(",",$this->ulvls).')');
 		$query->where('g.published >= 1');
-		$query->where('g.access IN ('.implode(",",$this->alvls).')');
-		$query->where('f.field_show_page = 1');
+		$query->where('g.access IN ('.implode(",",$this->ulvls).')');
+		if ($preview) $query->where('f.field_show_preview = 1');
+		else $query->where('f.field_show_page = 1');
 		$query->order('f.ordering ASC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
@@ -133,7 +187,7 @@ class MAMSModelArticle extends JModelLegacy
 		$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 		$qa->where('aa.published >= 1');
 		$qa->where('a.published >= 1');
-		$qa->where('a.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('a.access IN ('.implode(",",$this->ulvls).')');
 		$qa->where('aa.aa_art = '.$artid);
 		$qa->where('aa.aa_field = '.$fid);
 		$qa->order('aa.ordering ASC');
@@ -149,7 +203,7 @@ class MAMSModelArticle extends JModelLegacy
 		$qa->join('RIGHT','#__mams_media AS m ON am.am_media = m.med_id');
 		$qa->where('am.published >= 1');
 		$qa->where('m.published >= 1');
-		$qa->where('m.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('m.access IN ('.implode(",",$this->ulvls).')');
 		$qa->where('am.am_art = '.$artid);
 		$qa->where('am.am_field = '.$fid);
 		$qa->order('am.ordering ASC');
@@ -165,7 +219,7 @@ class MAMSModelArticle extends JModelLegacy
 		$qa->join('RIGHT','#__mams_dloads AS d ON ad.ad_dload = d.dl_id');
 		$qa->where('ad.published >= 1');
 		$qa->where('d.published >= 1');
-		$qa->where('d.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('d.access IN ('.implode(",",$this->ulvls).')');
 		$qa->where('ad.ad_art = '.$artid);
 		$qa->where('ad.ad_field = '.$fid);
 		$qa->order('ad.ordering ASC');
@@ -181,7 +235,7 @@ class MAMSModelArticle extends JModelLegacy
 		$qa->join('RIGHT','#__mams_links AS l ON al.al_link = l.link_id');
 		$qa->where('al.published >= 1');
 		$qa->where('l.published >= 1');
-		$qa->where('l.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('l.access IN ('.implode(",",$this->ulvls).')');
 		$qa->where('al.al_art = '.$artid);
 		$qa->where('al.al_field = '.$fid);
 		$qa->order('al.ordering ASC');
@@ -197,7 +251,7 @@ class MAMSModelArticle extends JModelLegacy
 		$qa->join('RIGHT','#__mams_images AS i ON ai.ai_image = i.img_id');
 		$qa->where('ai.published >= 1');
 		$qa->where('i.published >= 1');
-		$qa->where('i.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('i.access IN ('.implode(",",$this->ulvls).')');
 		$qa->where('ai.ai_art = '.$artid);
 		$qa->where('ai.ai_field = '.$fid);
 		$qa->order('ai.ordering ASC');
@@ -213,7 +267,7 @@ class MAMSModelArticle extends JModelLegacy
 		$qa->join('RIGHT','#__mams_cats AS c ON ac.ac_cat = c.cat_id');
 		$qa->where('ac.published >= 1');
 		$qa->where('c.published >= 1');
-		$qa->where('c.access IN ('.implode(",",$this->alvls).')');
+		$qa->where('c.access IN ('.implode(",",$this->ulvls).')');
 		$qa->where('ac.ac_art = '.$artid);
 		$qa->order('ac.ordering ASC');
 		$db->setQuery($qa);
@@ -228,7 +282,7 @@ class MAMSModelArticle extends JModelLegacy
 		$qc->join( 'RIGHT', '#__mams_tags AS t ON at.at_tag = t.tag_id' );
 		$qc->where( 'at.published >= 1' );
 		$qc->where( 't.published >= 1' );
-		$qc->where( 't.access IN (' . implode( ",", $this->alvls ) . ')' );
+		$qc->where( 't.access IN (' . implode( ",", $this->ulvls ) . ')' );
 		$qc->where( 'at.at_art = ' . $artid );
 		$qc->order( 'at.ordering ASC' );
 		$db->setQuery( $qc );

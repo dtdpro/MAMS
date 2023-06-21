@@ -17,7 +17,7 @@ class MAMSTableSec extends JTable
 		$this->tagsHelper->typeAlias = 'com_mams.sec';
 	}
 	
-	protected function _getAssetName()
+	/*protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
 		return 'com_mams.sec.' . (int) $this->$k;
@@ -57,7 +57,7 @@ class MAMSTableSec extends JTable
 		{
 			return parent::_getAssetParentId($table, $id);
 		}
-	}
+	}*/
 	
 	public function bind($array, $ignore = '')
 	{

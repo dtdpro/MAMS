@@ -2,8 +2,12 @@
 
 <config>
  	<fieldset name="general" label="COM_MAMS_CONFIG_SETTINGS_LABEL" description="COM_MAMS_CONFIG_SETTINGS_DESC" addfieldpath="/administrator/components/com_mams/models/fields">
-		<field name="reggroup" type="AccessLevelMulti" id="regaccess" class="inputbox" label="COM_MAMS_CONFIG_FIELD_REGGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_REGGROUP_DESC" default="2" multiple="true" />
+		<field name="reggroup" type="accesslevel" id="regaccess" label="COM_MAMS_CONFIG_FIELD_REGGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_REGGROUP_DESC" default="2" multiple="true" layout="joomla.form.field.list-fancy-select" />
 		<field name="ovgroup" type="accesslevel" id="ovaccess" class="inputbox" label="COM_MAMS_CONFIG_FIELD_OVGROUP_LABEL" description="COM_MAMS_CONFIG_FIELD_OVGROUP_DESC" default="3"  />
+		<field name="show_preview" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PREVIEW_DESC" label="COM_MAMS_FIELD_SHOW_PREVIEW_LABEL" default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 		<field name="loginmsg" type="text" label="COM_MAMS_CONFIG_FIELD_LOGINMSG_LABEL" description="COM_MAMS_CONFIG_FIELD_LOGINMSG_DESC" size="70" class="inputbox" required="false" default="Login required" />
 		<field name="noaccessmsg" type="text" label="COM_MAMS_CONFIG_FIELD_NOACCESSMSG_LABEL" description="COM_MAMS_CONFIG_FIELD_NOACCESSMSG_DESC" size="70" class="inputbox" required="false" default="Access level not met" />
 		<field name="related_sec" type="radio" label="COM_MAMS_CONFIG_FIELD_RELATEDSEC_LABEL" description="COM_MAMS_CONFIG_FIELD_RELATEDSEC_DESC" default="0" class="btn-group">

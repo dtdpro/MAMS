@@ -1,0 +1,1 @@
+ALTER TABLE `#__mams_articles` ADD `art_showtitle` tinyint(1) NOT NULL DEFAULT '1' AFTER `art_fielddata`;

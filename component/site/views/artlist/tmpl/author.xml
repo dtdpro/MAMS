@@ -42,6 +42,11 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="show_preview" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PREVIEW_DESC" label="COM_MAMS_FIELD_SHOW_PREVIEW_LABEL" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 			<field name="orderby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
 				<option value="pubasc">COM_MAMS_ORDER_PUBASC</option>
 				<option value="pubdsc">COM_MAMS_ORDER_PUBDSC</option>

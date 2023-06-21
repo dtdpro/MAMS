@@ -2,24 +2,36 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Observer\ContentHistory as ContentHistoryObserver;
+use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\String\StringHelper;
+use Joomla\Utilities\ArrayHelper;
+
 // import Joomla table library
 jimport('joomla.database.table');
 
-class MAMSTableArticle extends JTable
+class MAMSTableArticle extends JTable implements VersionableTableInterface
 {	
 	protected $tagsHelper = null;
 
 	function __construct(&$db) 
 	{
+		if (JVersion::MAJOR_VERSION == 4) {
+			$this->typeAlias = 'com_mams.article';
+		}
+
 		parent::__construct('#__mams_articles', 'art_id', $db);
 
 		$this->tagsHelper = new JHelperTags();
 		$this->tagsHelper->typeAlias = 'com_mams.article';
-		
-		//JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'MAMSTableArticle', array('typeAlias' => 'com_mams.article'));
+
+
+		if (JVersion::MAJOR_VERSION == 3) {
+			ContentHistoryObserver::createObserver($this, array('typeAlias' => 'com_mams.article'));
+		}
 	}
 	
-	protected function _getAssetName()
+	/*protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
 		return 'com_mams.article.' . (int) $this->$k;
@@ -60,7 +72,7 @@ class MAMSTableArticle extends JTable
 		{
 			return parent::_getAssetParentId($table, $id);
 		}
-	}
+	}*/
 	
 	public function bind($array, $ignore = '')
 	{
@@ -165,7 +177,7 @@ class MAMSTableArticle extends JTable
 		{
 			// only process if not empty
 			$bad_characters = array("\n", "\r", "\"", "<", ">"); // array of characters to remove
-			$after_clean = JString::str_ireplace($bad_characters, "", $this->metakey); // remove bad characters
+			$after_clean = StringHelper::str_ireplace($bad_characters, "", $this->metakey); // remove bad characters
 			$keys = explode(',', $after_clean); // create array using commas as delimiter
 			$clean_keys = array();
 		
@@ -195,7 +207,7 @@ class MAMSTableArticle extends JTable
 		$k = $this->_tbl_key;
 	
 		// Sanitize input.
-		JArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($pks);
 		$userId = (int) $userId;
 		$state = (int) $state;
 	
@@ -262,5 +274,10 @@ class MAMSTableArticle extends JTable
 	
 		$this->setError('');
 		return true;
+	}
+
+	public function getTypeAlias()
+	{
+		return $this->typeAlias;
 	}
 }

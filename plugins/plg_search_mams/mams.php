@@ -174,7 +174,7 @@ class plgSearchMAMS extends JPlugin
 			$articleOrder = '';
 			switch ( $ordering ) {
 				case 'oldest':
-					$artcileOrder = 'a.art_publish_up ASC';
+					$articleOrder = 'a.art_publish_up ASC';
 					break;
 
 				case 'popular':

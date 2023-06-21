@@ -20,6 +20,15 @@
 			default=""
 		/>
 		<field
+			name="art_showtitle"
+			type="radio"
+			class="btn-group"
+			label="COM_MAMS_ARTICLE_FIELD_SHOWTITLE_LABEL"
+			default="1">
+			<option	value="0">No</option>
+			<option	value="1">Yes</option>
+		</field>
+		<field
 			name="art_sec"
 			type="ArticleSecs"
 			class="inputbox"
@@ -122,6 +131,18 @@
 			filter="raw"
 			buttons="true"
 			hide="pagebreak,readmore"
+		/>
+
+		<field
+				name="art_preview"
+				type="editor"
+				label="COM_MAMS_ARTICLE_FIELD_PREVIEW_LABEL"
+				description="COM_MAMS_ARTICLE_FIELD_PREVIEW_DESC"
+				class="inputbox"
+				required="false"
+				filter="raw"
+				buttons="true"
+				hide="pagebreak,readmore"
 		/>
 		<field name="metakey" type="textarea"
 			label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC"
@@ -315,6 +336,11 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="jbasic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="show_preview" class="btn-group" type="radio" description="COM_MAMS_FIELD_SHOW_PREVIEW_DESC" label="COM_MAMS_FIELD_SHOW_PREVIEW_LABEL" default="">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 			<field name="article_seclock" type="radio" label="COM_MAMS_FIELD_SECLOCK_LABEL" description="COM_MAMS_FIELD_SECLOCK_DESC" class="btn-group" default="">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">No</option>

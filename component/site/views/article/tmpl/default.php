@@ -6,6 +6,8 @@ if ($this->params->get('divwrapper',1)) {
 $config=MAMSHelper::getConfig();
 $user=JFactory::getUser();
 
+echo $this->beforeDisplayContent;
+
 if ($user->id) {
 	$rurl = JRoute::_('index.php?option=com_mams&view=artlist&secid='.$this->article->art_sec);
 	$msg = $config->noaccessmsg;
@@ -54,6 +56,8 @@ if ($this->article->fields) {
 		        }
 		        break;
 	        case "artauthedlink":
+	        case "rendera":
+	        case "module":
 	            $has_content = true;
 		        break;
             case "body":
@@ -102,7 +106,7 @@ if ($this->article->fields) {
 
             // Start Field
             echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name;
-            if ($f->params->additional_css) echo " ".$f->params->additional_css;
+            if (property_exists($f->params,'additional_css')) echo " ".$f->params->additional_css;
             echo '">';
             echo '<a name="'.$f->group_name.'-'.$f->field_name.'"></a>';
             if ($f->params->show_title_page && $gns) {
@@ -112,11 +116,19 @@ if ($this->article->fields) {
             }
 
 			switch ($f->field_type) {
+				case "module":
+					echo JHtml::_('content.prepare', '{loadposition '.$f->field_rssname.',html5}');
+					break;
+				case "rendera":
+					echo $this->article->rendera;
+					break;
 				case "title":
 					if ($this->params->get("show_page_heading",1)) {
-						echo '<h1 class="title uk-article-title">';
-						echo $this->article->art_title;
-						echo '</h1>';
+						if ( $this->article->art_showtitle ) {
+							echo '<h1 class="title uk-article-title">';
+							echo $this->article->art_title;
+							echo '</h1>';
+						}
 					}
 					break;
                 case "body":
@@ -408,8 +420,9 @@ if ($this->article->fields) {
 							echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
 							if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
 							echo 'id="mams-article-mediaelement-'.$f->field_name.'" src="';
-							if ($config->vid_https) echo 'https://';
-							else echo 'http://';
+							if ($config->vid_https) $vidprotocol = 'https://';
+							else $vidprotocol = 'http://';
+                            echo $vidprotocol;
 							echo $config->vid5_url.'/'.$media[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$media[0]->med_still.'"';
 							if ($media[0]->med_autoplay) echo ' autoplay="autoplay"';
 							echo '></video>';
@@ -430,7 +443,7 @@ if ($this->article->fields) {
 										foreach ($media as $m) {
 											echo 'jQuery(document).on("click", ".mampli-'.$m->med_id.'",function(e){';
 											echo "fmplayer_".str_replace("-","_",$f->field_name).".pause();";
-											echo "fmplayer_".str_replace("-","_",$f->field_name).".setSrc('http://".$config->vid5_url.'/'.$m->med_file."');";
+											echo "fmplayer_".str_replace("-","_",$f->field_name).".setSrc('".$vidprotocol.$config->vid5_url.'/'.$m->med_file."');";
 											echo "fmplayer_".str_replace("-","_",$f->field_name).".play();";
 											echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoId = ".$m->med_id.";";
 											echo "fmplayer_".str_replace("-","_",$f->field_name).".options.videoExtTitle = '".addslashes($m->med_exttitle)."';";
@@ -538,7 +551,7 @@ if ($this->article->fields) {
                                 echo '<div class="mams-article-related-artaut">';
                                 $auts = Array();
                                 foreach ($r->auts as $f) {
-                                    $auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-article-related-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
+                                    $auts[]='<a href="'.JRoute::_("index.php?option=com_mams&view=author&secid=".$f->auth_sec."&autid=".$f->auth_id.":".$f->auth_alias).'" class="mams-article-related-autlink">'.$f->auth_fname.(($f->auth_mi) ? " ".$f->auth_mi : "")." ".$f->auth_lname.(($f->auth_titles) ? ", ".$f->auth_titles : "").'</a>';
                                 }
                                 echo implode(", ",$auts);
                                 echo '</div>';
@@ -594,6 +607,8 @@ if ($this->article->fields) {
     // End last group
 	if (!$first) { echo '<div style="clear:both"></div>'; echo '</div>'; }
 }
+
+echo $this->afterDisplayContent;
 
 //Last Modifed
 if ($this->params->get('show_modified',1)) {
