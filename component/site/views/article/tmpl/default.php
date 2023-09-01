@@ -355,9 +355,12 @@ if ($this->article->fields) {
                                 echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
                                 if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
                                 echo 'id="mams-article-mediaelement-'.$f->field_name.'-'.$m->med_id.'" src="';
-                                if ($config->vid_https) echo 'https://';
-                                else echo 'http://';
-                                echo $config->vid5_url.'/'.$m->med_file.'" type="video/mp4" controls="controls" poster="'.$m->med_still.'"';
+                                if ($m->med_type == 'vids'){
+                                    if ($config->vid_https) echo 'https://';
+                                    else echo 'http://';
+                                    echo $config->vid5_url.'/';
+                                }
+                                echo $m->med_file.'" type="video/mp4" controls="controls" poster="'.$m->med_still.'"';
                                 if ($m->med_autoplay) echo ' autoplay="autoplay"';
                                 echo '></video>';
                                 echo '<script type="text/javascript">';
@@ -420,10 +423,12 @@ if ($this->article->fields) {
 							echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
 							if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
 							echo 'id="mams-article-mediaelement-'.$f->field_name.'" src="';
-							if ($config->vid_https) $vidprotocol = 'https://';
-							else $vidprotocol = 'http://';
-                            echo $vidprotocol;
-							echo $config->vid5_url.'/'.$media[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$media[0]->med_still.'"';
+							if ($m->med_type == 'vids'){
+                                if ($config->vid_https) echo 'https://';
+                                else echo 'http://';
+                                echo $config->vid5_url.'/';
+                            }
+                            echo $media[0]->med_file.'" type="video/mp4" controls="controls" poster="'.$media[0]->med_still.'"';
 							if ($media[0]->med_autoplay) echo ' autoplay="autoplay"';
 							echo '></video>';
 							echo '<script type="text/javascript">';
