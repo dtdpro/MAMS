@@ -56,7 +56,7 @@ class MAMSProvider
 		return $items;
 	}
 
-	public static function getArticles($section=0,$category=0,$tag=0,$limit=5,$orderby1="a.art_publish_up DESC",$orderby2="s.lft ASC",$orderby3="a.ordering ASC",$restrictFeat=false) {
+	public static function getArticles($sec=null,$category=null,$tag=null,$limit=5,$orderby1="a.art_publish_up DESC",$orderby2="s.lft ASC",$orderby3="a.ordering ASC",$restrictFeat=false) {
 		// getheper for config
 		require_once('components/com_mams/helpers/mams.php');
 
@@ -68,14 +68,30 @@ class MAMSProvider
 		$alvls = $user->getAuthorisedViewLevels();
 		$alvls = array_merge($alvls,$cfg->reggroup);
 
+        if ($sec) {
+            $secs = array_map('trim', explode(",", $sec));
+        } else {
+            $secs = [];
+        }
 
+        if ($category) {
+            $cats = array_map('trim', explode(",", $category));
+        } else {
+            $cats = [];
+        }
+
+        if ($tag) {
+            $tags = array_map('trim', explode(",", $tag));
+        } else {
+            $tags = [];
+        }
 		// Filter categories
 		$catartids = [];
-		if ($category) {
+		if (count($cats)) {
 			$qcat = $db->getQuery(true);
 			$qcat->select('ac.ac_art');
 			$qcat->from('#__mams_artcat AS ac');
-			$qcat->where('ac.ac_cat = '.(int)$category);
+			$qcat->where('ac.ac_cat IN ('.implode(',',$cats).')');
 			$qcat->where('ac.published >= 1');
 			$db->setQuery($qcat);
 			$catartids = $db->loadColumn(0);
@@ -83,11 +99,11 @@ class MAMSProvider
 
 		// Filter tags
 		$tagartids = [];
-		if ($tag) {
+		if (count($tags)) {
 			$tcat = $db->getQuery(true);
 			$tcat->select('at.at_art');
 			$tcat->from('#__mams_arttag AS at');
-			$tcat->where('at.at_tag = '.(int)$tag);
+			$tcat->where('at.at_tag IN ('.implode(',',$tags).')');
 			$tcat->where('at.published >= 1');
 			$db->setQuery($tcat);
 			$tagartids = $db->loadColumn(0);
@@ -105,15 +121,15 @@ class MAMSProvider
 
 		$query	= $db->getQuery(true);
 
-		$query->select('a.*,s.*');
+		$query->select('a.*,s.*,a.art_title as testing');
 		$query->from('#__mams_articles as a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.access IN ('.implode(",",$alvls).')');
 		if ($restrictFeat) $query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 		$query->where('a.state >= 1');
-		if ($section) $query->where('a.art_sec = '.(int)$section);
+		if (count($secs)) $query->where('a.art_sec IN ('.implode(',',$secs).')');
 		if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
-		if (count($artids)) $query->where('a.art_id IN ('.implode(",",$artids).')');
+		if (count($artids) > 0) $query->where('a.art_id IN ('.implode(",",$artids).')');
 		$query->order($orderby1.', '.$orderby2.', '.$orderby3);
 		$db->setQuery($query,0,$limit);
 		$items = $db->loadObjectList();

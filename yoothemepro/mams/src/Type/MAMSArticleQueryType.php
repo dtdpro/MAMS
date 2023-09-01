@@ -18,9 +18,9 @@ class MAMSArticleQueryType
                     ],
 
                     'args' => [
-	                    'secid' => [
-							'type' => 'String',
-	                    ],
+                        'secid' => [
+                            'type' => 'String',
+                        ],
 	                    'catid' => [
 		                    'type' => 'String',
 	                    ],
@@ -49,23 +49,26 @@ class MAMSArticleQueryType
                         'label' => 'Articles',
                         'group' => 'MAMS',
                         'fields' => [
-							'secid' => [
-								'label' => 'Filter by Section',
-								'type' => 'select',
-								'default' => '0',
-								'options' => [['value'=>'0','text'=>''],['evaluate'=>'config.com_mams.sections']]
-							],
+                            'secid' => [
+                                'label' => 'Filter by Section IDs',
+                                'type' => 'text',
+                                'default' => '',
+                                "description"=> "Seprate multiple sections by a comma, no spaces."
+                                //'options' => [['value'=>'','text'=>''],['evaluate'=>'yootheme.builder.mams_sections']]
+                            ],
 							'catid' => [
-								'label' => 'Filter by Category',
-								'type' => 'select',
-								'default' => '0',
-								'options' => [['value'=>'0','text'=>''],['evaluate'=>'config.com_mams.categories']]
+								'label' => 'Filter by Category IDs',
+								'type' => 'text',
+								'default' => '',
+                                "description"=> "Seprate multiple categories by a comma, no spaces."
+								//'options' => [['value'=>'','text'=>''],['evaluate'=>'yootheme.builder.mams_categories']]
 							],
 							'tagid' => [
-								'label' => 'Filter by Tag',
-								'type' => 'select',
-								'default' => '0',
-								'options' => [['value'=>'0','text'=>''],['evaluate'=>'config.com_mams.tags']]
+								'label' => 'Filter by Tag IDs',
+								'type' => 'text',
+								'default' => '',
+                                "description"=> "Seprate multiple tags by a comma, no spaces."
+								//'options' => [['value'=>'','text'=>''],['evaluate'=>'yootheme.builder.mams_tags']]
 							],
                             'orderby1' => [
                                 'label' => 'Order First',

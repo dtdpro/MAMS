@@ -1,7 +1,7 @@
 <?php
 
 use YOOtheme\Builder\Source;
-use YOOtheme\Config;
+use YOOtheme\Builder\BuilderConfig;
 
 class SourceListener
 {
@@ -17,24 +17,20 @@ class SourceListener
 	    $source->queryType(MAMSArticleQueryType::config());
     }
 
-	public static function initCustomizer(Config $config) {
-		$config->add(
-			'customizer.com_mams.sections',
+	public static function initCustomizer(BuilderConfig $config) {
+		$config->merge([
+			'mams_sections'=>
 			array_map(function($section) {
 				return ['value'=>$section->sec_id,'text'=>$section->sec_name];
-			}, MAMSProvider::secList())
-		);
-		$config->add(
-			'customizer.com_mams.categories',
-			array_map(function($section) {
-				return ['value'=>$section->cat_id,'text'=>$section->cat_title];
-			}, MAMSProvider::catList())
-		);
-		$config->add(
-			'customizer.com_mams.tags',
-			array_map(function($section) {
-				return ['value'=>$section->tag_id,'text'=>$section->tag_title];
-			}, MAMSProvider::tagList())
-		);
+			}, MAMSProvider::secList()),
+            'mams_categories' =>
+            array_map(function($section) {
+                return ['value'=>$section->cat_id,'text'=>$section->cat_title];
+            }, MAMSProvider::catList()),
+            'mams_tags' =>
+            array_map(function($section) {
+                return ['value'=>$section->tag_id,'text'=>$section->tag_title];
+            }, MAMSProvider::tagList())
+		]);
 	}
 }

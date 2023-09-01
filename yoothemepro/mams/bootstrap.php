@@ -2,6 +2,7 @@
 
 use YOOtheme\Builder;
 use YOOtheme\Path;
+use YOOtheme\Builder\BuilderConfig;
 
 include_once __DIR__ . '/src/SourceListener.php';
 include_once __DIR__ . '/src/MAMSProvider.php';
@@ -16,9 +17,10 @@ return [
         'source.init' => [
             SourceListener::class => 'initSource',
         ],
-        'customizer.init' => [
+        /*'customizer.init' => [
 	        SourceListener::class => ['initCustomizer',10],
-        ],
+        ],*/
+        //BuilderConfig::class => [SourceListener::class => '@initCustomizer']
 
     ],
 
