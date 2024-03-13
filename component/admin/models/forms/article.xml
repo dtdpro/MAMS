@@ -154,7 +154,7 @@
 			class="inputbox" rows="3" cols="30" labelclass="control-label" 
 		/>
 		
-		<field name="art_fielddata" type="hidden"></field>
+		<field name="art_fielddata" type="hidden" filter="raw"></field>
 		
 		<field name="art_added" type="calendar" label="COM_MAMS_ARTICLE_FIELD_ADDED_LABEL"
 			description="COM_MAMS_ARTICLE_FIELD_ADDED_DESC" class="inputbox" size="22"

@@ -20,10 +20,10 @@ use Joomla\CMS\Language\Text;
 	}
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_mams&extension='.$jinput->get('extension', 'com_mams').'&layout=edit&img_id='.(int) $this->item->img_id); ?>" method="post" name="adminForm" id="mams-form" class="form-validate">
-	<?php if (JVersion::MAJOR_VERSION == 4) { ?><div class="form-horizontal main-card"><?php } ?>
+	<?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?><div class="form-horizontal main-card"><?php } ?>
 
 		<?php
-		if (JVersion::MAJOR_VERSION == 4) {
+		if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 			echo HTMLHelper::_('uitab.startTabSet', 'myTab', array( 'active' => 'details', 'recall' => true, 'breakpoint' => 768 ) );
 			echo HTMLHelper::_('uitab.addTab', 'myTab', 'general', Text::_('COM_MAMS_IMAGE_DETAILS'));
 		} else {
@@ -32,7 +32,7 @@ use Joomla\CMS\Language\Text;
 		}
 		?>
 
-        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
             <div class="span10 col-md-10">
 				<?php foreach($this->form->getFieldset('details') as $field): ?>
                     <div class="control-group">
@@ -53,7 +53,7 @@ use Joomla\CMS\Language\Text;
         </div>
 
 		<?php
-		if (JVersion::MAJOR_VERSION == 4) {
+		if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 			echo HTMLHelper::_('uitab.endTab');
 			echo HTMLHelper::_('uitab.endTabSet');
 		} else {
@@ -61,7 +61,7 @@ use Joomla\CMS\Language\Text;
 			echo JHtml::_('bootstrap.endTabSet');
 		}
 		?>
-		<?php if (JVersion::MAJOR_VERSION == 4) { ?></div><?php } ?>
+		<?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?></div><?php } ?>
 
     <input type="hidden" name="task" value="image.edit" />
 	<?php echo JHtml::_('form.token'); ?>

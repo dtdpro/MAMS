@@ -44,7 +44,7 @@ class MAMSViewAuthor extends JViewLegacy
 			}
 			return true;
 		} else {
-			return JError::raiseError(404, JText::_('COM_MAMS_AUTHOR_NOT_FOUND'));
+			throw new \Exception("Not Found", 404);
 		}
 	}
 	

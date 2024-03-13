@@ -266,7 +266,9 @@ if ($this->article->fields) {
 						else {echo '<a href="'.JRoute::_($rurl).'" ';}
 						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artdload mams-article-dllink uk-button btn btn-default';
 						if ($firstdl) { echo ' firstdload'; $firstdl=false; }
-						echo '">';
+                        echo '"';
+                        echo " onclick=\"MAMSTrackDownload('".$this->article->art_title."','".$d->dl_fname."')\"";
+						echo '>';
 						echo 'Download '.$d->dl_lname;
 						echo '</a>';
 						echo '</div>';
@@ -423,7 +425,7 @@ if ($this->article->fields) {
 							echo '<video width="'.(int)$config->vid_w.'" height="'.(int)$config->vid_h.'" ';
 							if (!$config->player_fixed) echo 'style="width: 100%; height: 100%;" ';
 							echo 'id="mams-article-mediaelement-'.$f->field_name.'" src="';
-							if ($m->med_type == 'vids'){
+							if ($media[0]->med_type == 'vids'){
                                 if ($config->vid_https) echo 'https://';
                                 else echo 'http://';
                                 echo $config->vid5_url.'/';

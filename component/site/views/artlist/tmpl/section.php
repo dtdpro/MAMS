@@ -29,3 +29,5 @@ if (count($this->secinfo) == 1) {
 		echo $this->headerContent;
 	}
 }
+
+

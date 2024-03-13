@@ -166,6 +166,7 @@ if (isset($this->articles)) {
 				$curgroup = "";
 				$first    = true;
 				foreach ( $a->fields as $f ) {
+                    if (!$f->field_show_list) continue;
 					if ($f->field_type == "auths" && !$this->params->get( 'show_mainauth', 1 )) {
 						continue;
 					}

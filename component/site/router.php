@@ -63,11 +63,23 @@ class MAMSRouter extends RouterView
 		// we test it first to see if it is a section.  If the id and alias match a section
 		// then we assume it is a section.  If they don't we check for article, etc...
 		if ($count == 1) {
-			// we check to see if an alias is given.  If not, we assume it is an article
+			// we check fopr the : separator, if there is none assume article
 			if (strpos($segments[0], ':') === false) {
-				$vars['view'] = 'article';
-				$vars['artid'] = (int)$segments[0];
-				return $this->processParse($segments, $vars);
+                // Check if just an article alias is being used
+                $query = 'SELECT art_alias, art_id, art_sec FROM #__mams_articles WHERE art_alias = "'.$db->escape($segments[0]).'"';
+                $db->setQuery($query);
+                $article = $db->loadObject();
+                if ($article) {
+                    $vars['view'] = 'article';
+                    $vars['secid'] = (int)$article->art_sec;
+                    $vars['artid'] = (int)$article->art_id;
+                    return $this->processParse($segments, $vars);
+                } else {
+                    // if no article covert to integer, this is an old link with a - instaed of a :
+                    $vars['view'] = 'article';
+                    $vars['artid'] = (int)$segments[0];
+                    return $this->processParse($segments, $vars);
+                }
 			}
 
 			list($id, $alias) = explode(':', $segments[0], 2);
@@ -447,6 +459,10 @@ class MAMSRules implements RulesInterface
 		$menu	= $this->router->menu;
 		$items	= $menu->getItems('component', 'com_mams');
 
+        $params      = ComponentHelper::getParams('com_mams');
+        $noIDs = (bool)  $params->get('sef_ids');
+
+
 		if (isset($query['view'])) $view = $query['view']; else $view = "";
 		if (isset($query['layout'])) $layout = $query['layout']; else $layout = "";
 		if (isset($query['artid'])) $artid = $query['artid']; else $artid = 0;
@@ -578,110 +594,29 @@ class MAMSRules implements RulesInterface
 		if ($view == 'article') {
 			if ($foundart != 0) {
 				unset ($query['view'],$query['artid'],$query['tagid'],$query['secid'],$query['catid']);
-			} else if ($foundcatsec != 0) {
+			} else {
 				unset ($query['view'],$query['tagid'],$query['secid'],$query['catid']);
-				if (strpos($query['artid'], ':') === false) {
-					$db = JFactory::getDbo();
-					$aquery = $db->setQuery($db->getQuery(true)
-					                           ->select('art_alias')
-					                           ->from('#__mams_articles')
-					                           ->where('art_id='.(int)$query['artid'])
-					);
-					$alias = $db->loadResult();
-					$query['artid'] = $query['artid'].':'.$alias;
-				}
-				$segments[] = $query['artid'];
-				unset ($query['artid']);
-
-			} else if ($foundtagsec != 0) {
-				unset ($query['view'],$query['tagid'],$query['secid'],$query['catid']);
-				if (strpos($query['artid'], ':') === false) {
-					$db = JFactory::getDbo();
-					$aquery = $db->setQuery($db->getQuery(true)
-					                           ->select('art_alias')
-					                           ->from('#__mams_articles')
-					                           ->where('art_id='.(int)$query['artid'])
-					);
-					$alias = $db->loadResult();
-					$query['artid'] = $query['artid'].':'.$alias;
-				}
-				$segments[] = $query['artid'];
-				unset ($query['artid']);
-
-			} else if ($foundtagcat != 0) {
-				unset ($query['view'],$query['tagid'],$query['secid'],$query['catid']);
-				if (strpos($query['artid'], ':') === false) {
-					$db = JFactory::getDbo();
-					$aquery = $db->setQuery($db->getQuery(true)
-					                           ->select('art_alias')
-					                           ->from('#__mams_articles')
-					                           ->where('art_id='.(int)$query['artid'])
-					);
-					$alias = $db->loadResult();
-					$query['artid'] = $query['artid'].':'.$alias;
-				}
-				$segments[] = $query['artid'];
-				unset ($query['artid']);
-
-			} else if ($foundsec != 0) {
-				unset ($query['view'],$query['tagid'],$query['secid'],$query['catid']);
-				if (strpos($query['artid'], ':') === false) {
-					$db = JFactory::getDbo();
-					$aquery = $db->setQuery($db->getQuery(true)
-					                           ->select('art_alias')
-					                           ->from('#__mams_articles')
-					                           ->where('art_id='.(int)$query['artid'])
-					);
-					$alias = $db->loadResult();
-					$query['artid'] = $query['artid'].':'.$alias;
-				}
-				$segments[] = $query['artid'];
-				unset ($query['artid']);
-			} else if ($foundcat != 0) {
-				unset ($query['view'],$query['tagid'],$query['secid'],$query['catid']);
-				if (strpos($query['artid'], ':') === false) {
-					$db = JFactory::getDbo();
-					$aquery = $db->setQuery($db->getQuery(true)
-					                           ->select('art_alias')
-					                           ->from('#__mams_articles')
-					                           ->where('art_id='.(int)$query['artid'])
-					);
-					$alias = $db->loadResult();
-					$query['artid'] = $query['artid'].':'.$alias;
-				}
-				$segments[] = $query['artid'];
-				unset ($query['artid']);
-
-			} else if ($foundtag != 0) {
-				unset ($query['view'],$query['tagid'],$query['secid'],$query['catid']);
-				if (strpos($query['artid'], ':') === false) {
-					$db = JFactory::getDbo();
-					$aquery = $db->setQuery($db->getQuery(true)
-					                           ->select('art_alias')
-					                           ->from('#__mams_articles')
-					                           ->where('art_id='.(int)$query['artid'])
-					);
-					$alias = $db->loadResult();
-					$query['artid'] = $query['artid'].':'.$alias;
-				}
-				$segments[] = $query['artid'];
-				unset ($query['artid']);
-
-			} else if ($foundartlist != 0) {
-				unset ($query['view'],$query['tagid'],$query['secid'],$query['catid']);
-				if (strpos($query['artid'], ':') === false) {
-					$db = JFactory::getDbo();
-					$aquery = $db->setQuery($db->getQuery(true)
-					                           ->select('art_alias')
-					                           ->from('#__mams_articles')
-					                           ->where('art_id='.(int)$query['artid'])
-					);
-					$alias = $db->loadResult();
-					$query['artid'] = $query['artid'].':'.$alias;
-				}
-				$segments[] = $query['artid'];
-				unset ($query['artid']);
-
+                if (strpos($query['artid'], ':')) {
+                    if ($noIDs) {
+                        $parts = explode(':', $query['artid']);
+                        $query['artid'] = $parts[1];
+                    }
+                } else if (is_int($query['artid'])) {
+                    $db = JFactory::getDbo();
+                    $aquery = $db->setQuery($db->getQuery(true)
+                        ->select('art_alias')
+                        ->from('#__mams_articles')
+                        ->where('art_id='.(int)$query['artid'])
+                    );
+                    $alias = $db->loadResult();
+                    if ($noIDs) {
+                        $query['artid'] = $alias;
+                    } else {
+                        $query['artid'] = $query['artid'].':'.$alias;
+                    }
+                }
+                $segments[] = $query['artid'];
+                unset ($query['artid']);
 			}
 		} else if ($view == 'artlist') {
 			if ($foundart != 0) {

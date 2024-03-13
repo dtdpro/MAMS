@@ -106,7 +106,7 @@ if ($saveOrder) {
 			</tr>
 		</thead>
 		<tfoot><tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
-		<tbody <?php if (JVersion::MAJOR_VERSION == 4) { ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php } ?>>
+		<tbody <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php } ?>>
 		<?php foreach($this->items as $i => $item):
 			$orderkey   = array_search($item->cat_id, $this->ordering[$item->parent_id]);
 			?>

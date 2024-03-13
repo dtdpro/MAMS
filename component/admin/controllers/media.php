@@ -16,27 +16,5 @@ class MAMSControllerMedia extends JControllerForm
 		$this->view_list = "medias";
 
 		parent::__construct($config);
-	
-		// Guess the JText message prefix. Defaults to the option.
-		if (empty($this->extension))
-		{
-			$this->extension = JFactory::getApplication()->input->get('extension', 'com_mams');
-		}
-	}
-
-	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'med_id')
-	{
-		$append = parent::getRedirectToItemAppend($recordId,$urlVar);
-		$append .= '&extension=' . $this->extension;
-	
-		return $append;
-	}
-	
-	protected function getRedirectToListAppend()
-	{
-		$append = parent::getRedirectToListAppend();
-		$append .= '&extension=' . $this->extension;
-	
-		return $append;
 	}
 }

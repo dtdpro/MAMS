@@ -163,8 +163,8 @@ class MAMSModelArtList extends JModelList
 		$query->where('f.access IN ('.implode(",",$this->alvls).')');
 		$query->where('g.published >= 1');
 		$query->where('g.access IN ('.implode(",",$this->alvls).')');
-		$query->where('f.field_show_list = 1');
-		$query->where('f.field_id >= 100');
+		//$query->where('f.field_show_list = 1');
+		//$query->where('f.field_id >= 100');
 		$query->order('f.ordering ASC');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
@@ -191,7 +191,7 @@ class MAMSModelArtList extends JModelList
 	protected function getFieldAuthors($artid, $fid) {
 		$db = JFactory::getDBO();
 		$qa=$db->getQuery(true);
-		$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec');
+		$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec,a.auth_name,a.auth_image,a.auth_credentials');
 		$qa->from('#__mams_artauth as aa');
 		$qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
 		$qa->where('aa.published >= 1');

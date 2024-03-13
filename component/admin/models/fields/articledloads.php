@@ -26,7 +26,6 @@ class JFormFieldArticleDloads extends JFormField
 		// Build the query for the ordering list.
 		$query = 'SELECT dl_id AS value, dl_fname AS text' .
 				' FROM #__mams_dloads' .
-				' WHERE dl_extension = "com_mams" ' .
 				' ORDER BY dl_fname';
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';

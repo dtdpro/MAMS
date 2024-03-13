@@ -16,7 +16,7 @@ class MAMSTableArticle extends JTable implements VersionableTableInterface
 
 	function __construct(&$db) 
 	{
-		if (JVersion::MAJOR_VERSION == 4) {
+		if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 			$this->typeAlias = 'com_mams.article';
 		}
 
@@ -78,9 +78,10 @@ class MAMSTableArticle extends JTable implements VersionableTableInterface
 	{
 		if (isset($array['art_fielddata']) && is_array($array['art_fielddata']))
 		{
-			$registryfd = new JRegistry;
-			$registryfd->loadArray($array['art_fielddata']);
-			$array['art_fielddata'] = $registryfd->toString();
+			//$registryfd = new JRegistry;
+			//$registryfd->loadArray($array['art_fielddata']);
+			//$array['art_fielddata'] = $registryfd->toString();
+            $array['art_fielddata'] = json_encode($array['art_fielddata']);
 		}
 		
 		if (isset($array['params']) && is_array($array['params']))
@@ -226,17 +227,7 @@ class MAMSTableArticle extends JTable implements VersionableTableInterface
 		}
 	
 		// Build the WHERE clause for the primary keys.
-		$where = $k.'='.implode(' OR '.$k.'=', $pks);
-	
-		// Determine if there is checkin support for the table.
-		if (!property_exists($this, 'checked_out') || !property_exists($this, 'checked_out_time'))
-		{
-			$checkin = '';
-		}
-		else
-		{
-			$checkin = ' AND (checked_out = 0 OR checked_out = '.(int) $userId.')';
-		}
+		$where = $k.' IN ('.implode(',', $pks).')';
 	
 		// Update the publishing state for rows with the given primary keys.
 		$this->_db->setQuery(

@@ -2,6 +2,14 @@ function MAMSTrackMedia(item_id) {
 	//var request = jQuery.ajax({	url: mamsuri+"/components/com_mams/mediatrack.php",	type: "POST", data: { item_id : item_id }, dataType: "html"});
 }
 
+function MAMSTrackDownload(articleTitle, fileName) {
+	gtag('event', 'Downloaded', {
+		'event_category': 'MAMSDownload',
+		'event_label': articleTitle,
+		'event_file':fileName
+	});
+}
+
 //MAMS Media Analytics
 
 (function($) {

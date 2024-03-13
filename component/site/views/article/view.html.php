@@ -32,19 +32,15 @@ class MAMSViewArticle extends JViewLegacy
 
 		// If no article ID, error
 		if (!$art) {
-			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
-			$app->setHeader('status', 404, true);
-			return false;
+			throw new \Exception("Not Found", 404);
 		}
 
 		// get access details for article
 		$accessDetails = $model->getArticleAccessDetails($art);
 
-		// if articel does not exist, error
+		// if article does not exist, error
 		if (!$accessDetails->exists) {
-			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
-			$app->setHeader('status', 404, true);
-			return false;
+			throw new \Exception("Not Found", 404);
 		}
 
 		// check for access and preview
@@ -177,9 +173,7 @@ class MAMSViewArticle extends JViewLegacy
 				$app->redirect($url);
 			}
 		} else {
-			$app->enqueueMessage(JText::_('COM_MAMS_ARTICLE_NOT_FOUND'), 'error');
-			$app->setHeader('status', 404, true);
-			return false;
+			throw new \Exception("Not Found", 404);
 		}
 	}
 

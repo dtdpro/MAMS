@@ -26,10 +26,10 @@ use Joomla\CMS\Language\Text;
         </div>
     </div>
 
-    <?php if (JVersion::MAJOR_VERSION == 4) { ?><div class="form-horizontal main-card"><?php } ?>
+    <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?><div class="form-horizontal main-card"><?php } ?>
 
 		<?php
-		if (JVersion::MAJOR_VERSION == 4) {
+		if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 			echo HTMLHelper::_('uitab.startTabSet', 'myTab', array( 'active' => 'details', 'recall' => true, 'breakpoint' => 768 ) );
 			echo HTMLHelper::_('uitab.addTab', 'myTab', 'general', Text::_('COM_MAMS_FIELDGROUP_DETAILS'));
 		} else {
@@ -38,7 +38,7 @@ use Joomla\CMS\Language\Text;
 		}
 		?>
 
-        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
             <div class="span10 form-vertical col-md-10">
                 <?php echo $this->form->renderField('art_sec'); ?>
                 <?php echo $this->form->renderField('art_content'); ?>
@@ -52,9 +52,9 @@ use Joomla\CMS\Language\Text;
 	            <?php echo $this->form->renderField('art_desc'); ?>
             </div>
         </div>
-        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
             <div class="span12 col-md-12">
-                <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+                <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
                     <div class="span4 form-vertical col-md-4">
 	                    <?php echo $this->form->renderField('authors'); ?>
                     </div>
@@ -68,9 +68,9 @@ use Joomla\CMS\Language\Text;
             </div>
         </div>
 
-        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
             <div class="span12 col-md-12">
-                <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+                <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
                     <div class="span3 form-vertical col-md-3">
 						<?php echo $this->form->renderField('medias'); ?>
                     </div>
@@ -88,7 +88,7 @@ use Joomla\CMS\Language\Text;
         </div>
 
 		<?php
-		if (JVersion::MAJOR_VERSION == 4) {
+		if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 			echo HTMLHelper::_('uitab.endTab');
 			echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('COM_MAMS_ARTICLE_PREVIEW'));
 		} else {
@@ -97,14 +97,14 @@ use Joomla\CMS\Language\Text;
 		}
 		?>
 
-        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
             <div class="span12 col-md-12 form-vertical">
 	            <?php echo $this->form->renderField('art_preview'); ?>
             </div>
         </div>
 
 		<?php
-		if (JVersion::MAJOR_VERSION == 4) {
+		if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 			echo HTMLHelper::_('uitab.endTab');
 			echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('COM_MAMS_ARTICLE_PUBLISHING'));
 		} else {
@@ -113,7 +113,7 @@ use Joomla\CMS\Language\Text;
 		}
 		?>
 
-        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+        <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
             <div class="span6 form-horizontal col-md-6">
                 <?php echo $this->form->renderField('feataccess'); ?>
                 <?php echo $this->form->renderField('art_alias'); ?>
@@ -135,7 +135,7 @@ use Joomla\CMS\Language\Text;
 
 
 		<?php
-		if (JVersion::MAJOR_VERSION == 4) {
+		if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 			echo HTMLHelper::_('uitab.endTab');
 		} else {
 			echo JHtml::_('bootstrap.endTab');
@@ -146,7 +146,7 @@ use Joomla\CMS\Language\Text;
 		foreach ($fieldSets as $name => $fieldSet) {
 			$paramstabs = 'params-' . $name;
 
-			if (JVersion::MAJOR_VERSION == 4) {
+			if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 				echo HTMLHelper::_('uitab.addTab', 'myTab', $paramstabs, Text::_($fieldSet->label, true));
 			} else {
 				echo JHtml::_('bootstrap.addTab', 'myTab', $paramstabs, JText::_($fieldSet->label, true));
@@ -167,7 +167,7 @@ use Joomla\CMS\Language\Text;
             }
 
 
-			if (JVersion::MAJOR_VERSION == 4) {
+			if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 				echo HTMLHelper::_('uitab.endTab');
 			} else {
 				echo JHtml::_('bootstrap.endTab');
@@ -179,7 +179,7 @@ use Joomla\CMS\Language\Text;
 		foreach ($fieldSets as $name => $fieldSet) {
 			$metadatatabs = 'metadata-' . $name;
 
-			if (JVersion::MAJOR_VERSION == 4) {
+			if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 				echo HTMLHelper::_('uitab.addTab', 'myTab', $metadatatabs, Text::_($fieldSet->label, true));
 			} else {
 				echo JHtml::_('bootstrap.addTab', 'myTab', $metadatatabs, JText::_($fieldSet->label, true));
@@ -187,7 +187,7 @@ use Joomla\CMS\Language\Text;
 
 			echo JLayoutHelper::render( 'joomla.edit.metadata', $this );
 
-			if (JVersion::MAJOR_VERSION == 4) {
+			if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 				echo HTMLHelper::_('uitab.endTab');
 			} else {
 				echo JHtml::_('bootstrap.endTab');
@@ -196,7 +196,7 @@ use Joomla\CMS\Language\Text;
 
 		// Rules
 		if ($this->canDo->get('core.admin')) {
-			if (JVersion::MAJOR_VERSION == 4) {
+			if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 				echo HTMLHelper::_('uitab.addTab', 'myTab', 'permissions', Text::_('COM_MAMS_ARTICLE_RULES', true));
 			} else {
 				echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_MAMS_ARTICLE_RULES', true));
@@ -204,7 +204,7 @@ use Joomla\CMS\Language\Text;
 
             echo $this->form->getInput('rules');
 
-			if (JVersion::MAJOR_VERSION == 4) {
+			if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 				echo HTMLHelper::_('uitab.endTab');
 			} else {
 				echo JHtml::_('bootstrap.endTab');
@@ -214,7 +214,7 @@ use Joomla\CMS\Language\Text;
 		
 		//Aditional Fields
 		foreach ($this->addfields as $g) {
-			if (JVersion::MAJOR_VERSION == 4) {
+			if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 				echo HTMLHelper::_('uitab.addTab', 'myTab', $g->group_name, $g->group_title);
 			} else {
 				echo JHtml::_('bootstrap.addTab', 'myTab', $g->group_name, $g->group_title);
@@ -227,7 +227,7 @@ use Joomla\CMS\Language\Text;
 				</div>
 			<?php endforeach;
 
-			if (JVersion::MAJOR_VERSION == 4) {
+			if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 				echo HTMLHelper::_('uitab.endTab');
 			} else {
 				echo JHtml::_('bootstrap.endTab');
@@ -236,7 +236,7 @@ use Joomla\CMS\Language\Text;
 		}
 
 
-		if ( JVersion::MAJOR_VERSION == 4 ) {
+		if ( JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5 ) {
 			echo HTMLHelper::_( 'uitab.endTabSet' );
 		} else {
 			echo JHtml::_( 'bootstrap.endTabSet' );
@@ -245,7 +245,7 @@ use Joomla\CMS\Language\Text;
 
 		?>
 
-    <?php if (JVersion::MAJOR_VERSION == 4) { ?></div><?php } ?>
+    <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?></div><?php } ?>
 
     <input type="hidden" name="task" value="article.edit" />
     <?php echo JHtml::_('form.token'); ?>

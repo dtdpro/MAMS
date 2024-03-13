@@ -25,10 +25,10 @@ use Joomla\CMS\Language\Text;
 			<div class="controls"><?php echo $this->form->getInput('sec_name'); ?></div>
 		</div>
 	</div>
-	<?php if (JVersion::MAJOR_VERSION == 4) { ?><div class="form-horizontal main-card"><?php } ?>
+	<?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?><div class="form-horizontal main-card"><?php } ?>
 
 	    <?php
-	    if (JVersion::MAJOR_VERSION == 4) {
+	    if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
 		    echo HTMLHelper::_('uitab.startTabSet', 'myTab', array( 'active' => 'details', 'recall' => true, 'breakpoint' => 768 ) );
 		    echo HTMLHelper::_('uitab.addTab', 'myTab', 'general', Text::_('COM_MAMS_SEC_DETAILS'));
 	    } else {
@@ -37,15 +37,15 @@ use Joomla\CMS\Language\Text;
 	    }
 	    ?>
 
-	<div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+	<div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
 
 		<div class="span10 col-md-10">
-            <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+            <div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
                 <div class="span12 form-vertical col-md-12">
                     <?php echo $this->form->renderField('sec_content'); ?>
                 </div>
             </div>
-			<div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4) { ?>row<?php } ?>">
+			<div class="row-fluid <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>row<?php } ?>">
 				<div class="span6 form-horizontal col-md-6">
 					<?php echo $this->form->renderField('sec_thumb'); ?>
 					<?php echo $this->form->renderField('sec_desc'); ?>
@@ -67,7 +67,7 @@ use Joomla\CMS\Language\Text;
 	</div>
 
 	    <?php
-	    if (JVersion::MAJOR_VERSION == 4) {
+	    if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
             if ($this->canDo->get('core.admin')) {
                 echo HTMLHelper::_('uitab.endTab');
             }
@@ -89,7 +89,7 @@ use Joomla\CMS\Language\Text;
 		</fieldset>
 
 	    <?php
-	    if (JVersion::MAJOR_VERSION == 4) {
+	    if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) {
             if ($this->canDo->get('core.admin')) {
                 echo HTMLHelper::_('uitab.endTab');
             }
@@ -104,7 +104,7 @@ use Joomla\CMS\Language\Text;
 
 
 
-		<?php if (JVersion::MAJOR_VERSION == 4) { ?></div><?php } ?>
+		<?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?></div><?php } ?>
 	<div>
 		<input type="hidden" name="task" value="sec.edit" />
 		<?php echo JHtml::_('form.token'); ?>

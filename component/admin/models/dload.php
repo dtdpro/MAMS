@@ -55,7 +55,7 @@ class MAMSModelDload extends JModelAdmin
 			$data = $this->getItem();
 			if ($this->getState('dload.dl_id') == 0) {
 				$app = JFactory::getApplication();
-				$data->set('dl_extension', $jinput->get('dl_extension', $app->getUserState('com_mams.dloads.filter.extension')));
+				$data->set('dl_extension', 'com_mams');
 				
 			}
 		}

@@ -124,7 +124,7 @@ $sortFields = $this->getSortFields();
 		
 		</thead>
 		<tfoot><tr><td colspan="15"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
-        <tbody <?php if (JVersion::MAJOR_VERSION == 4) { ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php } ?>>
+        <tbody <?php if (JVersion::MAJOR_VERSION == 4 || JVersion::MAJOR_VERSION == 5) { ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php } ?>>
 		<?php foreach($this->items as $i => $item): 
 			$canCreate = $user->authorise('core.create', 'com_mams.sec.'.$item->art_sec);
 			$canEdit = $user->authorise('core.edit', 'com_mams.article.'.$item->art_id);
@@ -173,8 +173,12 @@ $sortFields = $this->getSortFields();
 		            if (JVersion::MAJOR_VERSION == 3) {
 			            echo JHtml::_('mamsadministrator.featured', $item->featured, $i, true, "articles");
 		            } else {
+                        $featured = 0;
+                        if ($item->featured > 0 ) {
+                            $featured = 1;
+                        }
 			            $options = [ 'task_prefix' => 'articles.', 'id' => 'featured-' . $item->art_id ];
-			            echo ( new FeaturedButton() )->render( (int) $item->featured, $i, $options );
+			            echo ( new FeaturedButton() )->render( (int) $featured, $i, $options );
 		            }
 		            ?>
                 </td>

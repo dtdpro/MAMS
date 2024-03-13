@@ -54,7 +54,7 @@ class MAMSModelMedia extends JModelAdmin
 			$data = $this->getItem();
 			if ($this->getState('media.med_id') == 0) {
 				$app = JFactory::getApplication();
-				$data->set('med_extension', $jinput->get('med_extension', $app->getUserState('com_mams.medias.filter.extension','com_mams')));
+				$data->set('med_extension', 'com_mams');
 				
 			}
 		}

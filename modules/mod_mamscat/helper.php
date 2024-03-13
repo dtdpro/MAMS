@@ -183,18 +183,23 @@ class modMAMSCatHelper
 		$db->setQuery($qa);
 		return $db->loadObjectList();
 	}
-	
-	public static function getCatInfo($params) {
-		$catid=(int)$params->get('catid');
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
-		
-		$query->select('*');
-		$query->from("#__mams_cats");
-		$query->where('cat_id = '.$catid);
-		$db->setQuery($query);
-		return $db->loadObject();
-		
-	}
+
+    public static function getCatInfo($params) {
+        $cats = array();
+        foreach ($params->get('catid') as $c) {
+            if ((int)$c) $cats[] = (int)$c;
+        }
+
+        $catid=$cats[0];
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+
+        $query->select('*');
+        $query->from("#__mams_cats");
+        $query->where('cat_id = '.$catid);
+        $db->setQuery($query);
+        return $db->loadObject();
+
+    }
 
 }

@@ -12,7 +12,7 @@ class MAMSModelArticle extends JModelAdmin
 	
 	public $typeAlias = 'com_mams.article';
 	
-	protected function canDelete($record)
+	/*protected function canDelete($record)
 	{
 		if (!empty($record->art_id))
 		{
@@ -44,7 +44,7 @@ class MAMSModelArticle extends JModelAdmin
 		{
 			return parent::canEditState('com_mams');
 		}
-	}
+	}*/
 	
 	public function getTable($type = 'Article', $prefix = 'MAMSTable', $config = array()) 
 	{
@@ -738,8 +738,49 @@ class MAMSModelArticle extends JModelAdmin
 		}
 		return $data;
 	}
-	
-	protected function getAdditionalFields() {
+
+    public function publish(&$pks, $value = 1)
+    {
+        $user  = JFactory::getUser();
+        $table = $this->getTable();
+        $pks   = (array) $pks;
+
+        $context = $this->option . '.' . $this->name;
+
+        // Access checks.
+        foreach ($pks as $i => $pk) {
+            $table->reset();
+
+            if ($table->load($pk)) {
+                if (!$this->canEditState($table)) {
+                    // Prune items that you can't change.
+                    unset($pks[$i]);
+
+                    return false;
+                }
+            }
+        }
+
+        // Check if there are items to change
+        if (!\count($pks)) {
+            return true;
+        }
+
+        // Attempt to change the state of the records.
+        if (!$table->publish($pks, $value, $user->get('id'))) {
+            $this->setError($table->getError());
+
+            return false;
+        }
+
+        // Clear the component's cache
+        $this->cleanCache();
+
+        return true;
+    }
+
+
+    protected function getAdditionalFields() {
 		$db	= $this->getDbo();
 		$query	= $db->getQuery(true);
 		$query->select('*');
@@ -776,7 +817,7 @@ class MAMSModelArticle extends JModelAdmin
 						$formxml .= '<field name="'.$f->field_name.'" type="textarea" default="" label="'.$f->field_title.'" description="" filter="safehtml"/>';
 						break;
 					case "editor":
-						$formxml .= '<field name="'.$f->field_name.'" label ="'.$f->field_title.'" type="editor" filter="raw" />';
+						$formxml .= '<field name="'.$f->field_name.'" label="'.$f->field_title.'" type="editor" filter="safehtml" />';
 						break;
 					case "auths":
 						$formxml .= '<field name="'.$f->field_name.'" type="subform" label="'.$f->field_title.'" layout="joomla.form.field.subform.repeatable-table" icon="list" multiple="true" >';

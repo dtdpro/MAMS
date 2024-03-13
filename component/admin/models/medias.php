@@ -27,9 +27,6 @@ class MAMSModelMedias extends JModelList
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
-		
-		$extension = $app->getUserStateFromRequest($this->context.'.filter.extension', 'extension', 'com_mams', 'cmd');
-		$this->setState('filter.extension', $extension);
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
@@ -81,11 +78,6 @@ class MAMSModelMedias extends JModelList
 			$query->where('m.published = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(m.published IN (0, 1))');
-		}
-		
-		// Filter by extension
-		if ($extension = $this->getState('filter.extension')) {
-			$query->where('m.med_extension = '.$db->quote($extension));
 		}
 		
 		// Filter by search in title
