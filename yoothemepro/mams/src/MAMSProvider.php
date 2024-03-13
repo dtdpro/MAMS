@@ -190,6 +190,106 @@ class MAMSProvider
 		return $items;
 	}
 
+    public static function getArticleFields() {
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+
+        $query->select('f.*');
+        $query->from("#__mams_article_fields as f");
+        $query->select('g.group_title,g.group_show_title,g.group_name');
+        $query->join('LEFT', '#__mams_article_fieldgroups AS g ON g.group_id = f.field_group');
+        $query->where('f.published >= 1');
+        $query->where('g.published >= 1');
+        $query->where("f.field_type in ('textfield','textbox','editor','auths','dloads','links')");//'media','images','artauthedlink'
+        $query->order('f.ordering ASC');
+        $db->setQuery($query);
+        $items = $db->loadObjectList();
+
+        return $items;
+    }
+
+    public static function getFeaturedArticles($limit=5,$restrictFeat=false)
+    {
+        // getheper for config
+        require_once('components/com_mams/helpers/mams.php');
+
+        $db = JFactory::getDbo();
+        $user = JFactory::getUser();
+        $cfg = MAMSHelper::getConfig();
+
+        $alvls = Array();
+        $alvls = $user->getAuthorisedViewLevels();
+        $alvls = array_merge($alvls,$cfg->reggroup);
+
+        $query = $db->getQuery(true);
+
+        $query->select('f.*,a.*,s.*');
+        $query->from('#__mams_artfeat as f');
+        $query->join('LEFT', '#__mams_articles AS a ON a.art_id = f.af_art');
+        $query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
+        if ($restrictFeat) $query->where('a.feataccess IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+        $query->where('a.state >= 1');
+        if (!in_array($cfg->ovgroup,$alvls)) { $query->where('a.art_publish_up <= NOW()'); $query->where('(a.art_publish_down >= NOW() || a.art_publish_down="0000-00-00")'); }
+        $query->order('f.ordering');
+        $db->setQuery($query,0,$limit);
+        $items = $db->loadObjectList();
+
+        foreach ($items as &$i) {
+
+            //Authors
+            $qa=$db->getQuery(true);
+            $qa->select('a.auth_id,a.auth_name,a.auth_alias,a.auth_sec');
+            $qa->from('#__mams_artauth as aa');
+            $qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
+            $qa->where('aa.published >= 1');
+            $qa->where('a.published >= 1');
+            $qa->where('a.access IN ('.implode(",",$alvls).')');
+            $qa->where('aa.aa_art = '.$i->art_id);
+            $qa->where('aa.aa_field = 5');
+            $qa->order('aa.ordering ASC');
+            $db->setQuery($qa);
+            $i->auts = $db->loadObjectList();
+
+            //Categories
+            $qc=$db->getQuery(true);
+            $qc->select('c.cat_id,c.cat_title,c.cat_alias');
+            $qc->from('#__mams_artcat as ac');
+            $qc->join('RIGHT','#__mams_cats AS c ON ac.ac_cat = c.cat_id');
+            $qc->where('ac.published >= 1');
+            $qc->where('c.published >= 1');
+            $qc->where('c.access IN ('.implode(",",$alvls).')');
+            $qc->where('ac.ac_art = '.$i->art_id);
+            $qc->order('ac.ordering ASC');
+            $db->setQuery($qc);
+            $i->cats=$db->loadObjectList();
+
+            // Tags
+            $qc = $db->getQuery( true );
+            $qc->select( 't.tag_id,t.tag_title,t.tag_alias' );
+            $qc->from( '#__mams_arttag as at' );
+            $qc->join( 'RIGHT', '#__mams_tags AS t ON at.at_tag = t.tag_id' );
+            $qc->where( 'at.published >= 1' );
+            $qc->where( 't.published >= 1' );
+            $qc->where( 't.access IN (' . implode( ",", $alvls ) . ')' );
+            $qc->where( 'at.at_art = ' . $i->art_id );
+            $qc->order( 'at.ordering ASC' );
+            $db->setQuery( $qc );
+            $i->tags=$db->loadObjectList();
+
+            /*if ($i->art_fielddata)
+            {
+                $registry = new JRegistry;
+                $registry->loadString($i->art_fielddata);
+                $i->art_fielddata = $registry->toObject();
+            }
+            if ($params->get('show_allfields',0)) {
+                $i->fields = modMAMSFeatHelper::getArticleListFields($i->art_id,$alvls);
+            }*/
+        }
+
+        return $items;
+    }
+
 	public static function secList() {
 		$db	= JFactory::getDbo();
 		$qc=$db->getQuery(true);

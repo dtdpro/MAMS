@@ -46,23 +46,31 @@ class MAMSArticleQueryType
 
                     'metadata' => [
 
-                        'label' => 'Articles',
+                        'label' => 'MAMS Articles',
                         'group' => 'MAMS',
                         'fields' => [
                             'secid' => [
                                 'label' => 'Filter by Section IDs',
                                 'type' => 'text',
                                 'default' => '',
-                                "description"=> "Seprate multiple sections by a comma, no spaces."
-                                //'options' => [['value'=>'','text'=>''],['evaluate'=>'yootheme.builder.mams_sections']]
+                                "description"=> "Seprate multiple sections by a comma, no spaces.",
+                                /*'options' => [['value'=>'','text'=>''],['evaluate'=>'yootheme.builder.mams_sections']],
+                                'attrs' => [
+                                    'multiple' => true,
+                                    'class' => 'uk-height-small',
+                                ]*/
                             ],
 							'catid' => [
 								'label' => 'Filter by Category IDs',
 								'type' => 'text',
 								'default' => '',
                                 "description"=> "Seprate multiple categories by a comma, no spaces."
-								//'options' => [['value'=>'','text'=>''],['evaluate'=>'yootheme.builder.mams_categories']]
-							],
+								/*'options' => [['value'=>'','text'=>''],['evaluate'=>'yootheme.builder.mams_categories']],
+                                    'attrs' => [
+                                        'multiple' => true,
+                                        'class' => 'uk-height-small',
+                                    ]*/
+                                ],
 							'tagid' => [
 								'label' => 'Filter by Tag IDs',
 								'type' => 'text',

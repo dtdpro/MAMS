@@ -34,7 +34,7 @@ class MAMSCatQueryType
 
                     'metadata' => [
 
-                        'label' => 'Categories',
+                        'label' => 'MAMS Categories',
                         'group' => 'MAMS',
                         'fields' => [
                             'order' => [

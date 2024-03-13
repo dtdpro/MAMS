@@ -4,18 +4,30 @@ class MAMSArticleType
 {
     public static function config()
     {
-        return [
+        $config = [
 
             'fields' => [
 
                 'title' => [
                     'type' => 'String',
                     'metadata' => [
-                        'label' => 'Title'
+                        'label' => 'Title',
+                        'arguments' => [
+                            'link_title' => [
+                                'text' => 'Link Title',
+                                'type' => 'checkbox',
+                                'default' => false
+                            ]
+                        ]
                     ],
                     'extensions' => [
-                        'call' => __CLASS__ . '::resolveTitle'
-                    ]
+                        'call' => __CLASS__ . '::resolveTitle',
+                    ],
+                    'args' => [
+                        'link_title' => [
+                            'type' => 'Boolean',
+                        ]
+                    ],
                 ],
                 'id' => [
                     'type' => 'String',
@@ -24,6 +36,15 @@ class MAMSArticleType
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolveId'
+                    ]
+                ],
+                'publishDate' => [
+                    'type' => 'String',
+                    'metadata' => [
+                        'label' => 'Publish Date'
+                    ],
+                    'extensions' => [
+                        'call' => __CLASS__ . '::resolvePublishDate'
                     ]
                 ],
                 'url' => [
@@ -164,7 +185,16 @@ class MAMSArticleType
 			                'type' => 'Boolean',
 		                ]
 	                ],
-                ]
+                ],
+                'debug' => [
+                    'type' => 'String',
+                    'metadata' => [
+                        'label' => 'Debug Information'
+                    ],
+                    'extensions' => [
+                        'call' => __CLASS__ . '::resolveDebug'
+                    ]
+                ],
 
             ],
 
@@ -174,11 +204,139 @@ class MAMSArticleType
             ]
 
         ];
+
+        $additionalFields = MAMSProvider::getArticleFields();
+
+        foreach($additionalFields as $index=>$field) {
+            switch ($field->field_type) {
+                case 'dloads':
+                    $newField = [
+                        'type' => [
+                            'listOf' =>'MAMSDownloadType'
+                        ],
+                        'metadata' => [
+                            'label' => $field->group_title.': '.$field->field_title
+                        ],
+                        'extensions' => [
+                            'call' => [
+                                'func'=>__CLASS__ . '::resolveAdditonalField',
+                                'args'=>[
+                                    'name'=>$field->field_name,
+                                    'type'=>$field->field_type
+                                ]
+                            ]
+                        ]
+                    ];
+                    break;
+                case 'auths':
+                    $newField = [
+                        'type' => [
+                            'listOf' =>'MAMSAuthorType'
+                        ],
+                        'metadata' => [
+                            'label' => $field->group_title.': '.$field->field_title
+                        ],
+                        'extensions' => [
+                            'call' => [
+                                'func'=>__CLASS__ . '::resolveAdditonalField',
+                                'args'=>[
+                                    'name'=>$field->field_name,
+                                    'type'=>$field->field_type
+                                ]
+                            ]
+                        ]
+                    ];
+                    break;
+                case 'links':
+                    $newField = [
+                        'type' => [
+                            'listOf' =>'MAMSLinkType'
+                        ],
+                        'metadata' => [
+                            'label' => $field->group_title.': '.$field->field_title
+                        ],
+                        'extensions' => [
+                            'call' => [
+                                'func'=>__CLASS__ . '::resolveAdditonalField',
+                                'args'=>[
+                                    'name'=>$field->field_name,
+                                    'type'=>$field->field_type
+                                ]
+                            ]
+                        ]
+                    ];
+                    break;
+                case 'textfield':
+                case 'textbox':
+                case 'editor':
+                default:
+                    $newField = [
+                        'type' => 'String',
+                        'metadata' => [
+                            'label' => $field->group_title.': '.$field->field_title
+                        ],
+                        'extensions' => [
+                            'call' => [
+                                'func'=>__CLASS__ . '::resolveAdditonalField',
+                                'args'=>[
+                                    'name'=>$field->field_name,
+                                    'type'=>$field->field_type
+                                ]
+                            ]
+                        ]
+                    ];
+                    break;
+            }
+            $config['fields'][$field->field_name] = $newField;
+        }
+
+        return $config;
+    }
+
+    public static function resolveAdditonalField($obj,$args) {
+        $fn = $args['name'];
+        $fieldData = null;
+        foreach ($obj->fields as $of) {
+            if ($of->field_type == 'dloads' || $of->field_type == 'auths' || $of->field_type == 'links') {
+                if ($of->field_name == $fn) {
+                    if ($of->data) {
+                        $fieldData = $of->data;
+                    }
+                }
+            }
+        }
+        //$output = print_r($obj->art_fielddata->$fn, true);
+        switch ($args['type']) {
+            case 'textfield':
+            case 'textbox':
+            case 'editor':
+                $data = $obj->art_fielddata->$fn;
+                break;
+            case 'auths':
+            case 'links':
+            case 'dloads':
+                $data = $fieldData;
+                break;
+        }
+           /* case 'media':
+            case 'images':
+            case 'artauthedlink':*/
+        return $data;
     }
 
     public static function resolveTitle($obj, $args, $context, $info)
     {
-        return $obj->art_title;
+        $artlink = "index.php?option=com_mams&view=article";
+        if ($args['article_seclock']) $artlink .= "&secid=" . $obj->art_sec . ":" . $obj->sec_alias;
+        $artlink .= "&artid=" . $obj->art_id . ":" . $obj->art_alias;
+        if ($obj->cats && $args['article_catlock']) $artlink .= '&catid=' . $obj->cats[0]->cat_id;
+        if ($obj->tags && $args['article_taglock']) $artlink .= '&tagid=' . $obj->tags[0]->tag_id;
+
+        $title='';
+        if ($args['link_title']) $title .= '<a href="'.JRoute::_($artlink).'">';
+        $title .= $obj->art_title;
+        if ($args['link_title']) $title .= '</a>';
+        return $title;
     }
 
     public static function resolveId($obj, $args, $context, $info)
@@ -197,6 +355,11 @@ class MAMSArticleType
 	    return JRoute::_($artlink);
     }
 
+    public static function resolvePublishDate($obj, $args, $context, $info)
+    {
+        return date( "F j, Y", strtotime( $obj->art_publish_up ) );
+    }
+
 	public static function resolveThumbnail($obj, $args, $context, $info)
 	{
 		return $obj->art_thumb;
@@ -206,6 +369,11 @@ class MAMSArticleType
 	{
 		return $obj->art_desc;
 	}
+
+    public static function resolveDebug($obj, $args, $context, $info)
+    {
+        return print_r($obj,true);
+    }
 
 	public static function resolveSection($obj, $args, $context, $info)
 	{
