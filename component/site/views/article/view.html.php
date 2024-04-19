@@ -13,7 +13,7 @@ class MAMSViewArticle extends JViewLegacy
 	protected $params = null;
 	protected $relatedbycat = null;
 	protected $relatedbyaut = null;
-	
+
 	public function display($tpl = null)
 	{
 		$layout = $this->getLayout();
@@ -69,40 +69,40 @@ class MAMSViewArticle extends JViewLegacy
 
 		if ($this->article) {
 			$this->params = $this->article->params;
-			
+
 			$authors = array();
 			if ($this->article->auts) {
 				foreach ($this->article->auts as $a) {
-					$authors[] = $a->auth_fname.(($a->auth_mi) ? " ".$a->auth_mi : "")." ".$a->auth_lname.(($a->auth_titles) ? ", ".$a->auth_titles : "");
+					$authors[] = $a->auth_fname.(($a->auth_mi) ? " ".$a->auth_mi : "")." ".$a->auth_lname;
 				}
 			}
-			
+
 			$this->document->setMetaData('title', $this->article->art_title);
-			
-			foreach ($authors as $a) { $this->document->setMetaData('author', $a); }
-			
+
+			$this->document->setMetaData('author', $authors[0]);
+
 			//Set Metadata Info
 			if ($this->article->metadesc) {
 				$this->document->setDescription($this->article->metadesc);
 			} elseif (!$this->article->metadesc && $this->params->get('menu-meta_description')) {
 				$this->document->setDescription($this->params->get('menu-meta_description'));
 			}
-			
+
 			if ($this->article->metakey) {
 				$this->document->setMetadata('keywords', $this->article->metakey);
 			} elseif (!$this->article->metakey && $this->params->get('menu-meta_keywords')) {
 				$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
 			}
-			
+
 			if ($this->params->get('robots')) {
 				$this->document->setMetadata('robots', $this->params->get('robots'));
 			}
-			
+
 			//citation meta tags; missing: citation_journal_title, citation_issn, citation_volume, citation_issue, citation_firstpage, citation_lastpage,  citation_publication_date
 			$this->document->setMetaData('citation_title', $this->article->art_title);
-			foreach ($authors as $a) { $this->document->setMetaData('citation_author', $a); }
+			$this->document->setMetaData('citation_author', $authors[0]);
 			$this->document->setMetaData('citation_online_date', $this->article->art_publish_up);
-			
+
 			$mdata = $this->article->metadata->toArray();
 			foreach ($mdata as $k => $v) {
 				if ($v)	$this->document->setMetadata($k, $v);
@@ -201,6 +201,6 @@ class MAMSViewArticle extends JViewLegacy
 		}
 		$this->document->setTitle($title);
 	}
-	
+
 }
 ?>

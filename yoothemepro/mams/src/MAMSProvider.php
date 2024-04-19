@@ -56,7 +56,7 @@ class MAMSProvider
 		return $items;
 	}
 
-	public static function getArticles($sec=null,$category=null,$tag=null,$limit=5,$orderby1="a.art_publish_up DESC",$orderby2="s.lft ASC",$orderby3="a.ordering ASC",$restrictFeat=false) {
+	public static function getArticles($sec=null,$category=null,$tag=null,$limit=5,$orderby1="a.art_publish_up DESC",$orderby2="s.lft ASC",$orderby3="a.ordering ASC",$restrictFeat=false,$additionalFields=false) {
 		// getheper for config
 		require_once('components/com_mams/helpers/mams.php');
 
@@ -176,15 +176,32 @@ class MAMSProvider
 			$db->setQuery( $qc );
 			$i->tags=$db->loadObjectList();
 
-			/*if ($i->art_fielddata)
-			{
-				$registry = new JRegistry;
-				$registry->loadString($i->art_fielddata);
-				$i->art_fielddata = $registry->toObject();
-			}
-			if ($params->get('show_allfields',0)) {
-				$i->fields = modMAMSLatestHelper::getArticleListFields($i->art_id,$alvls);
-			}*/
+            if ($additionalFields) {
+                if ($i->art_fielddata) {
+                    $registry = new JRegistry;
+                    $registry->loadString($i->art_fielddata);
+                    $i->art_fielddata = $registry->toObject();
+                }
+
+                $fields = MAMSProvider::getArticleFields();
+
+                foreach ($fields as &$f) {
+                    switch ($f->field_type) {
+                        case "auths":
+                            $f->data = MAMSProvider::getFieldAuthors($i->art_id, $f->field_id);
+                            break;
+                        case "dloads":
+                            $f->data = MAMSProvider::getFieldDownloads($i->art_id, $f->field_id);
+                            break;
+                        case "links":
+                            $f->data = MAMSProvider::getFieldLinks($i->art_id, $f->field_id);
+                            break;
+                    }
+                }
+
+                $i->fields = $fields;
+            }
+
 		}
 
 		return $items;
@@ -322,4 +339,49 @@ class MAMSProvider
 		$db->setQuery($qc);
 		return $db->loadObjectList();
 	}
+
+    public static function getFieldAuthors($artid, $fid) {
+        $db = JFactory::getDBO();
+        $qa=$db->getQuery(true);
+        $qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec,a.auth_name,a.auth_image,a.auth_credentials');
+        $qa->from('#__mams_artauth as aa');
+        $qa->join('RIGHT','#__mams_authors AS a ON aa.aa_auth = a.auth_id');
+        $qa->where('aa.published >= 1');
+        $qa->where('a.published >= 1');
+        $qa->where('aa.aa_art = '.$artid);
+        $qa->where('aa.aa_field = '.$fid);
+        $qa->order('aa.ordering ASC');
+        $db->setQuery($qa);
+        return $db->loadObjectList();
+    }
+
+    public static function getFieldDownloads($artid, $fid) {
+        $db = JFactory::getDBO();
+        $qa=$db->getQuery(true);
+        $qa->select('d.*');
+        $qa->from('#__mams_artdl as ad');
+        $qa->join('RIGHT','#__mams_dloads AS d ON ad.ad_dload = d.dl_id');
+        $qa->where('ad.published >= 1');
+        $qa->where('d.published >= 1');
+        $qa->where('ad.ad_art = '.$artid);
+        $qa->where('ad.ad_field = '.$fid);
+        $qa->order('ad.ordering ASC');
+        $db->setQuery($qa);
+        return $db->loadObjectList();
+    }
+
+    public static function getFieldLinks($artid, $fid) {
+        $db = JFactory::getDBO();
+        $qa=$db->getQuery(true);
+        $qa->select('l.*');
+        $qa->from('#__mams_artlinks as al');
+        $qa->join('RIGHT','#__mams_links AS l ON al.al_link = l.link_id');
+        $qa->where('al.published >= 1');
+        $qa->where('l.published >= 1');
+        $qa->where('al.al_art = '.$artid);
+        $qa->where('al.al_field = '.$fid);
+        $qa->order('al.ordering ASC');
+        $db->setQuery($qa);
+        return $db->loadObjectList();
+    }
 }

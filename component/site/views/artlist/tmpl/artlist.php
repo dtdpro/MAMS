@@ -167,6 +167,7 @@ if (isset($this->articles)) {
 				$first    = true;
 				foreach ( $a->fields as $f ) {
                     if (!$f->field_show_list) continue;
+                    if ($f->field_type == "auths" && $f->field_id == 5) continue;
 					if ($f->field_type == "auths" && !$this->params->get( 'show_mainauth', 1 )) {
 						continue;
 					}

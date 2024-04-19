@@ -29,8 +29,8 @@ $published = (int) $this->state->get('filter.published');
 				echo '<label id="batch-section-lbl" for="featsection_id" class="hasTip" title="' . JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL') . '::'. JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL_DESC') . '">';
 				echo JText::_('COM_MAMS_ARTICLE_BATCH_SECTION_LABEL').'</label>';
 				?>
-                <select name="batch[featsection_id]" class="inputbox" id="featsection_id">
-                    <option value="*"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
+                <select name="batch[featsection_id]" class="inputbox form-select" id="featsection_id">
+                    <option value="0"><?php echo JText::_('COM_MAMS_SELECT_SEC');?></option>
 					<?php echo JHtml::_('select.options', MAMSHelper::getSections("author"), 'value', 'text', "");?>
                 </select>
             </div>

@@ -42,6 +42,9 @@ class MAMSArticleQueryType
 						'limit' => [
 							'type' => 'String',
 						],
+                        'additionalFields' => [
+                            'type' => 'Boolean',
+                        ],
                     ],
 
                     'metadata' => [
@@ -132,11 +135,16 @@ class MAMSArticleQueryType
                                 'type' => 'checkbox',
 	                            'default' => false
                             ],
+                            'additionalFields' => [
+                                'text' => 'Query Additinal Field Data',
+                                'type' => 'checkbox',
+                                'default' => false
+                            ],
                             'limit' => [
                                 'label' => 'Limit',
                                 'type' => 'text',
                                 'default' => '5',
-                            ],                            
+                            ],
                         ],
 
                     ],
@@ -154,6 +162,6 @@ class MAMSArticleQueryType
 
     public static function resolve($item, $args, $context, $info)
     {
-		return MAMSProvider::getArticles($args['secid'],$args['catid'],$args['tagid'],$args['limit'],$args['orderby1'],$args['orderby2'],$args['orderby2'],$args['restrictFeat']);
+		return MAMSProvider::getArticles($args['secid'],$args['catid'],$args['tagid'],$args['limit'],$args['orderby1'],$args['orderby2'],$args['orderby2'],$args['restrictFeat'],$args['additionalFields']);
     }
 }

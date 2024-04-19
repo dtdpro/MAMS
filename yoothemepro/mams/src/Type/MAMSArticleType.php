@@ -195,6 +195,15 @@ class MAMSArticleType
                         'call' => __CLASS__ . '::resolveDebug'
                     ]
                 ],
+                'firstDownloadUrl' => [
+                    'type' => 'String',
+                    'metadata' => [
+                        'label' => 'First Download Link'
+                    ],
+                    'extensions' => [
+                        'call' => __CLASS__ . '::resolveFirstDownloadUrl'
+                    ]
+                ],
 
             ],
 
@@ -353,6 +362,28 @@ class MAMSArticleType
 	    if ($obj->tags && $args['article_taglock']) $artlink .= '&tagid=' . $obj->tags[0]->tag_id;
 
 	    return JRoute::_($artlink);
+    }
+
+    public static function resolveFirstDownloadUrl($obj, $args, $context, $info)
+    {
+        $fieldData=null;
+        foreach ($obj->fields as $of) {
+            if ($of->field_type == 'dloads') {
+                if ($of->field_id == 7) {
+                    if ($of->data) {
+                        $fieldData = $of->data[0];
+                    }
+                }
+            }
+        }
+
+        if ($fieldData) {
+            $dllink = "components/com_mams/dl.php?dlid=".$fieldData->dl_id;
+            return JRoute::_($dllink);
+        }
+
+        return '';
+
     }
 
     public static function resolvePublishDate($obj, $args, $context, $info)
