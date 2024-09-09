@@ -204,6 +204,15 @@ class MAMSArticleType
                         'call' => __CLASS__ . '::resolveFirstDownloadUrl'
                     ]
                 ],
+                'firstLinkUrl' => [
+                    'type' => 'String',
+                    'metadata' => [
+                        'label' => 'First Link URL'
+                    ],
+                    'extensions' => [
+                        'call' => __CLASS__ . '::resolveFirstLinkUrl'
+                    ]
+                ],
 
             ],
 
@@ -380,6 +389,28 @@ class MAMSArticleType
         if ($fieldData) {
             $dllink = "components/com_mams/dl.php?dlid=".$fieldData->dl_id;
             return JRoute::_($dllink);
+        }
+
+        return '';
+
+    }
+
+    public static function resolveFirstLinkUrl($obj, $args, $context, $info)
+    {
+        $fieldData=null;
+        foreach ($obj->fields as $of) {
+            if ($of->field_type == 'links') {
+                if ($of->field_id == 8) {
+                    if ($of->data) {
+                        $fieldData = $of->data[0];
+                    }
+                }
+            }
+        }
+
+        if ($fieldData) {
+            $link = $fieldData->link_url;
+            return JRoute::_($link);
         }
 
         return '';
