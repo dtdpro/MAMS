@@ -98,6 +98,14 @@ class MAMSModelStats extends JModelList
 			
 			$q->where('s.mt_type = "'.$filter_type.'"');
 		}
+
+        if ($filter_type == 'taglist') {
+            $q->select('a.tag_title as item_title');
+            $q->select('"Tag List" as sec_title');
+            $q->join('LEFT', '#__mams_tags as a ON s.mt_item = a.tag_id');
+
+            $q->where('s.mt_type = "'.$filter_type.'"');
+        }
 		
 		if ($filter_type == 'dload') {
 			$q->select('CONCAT(a.dl_lname," - ",a.dl_fname) as item_title');
@@ -105,6 +113,13 @@ class MAMSModelStats extends JModelList
 			$q->join('RIGHT', '#__mams_dloads as a ON s.mt_item = a.dl_id');
 			$q->where('s.mt_type = "'.$filter_type.'"');
 		}
+
+        if ($filter_type == 'link') {
+            $q->select('a.link_title as item_title');
+            $q->select('"Link" as sec_title');
+            $q->join('RIGHT', '#__mams_links as a ON s.mt_item = a.link_id');
+            $q->where('s.mt_type = "'.$filter_type.'"');
+        }
 		
 		if ($filter_type == 'authors') {
 			$q->select('"Authors List" as sec_title');
@@ -117,6 +132,27 @@ class MAMSModelStats extends JModelList
 			$q->join('LEFT', '#__mams_media as m ON s.mt_item = m.med_id');
 			$q->where('s.mt_type = "'.$filter_type.'"');
 		}
+
+        if ($filter_type == 'listcats') {
+            $q->select('"List of Categories" as item_title');
+            $q->select('"List of Categories" as sec_title');
+
+            $q->where('s.mt_type = "'.$filter_type.'"');
+        }
+
+        if ($filter_type == 'listsecs') {
+            $q->select('"List of Sections" as item_title');
+            $q->select('"List of Sections" as sec_title');
+
+            $q->where('s.mt_type = "'.$filter_type.'"');
+        } //listarts
+
+        if ($filter_type == 'listarts') {
+            $q->select('"List of All Articles" as item_title');
+            $q->select('"List of All Articles" as sec_title');
+
+            $q->where('s.mt_type = "'.$filter_type.'"');
+        }
 		
 		
 		

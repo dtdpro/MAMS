@@ -20,6 +20,15 @@ class MAMSLinkType
                         'label' => 'Link URL'
                     ],
                 ],
+                'track_link_url' => [
+                    'type' => 'String',
+                    'metadata' => [
+                        'label' => 'Trackable Link URL'
+                    ],
+                    'extensions' => [
+                        'call' => __CLASS__ . '::resolveTrackLink'
+                    ]
+                ],
                 'link_id' => [
                     'type' => 'String',
                     'metadata' => [
@@ -51,5 +60,11 @@ class MAMSLinkType
     public static function resolveDebug($obj, $args, $context, $info)
     {
         return print_r($obj,true);
+        //JRoute::_( "components/com_mams/lk.php?linkid=" . $d->link_id )
+    }
+
+    public static function resolveTrackLink($obj, $args, $context, $info)
+    {
+        return JRoute::_( "components/com_mams/lk.php?linkid=" . $obj->link_id );
     }
 }

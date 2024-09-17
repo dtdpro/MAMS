@@ -126,11 +126,13 @@ class MAMSViewArtList extends JViewLegacy
 	protected function listSecs() {
 		$model = $this->getModel();
 		$this->seclist = $model->getSecs($this->params->get("show_count",0));
+		MAMSHelper::trackViewed(0,'listsecs');
 	}
 	
 	protected function listCats() {
 		$model = $this->getModel();
 		$this->catlist = $model->getCats($this->params->get("show_count",0));
+		MAMSHelper::trackViewed(0,'listcats');
 	}
 	
 	protected function listSecByCat() {
@@ -145,6 +147,7 @@ class MAMSViewArtList extends JViewLegacy
 		$this->secinfo=$model->getSecInfo($sec);
 		$this->cats = $model->getSecCats($sec);
 		if ($this->secinfo && $this->cats) {
+			MAMSHelper::trackViewed($this->secinfo[0]->sec_id,'seclist');
 			if (count($this->secinfo) == 1) $this->title=$this->secinfo[0]->sec_name;
 			foreach ($this->cats as &$c) {
 				$cat = array();
@@ -167,6 +170,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->catinfo=$model->getCatInfo($cat);
 		if ($this->catinfo) {
+			MAMSHelper::trackViewed($this->catinfo[0]->cat_id,'catlist');
 			if (count($this->catinfo) == 1) $this->title = $this->catinfo[0]->cat_title;
 			$artids=$model->getCatArts($cat);
 			$this->articles=$model->getArticles($artids,$sec);
@@ -187,6 +191,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->taginfo=$model->getTagInfo($tag);
 		if ($this->taginfo) {
+			MAMSHelper::trackViewed($this->taginfo[0]->tag_id,'taglist');
 			if (count($this->taginfo) == 1) $this->title = $this->taginfo[0]->tag_title;
 			$artids=$model->getTagArts($tag);
 			$this->articles=$model->getArticles($artids,$sec);
@@ -207,6 +212,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->taginfo=$model->getTagInfo($tag);
 		if ($this->taginfo) {
+			MAMSHelper::trackViewed($this->taginfo[0]->tag_id,'taglist');
 			if (count($this->taginfo) == 1) $this->title = $this->taginfo[0]->tag_title;
 			$artids_tag=$model->getTagArts($tag);
 			$artids_cat=$model->getCatArts($cat);
@@ -227,6 +233,7 @@ class MAMSViewArtList extends JViewLegacy
 		$this->catinfo=$model->getCatInfo($cat);
 		$this->childcatlist = $model->getCats($this->params->get("show_count",0),$cat);
 		if ($this->catinfo) {
+			MAMSHelper::trackViewed($this->catinfo[0]->cat_id,'catlist');
 			if (count($this->catinfo) == 1) $this->title = $this->catinfo[0]->cat_title;
 			$artids=$model->getCatArts($cat);
 			if (count($artids) > 0) {
@@ -245,6 +252,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->taginfo=$model->getTagInfo($tag);
 		if ($this->taginfo) {
+			MAMSHelper::trackViewed($this->taginfo[0]->tag_id,'taglist');
 			if (count($this->taginfo) == 1) $this->title = $this->taginfo[0]->tag_title;
 			$artids=$model->getTagArts($tag);
 			if (count($artids) > 0) {
@@ -260,6 +268,7 @@ class MAMSViewArtList extends JViewLegacy
 		$model = $this->getModel();
 		$this->articles=$model->getArticles();
 		$this->pagination = $this->get('Pagination');
+		MAMSHelper::trackViewed(0,'listarts');
 	}
 	
 	
@@ -272,6 +281,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->secinfo=$model->getSecInfo($sec);
 		if ($this->secinfo) {
+			MAMSHelper::trackViewed($this->secinfo[0]->sec_id,'seclist');
 			if (count($this->secinfo) == 1) $this->title = $this->secinfo[0]->sec_name;
 			$artids=$model->getSecArts($sec);
 			$this->children=$model->getSecChildren($sec);
@@ -296,6 +306,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->autinfo=$model->getAutInfo($aut);
 		if ($this->autinfo) {
+			MAMSHelper::trackViewed($this->autinfo[0]->auth_id,'autlist');
 			$artids=$model->getAuthArts($aut);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');

@@ -49,36 +49,20 @@ $cfg = JFactory::getConfig();
 $db  = JFactory::getDBO();
 $user = JFactory::getUser();
 
-$dlid=$app->input->getInt('dlid',0);
+$dlid=$app->input->getInt('linkid',0);
 
 $q=$db->getQuery(true);
 $q->select('*');
-$q->from('#__mams_dloads');
-$q->where('dl_id = '.$dlid);
+$q->from('#__mams_links');
+$q->where('link_id = '.$dlid);
 $q->where('published >= 1');
 $q->where('access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
 $db->setQuery($q);
 $r=$db->loadObject();
 
-if ($r->dl_id) {
-	MAMSHelper::trackViewed($dlid,'dload');
-	$filename = basename($r->dl_fname);
-	switch ($r->dl_type) {
-		case 'mp3': $contentType =  'audio/mpeg'; break;
-		case 'pdf': $contentType = 'application/pdf'; break;
-		case 'zip': $contentType = 'application/zip'; break;
-	}
-	$app = JFactory::getApplication();
-	$app->clearHeaders();
-	$app->setHeader( "Pragma", "public" );
-	$app->setHeader( 'Cache-Control', 'no-cache, must-revalidate', true );
-	$app->setHeader( 'Expires', 'Sat, 26 Jul 1997 05:00:00 GMT', true );
-	$app->setHeader( 'Content-Type', $contentType, true );
-	$app->setHeader( 'Content-Description', 'File Transfer', true );
-	$app->setHeader( 'Content-Disposition', 'attachment; filename="' . $filename . '"', true );
-	$app->setHeader( 'Content-Transfer-Encoding', 'binary', true );
-	$app->sendHeaders();
-	readfile(JPATH_BASE.'/'.$r->dl_loc.$r->dl_fname);
+if ($r->link_id) {
+	MAMSHelper::trackViewed($dlid,'link');
+	header("Location: ".$r->link_url);
 	$app->close();
 } else {
 	http_response_code(404);

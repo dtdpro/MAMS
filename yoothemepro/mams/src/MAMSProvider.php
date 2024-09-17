@@ -6,6 +6,8 @@ class MAMSProvider
 {
     public static function getCats($artcount = false, $parent=0,$orderby="titasc",$onlyFeatCat=false,$restrictFeatCat=false) {
 		$db = JFactory::getDBO();
+        $sewn = JFactory::getSession();
+        $sessionid = $sewn->getId();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$query->select('c.*');
@@ -29,6 +31,14 @@ class MAMSProvider
 		}
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
+
+
+        $q = $db->getQuery(true);
+        $q->insert('#__mams_track');
+        $q->columns(array($db->quoteName('mt_item'),$db->quoteName('mt_type'),$db->quoteName('mt_user'),$db->quoteName('mt_session'),$db->quoteName('mt_ipaddr')));
+        $q->values('"0","listcats","'.$user->id.'","'.$sessionid.'","'.$_SERVER['REMOTE_ADDR'].'"');
+        $db->setQuery($q);
+        $db->execute();
 
 		// Remove categories not in Access Level List when enabled
 		if ($onlyFeatCat || $restrictFeatCat) {
@@ -61,6 +71,8 @@ class MAMSProvider
 		require_once('components/com_mams/helpers/mams.php');
 
 		$db		= JFactory::getDbo();
+        $sewn = JFactory::getSession();
+        $sessionid = $sewn->getId();
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
 
@@ -70,18 +82,42 @@ class MAMSProvider
 
         if ($sec) {
             $secs = array_map('trim', explode(",", $sec));
+            foreach ($secs as $s) {
+                $q = $db->getQuery(true);
+                $q->insert('#__mams_track');
+                $q->columns(array($db->quoteName('mt_item'),$db->quoteName('mt_type'),$db->quoteName('mt_user'),$db->quoteName('mt_session'),$db->quoteName('mt_ipaddr')));
+                $q->values('"'.$db->escape($s).'","seclist","'.$user->id.'","'.$sessionid.'","'.$_SERVER['REMOTE_ADDR'].'"');
+                $db->setQuery($q);
+                $db->execute();
+            }
         } else {
             $secs = [];
         }
 
         if ($category) {
             $cats = array_map('trim', explode(",", $category));
+            foreach ($cats as $c) {
+                $q = $db->getQuery(true);
+                $q->insert('#__mams_track');
+                $q->columns(array($db->quoteName('mt_item'),$db->quoteName('mt_type'),$db->quoteName('mt_user'),$db->quoteName('mt_session'),$db->quoteName('mt_ipaddr')));
+                $q->values('"'.$db->escape($c).'","catlist","'.$user->id.'","'.$sessionid.'","'.$_SERVER['REMOTE_ADDR'].'"');
+                $db->setQuery($q);
+                $db->execute();
+            }
         } else {
             $cats = [];
         }
 
         if ($tag) {
             $tags = array_map('trim', explode(",", $tag));
+            foreach ($tags as $t) {
+                $q = $db->getQuery(true);
+                $q->insert('#__mams_track');
+                $q->columns(array($db->quoteName('mt_item'),$db->quoteName('mt_type'),$db->quoteName('mt_user'),$db->quoteName('mt_session'),$db->quoteName('mt_ipaddr')));
+                $q->values('"'.$db->escape($t).'","taglist","'.$user->id.'","'.$sessionid.'","'.$_SERVER['REMOTE_ADDR'].'"');
+                $db->setQuery($q);
+                $db->execute();
+            }
         } else {
             $tags = [];
         }

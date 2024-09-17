@@ -9,7 +9,7 @@ $filename  =  'MAMS_Report' . '-' . date("Y-m-d").'.csv';
 
 $items = $this->items;
 
-$headers = ["Section","Item","Item ID","What","When","Who","Email"];
+$headers = ["Section","Item","Item ID","When","Who","Email"];
 
 if ($this->config->mue) {
 	$headers[] = 'Group';
@@ -27,16 +27,6 @@ foreach ($items as $row)
 	$dataRow[] =  $row->sec_title;
 	$dataRow[] =  $row->item_title;
 	$dataRow[] =  $row->mt_item;
-	switch ($row->mt_type) {
-		case "article": $dataRow[] =  "Article Page"; break;
-		case "author": $dataRow[] =  "Author Page"; break;
-		case "catlist": $dataRow[] =  "Category Article List"; break;
-		case "seclist": $dataRow[] =  "Section Article LIst"; break;
-		case "autlist": $dataRow[] =  "Author Article List"; break;
-		case "authors": $dataRow[] =  "Authors List"; break;
-		case "dload": $dataRow[] =  "Download"; break;
-		case "media": $dataRow[] =  "Media"; break;
-	}
 	$dataRow[] =  $row->mt_time;
 	$dataRow[] =  $row->users_name;
 	$dataRow[] =  $row->users_email;

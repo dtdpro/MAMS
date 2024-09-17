@@ -409,8 +409,8 @@ class MAMSArticleType
         }
 
         if ($fieldData) {
-            $link = $fieldData->link_url;
-            return JRoute::_($link);
+            //$link = $fieldData->link_url;
+            return JRoute::_( "components/com_mams/lk.php?linkid=" . $fieldData->link_id );
         }
 
         return '';

@@ -44,7 +44,6 @@ JHtml::_('bootstrap.tooltip');
 			<th><?php echo JText::_( 'Section' ); ?></th>
 			<th><?php echo JText::_( 'Item' ); ?></th>
             <th><?php echo JText::_( 'Item ID' ); ?></th>
-			<th><?php echo JText::_( 'Type' ); ?></th>
 			<th><?php echo JText::_( 'When' ); ?></th>
 			<th><?php echo JText::_( 'Who' ); ?></th>
 			<?php 
@@ -74,20 +73,7 @@ JHtml::_('bootstrap.tooltip');
 			<td class="small"><?php echo $row->sec_title; ?></td>
 			<td class="small"><?php echo $row->item_title; ?></td>
             <td class="small"><?php echo $row->mt_item; ?></td>
-			<td class="small"><?php 
-				switch ($row->mt_type) {
-					case "article": echo "Article Page"; break;
-					case "author": echo "Author Page"; break;
-					case "catlist": echo "Category Article List"; break;
-					case "seclist": echo "Section Article List"; break;
-					case "autlist": echo "Author Article List"; break;
-					case "authors": echo "Authors List"; break;
-					case "dload": echo "Download"; break;	
-					case "media": echo "Media"; break;	
-				}
-			
-			?></td>
-            <td class="small"><?php echo $row->mt_time; ?></td>
+			<td class="small"><?php echo $row->mt_time; ?></td>
 			<td class="small"><?php 
 				echo $row->users_name; 
 			?></td>

@@ -12,12 +12,17 @@ class MAMSViewStats extends JViewLegacy
 		
 		$this->typesl[1] = JHTML::_('select.option',  'article','Article Page');
 		$this->typesl[2] = JHTML::_('select.option',  'author','Author Page');
-		$this->typesl[3] = JHTML::_('select.option',  'seclist','Section Artice List');
-		$this->typesl[4] = JHTML::_('select.option',  'catlist','Category Artice List');
-		$this->typesl[5] = JHTML::_('select.option',  'autlist','Author Artice List');
-		$this->typesl[6] = JHTML::_('select.option',  'authors','Authors List');
-		$this->typesl[7] = JHTML::_('select.option',  'dload','Download');
-		$this->typesl[8] = JHTML::_('select.option',  'media','Media');
+		$this->typesl[3] = JHTML::_('select.option',  'seclist','Section Article List');
+		$this->typesl[4] = JHTML::_('select.option',  'catlist','Category Article List');
+        $this->typesl[5] = JHTML::_('select.option',  'taglist','Tag Article List');
+		$this->typesl[6] = JHTML::_('select.option',  'autlist','Author Article List');
+		$this->typesl[7] = JHTML::_('select.option',  'authors','Authors List');
+		$this->typesl[8] = JHTML::_('select.option',  'dload','Download');
+		$this->typesl[9] = JHTML::_('select.option',  'media','Media');
+        $this->typesl[10] = JHTML::_('select.option',  'listcats','List of Categories');
+        $this->typesl[11] = JHTML::_('select.option',  'listsecs','List of Sections');
+        $this->typesl[12] = JHTML::_('select.option',  'listarts','List of All Articles');
+        $this->typesl[13] = JHTML::_('select.option',  'link','Link');
 		
 		$this->model = $this->getModel();
 		$this->items = $this->get('Items');

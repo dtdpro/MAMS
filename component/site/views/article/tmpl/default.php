@@ -326,7 +326,7 @@ if ($this->article->fields) {
 					$firstlink=true;
 					foreach ($links as $d) {
 						echo '<div class="mams-article-'.$f->group_name.'-'.$f->field_name.'-link mams-article-link">';
-						echo '<a href="'.$d->link_url.'" ';
+                        echo '<a href="' . JRoute::_( "components/com_mams/lk.php?linkid=" . $d->link_id ) . '" ';
 						echo 'target="'.$d->link_target.'" ';
 						echo 'class="mams-article-'.$f->group_name.'-'.$f->field_name.'-artlink';
 						if ($firstlink) { echo ' firstlink'; $firstlink=false; }
