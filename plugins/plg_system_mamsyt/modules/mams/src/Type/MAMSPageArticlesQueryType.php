@@ -1,6 +1,9 @@
 <?php
 
 
+namespace mams\src\Type;
+use JFactory;
+
 class MAMSPageArticlesQueryType
 {
     /**
@@ -23,7 +26,7 @@ class MAMSPageArticlesQueryType
                         ],
                     ],
                     'metadata' => [
-                        'label' =>'MAMS Articles List',
+                        'label' => 'MAMS Articles List',
                         'view' => ['com_mams.artlist'],
                         'group' => 'MAMS',
                         'fields' => [
@@ -72,9 +75,9 @@ class MAMSPageArticlesQueryType
         if (isset($root['items'])) {
             $items = $root['items'];
             $session = JFactory::getSession();
-            $session->set('MAMSLoadfList',false);
+            $session->set('MAMSLoadfList', false);
             if ($args['offset'] || $args['limit']) {
-                $items = array_slice($items, (int) $args['offset'], (int) $args['limit'] ?: null);
+                $items = array_slice($items, (int)$args['offset'], (int)$args['limit'] ?: null);
             }
 
             return $items;

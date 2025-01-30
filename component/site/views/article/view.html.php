@@ -2,6 +2,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\Event\Event;
+use Joomla\CMS\Event\Content;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Uri\Uri;
 
@@ -138,8 +139,7 @@ class MAMSViewArticle extends JViewLegacy
 
 					$results = $dispatcher->trigger('onContentAfterDisplay', array ('com_mams.article', &$item, &$this->article->params, 0));
 					$this->afterDisplayContent = trim(implode("\n", $results));
-				}
-				else {
+				} else if (JVersion::MAJOR_VERSION == 4) {
 					$this->dispatchEvent(new Event('onMAMSPrepare', array(&$item->text)));
 
 					$results = $app->triggerEvent('onMAMSRenderA', array ('com_mams.article', &$item, &$this->article->params, 0));
@@ -147,6 +147,20 @@ class MAMSViewArticle extends JViewLegacy
 
 					PluginHelper::importPlugin('content');
 					$this->dispatchEvent(new Event('onContentPrepare', ['com_mams.article', &$item, &$this->article->params, 0]));
+
+					$results = $app->triggerEvent('onContentBeforeDisplay', ['com_mams.article', &$item, &$this->article->params, 0]);
+					$this->beforeDisplayContent = trim(implode("\n", $results));
+
+					$results = $app->triggerEvent('onContentAfterDisplay', ['com_mams.article', &$item, &$this->article->params, 0]);
+					$this->afterDisplayContent = trim(implode("\n", $results));
+				} else if (JVersion::MAJOR_VERSION == 5) {
+					$this->dispatchEvent(new Event('onMAMSPrepare', array(&$item->text)));
+
+					$results = $app->triggerEvent('onMAMSRenderA', array ('com_mams.article', &$item, &$this->article->params, 0));
+					$this->article->rendera = trim(implode("\n", $results));
+
+					PluginHelper::importPlugin('content');
+					$this->dispatchEvent(new Content\ContentPrepareEvent('onContentPrepare', ['com_mams.article', &$item, &$this->article->params, 0]));
 
 					$results = $app->triggerEvent('onContentBeforeDisplay', ['com_mams.article', &$item, &$this->article->params, 0]);
 					$this->beforeDisplayContent = trim(implode("\n", $results));

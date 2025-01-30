@@ -296,7 +296,7 @@ class MAMSRules implements RulesInterface
 			// Category and Section Category
 			if (isset($mi->query['catid'])) {
 				if ( is_array( $mi->query['catid'] ) ) {
-					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'][0] == (int) $catid ) && empty( $mi->query['secid'] ) ) {
+					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'][0] == (int) $catid ) && empty( $mi->query['secid'] ) && empty( $mi->query['tagid'] ) ) {
 						$foundcat = $mi->id;
 					}
 
@@ -312,7 +312,7 @@ class MAMSRules implements RulesInterface
 						}
 					}
 				} else {
-					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'] == (int) $catid ) && empty( $mi->query['secid'] ) ) {
+					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'] == (int) $catid ) && empty( $mi->query['secid'] ) && empty( $mi->query['tagid'] ) ) {
 						$foundcat = $mi->id;
 					}
 					if (isset($mi->query['secid'])) {
@@ -353,8 +353,8 @@ class MAMSRules implements RulesInterface
 				}
 
 				// Tag/Category
-				if (isset($mi->query['secid'])) {
-					if ( is_array( $mi->query['secid'] ) ) {
+				if (isset($mi->query['catid'])) {
+					if ( is_array( $mi->query['catid'] ) ) {
 						if ( ! empty( $mi->query['tagid'] ) && ( (int) $mitagid == (int) $tagid ) && ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'][0] == (int) $catid ) ) {
 							$foundtagcat = $mi->id;
 						}
@@ -500,7 +500,7 @@ class MAMSRules implements RulesInterface
 			// Category and Section Category
 			if (isset($mi->query['catid'])) {
 				if ( is_array( $mi->query['catid'] ) ) {
-					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'][0] == (int) $catid ) && empty( $mi->query['secid'] ) ) {
+					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'][0] == (int) $catid ) && empty( $mi->query['secid'] ) && empty( $mi->query['tagid'] ) ) {
 						$foundcat = $mi->id;
 					}
 
@@ -516,7 +516,7 @@ class MAMSRules implements RulesInterface
 						}
 					}
 				} else {
-					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'] == (int) $catid ) && empty( $mi->query['secid'] ) ) {
+					if ( ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'] == (int) $catid ) && empty( $mi->query['secid'] ) && empty( $mi->query['tagid'] ) ) {
 						$foundcat = $mi->id;
 					}
 					if (isset($mi->query['secid'])) {
@@ -557,8 +557,8 @@ class MAMSRules implements RulesInterface
 				}
 
 				// Tag/Category
-				if (isset($mi->query['secid'])) {
-					if ( is_array( $mi->query['secid'] ) ) {
+				if (isset($mi->query['catid'])) {
+					if ( is_array( $mi->query['catid'] ) ) {
 						if ( ! empty( $mi->query['tagid'] ) && ( (int) $mitagid == (int) $tagid ) && ! empty( $mi->query['catid'] ) && ( (int) $mi->query['catid'][0] == (int) $catid ) ) {
 							$foundtagcat = $mi->id;
 						}

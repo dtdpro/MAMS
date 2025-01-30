@@ -1,5 +1,8 @@
 <?php
 
+namespace mams\src\Type;
+
+use mams\src\MAMSProvider;
 use YooTheme\Database;
 
 class MAMSCatQueryType
@@ -17,16 +20,16 @@ class MAMSCatQueryType
                         'listOf' => 'MAMSCatType',
                     ],
 
-                    'args' => [                       
-						'onlyFeatCat' => [
-							'type' => 'Boolean',
-						],                      
-						'restrictFeatCat' => [
-							'type' => 'Boolean',
-						],                    
-						'showCount' => [
-							'type' => 'Boolean',
-						],
+                    'args' => [
+                        'onlyFeatCat' => [
+                            'type' => 'Boolean',
+                        ],
+                        'restrictFeatCat' => [
+                            'type' => 'Boolean',
+                        ],
+                        'showCount' => [
+                            'type' => 'Boolean',
+                        ],
                         'order' => [
                             'type' => 'String',
                         ],
@@ -60,8 +63,8 @@ class MAMSCatQueryType
                             'showCount' => [
                                 'text' => 'Include Article Count in Title',
                                 'type' => 'checkbox',
-                                
-                            ],                            
+
+                            ],
                         ],
 
                     ],
@@ -79,6 +82,6 @@ class MAMSCatQueryType
 
     public static function resolve($item, $args, $context, $info)
     {
-        return MAMSProvider::getCats($args['showCount'], 0,$args['order'],$args['onlyFeatCat'],$args['restrictFeatCat']);
+        return MAMSProvider::getCats($args['showCount'], 0, $args['order'], $args['onlyFeatCat'], $args['restrictFeatCat']);
     }
 }

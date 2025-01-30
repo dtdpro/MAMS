@@ -1,12 +1,15 @@
 <?php
 
 
+namespace mams\src;
+
+use JFactory;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
-class MatchTemplate
+class MAMSMatchTemplate
 {
     public Document $document;
 
@@ -26,7 +29,7 @@ class MatchTemplate
 
         if ($context === 'com_mams.artlist' && $layout === 'section') {
             $section = $view->secinfo[0];
-            $pagination = $view->get('pagination');
+            $pagination = $view->pagination;
 
             return [
                 'type' => $context,
@@ -44,7 +47,7 @@ class MatchTemplate
 
         if ($context === 'com_mams.artlist' && $layout === 'category') {
             $category = $view->catinfo[0];
-            $pagination = $view->get('pagination');
+            $pagination = $view->pagination;
 
             return [
                 'type' => $context,
@@ -64,7 +67,7 @@ class MatchTemplate
         if ($context === 'com_mams.artlist' && $layout === 'catsec') {
             $section = $view->secinfo[0];
             $category = $view->catinfo[0];
-            $pagination = $view->get('pagination');
+            $pagination = $view->pagination;
 
             return [
                 'type' => $context,

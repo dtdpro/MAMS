@@ -1,5 +1,8 @@
 <?php
 
+namespace mams\src\Type;
+use JRoute;
+
 class MAMSLinkType
 {
     public static function config()
@@ -59,12 +62,12 @@ class MAMSLinkType
 
     public static function resolveDebug($obj, $args, $context, $info)
     {
-        return print_r($obj,true);
+        return print_r($obj, true);
         //JRoute::_( "components/com_mams/lk.php?linkid=" . $d->link_id )
     }
 
     public static function resolveTrackLink($obj, $args, $context, $info)
     {
-        return JRoute::_( "components/com_mams/lk.php?linkid=" . $obj->link_id );
+        return JRoute::_("components/com_mams/lk.php?linkid=" . $obj->link_id);
     }
 }

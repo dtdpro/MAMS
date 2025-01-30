@@ -1,17 +1,18 @@
 <?php
 
-class MAMSCatType
+namespace mams\src\Type;
+use JRoute;
+
+class MAMSSectionType
 {
     public static function config()
     {
         return [
-
             'fields' => [
-
                 'title' => [
                     'type' => 'String',
                     'metadata' => [
-                        'label' => 'Title'
+                        'label' => 'Name'
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolveTitle'
@@ -26,6 +27,15 @@ class MAMSCatType
                         'call' => __CLASS__ . '::resolveId'
                     ]
                 ],
+                'content' => [
+                    'type' => 'String',
+                    'metadata' => [
+                        'label' => 'Content'
+                    ],
+                    'extensions' => [
+                        'call' => __CLASS__ . '::resolveContent'
+                    ]
+                ],
                 'url' => [
                     'type' => 'String',
                     'metadata' => [
@@ -37,28 +47,31 @@ class MAMSCatType
                 ]
 
             ],
-
             'metadata' => [
                 'type' => true,
-                'label' => 'MAMS Category'
+                'label' => 'MAMS Section'
             ]
-
         ];
     }
 
     public static function resolveTitle($obj, $args, $context, $info)
     {
-        return $obj->cat_title;
+        return $obj->sec_name;
     }
 
     public static function resolveId($obj, $args, $context, $info)
     {
-        return $obj->cat_id;
+        return $obj->sec_id;
+    }
+
+    public static function resolveContent($obj, $args, $context, $info)
+    {
+        return $obj->sec_content;
     }
 
     public static function resolveUrl($obj, $args, $context, $info)
     {
-        return JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$obj->cat_id.':'.$obj->cat_alias);
+        return JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=" . $obj->sec_id . ':' . $obj->sec_alias);
     }
-    
+
 }

@@ -251,8 +251,21 @@ class MAMSModelAuthor extends JModelLegacy
 		}
 		
 		return $items;
-		
-		
-		
 	}
+
+
+    function getSecsInfo($sec) {
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $user = JFactory::getUser();
+
+        $query->select('s.*');
+        $query->from('#__mams_secs AS s');
+        $query->where('s.sec_id IN ('.implode(",",$sec).')');
+        $query->where('s.published >= 1');
+        $query->where('s.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+        $db->setQuery($query);
+        $info = $db->loadObjectList();
+        return $info;
+    }
 }

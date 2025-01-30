@@ -9,6 +9,8 @@ if ($this->params->get("show_page_heading",1)) {
 	echo '</h1>';
 }
 
+echo '<div class="mams-author-secdesc">'.$this->secinfo[0]->sec_content.'</div>';
+
 //Authors
 if ($this->autlist) {
 	echo '<div class="mams-author-auths">';

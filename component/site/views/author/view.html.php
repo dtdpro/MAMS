@@ -21,15 +21,14 @@ class MAMSViewAuthor extends JViewLegacy
 		
 		switch($layout) {
 			case "default":
-				$err=$this->showAuthor($aut);
+				$this->showAuthor($aut);
 				$this->_prepareTitle();
 				break;
 			case "list": 
-				$err=$this->listAuthors();
+				$this->listAuthors();
 				break;
 		}
-		if ($err) parent::display($tpl);
-		else return false;
+		parent::display($tpl);
 	}
 	
 	protected function showAuthor($aut) {
@@ -42,7 +41,6 @@ class MAMSViewAuthor extends JViewLegacy
 				 $this->published=$model->getPublishedItems($aut,$this->params);
 				 //$this->courses=$model->getAuthCourses($aut);
 			}
-			return true;
 		} else {
 			throw new \Exception("Not Found", 404);
 		}
@@ -51,8 +49,13 @@ class MAMSViewAuthor extends JViewLegacy
 	protected function listAuthors() {
 		MAMSHelper::trackViewed(0,'authors');
 		$model = $this->getModel();
-		$this->autlist = $model->getAuthorList($this->getSecs()); 
-		return true;
+		$secs = $this->getSecs();
+		$this->secinfo=$model->getSecsInfo($secs);
+		if ($this->secinfo) {
+			$this->autlist = $model->getAuthorList($secs);
+		} else {
+			throw new \Exception("Not Found", 404);
+		}
 	}
 	
 	protected function getSecs() {

@@ -1,11 +1,13 @@
 <?php
 
+use mams\src\MAMSMatchTemplate;
+use mams\src\MAMSSourceListener;
 use YOOtheme\Builder;
-use YOOtheme\Path;
 use YOOtheme\Builder\BuilderConfig;
+use YOOtheme\Path;
 
-include_once __DIR__ . '/src/SourceListener.php';
-include_once __DIR__ . '/src/MatchTemplate.php';
+include_once __DIR__ . '/src/MAMSSourceListener.php';
+include_once __DIR__ . '/src/MAMSMatchTemplate.php';
 include_once __DIR__ . '/src/MAMSProvider.php';
 include_once __DIR__ . '/src/Type/MAMSArticleType.php';
 include_once __DIR__ . '/src/Type/MAMSAuthorType.php';
@@ -25,13 +27,13 @@ return [
 
     'events' => [
         'source.init' => [
-            SourceListener::class => 'initSource',
+            MAMSSourceListener::class => 'initSource',
         ],
-        'builder.template' => [MatchTemplate::class => '@handle'],
+        'builder.template' => [MAMSMatchTemplate::class => '@handle'],
         /*'customizer.init' => [
 	        SourceListener::class => ['initCustomizer',10],
         ],*/
-        BuilderConfig::class => [SourceListener::class => '@initCustomizer']
+        BuilderConfig::class => [MAMSSourceListener::class => '@initCustomizer']
 
     ],
 

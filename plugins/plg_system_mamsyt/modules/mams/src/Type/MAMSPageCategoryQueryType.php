@@ -1,7 +1,8 @@
 <?php
 
 
-class MAMSPageSectionQueryType
+namespace mams\src\Type;
+class MAMSPageCategoryQueryType
 {
     /**
      * @return array
@@ -10,10 +11,10 @@ class MAMSPageSectionQueryType
     {
         return [
             'fields' => [
-                'mamssection' => [
-                    'type' => 'MAMSSectionType',
+                'mamscategory' => [
+                    'type' => 'MAMSCategoryType',
                     'metadata' => [
-                        'label' =>'MAMS Section',
+                        'label' => 'MAMS Category',
                         'view' => ['com_mams.artlist'],
                         'group' => 'MAMS',
                     ],
@@ -27,8 +28,8 @@ class MAMSPageSectionQueryType
 
     public static function resolve($root)
     {
-        if (isset($root['section'])) {
-            return $root['section'];
+        if (isset($root['category'])) {
+            return $root['category'];
         }
     }
 }

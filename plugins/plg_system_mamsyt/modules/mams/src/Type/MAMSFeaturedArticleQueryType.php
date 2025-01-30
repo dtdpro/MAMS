@@ -1,5 +1,8 @@
 <?php
 
+namespace mams\src\Type;
+
+use mams\src\MAMSProvider;
 use YooTheme\Database;
 
 class MAMSFeaturedArticleQueryType
@@ -19,11 +22,11 @@ class MAMSFeaturedArticleQueryType
 
                     'args' => [
                         'restrictFeat' => [
-							'type' => 'Boolean',
-						],
-						'limit' => [
-							'type' => 'String',
-						],
+                            'type' => 'Boolean',
+                        ],
+                        'limit' => [
+                            'type' => 'String',
+                        ],
                     ],
 
                     'metadata' => [
@@ -34,13 +37,13 @@ class MAMSFeaturedArticleQueryType
                             'restrictFeat' => [
                                 'text' => 'Restrict by Featured Access Level',
                                 'type' => 'checkbox',
-	                            'default' => false
+                                'default' => false
                             ],
                             'limit' => [
                                 'label' => 'Limit',
                                 'type' => 'text',
                                 'default' => '5',
-                            ],                            
+                            ],
                         ],
 
                     ],
@@ -58,6 +61,6 @@ class MAMSFeaturedArticleQueryType
 
     public static function resolve($item, $args, $context, $info)
     {
-		return MAMSProvider::getFeaturedArticles($args['limit'],$args['restrictFeat']);
+        return MAMSProvider::getFeaturedArticles($args['limit'], $args['restrictFeat']);
     }
 }

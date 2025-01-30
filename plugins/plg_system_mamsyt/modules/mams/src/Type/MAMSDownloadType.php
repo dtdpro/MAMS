@@ -1,6 +1,9 @@
 <?php
 
-class MAMSAuthorType
+namespace mams\src\Type;
+use JRoute;
+
+class MAMSDownloadType
 {
     public static function config()
     {
@@ -8,58 +11,40 @@ class MAMSAuthorType
 
             'fields' => [
 
-                'auth_name' => [
+                'dl_lname' => [
                     'type' => 'String',
                     'metadata' => [
-                        'label' => 'Full Name'
+                        'label' => 'Link Name'
                     ],
                 ],
-                'auth_fname' => [
+                'dl_fname' => [
                     'type' => 'String',
                     'metadata' => [
-                        'label' => 'First Name'
+                        'label' => 'File Name'
                     ],
                 ],
-                'auth_mi' => [
-                    'type' => 'String',
-                    'metadata' => [
-                        'label' => 'Middle Initial'
-                    ],
-                ],
-                'auth_lname' => [
-                    'type' => 'String',
-                    'metadata' => [
-                        'label' => 'Last Name'
-                    ],
-                ],
-                'auth_titles' => [
-                    'type' => 'String',
-                    'metadata' => [
-                        'label' => 'Titles'
-                    ],
-                ],
-                'auth_credentials' => [
-                    'type' => 'String',
-                    'metadata' => [
-                        'label' => 'Credentials'
-                    ]
-                ],
-                'auth_image' => [
-                    'type' => 'String',
-                    'metadata' => [
-                        'label' => 'Image'
-                    ]
-                ],
-                'auth_id' => [
+                'dl_id' => [
                     'type' => 'String',
                     'metadata' => [
                         'label' => 'Id'
                     ]
                 ],
+                'dl_loc' => [
+                    'type' => 'String',
+                    'metadata' => [
+                        'label' => 'Location'
+                    ]
+                ],
+                'dl_type' => [
+                    'type' => 'String',
+                    'metadata' => [
+                        'label' => 'Type'
+                    ]
+                ],
                 'url' => [
                     'type' => 'String',
                     'metadata' => [
-                        'label' => 'Author Link'
+                        'label' => 'Download Link'
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolveUrl'
@@ -79,7 +64,7 @@ class MAMSAuthorType
 
             'metadata' => [
                 'type' => true,
-                'label' => 'MAMS Author'
+                'label' => 'MAMS Download'
             ]
 
         ];
@@ -89,12 +74,12 @@ class MAMSAuthorType
 
     public static function resolveUrl($obj, $args, $context, $info)
     {
-        $dllink = "index.php?option=com_mams&view=author&secid=" . $obj->auth_sec . "&autid=" . $obj->auth_id . ":" . $obj->auth_alias ;
-	    return JRoute::_($dllink);
+        $dllink = "components/com_mams/dl.php?dlid=" . $obj->dl_id;
+        return JRoute::_($dllink);
     }
 
     public static function resolveDebug($obj, $args, $context, $info)
     {
-        return print_r($obj,true);
+        return print_r($obj, true);
     }
 }

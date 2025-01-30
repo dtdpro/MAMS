@@ -4,6 +4,7 @@ defined('_JEXEC') or die();
 use Joomla\Event\Event;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Event\Content;
 
 jimport( 'joomla.application.component.view');
 
@@ -15,13 +16,13 @@ class MAMSViewArtList extends JViewLegacy
 	protected $autinfo = null;
 	public $catinfo = null;
 	protected $params = null;
-	protected $pagination = null;
+	public $pagination = null;
 	protected $state = null;
 	protected $error = false;
 	protected $title='';
 	protected $headerContent = false;
 	protected $footerContent = false;
-	
+
 	public function display($tpl = null)
 	{
 		$layout = $this->getLayout();
@@ -29,9 +30,9 @@ class MAMSViewArtList extends JViewLegacy
 		$this->params = $app->getParams();
 		$session = JFactory::getSession();
 		$session->set('MAMSLoadfList',true);
-		
+
 		$this->state = $this->get('State');
-		
+
 		switch($layout) {
 			case "tag":
 				$this->listTag();
@@ -42,16 +43,16 @@ class MAMSViewArtList extends JViewLegacy
 			case "tagcat":
 				$this->listTagCat();
 				break;
-			case "catlist": 
+			case "catlist":
 				$this->listCats();
 				break;
-			case "seclist": 
+			case "seclist":
 				$this->listSecs();
 				break;
-			case "category": 
+			case "category":
 				$this->listCategory();
 				break;
-			case "catsec": 
+			case "catsec":
 				$this->listCatSec();
 				break;
 			case "author":
@@ -60,10 +61,10 @@ class MAMSViewArtList extends JViewLegacy
 			case "artauthed":
 				$this->listArticlesAuthored();
 				break;
-			case "allsecs": 
+			case "allsecs":
 				$this->listAll();
 				break;
-			case "secbycat": 
+			case "secbycat":
 				$this->listSecbyCat();
 				break;
 			case "section":
@@ -73,9 +74,9 @@ class MAMSViewArtList extends JViewLegacy
 				throw new \Exception("Not Found", 404);
 				break;
 		}
-		
+
 		if ($this->error) return false;
-		
+
 		// Pre Header and Footer text
 		if (JVersion::MAJOR_VERSION == 3)  {
 			$dispatcher	= JDispatcher::getInstance();
@@ -92,7 +93,7 @@ class MAMSViewArtList extends JViewLegacy
 				$dispatcher->trigger('onContentPrepare', array ('com_mams.article', &$footerContent, &$this->params, 0));
 				$this->footerContent = $footerContent->text;
 			}
-		} else {
+		} else if (JVersion::MAJOR_VERSION == 4) {
 			PluginHelper::importPlugin('content');
 			if ($this->params->get("extras_header","")) {
 				$this->headerContent = $this->params->get("extras_header");
@@ -104,6 +105,20 @@ class MAMSViewArtList extends JViewLegacy
 				$this->footerContent = $this->params->get("extras_footer");
 				$footerContent = (object) array("text" => $this->footerContent);
 				$this->dispatchEvent(new Event('onContentPrepare', array ('com_mams.article', &$footerContent, &$this->params, 0)));
+				$this->footerContent = $footerContent->text;
+			}
+		} else if (JVersion::MAJOR_VERSION == 5) {
+			PluginHelper::importPlugin('content');
+			if ($this->params->get("extras_header","")) {
+				$this->headerContent = $this->params->get("extras_header");
+				$headerContent = (object) array("text" => $this->headerContent);
+				$this->dispatchEvent(new Content\ContentPrepareEvent('onContentPrepare', array ('com_mams.article', &$headerContent, &$this->params, 0)));
+				$this->headerContent = $headerContent->text;
+			}
+			if ($this->params->get("extras_footer","")) {
+				$this->footerContent = $this->params->get("extras_footer");
+				$footerContent = (object) array("text" => $this->footerContent);
+				$this->dispatchEvent(new Content\ContentPrepareEvent('onContentPrepare', array ('com_mams.article', &$footerContent, &$this->params, 0)));
 				$this->footerContent = $footerContent->text;
 			}
 		}
@@ -122,19 +137,19 @@ class MAMSViewArtList extends JViewLegacy
 
 		if ($this->params->get('divwrapper',1)) { echo '</div>'; }
 	}
-	
+
 	protected function listSecs() {
 		$model = $this->getModel();
 		$this->seclist = $model->getSecs($this->params->get("show_count",0));
 		MAMSHelper::trackViewed(0,'listsecs');
 	}
-	
+
 	protected function listCats() {
 		$model = $this->getModel();
 		$this->catlist = $model->getCats($this->params->get("show_count",0));
 		MAMSHelper::trackViewed(0,'listcats');
 	}
-	
+
 	protected function listSecByCat() {
 		$model = $this->getModel();
 		$sec=$this->getSecs();
@@ -158,7 +173,7 @@ class MAMSViewArtList extends JViewLegacy
 			}
 		}
 	}
-	
+
 	protected function listCatSec() {
 		$model = $this->getModel();
 		$sec=$this->getSecs();
@@ -175,6 +190,8 @@ class MAMSViewArtList extends JViewLegacy
 			$artids=$model->getCatArts($cat);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
+			$this->pagination->setAdditionalUrlParam('catid', $app->input->get('catid', [], 'array'));
+			if (count($sec)) $this->pagination->setAdditionalUrlParam('secid', $app->input->get('secid', [], 'array'));
 		} else {
 			throw new \Exception("Not Found", 404);
 		}
@@ -196,6 +213,8 @@ class MAMSViewArtList extends JViewLegacy
 			$artids=$model->getTagArts($tag);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
+			$this->pagination->setAdditionalUrlParam('tagid', $app->input->get('tagid', [], 'array'));
+			if (count($sec)) $this->pagination->setAdditionalUrlParam('secid', $app->input->get('secid', [], 'array'));
 		} else {
 			throw new \Exception("Not Found", 404);
 		}
@@ -218,11 +237,13 @@ class MAMSViewArtList extends JViewLegacy
 			$artids_cat=$model->getCatArts($cat);
 			$this->articles=$model->getArticles(array_intersect($artids_tag,$artids_cat));
 			$this->pagination = $this->get('Pagination');
+			$this->pagination->setAdditionalUrlParam('tagid', $app->input->get('tagid', [], 'array'));
+			if (count($cat)) $this->pagination->setAdditionalUrlParam('catid', $app->input->get('catid', [], 'array'));
 		} else {
 			throw new \Exception("Not Found", 404);
 		}
 	}
-	
+
 	protected function listCategory() {
 		$model = $this->getModel();
 		$cat=$this->getCats();
@@ -239,6 +260,7 @@ class MAMSViewArtList extends JViewLegacy
 			if (count($artids) > 0) {
 				$this->articles=$model->getArticles($artids);
 				$this->pagination = $this->get('Pagination');
+				$this->pagination->setAdditionalUrlParam('catid', $app->input->get('catid', [], 'array'));
 			}
 		}
 	}
@@ -258,24 +280,25 @@ class MAMSViewArtList extends JViewLegacy
 			if (count($artids) > 0) {
 				$this->articles=$model->getArticles($artids);
 				$this->pagination = $this->get('Pagination');
+				$this->pagination->setAdditionalUrlParam('tagid', $app->input->get('tagid', [], 'array'));
 			}
 		} else {
 			throw new \Exception("Not Found", 404);
 		}
 	}
-	
+
 	protected function listAll() {
 		$model = $this->getModel();
 		$this->articles=$model->getArticles();
 		$this->pagination = $this->get('Pagination');
 		MAMSHelper::trackViewed(0,'listarts');
 	}
-	
-	
+
+
 	protected function listSection() {
+		$app = JFactory::getApplication();
 		$model = $this->getModel();
 		$sec=$this->getSecs();
-		$app = JFactory::getApplication();
 		if (!$sec) {
 			throw new \Exception("Not Found", 404);
 		}
@@ -287,11 +310,12 @@ class MAMSViewArtList extends JViewLegacy
 			$this->children=$model->getSecChildren($sec);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
+			$this->pagination->setAdditionalUrlParam('secid', $app->input->get('secid', [], 'array'));
 		} else {
 			throw new \Exception("Not Found", 404);
 		}
 	}
-	
+
 	protected function listAuthor() {
 		$model = $this->getModel();
 		$sec=$this->getSecs();
@@ -310,6 +334,8 @@ class MAMSViewArtList extends JViewLegacy
 			$artids=$model->getAuthArts($aut);
 			$this->articles=$model->getArticles($artids,$sec);
 			$this->pagination = $this->get('Pagination');
+			$this->pagination->setAdditionalUrlParam('autid', $app->input->get('autid', [], 'array'));
+			if (count($sec)) $this->pagination->setAdditionalUrlParam('secid', $app->input->get('secid', [], 'array'));
 		} else {
 			throw new \Exception("Not Found", 404);
 		}
@@ -332,9 +358,10 @@ class MAMSViewArtList extends JViewLegacy
 		if (count($artids) !== 0) {
 			$this->articles   = $model->getArticles( $artids );
 			$this->pagination = $this->get( 'Pagination' );
+			$this->pagination->setAdditionalUrlParam('artid', $app->input->get('artid', 0, 'INT'));
 		}
 	}
-	
+
 	protected function getSecs() {
 		$secs = array();
 		foreach (JFactory::getApplication()->input->get('secid', array(), 'array') as $s) {
@@ -342,7 +369,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		return $secs;
 	}
-	
+
 	protected function getCats() {
 		$cats = array();
 		foreach (JFactory::getApplication()->input->get('catid', array(), 'array') as $c) {
@@ -358,7 +385,7 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		return $tags;
 	}
-	
+
 	protected function getAuts() {
 		$auts = array();
 		foreach (JFactory::getApplication()->input->get('autid', array(), 'array') as $a) {
@@ -393,6 +420,6 @@ class MAMSViewArtList extends JViewLegacy
 		}
 		$this->document->setTitle($title);
 	}
-	
+
 }
 ?>

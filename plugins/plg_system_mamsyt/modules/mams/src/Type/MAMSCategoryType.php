@@ -1,15 +1,20 @@
 <?php
 
-class MAMSSectionType
+namespace mams\src\Type;
+use JRoute;
+
+class MAMSCategoryType
 {
     public static function config()
     {
         return [
+
             'fields' => [
+
                 'title' => [
                     'type' => 'String',
                     'metadata' => [
-                        'label' => 'Name'
+                        'label' => 'Title'
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolveTitle'
@@ -27,7 +32,7 @@ class MAMSSectionType
                 'content' => [
                     'type' => 'String',
                     'metadata' => [
-                        'label' => 'Content'
+                        'label' => 'Id'
                     ],
                     'extensions' => [
                         'call' => __CLASS__ . '::resolveContent'
@@ -44,31 +49,33 @@ class MAMSSectionType
                 ]
 
             ],
+
             'metadata' => [
                 'type' => true,
-                'label' => 'MAMS Section'
+                'label' => 'MAMS Category'
             ]
+
         ];
     }
 
     public static function resolveTitle($obj, $args, $context, $info)
     {
-        return $obj->sec_name;
+        return $obj->cat_title;
     }
 
     public static function resolveId($obj, $args, $context, $info)
     {
-        return $obj->sec_id;
+        return $obj->cat_id;
     }
 
     public static function resolveContent($obj, $args, $context, $info)
     {
-        return $obj->sec_content;
+        return $obj->cat_content;
     }
 
     public static function resolveUrl($obj, $args, $context, $info)
     {
-        return JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$obj->sec_id.':'.$obj->sec_alias);
+        return JRoute::_("index.php?option=com_mams&view=artlist&layout=section&catid=" . $obj->cat_id . ':' . $obj->cat_alias);
     }
-    
+
 }
