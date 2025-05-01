@@ -6,7 +6,7 @@ jimport( 'joomla.application.component.model' );
 class MAMSModelAuthor extends JModelLegacy
 {
     function getAuthor($autid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -22,7 +22,7 @@ class MAMSModelAuthor extends JModelLegacy
 	}
 	
 	function getAuthorList($secid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$qsec = $db->getQuery(true);
 		$user = JFactory::getUser();
 
@@ -86,7 +86,7 @@ class MAMSModelAuthor extends JModelLegacy
 	}
 
 	function getPublishedItems($autid,$params) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$user = JFactory::getUser();
 
 		$query = $db->getQuery(true);
@@ -122,7 +122,7 @@ class MAMSModelAuthor extends JModelLegacy
 		$pubedids=$this->getAuthArts($autid,$params,$field);
 		if (!$pubedids) return false;
 		
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
@@ -130,7 +130,7 @@ class MAMSModelAuthor extends JModelLegacy
 		$alvls = $user->getAuthorisedViewLevels();
 		$alvls = array_merge($alvls,$cfg->reggroup);
 		
-		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
+		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias,s.sec_redirurl');
 		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id IN ('.implode(",",$pubedids).')');
@@ -160,7 +160,7 @@ class MAMSModelAuthor extends JModelLegacy
 		//Get Cats
 		foreach ($items as &$i) {
 			$qc=$db->getQuery(true);
-			$qc->select('c.cat_id,c.cat_title,c.cat_alias');
+			$qc->select('c.cat_id,c.cat_title,c.cat_alias,c.cat_redirurl');
 			$qc->from('#__mams_artcat as ac');
 			$qc->join('RIGHT','#__mams_cats AS c ON ac.ac_cat = c.cat_id');
 			$qc->where('ac.published >= 1');
@@ -177,7 +177,7 @@ class MAMSModelAuthor extends JModelLegacy
 	}
 	
 	function getAuthArts($aut,$params,$fieldid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -192,7 +192,7 @@ class MAMSModelAuthor extends JModelLegacy
 	}
 	
 	function getAuthCourses($aut) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
@@ -255,7 +255,7 @@ class MAMSModelAuthor extends JModelLegacy
 
 
     function getSecsInfo($sec) {
-        $db = JFactory::getDBO();
+        $db = $this->getDatabase();
         $query = $db->getQuery(true);
         $user = JFactory::getUser();
 

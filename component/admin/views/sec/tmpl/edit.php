@@ -52,6 +52,7 @@ use Joomla\CMS\Language\Text;
 				</div>
 				<div class="span6 form-horizontal col-md-6">
 					<?php echo $this->form->renderField('sec_image'); ?>
+                    <?php echo $this->form->renderField('sec_redirurl'); ?>
 				</div>
 			</div>
 		</div>

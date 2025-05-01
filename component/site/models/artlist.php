@@ -37,7 +37,7 @@ class MAMSModelArtList extends JModelList
 	
 	function getListQuery()
 	{
-		$db = JFactory::getDBO();
+        $db = $this->getDatabase();
 		$query = $db->getQuery(true);
         $query1 = $db->getQuery(true);
 		$query2 = $db->getQuery(true);
@@ -57,7 +57,7 @@ class MAMSModelArtList extends JModelList
         }
 
 		// Query Articles
-        $query1->select('a.art_id as art_id, a.art_sec as art_sec, a.art_title as art_title, a.art_alias as art_alias, a.art_desc as art_desc, a.art_thumb as art_thumb, a.art_fielddata as art_fielddata, a.art_publish_up as art_publish_up, a.params, a.ordering as ordering, "article" as content_type, sec.sec_id, sec.sec_name, sec.sec_alias, sec.lft as lft ');
+        $query1->select('a.art_id as art_id, a.art_sec as art_sec, a.art_title as art_title, a.art_alias as art_alias, a.art_desc as art_desc, a.art_thumb as art_thumb, a.art_fielddata as art_fielddata, a.art_publish_up as art_publish_up, a.params, a.ordering as ordering, "article" as content_type, sec.sec_id, sec.sec_name, sec.sec_alias, sec.lft as lft, sec.sec_redirurl ');
 		$query1->from('#__mams_articles AS a');
 		$query1->join('RIGHT','#__mams_secs AS sec ON sec.sec_id = a.art_sec');
 		if (count($this->artids)) $query1->where('a.art_id IN ('.implode(",",$this->artids).')');
@@ -69,7 +69,7 @@ class MAMSModelArtList extends JModelList
 
 		// Query Section Children if looking at secs
         if (count($this->secid)) {
-			$query2->select('s.sec_id as art_id, s.sec_id as art_sec, s.sec_name as art_title, s.sec_alias as art_alias, s.sec_desc as art_desc, s.sec_thumb as art_thumb, "" as art_fielddata, date(s.sec_added) as art_publish_up, "" as params, s.lft as ordering, "section" as content_type, sec.sec_id, sec.sec_name, sec.sec_alias, sec.lft as lft');
+			$query2->select('s.sec_id as art_id, s.sec_id as art_sec, s.sec_name as art_title, s.sec_alias as art_alias, s.sec_desc as art_desc, s.sec_thumb as art_thumb, "" as art_fielddata, date(s.sec_added) as art_publish_up, "" as params, s.lft as ordering, "section" as content_type, sec.sec_id, sec.sec_name, sec.sec_alias, sec.lft as lft, sec.sec_redirurl');
 			$query2->from('#__mams_secs AS s');
 			$query2->join('RIGHT','#__mams_secs AS sec ON sec.sec_id = s.parent_id');
 			$query2->where('s.parent_id IN ('.implode(",",$this->secid).')');
@@ -93,8 +93,8 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getItems($paginate = true) {
-		
-		$db = JFactory::getDBO();
+
+        $db = $this->getDatabase();
 		$app = JFactory::getApplication('site');
 		
 		$query = $this->getListQuery();
@@ -113,7 +113,7 @@ class MAMSModelArtList extends JModelList
 
 				// Get Categories
 				$qc = $db->getQuery(true);
-				$qc->select('c.cat_id,c.cat_title,c.cat_alias');
+				$qc->select('c.cat_id,c.cat_title,c.cat_alias,c.cat_redirurl');
 				$qc->from('#__mams_artcat as ac');
 				$qc->join('RIGHT', '#__mams_cats AS c ON ac.ac_cat = c.cat_id');
 				$qc->where('ac.published >= 1');
@@ -126,7 +126,7 @@ class MAMSModelArtList extends JModelList
 
 				// Get Tags
 				$qc = $db->getQuery(true);
-				$qc->select('t.tag_id,t.tag_title,t.tag_alias,t.tag_icon');
+				$qc->select('t.tag_id,t.tag_title,t.tag_alias,t.tag_icon,t.tag_redirurl');
 				$qc->from('#__mams_arttag as at');
 				$qc->join('RIGHT', '#__mams_tags AS t ON at.at_tag = t.tag_id');
 				$qc->where('at.published >= 1');
@@ -152,7 +152,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	protected function getArticleListFields($artid) {
-		$db = JFactory::getDBO();
+        $db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		
 		$query->select('*,f.params as field_params,g.params as group_params');
@@ -189,7 +189,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	protected function getFieldAuthors($artid, $fid) {
-		$db = JFactory::getDBO();
+        $db = $this->getDatabase();
 		$qa=$db->getQuery(true);
 		$qa->select('a.auth_id,a.auth_fname,a.auth_mi,a.auth_lname,a.auth_titles,a.auth_alias,a.auth_sec,a.auth_name,a.auth_image,a.auth_credentials');
 		$qa->from('#__mams_artauth as aa');
@@ -204,8 +204,8 @@ class MAMSModelArtList extends JModelList
 		return $db->loadObjectList();
 	}
 	
-	protected function getFieldDownloads($artid, $fid) {		
-		$db = JFactory::getDBO();
+	protected function getFieldDownloads($artid, $fid) {
+        $db = $this->getDatabase();
 		$qa=$db->getQuery(true);
 		$qa->select('d.*');
 		$qa->from('#__mams_artdl as ad');
@@ -221,7 +221,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	protected function getFieldLinks($artid, $fid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$qa=$db->getQuery(true);
 		$qa->select('l.*');
 		$qa->from('#__mams_artlinks as al');
@@ -255,7 +255,7 @@ class MAMSModelArtList extends JModelList
 	}
 
 	function getSecArts($sec) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		
 		$query->select('a.art_id');
@@ -270,7 +270,7 @@ class MAMSModelArtList extends JModelList
 	}
 
 	function getCatArts($cat,$canBeLimited = false) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 
@@ -285,7 +285,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getTagArts($tag) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -300,7 +300,7 @@ class MAMSModelArtList extends JModelList
 	
 	function getSecCats($sec) {
 		
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -333,7 +333,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getAuthArts($aut) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -348,7 +348,7 @@ class MAMSModelArtList extends JModelList
 	}
 
 	function getArticlesAuthoredAuthors($artid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -365,7 +365,7 @@ class MAMSModelArtList extends JModelList
 	}
 
 	function getArticlesAuthored($authors, $artid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$query->select('aa.aa_art');
 		$query->from('#__mams_artauth AS aa');
@@ -380,7 +380,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getSecInfo($sec) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -395,7 +395,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getCatInfo($cat) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -410,7 +410,7 @@ class MAMSModelArtList extends JModelList
 	}
 
 	function getTagInfo($tag) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 
@@ -425,7 +425,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getAutInfo($aut) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -440,7 +440,7 @@ class MAMSModelArtList extends JModelList
 	}
 	
 	function getCats($artcount = false, $parent=0) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$query->select('c.*');
@@ -493,7 +493,7 @@ class MAMSModelArtList extends JModelList
 
 
 	function getSecs($artcount = false) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$query->select('c.*');
@@ -526,8 +526,42 @@ class MAMSModelArtList extends JModelList
 		return $items;
 	}
 
-	function getSecChildren($sec) {
-		$db = JFactory::getDBO();
+
+    function getTags($artcount = false) {
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true);
+        $user = JFactory::getUser();
+        $query->select('c.*');
+        $query->from('#__mams_tags AS c');
+        $query->where('c.published >= 1');
+        $query->where('c.access IN ('.implode(",",$user->getAuthorisedViewLevels()).')');
+        switch ($this->params->get("orderlistby","titasc")) {
+            case "titasc": $query->order('tag_title ASC'); break;
+            case "titdsc": $query->order('tag_title DESC'); break;
+            default: $query->order('tag_title ASC'); break;
+        }
+        $db->setQuery($query);
+        $items = $db->loadObjectList();
+
+        if ($artcount) {
+            foreach ($items as &$i) {
+                $query = $db->getQuery(true);
+                $query->select('at.at_art');
+                $query->from('#__mams_arttag AS at');
+                $query->where('at.at_tag = '.$i->tag_id);
+                $query->where('at.published >= 1');
+                $db->setQuery($query);
+                $arts = $db->loadColumn();
+                $i->numarts = count($arts);
+            }
+        }
+
+        return $items;
+    }
+
+
+    function getSecChildren($sec) {
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$query->select('c.*');

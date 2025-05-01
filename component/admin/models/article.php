@@ -249,7 +249,7 @@ class MAMSModelArticle extends JModelAdmin
 			foreach ($this->getLinks($item->art_id,8) as $a) {
 				$addLink = new stdClass();
 				$addLink->link = $a;
-				$item->links = $addLink;
+				$item->links[] = $addLink;
 			}
 		}
 
@@ -1141,10 +1141,10 @@ class MAMSModelArticle extends JModelAdmin
 
 						return false;
 					}
-				}
-			} else {
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
-				return false;
+				} else {
+                    $this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+                    return false;
+                }
 			}
 		}
 	

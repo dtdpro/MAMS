@@ -379,6 +379,9 @@ class MAMSArticleType
 
     public static function resolveUrl($obj, $args, $context, $info)
     {
+        if ($args['article_seclock'] == null) $args['article_seclock'] = true;
+        if ($args['article_catlock'] == null) $args['article_catlock'] = true;
+        if ($args['article_taglock'] == null) $args['article_taglock'] = true;
         $artlink = "index.php?option=com_mams&view=article";
         if ($args['article_seclock']) $artlink .= "&secid=" . $obj->art_sec . ":" . $obj->sec_alias;
         $artlink .= "&artid=" . $obj->art_id . ":" . $obj->art_alias;
@@ -475,8 +478,15 @@ class MAMSArticleType
 
     public static function resolveSection($obj, $args, $context, $info)
     {
+        if ($args['link_section']) {
+            if ($obj->sec_redirurl) {
+                $secUrl = $obj->sec_redirurl;
+            } else {
+                $secUrl = JRoute::_( "index.php?option=com_mams&view=artlist&layout=section&secid=" . $obj->sec_id . ":" . $obj->sec_alias );
+            }
+        }
         $secText = '';
-        if ($args['link_section']) $secText .= '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=" . $obj->sec_id . ":" . $obj->sec_alias) . '">';
+        if ($args['link_section']) $secText .= '<a href="' . $secUrl . '">';
         $secText .= $obj->sec_name;
         if ($args['link_section']) $secText .= '</a>';
         return $secText;
@@ -486,8 +496,15 @@ class MAMSArticleType
     {
         $catsOutput = [];
         foreach ($obj->cats as $cat) {
+            if ($args['link_category']) {
+                if ($cat->cat_redirurl) {
+                    $catUrl = $cat->cat_redirurl;
+                } else {
+                    $catUrl = JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$cat->cat_id.":".$cat->cat_alias);
+                }
+            }
             $catText = '';
-            if ($args['link_category']) $catText = '<a href="' . JRoute::_("index.php?option=com_mams&view=category&catid=" . $cat->cat_id . ":" . $cat->cat_alias) . '">';
+            if ($args['link_category']) $catText = '<a href="' . $catUrl . '">';
             $catText .= $cat->cat_title;
             if ($args['link_category']) $catText .= '</a>';
             $catsOutput[] = $catText;
@@ -499,8 +516,15 @@ class MAMSArticleType
     {
         $tagsOutput = [];
         foreach ($obj->tags as $tag) {
+            if ($args['link_tag']) {
+                if ($tag->tag_redirurl) {
+                    $tagUrl = $tag->tag_redirurl;
+                } else {
+                    $tagUrl = JRoute::_("index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $tag->tag_id . ":" . $tag->tag_alias);
+                }
+            }
             $tagText = '';
-            if ($args['link_tag']) $tagText = '<a href="' . JRoute::_("index.php?option=com_mams&view=tag&tagid=" . $tag->tag_id . ":" . $tag->tag_alias) . '">';
+            if ($args['link_tag']) $tagText = '<a href="' . $tagUrl . '">';
             $tagText .= $tag->tag_title;
             if ($args['link_tag']) $tagText .= '</a>';
             $tagsOutput[] = $tagText;

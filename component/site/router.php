@@ -6,6 +6,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Router;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die;
 
@@ -45,7 +46,7 @@ class MAMSRouter extends RouterView
 		$item	= $menu->getActive();
 		$params = JComponentHelper::getParams('com_mams');
 		$advanced = $params->get('sef_advanced_link', 0);
-		$db = JFactory::getDBO();
+		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		// Count route segments
 		$count = count($segments);
@@ -253,6 +254,7 @@ class MAMSRules implements RulesInterface
 		$foundtag = 0;
 		$foundtagsec = 0;
 		$foundtagcat = 0;
+        $foundtaglist = 0;
 		$foundaut = 0;
 		$segments = array();
 		$app = JFactory::getApplication();
@@ -381,6 +383,9 @@ class MAMSRules implements RulesInterface
 				if ( $mi->query['layout'] == 'seclist' && $layout == 'section' ) {
 					$foundseclist = $mi->id;
 				}
+                if ( $mi->query['layout'] == 'taglist' && $layout == 'tag' ) {
+                    $foundtaglist = $mi->id;
+                }
 				if ( $mi->query['layout'] == 'allsecs' && $view == 'article' && ! $mi->home ) {
 					$foundartlist = $mi->id;
 				}
@@ -428,7 +433,9 @@ class MAMSRules implements RulesInterface
 				$query['Itemid'] = $foundcatlist;
 			} elseif ($foundseclist != 0) {
 				$query['Itemid'] = $foundseclist;
-			}
+			} elseif ($foundtaglist != 0) {
+                $query['Itemid'] = $foundtaglist;
+            }
 		} else if ($view == 'author') {
 			if ($foundaut != 0) {
 				$query['Itemid'] = $foundaut;
@@ -453,6 +460,7 @@ class MAMSRules implements RulesInterface
 		$foundtag = 0;
 		$foundtagsec = 0;
 		$foundtagcat = 0;
+        $foundtaglist = 0;
 		$foundaut = 0;
 		$segments = array();
 		$app = JFactory::getApplication();
@@ -585,6 +593,9 @@ class MAMSRules implements RulesInterface
 				if ( $mi->query['layout'] == 'seclist' && $layout == 'section' ) {
 					$foundseclist = $mi->id;
 				}
+                if ( $mi->query['layout'] == 'taglist' && $layout == 'tag' ) {
+                    $foundtaglist = $mi->id;
+                }
 				if ( $mi->query['layout'] == 'allsecs' && $view == 'article' && ! $mi->home ) {
 					$foundartlist = $mi->id;
 				}
@@ -602,7 +613,7 @@ class MAMSRules implements RulesInterface
                         $query['artid'] = $parts[1];
                     }
                 } else if (is_int($query['artid'])) {
-                    $db = JFactory::getDbo();
+                    $db = Factory::getContainer()->get('DatabaseDriver');
                     $aquery = $db->setQuery($db->getQuery(true)
                         ->select('art_alias')
                         ->from('#__mams_articles')
@@ -637,7 +648,7 @@ class MAMSRules implements RulesInterface
 				unset ($query['view'],$query['layout'],$query['tagid'],$query['secid'],$query['catid']);
 				if ($catid != 0) {
 					if (strpos($catid, ':') === false) {
-						$db = JFactory::getDbo();
+						$db = Factory::getContainer()->get('DatabaseDriver');
 						$aquery = $db->setQuery($db->getQuery(true)
 						                           ->select('cat_alias')
 						                           ->from('#__mams_cats')
@@ -653,7 +664,7 @@ class MAMSRules implements RulesInterface
 			} elseif ($foundcatlist != 0) {
 				unset ($query['view'],$query['layout'],$query['catid']);
 				if (strpos($catid, ':') === false) {
-					$db = JFactory::getDbo();
+					$db = Factory::getContainer()->get('DatabaseDriver');
 					$aquery = $db->setQuery($db->getQuery(true)
 					                           ->select('cat_alias')
 					                           ->from('#__mams_cats')
@@ -668,7 +679,7 @@ class MAMSRules implements RulesInterface
 			} elseif ($foundseclist != 0) {
 				unset ($query['view'],$query['layout'],$query['secid']);
 				if (strpos($secid, ':') === false) {
-					$db = JFactory::getDbo();
+					$db = Factory::getContainer()->get('DatabaseDriver');
 					$aquery = $db->setQuery($db->getQuery(true)
 					                           ->select('sec_alias')
 					                           ->from('#__mams_secs')
@@ -680,7 +691,22 @@ class MAMSRules implements RulesInterface
 				} else {
 					$segments[] = $secid;
 				}
-			} else {
+			} elseif ($foundtaglist != 0) {
+                unset ($query['view'],$query['layout'],$query['tagid']);
+                if (strpos($tagid, ':') === false) {
+                    $db = Factory::getContainer()->get('DatabaseDriver');
+                    $aquery = $db->setQuery($db->getQuery(true)
+                        ->select('tag_alias')
+                        ->from('#__mams_tags')
+                        ->where('tag_id='.$tagid)
+                    );
+                    $alias = $db->loadResult();
+                    $tagQuery = $tagid.':'.$alias;
+                    $segments[] = $tagQuery;
+                } else {
+                    $segments[] = $tagid;
+                }
+            } else {
 				unset ($query['view'],$query['layout']);
 			}
 		} else if ($view == 'author') {
@@ -689,7 +715,7 @@ class MAMSRules implements RulesInterface
 			} else if ($foundsec != 0) {
 				unset ($query['view'],$query['secid'],$query['layout']);
 				if ($autid === false && isset($query['autid'])) {
-					$db = JFactory::getDbo();
+					$db = Factory::getContainer()->get('DatabaseDriver');
 					$aquery = $db->setQuery($db->getQuery(true)
 					                           ->select('auth_alias')
 					                           ->from('#__mams_authors')

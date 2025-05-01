@@ -140,6 +140,13 @@ class MAMSModelStats extends JModelList
             $q->where('s.mt_type = "'.$filter_type.'"');
         }
 
+        if ($filter_type == 'listtag') {
+            $q->select('"List of Tags" as item_title');
+            $q->select('"List of Tags" as sec_title');
+
+            $q->where('s.mt_type = "'.$filter_type.'"');
+        }
+
         if ($filter_type == 'listsecs') {
             $q->select('"List of Sections" as item_title');
             $q->select('"List of Sections" as sec_title');

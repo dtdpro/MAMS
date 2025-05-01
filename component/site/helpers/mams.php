@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class MAMSHelper {
 
 	public static function getConfig() {
@@ -10,7 +12,7 @@ class MAMSHelper {
 	}
 
 	public static function trackViewed($item, $type) {
-		$db = JFactory::getDBO();
+        $db = Factory::getContainer()->get('DatabaseDriver');
 
 		$sewn = JFactory::getSession();
 		$sessionid = $sewn->getId();

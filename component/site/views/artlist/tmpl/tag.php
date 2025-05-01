@@ -6,9 +6,15 @@ if ($this->params->get('divwrapper',1)) {
 $app = JFactory::getApplication();
 if (count($this->taginfo) == 1) {
 	if ($this->params->get("show_page_heading",1)) {
-		echo '<h1 class="title uk-article-title">';
-		echo $this->taginfo[0]->tag_title;
-		echo '</h1>';
+        if ($this->params->get('page_heading', '')) {
+            echo '<h1 class="title uk-article-title">';
+            echo $this->params->get('page_heading', '');
+            echo '</h1>';
+        } else {
+            echo '<h1 class="title uk-article-title">';
+            echo $this->taginfo[0]->tag_title;
+            echo '</h1>';
+        }
 	}
 	if ( $this->headerContent ) {
 		echo $this->headerContent;
@@ -18,9 +24,15 @@ if (count($this->taginfo) == 1) {
 	}
 	echo '<div class="mams-artlist-tagdesc">'.$this->taginfo[0]->tag_desc.'</div>';
 } else if ($this->params->get("show_page_heading",1)) {
-	echo '<h1 class="title uk-article-title">';
-	echo $this->params->get("page_title",$app->getMenu()->getActive()->title);
-	echo '</h1>';
+    if ($this->params->get('page_heading', '')) {
+        echo '<h1 class="title uk-article-title">';
+        echo $this->params->get('page_heading', '');
+        echo '</h1>';
+    } else {
+        echo '<h1 class="title uk-article-title">';
+        echo $this->params->get("page_title",$app->getMenu()->getActive()->title);
+        echo '</h1>';
+    }
 	if ( $this->headerContent ) {
 		echo $this->headerContent;
 	}

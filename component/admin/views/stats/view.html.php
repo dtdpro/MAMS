@@ -21,8 +21,9 @@ class MAMSViewStats extends JViewLegacy
 		$this->typesl[9] = JHTML::_('select.option',  'media','Media');
         $this->typesl[10] = JHTML::_('select.option',  'listcats','List of Categories');
         $this->typesl[11] = JHTML::_('select.option',  'listsecs','List of Sections');
-        $this->typesl[12] = JHTML::_('select.option',  'listarts','List of All Articles');
-        $this->typesl[13] = JHTML::_('select.option',  'link','Link');
+        $this->typesl[12] = JHTML::_('select.option',  'listtags','List of All Tags');
+        $this->typesl[13] = JHTML::_('select.option',  'listarts','List of All Articles');
+        $this->typesl[14] = JHTML::_('select.option',  'link','Link');
 		
 		$this->model = $this->getModel();
 		$this->items = $this->get('Items');

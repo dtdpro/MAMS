@@ -21,6 +21,9 @@ class MAMSCatQueryType
                     ],
 
                     'args' => [
+                        'parent' => [
+                            'type' => 'String',
+                        ],
                         'onlyFeatCat' => [
                             'type' => 'Boolean',
                         ],
@@ -40,6 +43,17 @@ class MAMSCatQueryType
                         'label' => 'MAMS Categories',
                         'group' => 'MAMS',
                         'fields' => [
+                            'parent' => [
+                                'label' => 'Parent Category ID',
+                                'type' => 'text',
+                                'default' => '0',
+                                "description" => "Parent category ID, 0 for root/none."
+                                /*'options' => [['value'=>'','text'=>''],['evaluate'=>'yootheme.builder.mams_categories']],
+                                    'attrs' => [
+                                        'multiple' => true,
+                                        'class' => 'uk-height-small',
+                                    ]*/
+                            ],
                             'order' => [
                                 'label' => 'Ordering',
                                 'type' => 'select',
@@ -82,6 +96,6 @@ class MAMSCatQueryType
 
     public static function resolve($item, $args, $context, $info)
     {
-        return MAMSProvider::getCats($args['showCount'], 0, $args['order'], $args['onlyFeatCat'], $args['restrictFeatCat']);
+        return MAMSProvider::getCats($args['showCount'], $args['parent'], $args['order'], $args['onlyFeatCat'], $args['restrictFeatCat']);
     }
 }

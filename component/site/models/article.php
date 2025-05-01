@@ -18,7 +18,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	function getArticleSec($artid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$query->select('a.art_sec');
 		$query->from('#__mams_articles AS a');
@@ -38,7 +38,7 @@ class MAMSModelArticle extends JModelLegacy
 		$accessDetalis->canAccess = false;
 		$accessDetalis->hasPreview = false;
 
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$query->select('a.access,a.params,a.art_publish_up,a.art_publish_down,a.state');
 		$query->from('#__mams_articles AS a');
@@ -78,12 +78,12 @@ class MAMSModelArticle extends JModelLegacy
 	
 	function getArticle($artid, $preview=false) {
 		$app = JFactory::getApplication('site');
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		$cfg = MAMSHelper::getConfig();
 		
-		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
+		$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias,s.sec_redirurl');
 		$query->from('#__mams_articles AS a');
 		$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 		$query->where('a.art_id = '.$artid);
@@ -145,7 +145,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	protected function getArticleFields($artid, $preview = false) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		
 		$query->select('f.*');
@@ -180,7 +180,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	protected function getFieldAuthors($artid, $fid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$qa=$db->getQuery(true);
 		$qa->select('a.*');
 		$qa->from('#__mams_artauth as aa');
@@ -196,7 +196,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	protected function getFieldMedia($artid, $fid) {		
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$qa=$db->getQuery(true);
 		$qa->select('m.*');
 		$qa->from('#__mams_artmed as am');
@@ -212,7 +212,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	protected function getFieldDownloads($artid, $fid) {		
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$qa=$db->getQuery(true);
 		$qa->select('d.*');
 		$qa->from('#__mams_artdl as ad');
@@ -228,7 +228,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	protected function getFieldLinks($artid, $fid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$qa=$db->getQuery(true);
 		$qa->select('l.*');
 		$qa->from('#__mams_artlinks as al');
@@ -244,7 +244,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	protected function getFieldImages($artid, $fid) {		
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$qa=$db->getQuery(true);
 		$qa->select('i.*');
 		$qa->from('#__mams_artimg as ai');
@@ -260,7 +260,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	protected function getArticleCats($artid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$qa=$db->getQuery(true);
 		$qa->select('c.*');
 		$qa->from('#__mams_artcat as ac');
@@ -275,9 +275,9 @@ class MAMSModelArticle extends JModelLegacy
 	}
 
 	protected function getArticleTags($artid) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$qc = $db->getQuery( true );
-		$qc->select( 't.tag_id,t.tag_title,t.tag_alias,t.tag_icon' );
+		$qc->select( 't.tag_id,t.tag_title,t.tag_alias,t.tag_icon,t.tag_redirurl' );
 		$qc->from( '#__mams_arttag as at' );
 		$qc->join( 'RIGHT', '#__mams_tags AS t ON at.at_tag = t.tag_id' );
 		$qc->where( 'at.published >= 1' );
@@ -302,11 +302,11 @@ class MAMSModelArticle extends JModelLegacy
 		if ($relatedBy == 'both' || $relatedBy == 'author') foreach ($auts as $a) { $relatedids=array_merge($relatedids,$this->getAuthArts($article->art_id, $a->auth_id));}
 		$relatedids = array_unique($relatedids);	
 		
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		
 		if ($relatedids) {
-			$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias');
+			$query->select('a.*,s.sec_id,s.sec_name,s.sec_alias,s.sec_redirurl');
 			$query->from('#__mams_articles AS a');
 			$query->join('RIGHT','#__mams_secs AS s ON s.sec_id = a.art_sec');
 			$query->where('a.art_id IN ('.implode(",",$relatedids).')');
@@ -346,7 +346,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	function getCatArts($art, $cat) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		
@@ -361,7 +361,7 @@ class MAMSModelArticle extends JModelLegacy
 	}
 	
 	function getAuthArts($art, $aut) {
-		$db = JFactory::getDBO();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
 		

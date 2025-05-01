@@ -147,7 +147,12 @@ if ($this->article->fields) {
                         echo '<div class="mams-article-pubinfo">';
 
                         //Section Link
-                        echo '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=" . $this->article->sec_id . ":" . $this->article->sec_alias) . '" class="mams-article-seclink">' . $this->article->sec_name . '</a>';
+                        if ($this->article->sec_redirurl) {
+                            $secUrl = $this->article->sec_redirurl;
+                        } else {
+                            $secUrl = JRoute::_( "index.php?option=com_mams&view=artlist&layout=section&secid=" . $secUrl->sec_id . ":" . $secUrl->sec_alias );
+                        }
+                        echo '<a href="' . $secUrl . '" class="mams-article-seclink">' . $this->article->sec_name . '</a>';
 
                         //Pub Date
                         if ($this->params->get('show_pubdate', 1)) {
@@ -165,8 +170,16 @@ if ($this->article->fields) {
                             }
                             $cats = array();
                             foreach ($this->article->cats as $c) {
-                                if (!$this->params->get('restrictcat', 0)) {$cats[] = '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=" . $c->cat_id . ":" . $c->cat_alias) . '" class="mams-article-catlink">' . $c->cat_title . '</a>';}
-                                else {$cats[] = '<a href="' . JRoute::_("index.php?option=com_mams&view=artlist&layout=catsec&secid=" . $this->article->sec_id . ":" . $this->article->sec_alias . "&catid=" . $c->cat_id . ":" . $c->cat_alias) . '" class="mams-article-catlink">' . $c->cat_title . '</a>';}
+                                if ($c->cat_redirurl) {
+                                    $catUrl = $c->cat_redirurl;
+                                } else {
+                                    if ( ! $this->params->get( 'restrictcat', 0 ) ) {
+                                        $catUrl = JRoute::_( "index.php?option=com_mams&view=artlist&layout=category&catid=" . $c->cat_id . ":" . $c->cat_alias );
+                                    } else {
+                                        $catUrl = JRoute::_( "index.php?option=com_mams&view=artlist&layout=catsec&secid=" . $a->sec_id . ":" . $a->sec_alias . "&catid=" . $c->cat_id . ":" . $c->cat_alias );
+                                    }
+                                }
+                                $cats[] = '<a href="' . $catUrl . '" class="mams-article-catlink">' . $c->cat_title . '</a>';
                             }
                             echo implode(", ", $cats);
                             echo '</em>';
@@ -176,7 +189,14 @@ if ($this->article->fields) {
                     break;
 				case "tags":
 					foreach ($this->article->tags as $t) {
-						if ($this->params->get( 'link_tags', 1 )) {echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias ) . '" class="mams-artlist-taglink">';}
+						if ($this->params->get( 'link_tags', 1 )) {
+                            if ($t->tag_redirurl) {
+                                $tagUrl = $t->tag_redirurl;
+                            } else {
+                                $tagUrl = JRoute::_( "index.php?option=com_mams&view=artlist&layout=tag&tagid=" . $t->tag_id . ":" . $t->tag_alias );
+                            }
+                            echo '<a href="' . $tagUrl . '" class="mams-artlist-taglink">';
+                        }
 						echo '<span class="uk-badge badge badge-primary mams-article-'.$f->group_name.'-'.$f->field_name.'-link mams-article-tag">';
 						if ($t->tag_icon) {echo '<i class="'.$t->tag_icon.'"></i> ';}
  						echo $t->tag_title;
@@ -565,7 +585,12 @@ if ($this->article->fields) {
                             }
                             echo '<div class="mams-article-related-pubinfo">';
                             //Section Link
-                            echo '<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=section&secid=".$r->sec_id.":".$r->sec_alias).'" class="mams-article-related-seclink">'.$r->sec_name.'</a>';
+                            if ($r->sec_redirurl) {
+                                $secUrl = $r->sec_redirurl;
+                            } else {
+                                $secUrl = JRoute::_( "index.php?option=com_mams&view=artlist&layout=section&secid=" . $r->sec_id . ":" . $r->sec_alias );
+                            }
+                            echo '<a href="'.$secUrl.'" class="mams-article-related-seclink">'.$r->sec_name.'</a>';
 
                             //Pub Date
                             echo ' published on <strong>';
@@ -577,7 +602,12 @@ if ($this->article->fields) {
                                 echo ' in <em>';
                                 $cats = Array();
                                 foreach ($r->cats as $c) {
-                                    $cats[]='<a href="'.JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias).'" class="mams-article-related-catlink">'.$c->cat_title.'</a>'; //&secid=".$r->sec_id.":".$r->sec_alias."
+                                    if ($c->cat_redirurl) {
+                                        $catUrl = $c->cat_redirurl;
+                                    } else {
+                                        $catUrl = JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias);
+                                    }
+                                    $cats[]='<a href="'.$catUrl.'" class="mams-article-related-catlink">'.$c->cat_title.'</a>'; //&secid=".$r->sec_id.":".$r->sec_alias."
                                 }
                                 echo implode(", ",$cats);
                                 echo '</em>';

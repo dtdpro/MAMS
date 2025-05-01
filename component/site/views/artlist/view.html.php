@@ -49,6 +49,9 @@ class MAMSViewArtList extends JViewLegacy
 			case "seclist":
 				$this->listSecs();
 				break;
+			case "taglist":
+				$this->listTags();
+				break;
 			case "category":
 				$this->listCategory();
 				break;
@@ -150,6 +153,12 @@ class MAMSViewArtList extends JViewLegacy
 		MAMSHelper::trackViewed(0,'listcats');
 	}
 
+	protected function listTags() {
+		$model = $this->getModel();
+		$this->taglist = $model->getTags($this->params->get("show_count",0));
+		MAMSHelper::trackViewed(0,'listtags');
+	}
+
 	protected function listSecByCat() {
 		$model = $this->getModel();
 		$sec=$this->getSecs();
@@ -176,6 +185,7 @@ class MAMSViewArtList extends JViewLegacy
 
 	protected function listCatSec() {
 		$model = $this->getModel();
+		$query_operation = $this->params->get('query_operation','AND');
 		$sec=$this->getSecs();
 		$app = JFactory::getApplication();
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
@@ -187,8 +197,15 @@ class MAMSViewArtList extends JViewLegacy
 		if ($this->catinfo) {
 			MAMSHelper::trackViewed($this->catinfo[0]->cat_id,'catlist');
 			if (count($this->catinfo) == 1) $this->title = $this->catinfo[0]->cat_title;
-			$artids=$model->getCatArts($cat);
-			$this->articles=$model->getArticles($artids,$sec);
+			$catArtids=$model->getCatArts($cat);
+			$secArtIds=$model->getSecArts($sec);
+			$artids = [];
+			if ($query_operation == 'OR') {
+				$artids = array_merge($catArtids,$secArtIds);
+			} else {
+				$artids = array_intersect($catArtids,$secArtIds);
+			}
+			$this->articles=$model->getArticles($artids);
 			$this->pagination = $this->get('Pagination');
 			$this->pagination->setAdditionalUrlParam('catid', $app->input->get('catid', [], 'array'));
 			if (count($sec)) $this->pagination->setAdditionalUrlParam('secid', $app->input->get('secid', [], 'array'));
@@ -199,6 +216,7 @@ class MAMSViewArtList extends JViewLegacy
 
 	protected function listTagSec() {
 		$model = $this->getModel();
+		$query_operation = $this->params->get('query_operation','AND');
 		$sec=$this->getSecs();
 		$app = JFactory::getApplication();
 		if (count($sec)) $this->secinfo=$model->getSecInfo($sec);
@@ -210,8 +228,15 @@ class MAMSViewArtList extends JViewLegacy
 		if ($this->taginfo) {
 			MAMSHelper::trackViewed($this->taginfo[0]->tag_id,'taglist');
 			if (count($this->taginfo) == 1) $this->title = $this->taginfo[0]->tag_title;
-			$artids=$model->getTagArts($tag);
-			$this->articles=$model->getArticles($artids,$sec);
+			$tagArtIds=$model->getTagArts($tag);
+			$secArtIds=$model->getSecArts($sec);
+			$artids = [];
+			if ($query_operation == 'OR') {
+				$artids = array_merge($secArtIds,$tagArtIds);
+			} else {
+				$artids = array_intersect($secArtIds,$tagArtIds);
+			}
+			$this->articles=$model->getArticles($artids);
 			$this->pagination = $this->get('Pagination');
 			$this->pagination->setAdditionalUrlParam('tagid', $app->input->get('tagid', [], 'array'));
 			if (count($sec)) $this->pagination->setAdditionalUrlParam('secid', $app->input->get('secid', [], 'array'));
@@ -222,6 +247,7 @@ class MAMSViewArtList extends JViewLegacy
 
 	protected function listTagCat() {
 		$model = $this->getModel();
+		$query_operation = $this->params->get('query_operation','AND');
 		$cat=$this->getCats();
 		$app = JFactory::getApplication();
 		if (count($cat)) $this->catinfo=$model->getCatInfo($cat);
@@ -235,7 +261,13 @@ class MAMSViewArtList extends JViewLegacy
 			if (count($this->taginfo) == 1) $this->title = $this->taginfo[0]->tag_title;
 			$artids_tag=$model->getTagArts($tag);
 			$artids_cat=$model->getCatArts($cat);
-			$this->articles=$model->getArticles(array_intersect($artids_tag,$artids_cat));
+			$artids = [];
+			if ($query_operation == 'OR') {
+				$artids = array_merge($artids_tag,$artids_cat);
+			} else {
+				$artids = array_intersect($artids_tag,$artids_cat);
+			}
+			$this->articles=$model->getArticles($artids);
 			$this->pagination = $this->get('Pagination');
 			$this->pagination->setAdditionalUrlParam('tagid', $app->input->get('tagid', [], 'array'));
 			if (count($cat)) $this->pagination->setAdditionalUrlParam('catid', $app->input->get('catid', [], 'array'));
@@ -401,11 +433,13 @@ class MAMSViewArtList extends JViewLegacy
 		$title   = null;
 		$params = $this->params;
 		$title = $this->title;
-		// Check for empty title and add site name if param is set
-		if (empty($title))
+		// Override title if set in params
+		if ($this->params->get('page_title', ''))
 		{
 			$title = $this->params->get('page_title', '');
 		}
+
+		// Add Site name if set
 		if ($app->get('sitename_pagetitles', 0) == 1)
 		{
 			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
@@ -414,10 +448,13 @@ class MAMSViewArtList extends JViewLegacy
 		{
 			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
+
+		// If nothing after above
 		if (empty($title))
 		{
 			$title = $this->title;
 		}
+
 		$this->document->setTitle($title);
 	}
 

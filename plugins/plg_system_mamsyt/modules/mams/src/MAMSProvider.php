@@ -11,6 +11,7 @@ class MAMSProvider
 {
     public static function getCats($artcount = false, $parent = 0, $orderby = "titasc", $onlyFeatCat = false, $restrictFeatCat = false)
     {
+        //if (!$parent) $parent = 0;
         $db = JFactory::getDBO();
         $sewn = JFactory::getSession();
         $sessionid = $sewn->getId();
@@ -208,7 +209,7 @@ class MAMSProvider
 
             //Categories
             $qc = $db->getQuery(true);
-            $qc->select('c.cat_id,c.cat_title,c.cat_alias');
+            $qc->select('c.cat_id,c.cat_title,c.cat_alias,c.cat_redirurl');
             $qc->from('#__mams_artcat as ac');
             $qc->join('RIGHT', '#__mams_cats AS c ON ac.ac_cat = c.cat_id');
             $qc->where('ac.published >= 1');
@@ -221,7 +222,7 @@ class MAMSProvider
 
             // Tags
             $qc = $db->getQuery(true);
-            $qc->select('t.tag_id,t.tag_title,t.tag_alias');
+            $qc->select('t.tag_id,t.tag_title,t.tag_alias,t.tag_redirurl');
             $qc->from('#__mams_arttag as at');
             $qc->join('RIGHT', '#__mams_tags AS t ON at.at_tag = t.tag_id');
             $qc->where('at.published >= 1');
@@ -329,7 +330,7 @@ class MAMSProvider
 
             //Categories
             $qc = $db->getQuery(true);
-            $qc->select('c.cat_id,c.cat_title,c.cat_alias');
+            $qc->select('c.cat_id,c.cat_title,c.cat_alias,c.cat_redirurl');
             $qc->from('#__mams_artcat as ac');
             $qc->join('RIGHT', '#__mams_cats AS c ON ac.ac_cat = c.cat_id');
             $qc->where('ac.published >= 1');
@@ -342,7 +343,7 @@ class MAMSProvider
 
             // Tags
             $qc = $db->getQuery(true);
-            $qc->select('t.tag_id,t.tag_title,t.tag_alias');
+            $qc->select('t.tag_id,t.tag_title,t.tag_alias,t.tag_redirurl');
             $qc->from('#__mams_arttag as at');
             $qc->join('RIGHT', '#__mams_tags AS t ON at.at_tag = t.tag_id');
             $qc->where('at.published >= 1');

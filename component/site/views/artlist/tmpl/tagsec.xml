@@ -41,6 +41,10 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
+			<field name="query_operation" class="btn-group" type="radio" description="" label="Query Operation" default="AND">
+				<option value="AND">Tag AND Section</option>
+				<option value="OR">Tag OR Section</option>
+			</field>
 			<field name="orderby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
 				<option value="pubasc">COM_MAMS_ORDER_PUBASC</option>
 				<option value="pubdsc">COM_MAMS_ORDER_PUBDSC</option>

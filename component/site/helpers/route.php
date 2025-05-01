@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 abstract class MAMSHelperRoute
 {
 	public static function getArticleRoute($artid, $secid = 0, $language = 0)
@@ -20,8 +22,7 @@ abstract class MAMSHelperRoute
 	public static function getSectionRoute($secid, $cat=0, $language = 0)
 	{
 		//Create the link
-		
-		$db = JFactory::getDBO();
+        $db = Factory::getContainer()->get('DatabaseDriver');
 		$query = $db->getQuery(true);
 		$query->select('sec_type')->from("#__mams_secs")->where("sec_id = ".(int)$secid);
 		$db->setQuery($query);

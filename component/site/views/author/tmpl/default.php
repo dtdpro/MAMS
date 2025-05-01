@@ -63,8 +63,13 @@ if ($this->published) {
 				echo '</div>';
 			}
 			echo '<div class="mams-author-related-pubinfo">';
-			//Section Link
-			echo '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=section&secid=" . $r->sec_id . ":" . $r->sec_alias ) . '" class="mams-author-seclink">' . $r->sec_name . '</a>';
+            //Section Link
+            if ($r->sec_redirurl) {
+                $secUrl = $r->sec_redirurl;
+            } else {
+                $secUrl = JRoute::_( "index.php?option=com_mams&view=artlist&layout=section&secid=" . $r->sec_id . ":" . $r->sec_alias );
+            }
+			echo '<a href="' . $secUrl . '" class="mams-author-seclink">' . $r->sec_name . '</a>';
 
 			//Pub Date
 			if ( $this->params->get( 'show_pubdate', 1 ) ) {
@@ -78,7 +83,12 @@ if ($this->published) {
 				echo ' in <em>';
 				$cats = Array();
 				foreach ( $r->cats as $c ) {
-					$cats[] = '<a href="' . JRoute::_( "index.php?option=com_mams&view=artlist&layout=category&catid=" . $c->cat_id . ":" . $c->cat_alias ) . '" class="mams-artlist-catlink">' . $c->cat_title . '</a>'; //&secid=".$r->sec_id.":".$r->sec_alias."
+                    if ($c->cat_redirurl) {
+                        $catUrl = $c->cat_redirurl;
+                    } else {
+                        $catUrl = JRoute::_("index.php?option=com_mams&view=artlist&layout=category&catid=".$c->cat_id.":".$c->cat_alias);
+                    }
+					$cats[] = '<a href="' . $catUrl . '" class="mams-artlist-catlink">' . $c->cat_title . '</a>'; //&secid=".$r->sec_id.":".$r->sec_alias."
 				}
 				echo implode( ", ", $cats );
 				echo '</em>';

@@ -96,6 +96,15 @@
 			label="COM_MAMS_TAG_FIELD_IMAGE_LABEL"
 			description="COM_MAMS_TAG_FIELD_IMAGE_DESC"
 		/>
+		<field
+				name="tag_redirurl"
+				type="text"
+				label="COM_MAMS_TAG_FIELD_REDIRURL_LABEL"
+				description="COM_MAMS_TAG_FIELD_REDIRURL_DESC"
+				size="60"
+				class="inputbox"
+				default=""
+		/>
 	</fieldset>
 </form>
 

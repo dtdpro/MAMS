@@ -131,6 +131,15 @@
 				label="COM_MAMS_SEC_FIELD_THUMB_LABEL"
 				description="COM_MAMS_SEC_FIELD_THUMB_DESC"
 				/>
+		<field
+				name="sec_redirurl"
+				type="text"
+				label="COM_MAMS_SEC_FIELD_REDIRURL_LABEL"
+				description="COM_MAMS_SEC_FIELD_REDIRURL_DESC"
+				size="60"
+				class="inputbox"
+				default=""
+		/>
 	</fieldset>
 	<fieldset>
 		<field name="rules" type="rules" label="JFIELD_RULES_LABEL"

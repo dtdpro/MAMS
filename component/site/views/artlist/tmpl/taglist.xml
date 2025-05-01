@@ -1,50 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="MAMS Section/Category Article List">
-		<message>Section/Category Article List</message>
+	<layout title="MAMS Tag List">
+		<message>Tag List</message>
 	</layout>
 	<!-- Add fields to the request variables for the layout. -->
-	<fields name="request">
-		<fieldset name="request">
-			<field
-					name="secid"
-					type="sql"
-					description="COM_MAMS_FIELD_SELECT_SEC_DESC"
-					label="COM_MAMS_FIELD_SELECT_SEC_LABEL"
-					required="true"
-					multiple="true"
-					sql_select="CONCAT(sec_id,':',sec_alias) AS value, sec_name AS text"
-					sql_from="#__mams_secs"
-					sql_where="sec_type = 'article'"
-					sql_order="sec_name ASC"
-					key_field="value"
-					value_field="text"
-					layout="joomla.form.field.list-fancy-select"
-			/>
-		</fieldset>
-		<fieldset name="request">
-			<field
-					name="catid"
-					type="sql"
-					description="COM_MAMS_FIELD_SELECT_CAT_DESC"
-					label="COM_MAMS_FIELD_SELECT_CAT_LABEL"
-					required="true"
-					multiple="true"
-					sql_select="CONCAT(cat_id,':',cat_alias) AS value, cat_title AS text"
-					sql_from="#__mams_cats"
-					sql_order="cat_title ASC"
-					key_field="value"
-					value_field="text"
-					layout="joomla.form.field.list-fancy-select"
-			/>
-		</fieldset>
-	</fields>
 	<fields name="params">
 		<fieldset name="basic" label="COM_MAMS_FIELDSET_MORE_OPTIONS_LABEL">
-			<field name="query_operation" class="btn-group" type="radio" description="" label="Query Operation" default="AND">
-				<option value="AND">Section AND Category</option>
-				<option value="OR">Section OR Category</option>
+			<field name="show_count" type="radio" label="COM_MAMS_FIELD_SHOW_COUNT_LABEL" description="COM_MAMS_FIELD_SHOW_COUNT_DESC" class="btn-group" default="0">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
 			</field>
+			<field name="list_cols" type="text" label="COM_MAMS_FIELD_LISTCOLS_LABEL" description="COM_MAMS_FIELD_LISTCOLS_DESC" class="inputbox" default="1" />
+			<field name="orderlistby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
+				<option value="titasc">COM_MAMS_ORDER_TITASC</option>
+				<option value="titdsc">COM_MAMS_ORDER_TITDSC</option>
+			</field>
+		</fieldset>
+		<fieldset name="articlelist" label="COM_MAMS_FIELDSET_LIST_OPTIONS_LABEL">
 			<field name="orderby" type="list" description="COM_MAMS_FIELD_ORDERBY_DESC" label="COM_MAMS_FIELD_ORDERBY_LABEL" default="pubdsc">
 				<option value="pubasc">COM_MAMS_ORDER_PUBASC</option>
 				<option value="pubdsc">COM_MAMS_ORDER_PUBDSC</option>
@@ -75,23 +47,10 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
-			<field name="listview" class="btn-group" type="radio" description="COM_MAMS_FIELD_LISTVIEW_DESC" label="COM_MAMS_FIELD_LISTVIEW_LABEL" default="blog">
-				<option value="blog">Blog List</option>
-				<option value="gal">Gallery</option>
-			</field>
-			<field name="restrict_feat" type="radio" label="COM_MAMS_FIELD_ONLY_FEAT_LABEL" description="COM_MAMS_FIELD_ONLY_FEAT_DESC" class="btn-group" default="0">
-				<option value="0">No</option>
-				<option value="1">Yes</option>
-			</field>
-			<field name="items_page" type="text" description="COM_MAMS_FIELD_ITEMSPERPAGE_DESC" label="COM_MAMS_FIELD_ITEMSPERPAGE_LABEL" default="10" />
-			<field name="show_catimage" type="radio" label="COM_MAMS_FIELD_SHOW_CATIMAGE_LABEL" description="COM_MAMS_FIELD_SHOW_CATIMAGE_DESC" class="btn-group" default="0">
+			<field name="show_thumb" type="radio" label="COM_MAMS_FIELD_SHOW_THUMB_LABEL" description="COM_MAMS_FIELD_SHOW_THUMB_DESC" class="btn-group" default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-            <field name="show_thumb" type="radio" label="COM_MAMS_FIELD_SHOW_THUMB_LABEL" description="COM_MAMS_FIELD_SHOW_THUMB_DESC" class="btn-group" default="1">
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
 			<field name="link_thumb" type="radio" label="COM_MAMS_FIELD_LINK_THUMB_LABEL" description="COM_MAMS_FIELD_LINK_THUMB_DESC" class="btn-group" default="1">
 				<option value="0">No</option>
 				<option value="1">Yes</option>
@@ -168,10 +127,6 @@
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
-		</fieldset>
-		<fieldset name="extra" label="COM_MAMS_FIELDSET_EXTRAS_LABEL">
-			<field name="extras_header" type="textarea" label="COM_MAMS_FIELD_EXTRA_HEADER_LABEL" description="COM_MAMS_FIELD_EXTRA_HEADER_DESC" rows="6" cols="80" class="inputbox" filter="safehtml" buttons="false"/>
-			<field name="extras_footer" type="textarea" label="COM_MAMS_FIELD_EXTRA_FOOTER_LABEL" description="COM_MAMS_FIELD_EXTRA_FOOTER_DESC" rows="6" cols="80" class="inputbox" filter="safehtml" buttons="false"/>
 		</fieldset>
 	</fields>
 </metadata>
